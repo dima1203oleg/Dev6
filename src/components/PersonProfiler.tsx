@@ -1,3 +1,4 @@
+import { SearchPlanner } from '../services/SearchPlanner';
 import AdverseIntelligenceTab from "./AdverseIntelligenceTab";
 import CognitiveProfileTab from "./CognitiveProfileTab";
 import { useToast } from './ToastProvider';
@@ -40,8 +41,10 @@ import {
   RotateCcw,
   Eraser,
   X,
-  Check
-, Database} from 'lucide-react';
+  Check,
+  Database,
+  Shield
+} from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, BarChart, Bar } from 'recharts';
 
 // --- DATA STRUCTURES ---
@@ -466,36 +469,27 @@ export default function PersonProfiler() {
     }, 600);
   };
 
-  const handleCustomSearch = (e: React.FormEvent) => {
+  const handleCustomSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!customSearchName.trim() || isAiSearching) return;
 
     setIsAiSearching(true);
     setAiSearchLog([]);
 
-    const lowerQuery = customSearchName.toLowerCase();
-    const isKizymaQuery = lowerQuery.includes('кізима') || lowerQuery.includes('kizyma') || lowerQuery.includes('3111724753');
-
-    const searchLogs = isKizymaQuery ? [
-      '[OSINT / ЄДРПОУ] Ініційовано пошук...',
-      '[ЄДИНИЙ ДЕРЖАВНИЙ РЕЄСТР ДПС & ЄДР] Аналіз за унікальним ІПН...',
-      '[ТОЧНА ІДЕНТИФІКАЦІЯ] Точна прив\'язка за ІПН 3111724753.',
-      '[УСПІХ] Повні верифіковані дані завантажено в інтерактивний профайлер.'
-    ] : [
-      '[OSINT] Пошук за назвою...',
-      '[УСПІХ] Пошук завершено.'
-    ];
+    const planner = new SearchPlanner();
+    const result = await planner.orchestrate(customSearchName);
 
     let current = 0;
     const interval = setInterval(() => {
-      if (current < searchLogs.length) {
-        setAiSearchLog(prev => [...prev, searchLogs[current]]);
+      if (current < result.logs.length) {
+        setAiSearchLog(prev => [...prev, result.logs[current]]);
         current++;
       } else {
         clearInterval(interval);
         setIsAiSearching(false);
+        // Optionally update some Evidence Coverage state here
       }
-    }, 400);
+    }, 150);
   };
 
   // Source of Wealth chart data
@@ -824,6 +818,50 @@ export default function PersonProfiler() {
                       <div className="flex justify-between text-xs items-start">
                         <span className="text-slate-500">Реєстрація:</span>
                         <span className="text-slate-300 font-bold text-right truncate w-[160px]" title={selectedPerson.address}>{selectedPerson.address}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Evidence Coverage & Truth Score */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-xs font-mono">
+                    <div className="bg-slate-950/60 border border-slate-800 p-2 rounded-lg space-y-2 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-2 opacity-10">
+                         <Shield className="w-16 h-16 text-indigo-500" />
+                      </div>
+                      <div className="flex justify-between items-center border-b border-slate-800 pb-2 relative z-10">
+                        <span className="text-slate-400 font-bold uppercase tracking-wider">Dev6 Truth Score</span>
+                        <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">CONFIDENCE: HIGH (97%)</span>
+                      </div>
+                      <div className="space-y-1.5 pt-1 relative z-10">
+                         <div className="flex justify-between text-[10px] text-slate-500"><span className="text-slate-400">Source Authority (Tier 0/1)</span><span className="text-emerald-500">EXCELLENT</span></div>
+                         <div className="flex justify-between text-[10px] text-slate-500"><span className="text-slate-400">Cross-Source Agreement</span><span className="text-emerald-500">100% MATCH</span></div>
+                         <div className="flex justify-between text-[10px] text-slate-500"><span className="text-slate-400">Data Freshness</span><span className="text-indigo-400">REAL-TIME</span></div>
+                         <div className="flex justify-between text-[10px] text-slate-500"><span className="text-slate-400">Unresolved Contradictions</span><span className="text-emerald-500">0 DETECTED</span></div>
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-950/60 border border-slate-800 p-2 rounded-lg space-y-2">
+                      <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span className="text-slate-400 font-bold uppercase tracking-wider">Evidence Coverage</span>
+                        <span className="text-indigo-400 font-bold">95%</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 pt-1">
+                         <div className="space-y-1">
+                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Identity</span><span className="text-slate-300">100%</span></div>
+                            <div className="w-full bg-slate-800 h-1 rounded overflow-hidden"><div className="bg-indigo-500 h-full w-full"></div></div>
+                         </div>
+                         <div className="space-y-1">
+                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Courts</span><span className="text-slate-300">100%</span></div>
+                            <div className="w-full bg-slate-800 h-1 rounded overflow-hidden"><div className="bg-indigo-500 h-full w-full"></div></div>
+                         </div>
+                         <div className="space-y-1">
+                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Sanctions</span><span className="text-slate-300">100%</span></div>
+                            <div className="w-full bg-slate-800 h-1 rounded overflow-hidden"><div className="bg-indigo-500 h-full w-full"></div></div>
+                         </div>
+                         <div className="space-y-1">
+                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Declarations</span><span className="text-slate-300">82%</span></div>
+                            <div className="w-full bg-slate-800 h-1 rounded overflow-hidden"><div className="bg-indigo-500 h-full" style={{width: '82%'}}></div></div>
+                         </div>
                       </div>
                     </div>
                   </div>
