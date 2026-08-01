@@ -1,0 +1,10 @@
+{
+  "name": "PREDATOR Analytics — Enterprise Intelligence OS",
+  "description": "An enterprise OSINT platform integrating AI, graph databases, and global intelligence for advanced security auditing and risk analysis.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
