@@ -34,6 +34,7 @@ import GeospatialHeatmap from "./GeospatialHeatmap";
 import D3RiskHeatmapWidget from "./D3RiskHeatmapWidget";
 import D3HistoricalRiskTrendsWidget from "./D3HistoricalRiskTrendsWidget";
 import RiskAlertTicker from "./RiskAlertTicker";
+import RealtimeAssetPriceWidget from "./RealtimeAssetPriceWidget";
 import { OSINT_ENTITIES } from "../osintData";
 import {
   AreaChart,
@@ -577,6 +578,9 @@ export default function DashboardView({
         onSelectEntity={onSelectEntity}
         onSelectTab={onSelectTab}
       />
+
+      {/* Real-Time Asset Price Change Indicator Widget */}
+      <RealtimeAssetPriceWidget />
 
       {/* Dynamic HUD Quick stats row */}
       <div

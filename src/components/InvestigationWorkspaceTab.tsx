@@ -32,7 +32,7 @@ export default function InvestigationWorkspaceTab() {
     riskScore: 12,
     entities: [
       { id: "ent-1", name: "ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'", type: "COMPANY", code: "42345678", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Київ, вул. Хрещатик, 20" },
-      { id: "ent-2", name: "ФОП Кізима Дмитро Миколайович", type: "PERSON", code: "3111724753", status: "ДІЮЧИЙ", risk: "CLEAN", address: "с. Угерсько, вул. Жидачівська, 12" },
+      { id: "ent-2", name: "Кізима Дмитро Миколайович (11 компаній, 14 справ у ЄДРСР)", type: "PERSON", code: "3111724753", status: "ДІЮЧИЙ", risk: "MEDIUM", address: "с. Угерсько, вул. Жидачівська, 12" },
       { id: "ent-3", name: "ТОВ 'ЛЬВІВБУДІНВЕСТ-ПЛЮС'", type: "COMPANY", code: "41234500", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Львів, вул. Героїв УПА, 73" }
     ],
     notes: [
@@ -504,7 +504,7 @@ export default function InvestigationWorkspaceTab() {
                           ...prev,
                           entities: [
                             { id: "ent-1", name: "ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'", type: "COMPANY", code: "42345678", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Київ, вул. Хрещатик, 20" },
-                            { id: "ent-2", name: "ФОП Кізима Дмитро Миколайович", type: "PERSON", code: "3111724753", status: "ДІЮЧИЙ", risk: "CLEAN", address: "с. Угерсько, вул. Жидачівська, 12" },
+                            { id: "ent-2", name: "Кізима Дмитро Миколайович (11 компаній, 14 справ у ЄДРСР)", type: "PERSON", code: "3111724753", status: "ДІЮЧИЙ", risk: "MEDIUM", address: "с. Угерсько, вул. Жидачівська, 12" },
                             { id: "ent-3", name: "ТОВ 'ЛЬВІВБУДІНВЕСТ-ПЛЮС'", type: "COMPANY", code: "41234500", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Львів, вул. Героїв УПА, 73" }
                           ]
                         }));

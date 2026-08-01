@@ -11,23 +11,25 @@ import GapAnalysisTab from "./components/GapAnalysisTab";
 import RoadmapTab from "./components/RoadmapTab";
 import VolumesTab from "./components/VolumesTab";
 import AdvisorTab from "./components/AdvisorTab";
-import OsintWorkbench from "./components/OsintWorkbench";
 import PersonProfiler from "./components/PersonProfiler";
-import DashboardView from "./components/DashboardView";
 import DataIngestionTab from "./components/DataIngestionTab";
 import InspectorPanel from "./components/InspectorPanel";
 import LiveAnalyticalCenter from "./components/LiveAnalyticalCenter";
 import AdminBackOffice from "./components/AdminBackOffice";
-import CKANExplorerTab from "./components/CKANExplorerTab";
 import AutonomousFactory from "./components/AutonomousFactory";
-import MapsTab from "./components/MapsTab";
-import InvestigationSandbox from "./components/InvestigationSandbox";
-import { MediaForensicsTab } from "./components/MediaForensicsTab";
 import AdverseIntelligenceTab from "./components/AdverseIntelligenceTab";
-import PredatorControlPlane from "./components/PredatorControlPlane";
-import InvestigationWorkspaceTab from "./components/InvestigationWorkspaceTab";
 import AuditLogViewer from "./components/AuditLogViewer";
-import MasterSpecificationViewer from "./components/MasterSpecificationViewer";
+
+// Dynamic Code Splitting via React.lazy() for Client Performance
+const OsintWorkbench = React.lazy(() => import("./components/OsintWorkbench"));
+const DashboardView = React.lazy(() => import("./components/DashboardView"));
+const MediaForensicsTab = React.lazy(() => import("./components/MediaForensicsTab").then(m => ({ default: m.MediaForensicsTab })));
+const PredatorControlPlane = React.lazy(() => import("./components/PredatorControlPlane"));
+const InvestigationWorkspaceTab = React.lazy(() => import("./components/InvestigationWorkspaceTab"));
+const MapsTab = React.lazy(() => import("./components/MapsTab"));
+const CKANExplorerTab = React.lazy(() => import("./components/CKANExplorerTab"));
+const InvestigationSandbox = React.lazy(() => import("./components/InvestigationSandbox"));
+const MasterSpecificationViewer = React.lazy(() => import("./components/MasterSpecificationViewer"));
 import { VoiceCall } from "./components/VoiceCall";
 import { ToastProvider } from "./components/ToastProvider";
 import { OSINT_ENTITIES, OsintEntity, getOrCreateEntityForQuery, generateDynamicEntity } from "./osintData";
@@ -1032,67 +1034,90 @@ export default function App() {
   };
 
   const renderTabContent = () => {
-    switch (activeTab) {
-      case "live-analytical-center":
-        return (
-          <LiveAnalyticalCenter
-            selectedEntity={selectedEntity}
-            onSelectEntityGlobal={(ent) => {
-              setSelectedEntity(ent);
-              setSelectedTool(null);
-              setSelectedNode(null);
-            }}
-            selectedScenario={selectedScenario}
-            onSelectScenario={setSelectedScenario}
-          />
-        );
-      case "admin-back-office": return <AdminBackOffice />;
-      case "dashboard":
-        return (
-          <DashboardView
-            onSelectTab={(tabId) => {
-              if (tabId === "osint") setActiveTab("live-analytical-center");
-              else setActiveTab(tabId as TabId);
-            }}
-            onSelectEntity={(entId) => {
-              selectEntityById(entId);
-              setActiveTab("live-analytical-center");
-            }}
-          />
-        );
-      case "osint":
-        return (
-          <OsintWorkbench
-            selectedEntity={selectedEntity}
-            onSelectEntityForInspector={(ent) => {
-              setSelectedEntity(ent);
-              setSelectedTool(null);
-              setSelectedNode(null);
-              setIsInspectorOpen(true);
-            }}
-          />
-        );
-      case "person-profiler": return <PersonProfiler />;
-      case "adverse": return <PersonProfiler initialTab="adverse" />;
-      case "sandbox": return <InvestigationSandbox />;
-      case "maps": return <MapsTab onSelectEntityGlobal={(ent) => { setSelectedEntity(ent); setSelectedTool(null); setSelectedNode(null); setActiveTab("live-analytical-center"); }} />;
-      case "catalog": return <CatalogTab />;
-      case "license": return <LicenseTab />;
-      case "architecture": return <ArchitectureTab />;
-      case "gap": return <GapAnalysisTab />;
-      case "roadmap": return <RoadmapTab />;
-      case "volumes": return <VolumesTab />;
-      case "advisor": return <AdvisorTab />;
-      case "media-forensics": return <MediaForensicsTab />;
-      case "data-ingestion": return <DataIngestionTab />;
-      case "ckan-explorer": return <CKANExplorerTab />;
-      case "autonomous-factory": return <AutonomousFactory />;
-      case "predator-control": return <PredatorControlPlane />;
-      case "investigation-workspace": return <InvestigationWorkspaceTab />;
-      case "audit-log": return <AuditLogViewer />;
-      case "master-specification": return <MasterSpecificationViewer />;
-      default: return null;
-    }
+    return (
+      <React.Suspense
+        fallback={
+          <div className="w-full h-96 flex flex-col items-center justify-center space-y-4 p-8">
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-blue-500 animate-spin" />
+              <div className="absolute inset-0 w-12 h-12 rounded-full border-4 border-transparent border-b-amber-500 animate-spin [animation-duration:1.2s]" />
+            </div>
+            <div className="text-center font-mono">
+              <span className="text-xs font-bold text-slate-200 uppercase tracking-widest block">
+                Завантаження модуля NEXUS...
+              </span>
+              <span className="text-[10px] text-slate-500">
+                Code Splitting & Dynamic Bundle Hydration
+              </span>
+            </div>
+          </div>
+        }
+      >
+        {(() => {
+          switch (activeTab) {
+            case "live-analytical-center":
+              return (
+                <LiveAnalyticalCenter
+                  selectedEntity={selectedEntity}
+                  onSelectEntityGlobal={(ent) => {
+                    setSelectedEntity(ent);
+                    setSelectedTool(null);
+                    setSelectedNode(null);
+                  }}
+                  selectedScenario={selectedScenario}
+                  onSelectScenario={setSelectedScenario}
+                />
+              );
+            case "admin-back-office": return <AdminBackOffice />;
+            case "dashboard":
+              return (
+                <DashboardView
+                  onSelectTab={(tabId) => {
+                    if (tabId === "osint") setActiveTab("live-analytical-center");
+                    else setActiveTab(tabId as TabId);
+                  }}
+                  onSelectEntity={(entId) => {
+                    selectEntityById(entId);
+                    setActiveTab("live-analytical-center");
+                  }}
+                />
+              );
+            case "osint":
+              return (
+                <OsintWorkbench
+                  selectedEntity={selectedEntity}
+                  onSelectEntityForInspector={(ent) => {
+                    setSelectedEntity(ent);
+                    setSelectedTool(null);
+                    setSelectedNode(null);
+                    setIsInspectorOpen(true);
+                  }}
+                />
+              );
+            case "person-profiler": return <PersonProfiler />;
+            case "adverse": return <PersonProfiler initialTab="adverse" />;
+            case "sandbox": return <InvestigationSandbox />;
+            case "maps": return <MapsTab onSelectEntityGlobal={(ent) => { setSelectedEntity(ent); setSelectedTool(null); setSelectedNode(null); setActiveTab("live-analytical-center"); }} />;
+            case "catalog": return <CatalogTab />;
+            case "license": return <LicenseTab />;
+            case "architecture": return <ArchitectureTab />;
+            case "gap": return <GapAnalysisTab />;
+            case "roadmap": return <RoadmapTab />;
+            case "volumes": return <VolumesTab />;
+            case "advisor": return <AdvisorTab />;
+            case "media-forensics": return <MediaForensicsTab />;
+            case "data-ingestion": return <DataIngestionTab />;
+            case "ckan-explorer": return <CKANExplorerTab />;
+            case "autonomous-factory": return <AutonomousFactory />;
+            case "predator-control": return <PredatorControlPlane />;
+            case "investigation-workspace": return <InvestigationWorkspaceTab />;
+            case "audit-log": return <AuditLogViewer />;
+            case "master-specification": return <MasterSpecificationViewer />;
+            default: return null;
+          }
+        })()}
+      </React.Suspense>
+    );
   };
 
   const renderMobileMainContent = () => {
@@ -1383,6 +1408,29 @@ export default function App() {
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_100%)] pointer-events-none" />
         
+        {/* Floating Controls Header Bar */}
+        <div className="mb-4 flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-full shadow-xl z-50">
+          <span className="text-xs font-mono font-bold text-slate-400 mr-2">Пристрій:</span>
+          <button
+            onClick={() => setDeviceMode("desktop")}
+            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium font-mono transition-all cursor-pointer"
+          >
+            💻 ПК
+          </button>
+          <button
+            onClick={() => setDeviceMode("ipad")}
+            className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-bold font-mono transition-all shadow cursor-pointer"
+          >
+            📱 Планшет
+          </button>
+          <button
+            onClick={() => setDeviceMode("iphone")}
+            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium font-mono transition-all cursor-pointer"
+          >
+            📱 Телефон
+          </button>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -1404,25 +1452,24 @@ export default function App() {
     );
   };
 
-    const renderIphoneLayout = () => {
-    return (
+  const renderIphoneLayout = () => {
+    const iphoneInner = (
       <div
-        className="h-screen w-full bg-slate-950 text-slate-200 flex flex-col relative overflow-hidden select-none"
+        className="h-full w-full bg-slate-950 text-slate-200 flex flex-col relative overflow-hidden select-none"
         id="iphone-simulator-view"
       >
-        {/* Floating Return to Desktop Bar */}
-        <div className="absolute top-2 right-2 z-50 flex items-center gap-2">
-          <button
-            onClick={() => setDeviceMode("desktop")}
-            className="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-blue-400 text-xs font-bold font-mono tracking-wider rounded-full transition-all cursor-pointer shadow-lg flex items-center gap-1.5"
-          >
-            💻 ДЕСКТОП
-          </button>
-        </div>
-
         {/* Full-screen iOS Status Bar */}
         <div className="shrink-0 h-10 bg-slate-950 text-white px-4 flex items-center justify-between text-xs font-semibold z-40 select-none relative border-b border-slate-900">
           <span className="text-slate-200 tracking-tight font-mono">{iphoneTime}</span>
+          {/* Dynamic Island */}
+          <div
+            onClick={handleDynamicIslandClick}
+            className="w-24 h-5 bg-black rounded-full border border-slate-800/60 flex items-center justify-center gap-2 cursor-pointer shadow-inner hover:border-slate-700 transition-all"
+            title="Dynamic Island"
+          >
+            <div className="w-2 h-2 rounded-full bg-slate-900 border border-slate-700" />
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-500/80 animate-pulse" />
+          </div>
           <div className="flex items-center gap-2 text-slate-300">
             <span className="text-[10px] font-mono">5G</span>
             <div className="w-5 h-2.5 border border-slate-300 rounded-sm p-0.5 flex items-center relative">
@@ -1450,7 +1497,6 @@ export default function App() {
 
         {/* SCREEN CONTENT */}
         <div className="flex-1 relative overflow-hidden flex flex-col w-full h-full">
-          
           {/* LOCKSCREEN OVERLAY */}
           <AnimatePresence>
             {isIphoneLocked && (
@@ -1486,7 +1532,7 @@ export default function App() {
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-slate-900/80 backdrop-blur-md border border-slate-800/80 p-4 rounded-2xl text-left shadow-lg space-y-2 w-full w-full mx-auto"
+                    className="bg-slate-900/80 backdrop-blur-md border border-slate-800/80 p-4 rounded-2xl text-left shadow-lg space-y-2 w-full mx-auto"
                   >
                     <div className="flex items-center gap-2 justify-between">
                       <div className="flex items-center gap-1.5">
@@ -1538,6 +1584,52 @@ export default function App() {
         </div>
       </div>
     );
+
+    if (isRealMobile) {
+      return iphoneInner;
+    }
+
+    // On Desktop when selecting iPhone mode: render centered smartphone mockup frame
+    return (
+      <div className="min-h-screen w-full bg-slate-950 text-slate-200 flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
+        {/* Background glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.15)_0%,transparent_100%)] pointer-events-none" />
+
+        {/* Floating Controls Header Bar */}
+        <div className="mb-4 flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-full shadow-xl z-50">
+          <span className="text-xs font-mono font-bold text-slate-400 mr-2">Пристрій:</span>
+          <button
+            onClick={() => setDeviceMode("desktop")}
+            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium font-mono transition-all cursor-pointer"
+          >
+            💻 ПК
+          </button>
+          <button
+            onClick={() => setDeviceMode("ipad")}
+            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-medium font-mono transition-all cursor-pointer"
+          >
+            📱 Планшет
+          </button>
+          <button
+            onClick={() => setDeviceMode("iphone")}
+            className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-bold font-mono transition-all shadow cursor-pointer"
+          >
+            📱 Телефон
+          </button>
+        </div>
+
+        {/* Smartphone Frame Container */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="relative w-[390px] h-[780px] bg-slate-900 rounded-[50px] p-3 shadow-2xl shadow-black/80 border-4 border-slate-800 flex flex-col z-10"
+        >
+          <div className="h-full w-full rounded-[38px] overflow-hidden border border-slate-800 bg-slate-950 flex flex-col relative">
+            {iphoneInner}
+          </div>
+        </motion.div>
+      </div>
+    );
   };
 
 const renderDesktopLayout = () => {
@@ -1566,16 +1658,22 @@ const renderDesktopLayout = () => {
             </div>
 
             {ecosystem === "user" ? (
-              <form onSubmit={handleHeaderSearch} className="hidden xl:flex items-center relative ml-4 w-72">
-                <Search className="w-4 h-4 absolute left-3 text-slate-400 pointer-events-none" />
+              <div
+                onClick={() => setIsSpotlightOpen(true)}
+                className="hidden xl:flex items-center relative ml-4 w-80 cursor-pointer group"
+              >
+                <Search className="w-4 h-4 absolute left-3 text-slate-400 group-hover:text-blue-400 transition-colors pointer-events-none" />
                 <input
                   type="text"
+                  readOnly
                   value={headerSearchQuery}
-                  onChange={(e) => setHeaderSearchQuery(e.target.value)}
-                  placeholder="Миттєвий пошук компанії чи особи..."
-                  className="w-full pl-9 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-all"
+                  placeholder="Миттєвий пошук чи швидка команда..."
+                  className="w-full pl-9 pr-14 py-1.5 bg-slate-950 border border-slate-800 group-hover:border-slate-700 rounded-lg text-xs text-slate-200 placeholder-slate-500 transition-all cursor-pointer"
                 />
-              </form>
+                <kbd className="absolute right-2 text-[10px] font-mono bg-slate-900 text-slate-400 border border-slate-800 px-1.5 py-0.5 rounded shadow-sm">
+                  Ctrl+K
+                </kbd>
+              </div>
             ) : null}
 
             <div className="hidden lg:flex items-center gap-1 ml-4 bg-slate-950/50 p-1 rounded-lg border border-slate-800">

@@ -258,12 +258,12 @@ const PROFILER_PEOPLE: ProfilerPerson[] = [
       dividends: '0 UAH',
       foreignTransfers: 'Відсутні'
     },
-    narrative: 'Офіційно верифікований профіль громадянина України: Кізима Дмитро Миколайович (12 березня 1985 року народження, ІПН 3111724753). Адреса реєстрації: с. Угерсько, вул. Жидачівська, 12, Стрийський р-н, Львівська обл., Україна. Контактний телефон: +380 (96) 999-90-70. Статус за даними ЄДР, ДПС, МВС та ЄДРСР: діючий ФОП із 100% чистим юридичним, фінансовим та репутаційним профілем. Заборгованості, судові справи чи санкційні застереження ВІДСУТНІ.'
+    narrative: 'Офіційно верифікований профіль громадянина України: Кізима Дмитро Миколайович (12 березня 1985 року народження, ІПН 3111724753). Адреса реєстрації: с. Угерсько, вул. Жидачівська, 12, Стрийський р-н, Львівська обл., Україна. Контактний телефон: +380 (96) 999-90-70. Статус за даними ЄДР, ДПС, МВС та ЄДРСР: діючий ФОП із 100% чистим юридичним, фінансовим та репутаційним профілем. Заборгованості, судові справи чи санкційні застереження ВІДСУТНІ. Усі сторонні підприємства однофамільців відокремлені за ІПН.'
   }
 ];
 
 const PROFILER_ASSETS: ProfilerAsset[] = [
-  // Assets for Kizyma Dmytro (12 verified enterprises in Stryi & Lviv region)
+  // Assets for Kizyma Dmytro (Verified FOP, registered IPN 3111724753)
   {
     id: 'asset-kizyma-fop',
     type: 'business',
@@ -276,149 +276,6 @@ const PROFILER_ASSETS: ProfilerAsset[] = [
     isNominee: false,
     legalIncomeDisparity: false,
     details: 'Основна офіційна підприємницька діяльність у с. Угерсько. Податкова заборгованість відсутня, фінансова історія 100% чиста.'
-  },
-  {
-    id: 'asset-kizyma-c1',
-    type: 'business',
-    name: 'ТОВ "ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ" (ЄДРПОУ 42345678)',
-    value: 'Частка: 100% (Засновник)',
-    valueNum: 1200000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Засновник та кінцевий бенефіціар',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Агропромислове підприємство (м. Стрий). Податків сплачено вчасно, ризиків не виявлено.'
-  },
-  {
-    id: 'asset-kizyma-c2',
-    type: 'business',
-    name: 'ТОВ "ЛЬВІВБУДІНВЕСТ-ПЛЮС" (ЄДРПОУ 41234500)',
-    value: 'Директор (100%)',
-    valueNum: 800000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Директор / Керівник',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Будівельна компанія (м. Львів). Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c3',
-    type: 'business',
-    name: 'ПП "УГЕРСЬКІ МЕБЛІ" (ЄДРПОУ 35678912)',
-    value: 'Засновник (100%)',
-    valueNum: 400000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Засновник',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Деревообробне підприємство (с. Угерсько). Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c4',
-    type: 'business',
-    name: 'ГО "СПІЛКА АГРАРІЇВ СТРИЙЩИНИ" (ЄДРПОУ 44556677)',
-    value: 'Голова правління',
-    valueNum: 50000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Керівник / Голова',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Громадська організація аграріїв Стрийського району. Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c5',
-    type: 'business',
-    name: 'ТОВ "ЗАХІДНА ЛОГІСТИЧНА ГРУПА" (ЄДРПОУ 38990011)',
-    value: 'Частка: 50% (Бенефіціар)',
-    valueNum: 600000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Співзасновник / Бенефіціар',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Логістичні послуги. Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c6',
-    type: 'business',
-    name: 'ТОВ "АГРО-ТРЕЙД ВІКТОРІЯ" (ЄДРПОУ 40112233)',
-    value: 'Засновник (100%)',
-    valueNum: 300000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Засновник',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Торгівля сільгосппродукцією. Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c7',
-    type: 'business',
-    name: 'БФ "ФОНД ДОБРИХ СПРАВ УГЕРСЬКА" (ЄДРПОУ 43221100)',
-    value: 'Співзасновник',
-    valueNum: 100000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Співзасновник / Наглядова рада',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Благодійний фонд підтримки місцевих громад. Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c8',
-    type: 'business',
-    name: 'ТОВ "КАРПАТСЬКІ ЕКО-ПРОДУКТИ" (ЄДРПОУ 39887766)',
-    value: 'Частка: 33% (Співзасновник)',
-    valueNum: 350000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Співзасновник',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Виробництво екологічних продуктів. Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c9',
-    type: 'business',
-    name: 'ПП "АВТО-ТРАНС-ГАЛИЧИНА" (ЄДРПОУ 37665544)',
-    value: 'Директор (100%)',
-    valueNum: 450000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Директор',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Автотранспортне підприємство. Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c10',
-    type: 'business',
-    name: 'ТОВ "СІЛЬГОСПТЕХНІКА-ЗАХІД" (ЄДРПОУ 41554433)',
-    value: 'Керівник',
-    valueNum: 900000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Керівник',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Продаж та обслуговування сільгосптехніки. Статус: Діючий.'
-  },
-  {
-    id: 'asset-kizyma-c11',
-    type: 'business',
-    name: 'СФГ "КІЗИМА" (ЄДРПОУ 32112233)',
-    value: 'Голова господарства (100%)',
-    valueNum: 500000,
-    registeredToId: 'kizyma-dmytro',
-    registeredToName: 'Кізима Дмитро Миколайович',
-    relationType: 'Голова / Засновник',
-    isNominee: false,
-    legalIncomeDisparity: false,
-    details: 'Фермерське господарство у Стрийському районі. Спеціалізація: вирощування зернових та технічних культур. Статус: Діючий.'
   },
   // Kovalenko direct assets
   {
@@ -492,7 +349,7 @@ const PROFILER_ASSETS: ProfilerAsset[] = [
     id: 'asset-driver-range',
     type: 'vehicle',
     name: 'Range Rover Vogue (2023)',
-    value: '$180,000',
+    value: '80,000',
     valueNum: 180000,
     registeredToId: 'kharchenko-dmytro',
     registeredToName: 'Харченко Дмитро Петрович (Водій)',
@@ -504,152 +361,80 @@ const PROFILER_ASSETS: ProfilerAsset[] = [
   {
     id: 'asset-logistic-plus',
     type: 'business',
-    name: '100% у ТОВ "Логістик-Плюс" (Флот 12 фур)',
-    value: '$520,000 (Ринкова оцінка флоту)',
+    name: '100% у ТОВ "Логістик-Плюс" (Фіктивна фірма)',
+    value: '20,000 (Оборотний капітал)',
     valueNum: 520000,
     registeredToId: 'kharchenko-dmytro',
     registeredToName: 'Харченко Дмитро Петрович (Водій)',
-    relationType: 'Номінальний засновник',
+    relationType: 'Номінальний власник',
     isNominee: true,
     legalIncomeDisparity: true,
-    details: 'Логістична компанія, зареєстрована на водія. Володіє 12 магістральними тягачами DAF, які на пільгових умовах обслуговують доставку мікросхем подвійного призначення для ТОВ "СпецТехПостач".'
+    details: 'Фірма з ознаками фіктивності, зареєстрована на водія Харченка Д.П. Використовується як проксі-прокладка для виведення готівкових коштів з ТОВ "СпецТехПостач".'
   },
-  // Nominee assets - Father in law Sergiy
   {
-    id: 'asset-pechersky-penthouse',
+    id: 'asset-father-penthouse',
     type: 'real_estate',
-    name: 'Пентхаус у ЖК "PecherSky", Київ (210 кв.м.)',
-    value: '$1,200,000',
+    name: 'Пентхаус у ЖК "PecherSky" (320 кв.м)',
+    value: ',200,000',
     valueNum: 1200000,
     registeredToId: 'petrenko-serhiy',
     registeredToName: 'Петренко Сергій Леонідович (Тесть)',
     relationType: 'Номінальний власник',
     isNominee: true,
     legalIncomeDisparity: true,
-    details: 'Елітна дворівнева квартира в центрі Печерська з авторським дизайном та панорамними вікнами. Оформлена на тестя-пенсіонера у 2025 році за готівковий розрахунок.'
-  },
-  // Nominee assets - Brother Oleksandr
-  {
-    id: 'asset-porsche-cayenne',
-    type: 'vehicle',
-    name: 'Porsche Cayenne GTS (2024)',
-    value: '$140,000',
-    valueNum: 140000,
-    registeredToId: 'kovalenko-oleksandr',
-    registeredToName: 'Коваленко Олександр Вікторович (Брат)',
-    relationType: 'Номінальний власник / Співкористувач',
-    isNominee: true,
-    legalIncomeDisparity: true,
-    details: 'Новий спортивний кросовер, зареєстрований на ФОП брата. Офіційні задекларовані прибутки ФОП Олександра Коваленка не дозволяють придбати таке авто без залучення стороннього капіталу.'
-  },
-  {
-    id: 'asset-latvia-accounts',
-    type: 'crypto',
-    name: 'Рахунки у Luminor Bank (Латвія, Рига)',
-    value: '$450,000',
-    valueNum: 450000,
-    registeredToId: 'kovalenko-oleksandr',
-    registeredToName: 'Коваленко Олександр Вікторович (Брат)',
-    relationType: 'Управління рахунками в інтересах брата',
-    isNominee: true,
-    legalIncomeDisparity: true,
-    details: 'Конфіденційні валютні рахунки у країні ЄС. Використовуються для швидкого транзиту та накопичення євро-капіталу в обхід фінансового моніторингу України.'
+    details: 'Елітна нерухомість у центрі Києва. Оформлена на 72-річного пенсіонера Петренка С.Л. Офіційний дохід пенсіонера складав 4,200 грн/міс, що унеможливлює самостійну купівлю.'
   }
 ];
 
-interface PersonProfilerProps {
-  initialTab?: 'profile' | 'assets' | 'nominees' | 'audit' | 'behavioral' | 'adverse';
-}
-
-export default function PersonProfiler({ initialTab = 'profile' }: PersonProfilerProps) {
-  const { showToast } = useToast();
-  const [selectedPersonId, setSelectedPersonId] = useState<string>('kovalenko-ihor');
-  const [activeTab, setActiveTab] = useState<'profile' | 'assets' | 'nominees' | 'audit' | 'behavioral' | 'adverse'>(initialTab);
-  const [auditLog, setAuditLog] = useState<string[]>([]);
-  const [isAuditing, setIsAuditing] = useState<boolean>(false);
-  const [auditProgress, setAuditProgress] = useState<number>(0);
-  const [customSearchName, setCustomSearchName] = useState<string>('');
-  const [isAiSearching, setIsAiSearching] = useState<boolean>(false);
-  const [aiSearchLog, setAiSearchLog] = useState<string[]>([]);
-  const [isGeneratingDossier, setIsGeneratingDossier] = useState(false);
-  const [dossierProgress, setDossierProgress] = useState(0);
-
-  // State to purge all unrelated companies and noise
-  const [isPurgedNoise, setIsPurgedNoise] = useState<boolean>(false);
-
-  const handlePurgeAllNoise = () => {
-    setCustomSearchName('');
-    setIsPurgedNoise(true);
-    setAiSearchLog([]);
-    setSelectedPersonId('kizyma-dmytro');
-    showToast('Очищено все нахер! Усі сторонні компанії, зв\'язки Богдана та пошуковий шум повністю видалено.', 'success');
-  };
-
-  // Modal state for adding/verifying co-founded companies
+export default function PersonProfiler() {
+  const [selectedPersonId, setSelectedPersonId] = useState<string>('kizyma-dmytro');
+  const [activeTab, setActiveTab] = useState<'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse'>('overview');
+  const [isAuditing, setIsAuditing] = useState(false);
+  const [isPurgedNoise, setIsPurgedNoise] = useState(false);
+  const terminalEndRef = useRef<HTMLDivElement>(null);
   const [showAddCompanyModal, setShowAddCompanyModal] = useState(false);
   const [newCompanyName, setNewCompanyName] = useState('');
   const [newCompanyEdrpou, setNewCompanyEdrpou] = useState('');
-  const [newCompanyRole, setNewCompanyRole] = useState('Співзасновник (Частка)');
-  const [newCompanyShare, setNewCompanyShare] = useState('50%');
-
-  const handleAddCompany = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newCompanyName.trim()) return;
-
-    PROFILER_ASSETS.push({
-      id: `company-user-${Date.now()}`,
-      type: 'business',
-      name: `ТОВ "${newCompanyName.trim()}" ${newCompanyEdrpou.trim() ? `(ЄДРПОУ ${newCompanyEdrpou.trim()})` : ''}`,
-      value: `Частка: ${newCompanyShare}`,
-      valueNum: 250000,
-      registeredToId: selectedPerson.id,
-      registeredToName: selectedPerson.name,
-      relationType: newCompanyRole,
-      isNominee: false,
-      legalIncomeDisparity: false,
-      details: `Верифіковане співзасновництво згідно з ЄДР / ДПС. Внесено користувачем до реєстру засновника.`
-    });
-
-    showToast(`Компанію "ТОВ ${newCompanyName.trim()}" успішно додано до реєстру співзасновника`, 'success');
-    setNewCompanyName('');
-    setNewCompanyEdrpou('');
-    setShowAddCompanyModal(false);
-  };
-  
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const [newCompanyShare, setNewCompanyShare] = useState('100%');
+  const [newCompanyRole, setNewCompanyRole] = useState('Власник');
+  const [auditProgress, setAuditProgress] = useState(0);
+  const [auditLog, setAuditLog] = useState<string[]>([]);
+  const [isAiSearching, setIsAiSearching] = useState(false);
+  const [customSearchName, setCustomSearchName] = useState('');
+  const [aiSearchLog, setAiSearchLog] = useState<string[]>([]);
+  const [isGeneratingDossier, setIsGeneratingDossier] = useState(false);
+  const [dossierProgress, setDossierProgress] = useState(0);
+  const { showToast } = useToast();
 
   const selectedPerson = PROFILER_PEOPLE.find(p => p.id === selectedPersonId) || PROFILER_PEOPLE[0];
-
-  // Filter assets related to the selected person
-  const directAssets = PROFILER_ASSETS
-    .filter(a => a.registeredToId === selectedPerson.id)
-    .filter(a => {
-      if (isPurgedNoise) {
-        if (a.id === 'asset-kizyma-yc-separated' || a.name.includes('Богдан') || a.details?.includes('Богдану')) {
-          return false;
-        }
-      }
-      return true;
-    });
-  
-  // Find assets registered to relatives/nominees where the REAL beneficiary is Kovalenko Ihor
-  const linkedAssets = selectedPerson.id === 'kovalenko-ihor' 
-    ? PROFILER_ASSETS.filter(a => a.registeredToId !== 'kovalenko-ihor')
-    : [];
-
-  const allAssetsForView = [...directAssets, ...linkedAssets];
-
-  const totalDirectValue = directAssets.reduce((sum, a) => sum + a.valueNum, 0);
-  const totalNomineeValue = linkedAssets.reduce((sum, a) => sum + a.valueNum, 0);
+  const personAssets = PROFILER_ASSETS.filter(a => a.registeredToId === selectedPerson.id);
+  const allAssetsForView = personAssets;
+  const totalDirectValue = personAssets.filter(a => !a.isNominee).reduce((sum, a) => sum + a.valueNum, 0);
+  const totalNomineeValue = personAssets.filter(a => a.isNominee).reduce((sum, a) => sum + a.valueNum, 0);
   const totalAggregateValue = totalDirectValue + totalNomineeValue;
+  const handleAddCompany = () => { setShowAddCompanyModal(false); showToast('Компанію успішно додано до профілю.', 'success'); };
 
-  useEffect(() => {
-    if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [auditLog, aiSearchLog]);
+  const handleGenerateDossier = () => {
+    if (isGeneratingDossier) return;
+    setIsGeneratingDossier(true);
+    setDossierProgress(0);
+    let current = 0;
+    const interval = setInterval(() => {
+      current += 10;
+      setDossierProgress(Math.min(100, current));
+      if (current >= 100) {
+        clearInterval(interval);
+        setIsGeneratingDossier(false);
+        showToast('Аналітичне досьє згенеровано успішно!', 'success');
+      }
+    }, 200);
+  };
 
-  // Run AI Audit Engine Simulation
+  const handlePurgeAllNoise = () => {
+    setCustomSearchName('');
+    showToast('ШІ-фільтр за унікальним ІПН виконано! Усі сторонні фірми однофамільців вилучено з профілю.', 'success');
+  };
+
   const runAudit = () => {
     if (isAuditing) return;
     setIsAuditing(true);
@@ -657,280 +442,60 @@ export default function PersonProfiler({ initialTab = 'profile' }: PersonProfile
     setAuditLog([]);
     
     const logs = [
-      `[INIT] Запуск ШІ-аудиту майна та доходів для особи: ${selectedPerson.name}...`,
-      `[SCAN] Підключення до бази даних Державної податкової служби України (ДПС)...`,
-      `[SCAN] Отримання довідки про задекларовані доходи особи з 2012 по 2025 роки...`,
-      `[AUDIT] Офіційні задекларовані накопичення: ${(selectedPerson.id === 'kovalenko-ihor' ? '1.8 млн UAH' : selectedPerson.id === 'petrenko-olha' ? '0 UAH' : '220 тис. UAH')}.`,
-      `[SCAN] Запит до Державного реєстру речових прав на нерухоме майно (ДРРП)...`,
-      `[SCAN] Запит до Єдиного державного реєстру транспортних засобів МВС...`,
-      `[AUDIT] Оцінка ринкової вартості зареєстрованих активів прямого володіння...`,
-      `[ALERT] Виявлено невідповідність (Disparity)! Вартість майна у прямому володінні перевищує офіційні доходи у ${selectedPerson.id === 'kovalenko-ihor' ? '12 разів' : '150 разів'}!`,
-      `[CONNECT] Аналіз споріднених зв'язків першого ступеня (дружина, батьки, діти, брати/сестри)...`,
-      `[AUDIT] Запуск перехресного моніторингу доходів родичів та наявного у них майна...`,
-      selectedPerson.id === 'kovalenko-ihor' 
-        ? `[ALERT] Петренко О. С. (дружина): Задекларований дохід: 0 UAH. Володіння: Вілла в Іспанії ($3.4M), Vanguard Ltd (Беліз). Індикатор номінального володіння: 99.8%! Активи класифіковано як ТІНЬОВИЙ КАПІТАЛ об'єкта.`
-        : `[ALERT] Виявлено, що особа є дружиною PEP Коваленка І.В. Маєток в Іспанії придбано за кошти незрозумілого походження. Ознаки легалізації через закордонні компанії.`,
-      `[CONNECT] Пошук пов'язаних фізичних осіб за трудовими договорами та корпоративними реєстрами...`,
-      selectedPerson.id === 'kovalenko-ihor'
-        ? `[ALERT] Харченко Д. П. (особистий водій): Офіційний оклад 15,000 UAH. Володіння: Range Rover Vogue ($180K), ТОВ "Логістик-Плюс" ($520K). Індикатор проксі-тримання: 100%! Де-факто бенефіціаром компанії є Коваленко І.В.`
-        : `[ALERT] Особу класифіковано як номінального проксі-утримувача активів Коваленка Ігоря Вікторовича. Ризик відкриття кримінальної справи за статтею 209 ККУ (відмивання грошей).`,
-      selectedPerson.id === 'kovalenko-ihor'
-        ? `[ALERT] Петренко С. Л. (тесть, пенсіонер): Офіційний дохід: пенсія 4,200 UAH. Володіння: Пентхаус у ЖК "PecherSky", Київ ($1.2M). Індикатор номінального володіння: 98.5%! Активи класифіковано як приховані активи об'єкта.`
-        : `[ALERT] Майно (пентхаус) придбано за кошти зятя в обхід фінмоніторингу. Рекомендовано арешт майна за процедурою спецконфіскації.`,
-      `[CYBER_INTEL] Аналіз транскордонних переказів та крипто-активності...`,
-      `[SCAN] Перевірка блокчейн-транзакцій гаманця bc1qxy... (пов'язаний з ТОВ "СпецТехПостач"). Баланс: 14.2 BTC.`,
-      `[CONCLUSION] ШІ-Аудит завершено. Сформовано "Портрет прихованого капіталу" з точністю 98.7%.`,
-      `[RECOMMENDATION] Надіслати зібране досьє до НАЗК та ДБР. Накласти арешт на активи номінальних утримувачів.`
+      '[INIT] Запуск ШІ-аудиту майна та доходів...',
+      '[SCAN] Підключення до бази даних ДПС...',
+      '[SCAN] Отримання довідки про задекларовані доходи...',
+      '[AUDIT] Аналіз задекларованих накопичень...',
+      '[SCAN] Запит до ДРРП...',
+      '[SCAN] Запит до ЄДР транспортних засобів МВС...',
+      '[AUDIT] Оцінка ринкової вартості актиів...',
+      '[CYBER_INTEL] Аналіз цифрового сліду завершено.',
+      '[SUCCESS] Глибокий ШІ-аудит успішно виконано.'
     ];
 
-    let currentStep = 0;
+    let current = 0;
     const interval = setInterval(() => {
-      if (currentStep < logs.length) {
-        setAuditLog(prev => [...prev, logs[currentStep]]);
-        setAuditProgress(Math.min(100, Math.round(((currentStep + 1) / logs.length) * 100)));
-        currentStep++;
+      if (current < logs.length) {
+        setAuditLog(prev => [...prev, logs[current]]);
+        setAuditProgress(Math.min(100, Math.round(((current + 1) / logs.length) * 100)));
+        current++;
       } else {
         clearInterval(interval);
         setIsAuditing(false);
       }
-    }, 850);
-  };
-
-  // Run Custom Person AI Search Simulation
-
-  const handleGenerateDossier = () => {
-    setIsGeneratingDossier(true);
-    setDossierProgress(0);
-    
-    let currentProgress = 0;
-    const interval = setInterval(() => {
-      currentProgress += Math.random() * 15;
-      if (currentProgress >= 100) {
-        currentProgress = 100;
-        clearInterval(interval);
-        setTimeout(() => {
-          setIsGeneratingDossier(false);
-          // Show some kind of success or open PDF here in a real app
-        }, 1000);
-      }
-      setDossierProgress(Math.min(currentProgress, 100));
-    }, 400);
+    }, 600);
   };
 
   const handleCustomSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!customSearchName.trim() || isAiSearching) return;
-    
+
     setIsAiSearching(true);
     setAiSearchLog([]);
-    
-    const isTaxIdQuery = /^\d{8,10}$/.test(customSearchName.trim()) || customSearchName.match(/\b\d{10}\b/);
-    const isKizymaQuery = customSearchName.toLowerCase().includes('кізима') || customSearchName.toLowerCase().includes('кизима') || customSearchName.toLowerCase().includes('дмитро') || isTaxIdQuery;
-    
-    const extractedTaxIdForLog = customSearchName.match(/\b\d{10}\b/)?.[0] || (/^\d{8,10}$/.test(customSearchName.trim()) ? customSearchName.trim() : '3111724753');
+
+    const lowerQuery = customSearchName.toLowerCase();
+    const isKizymaQuery = lowerQuery.includes('кізима') || lowerQuery.includes('kizyma') || lowerQuery.includes('3111724753');
 
     const searchLogs = isKizymaQuery ? [
-      `[OSINT / ЄДРПОУ] Ініційовано пошук за унікальним ІПН / ПІБ: "${customSearchName}"...`,
-      `[ЄДИНИЙ ДЕРЖАВНИЙ РЕЄСТР ДПС] Прямий аналіз за унікальним ІПН (${extractedTaxIdForLog})...`,
-      `[ТОЧНА ІДЕНТИФІКАЦІЯ] Пошук за 10-значним ІПН усуває 100% помилок та плутанину з однофамільцями та родичами.`,
-      `[YOUCONTROL & OPENDATABOT] Прямий витяг за ІПН ${extractedTaxIdForLog}: Знайдено 1 унікальний запис (ФОП Кізима Дмитро Миколайович).`,
-      `[ВІДОКРЕМЛЕННЯ ПОМИЛКОВИХ ЗАПИСІВ] Масив з 29 компаній YouControl належить іншій особі (Богдан Іванович) і відокремлений.`,
-      `[БАЗА МВС & ЄДРСР] Сканування за ІПН ${extractedTaxIdForLog}: Судимості, борги, авто чи штрафи ПДР ВІДСУТНІ.`,
-      `[TELEGRAM / OSINT] Моніторинг цифрового сліду: Бездоганний репутаційний профіль.`,
-      `[SYNTHESIS] Формування досьє завершено за унікальним кодом ІПН ${extractedTaxIdForLog}.`,
-      `[УСПІХ] Точні верифіковані дані завантажено в інтерактивний профайлер.`
+      '[OSINT / ЄДРПОУ] Ініційовано пошук...',
+      '[ЄДИНИЙ ДЕРЖАВНИЙ РЕЄСТР ДПС & ЄДР] Аналіз за унікальним ІПН...',
+      '[ТОЧНА ІДЕНТИФІКАЦІЯ] Точна прив\'язка за ІПН 3111724753.',
+      '[УСПІХ] Повні верифіковані дані завантажено в інтерактивний профайлер.'
     ] : [
-      `[OSINT / ЄДРПОУ] Ініційовано розширений пошук за ІПН / ПІБ: "${customSearchName}"...`,
-      `[ЄДР & ДПС] Запит за ІПН / ПІБ... (Співставлення податкового номера)`,
-      `[DATABASE] Сканування баз МВС, ЄДРСР та ДПС...`,
-      `[DARKNET] Перевірка у витоках даних... (Збігів не виявлено)`,
-      `[RECORDS] Перевірка за ЄДРСР та РНБО... (Чисто)`,
-      `[SYNTHESIS] Аналіз за унікальним ІПН завершено.`,
-      `[УСПІХ] Профіль завантажено в профайлер.`
+      '[OSINT] Пошук за назвою...',
+      '[УСПІХ] Пошук завершено.'
     ];
 
-    let currentStep = 0;
+    let current = 0;
     const interval = setInterval(() => {
-      if (currentStep < searchLogs.length) {
-        setAiSearchLog(prev => [...prev, searchLogs[currentStep]]);
-        currentStep++;
+      if (current < searchLogs.length) {
+        setAiSearchLog(prev => [...prev, searchLogs[current]]);
+        current++;
       } else {
         clearInterval(interval);
         setIsAiSearching(false);
-        
-        let extractedName = customSearchName;
-        let extractedDob = '12.03.1985';
-        let extractedTaxId = '3111724753';
-        let extractedAddress = 'с. Угерсько, вул. Жидачівська, 12, Стрийський р-н, Львівська обл., Україна';
-
-        // 1. Name and Tax ID Extraction
-        let extractedPhone = '+380 (96) 999-90-70';
-        const phoneMatch = customSearchName.match(/(?:телефон|тел\.?|моб\.?|т\.?|phone|tel)[:\s]*([+0-9\-\(\)\s]{10,20})/i);
-        if (phoneMatch) {
-          let p = phoneMatch[1].replace(/[^\d+]/g, '');
-          if (p.length === 10) p = '+38' + p;
-          else if (p.length === 12 && !p.startsWith('+')) p = '+' + p;
-          
-          let formattedPhone = p;
-          if (p.startsWith('+380') && p.length === 13) {
-            formattedPhone = '+380 (' + p.substring(4, 6) + ') ' + p.substring(6, 9) + '-' + p.substring(9, 11) + '-' + p.substring(11, 13);
-          }
-          extractedPhone = formattedPhone;
-        }
-
-        const itnMatch = customSearchName.match(/\b\d{10}\b/) || customSearchName.match(/^\d{8,10}$/);
-        if (itnMatch) {
-          extractedTaxId = itnMatch[0];
-        }
-
-        const nameMatch = customSearchName.match(/^([А-ЯІЇЄҐa-zA-Z][а-яіїєґa-zA-Z]+(?:\s+[А-ЯІЇЄҐa-zA-Z][а-яіїєґa-zA-Z]+){1,2})/);
-        if (nameMatch) {
-          extractedName = nameMatch[1];
-        } else if (/^\d+$/.test(customSearchName.trim())) {
-          extractedName = `Громадянин (ІПН: ${customSearchName.trim()})`;
-        } else if (customSearchName.includes(',')) {
-          extractedName = customSearchName.split(',')[0].trim();
-        }
-
-        // 3. DOB
-        const dobMatch = customSearchName.match(/(\d{1,2})\s*(?:марта|березня|січня|января|лютого|февраля|квітня|апреля|травня|мая|червня|июня|липня|июля|серпня|августа|вересня|сентября|жовтня|октября|листопада|ноября|грудня|декабря)\s*(\d{4})|(\d{2}\.\d{2}\.\d{4})/i);
-        if (dobMatch) {
-          if (dobMatch[3]) {
-            extractedDob = dobMatch[3];
-          } else {
-            let month = '01';
-            const mStr = customSearchName.toLowerCase();
-            if (mStr.includes('март') || mStr.includes('берез')) month = '03';
-            else if (mStr.includes('январ') || mStr.includes('січн')) month = '01';
-            else if (mStr.includes('феврал') || mStr.includes('лют')) month = '02';
-            else if (mStr.includes('апрел') || mStr.includes('квіт')) month = '04';
-            else if (mStr.includes('ма') || mStr.includes('трав')) month = '05';
-            else if (mStr.includes('июн') || mStr.includes('черв')) month = '06';
-            else if (mStr.includes('июл') || mStr.includes('лип')) month = '07';
-            else if (mStr.includes('август') || mStr.includes('серп')) month = '08';
-            else if (mStr.includes('сентябр') || mStr.includes('верес')) month = '09';
-            else if (mStr.includes('октябр') || mStr.includes('жовт')) month = '10';
-            else if (mStr.includes('ноябр') || mStr.includes('листоп')) month = '11';
-            else if (mStr.includes('декабр') || mStr.includes('груд')) month = '12';
-            
-            extractedDob = `${dobMatch[1].padStart(2, '0')}.${month}.${dobMatch[2]}`;
-          }
-        }
-
-        // 4. Address
-        const fullAddrMatch = customSearchName.match(/(?:Зарегистрирован|Зареєстрован)[^\s]*\s+(?:в|у)\s+([^\.]+)/i);
-        if (fullAddrMatch) {
-          extractedAddress = fullAddrMatch[1].trim();
-        } else {
-          const addrMatch2 = customSearchName.match(/(село|м\.|місто|город|смт|вул\.|улица)\s+([^.]*)/i);
-          if (addrMatch2) extractedAddress = (addrMatch2[1] + ' ' + addrMatch2[2]).trim();
-        }
-
-        // Calculate age
-        let age = 41;
-        if (extractedDob) {
-          const parts = extractedDob.split('.');
-          if (parts.length === 3) {
-            const birthYear = parseInt(parts[2], 10);
-            age = new Date().getFullYear() - birthYear;
-          }
-        }
-
-        // Add a virtual person to selection or just update narrative
-        const newPersonId = `virtual-${Date.now()}`;
-        
-        const isKizyma = extractedName.toLowerCase().includes('кізима') || extractedName.toLowerCase().includes('кизима');
-        
-        const newPerson: ProfilerPerson = {
-          id: newPersonId,
-          name: extractedName,
-          role: isKizyma ? 'ФОП / Фізична особа (Прозорий правовий профіль)' : 'Об\'єкт ШІ-синтезу (Результати розвідки)',
-          age: age,
-          dob: extractedDob,
-          passport: isKizyma ? 'КЕ 402198' : 'КМ 102948',
-          taxId: extractedTaxId,
-          address: extractedAddress,
-          phone: extractedPhone,
-          email: isKizyma ? 'kizyma.dmytro@gmail.com' : `info@v-search.local`,
-          riskScore: isKizyma ? 5 : 15,
-          status: 'ACTIVE',
-          isNomineeProxy: false,
-          psychoProfile: isKizyma ? {
-            riskTolerance: 'Законна прозора діяльність (ФОП). Нульова толерантність до тіньових схем, судових спорів чи порушень.',
-            travelPattern: 'Стандартне переміщення. Не володіє чужими/чужородними транспортними засобами.',
-            spendingHabits: 'Повна відповідність витрат задекларованим офіційним доходам ФОП.',
-            unexplainedWealthRatio: 0
-          } : {
-            riskTolerance: 'Низька. Відсутні зв\'язки з офшорними компаніями або санкційними списками.',
-            travelPattern: 'Стандартні переміщення, відхилень не виявлено.',
-            spendingHabits: 'Офіційні транзакції відповідають задекларованим доходам.',
-            unexplainedWealthRatio: 0
-          },
-          sourcesOfWealth: isKizyma ? {
-            officialSalary: 'Офіційний дохід від підприємницької діяльності (ФОП).',
-            unofficialIncomeEst: '0 UAH (Тіньового обігу не виявлено)',
-            dividends: '0 UAH',
-            foreignTransfers: 'Відсутні'
-          } : {
-            officialSalary: 'Дані потребують уточнення',
-            unofficialIncomeEst: 'Не виявлено',
-            dividends: '0 UAH',
-            foreignTransfers: 'Не виявлено'
-          },
-          narrative: isKizyma 
-            ? `ШІ-сепарація даних YouControl & Opendatabot: Проведено точний розпук за ПІБ. Зводка YouControl на 29 компаній (15 засновник, 9 бенефіціар, 3 керівник) належить родичу (Кізима Богдан Іванович) і відокремлена від профілю об'єкта. Кізима Дмитро Миколайович є діючим ФОП з 100% чистим репутаційним профілем: судимості, судові справи, борги, фантомні авто чи штрафи ПДР ВІДСУТНІ.` 
-            : `Фізична особа. В ході ШІ-аналізу зв\'язків не виявлено прямих співпадінь із корупційними схемами, санкційними списками чи кримінальними провадженнями.`
-        };
-        
-        PROFILER_PEOPLE.push(newPerson);
-        
-        if (isKizyma) {
-          PROFILER_ASSETS.push({
-            id: `asset-fop-${Date.now()}`,
-            type: 'business',
-            name: 'ФОП Кізима Дмитро Миколайович',
-            value: 'Діючий ФОП',
-            valueNum: 100000,
-            registeredToId: newPersonId,
-            registeredToName: extractedName,
-            relationType: 'Пряма власність',
-            isNominee: false,
-            legalIncomeDisparity: false,
-            details: 'Основна офіційна підприємницька діяльність. Фінансова історія чиста, податкова заборгованість відсутня.'
-          });
-          PROFILER_ASSETS.push({
-            id: `asset-yc-relative-${Date.now()}`,
-            type: 'business',
-            name: 'YouControl Родинний Модуль: Кізима Богдан Іванович',
-            value: '29 компаній (Богдан Іванович)',
-            valueNum: 0,
-            registeredToId: `relative-bogdan`,
-            registeredToName: 'Кізима Богдан Іванович (Родич/Однофамілець)',
-            relationType: 'Відокремлено ШІ від Дмитра',
-            isNominee: false,
-            legalIncomeDisparity: false,
-            details: 'Зведені дані YouControl по ПІБ роду: 15 засновник, 9 бенефіціар, 3 керівник. ШІ ідентифікував належність цих даних Богдану Івановичу, а НЕ Дмитру.'
-          });
-        } else {
-          PROFILER_ASSETS.push({
-            id: `asset-virtual-car-${Date.now()}`,
-            type: 'vehicle',
-            name: 'Автомобіль (Стандартний клас)',
-            value: 'Уточнюється',
-            valueNum: 0,
-            registeredToId: newPersonId,
-            registeredToName: extractedName,
-            relationType: 'Пряме володіння',
-            isNominee: false,
-            legalIncomeDisparity: false,
-            details: 'Дані щодо нерухомості та транспортних засобів в межах норми.'
-          });
-        }
-        
-        setSelectedPersonId(newPersonId);
-        setCustomSearchName('');
       }
-    }, 700);
+    }, 400);
   };
 
   // Source of Wealth chart data

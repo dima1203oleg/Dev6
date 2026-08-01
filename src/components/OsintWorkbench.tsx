@@ -11,7 +11,7 @@ import {
   TrendingUp, ShieldCheck, Landmark, ChevronRight, Hash, Truck,
   X, Printer, FileDown, Eye, EyeOff, Sliders, Copy, Check, Calendar,
   MapPin, Layers, Database, Lock, Shield, ServerCrash, ExternalLink,
-  Terminal, ArrowDownLeft, ArrowUpRight, Scan, Trash2
+  Terminal, ArrowDownLeft, ArrowUpRight, Scan, Trash2, FileCode, History
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import jsPDF from 'jspdf';
@@ -19,6 +19,9 @@ import html2canvas from 'html2canvas';
 import { QRCodeSVG } from 'qrcode.react';
 import { OSINT_ENTITIES, OsintEntity, generateDynamicEntity } from '../osintData';
 import PersonProfiler from './PersonProfiler';
+import StixExporterModal from './StixExporterModal';
+import TemporalRiskDiffEngine from './TemporalRiskDiffEngine';
+import OsintReportGeneratorModal from './OsintReportGeneratorModal';
 import { useToast } from './ToastProvider';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 
@@ -233,6 +236,10 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
   const [simulateLargeDataset, setSimulateLargeDataset] = useState(false);
   const [showLargeExportConfirmation, setShowLargeExportConfirmation] = useState(false);
   const [pendingExportType, setPendingExportType] = useState<'csv' | 'pdf' | null>(null);
+
+  // Advanced CTI & Export Modals State
+  const [showStixModal, setShowStixModal] = useState(false);
+  const [showDiffEngine, setShowDiffEngine] = useState(false);
 
   // Memoized filtered entities for the quick-access sidebar list
   const filteredEntities = useMemo(() => {
@@ -1790,28 +1797,68 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
             </div>
 
             {/* Tactical Intelligence Sandbox Export Toolbar */}
-            <div className="px-2 py-1.5 bg-slate-950/60 border-b border-slate-800 flex items-center justify-between gap-2">
-              <span className="text-xs text-slate-500 font-mono">Тактичний аналіз:</span>
-              <button
-                onClick={() => {
-                  const event = new CustomEvent('osint-export-to-sandbox', {
-                    detail: activeEntity
-                  });
-                  window.dispatchEvent(event);
-                  
-                  // Also switch active tab
-                  const tabEvent = new CustomEvent('change-active-tab', {
-                    detail: 'sandbox'
-                  });
-                  window.dispatchEvent(tabEvent);
-                }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-slate-800 text-xs font-mono font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-2xl shadow-black/40 shadow-blue-950/40 active:scale-95"
-                title="Перенести цей об'єкт зі зв'язками до інтерактивного графу 'Павутина'"
-              >
-                <Network className="w-3.5 h-3.5" />
-                <span>Експорт до Павутини</span>
-              </button>
+            <div className="px-3 py-2 bg-slate-950/80 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs text-slate-500 font-mono font-bold uppercase">Дії з об'єктом:</span>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <button
+                  onClick={() => setShowDiffEngine(!showDiffEngine)}
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-mono font-bold uppercase transition-all cursor-pointer ${
+                    showDiffEngine 
+                      ? 'bg-amber-600/30 text-amber-300 border-amber-500/50' 
+                      : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700'
+                  }`}
+                  title="Порівняти історичний знімок з поточним вектором ризиків (Diff Engine)"
+                >
+                  <History className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Динаміка Ризику (Diff)</span>
+                </button>
+
+                <button
+                  onClick={() => setShowStixModal(true)}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-mono font-bold uppercase transition-all cursor-pointer"
+                  title="Експортувати сутність у STIX 2.1 JSON або GraphML для Gephi / Maltego"
+                >
+                  <FileCode className="w-3.5 h-3.5 text-blue-400" />
+                  <span>STIX 2.1 / GraphML</span>
+                </button>
+
+                <button
+                  onClick={() => setShowReportModal(true)}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/40 text-xs font-mono font-bold uppercase transition-all cursor-pointer"
+                  title="Сформувати офіційний супровідний меморандум у форматі PDF"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Офіційний Меморандум</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    const event = new CustomEvent('osint-export-to-sandbox', {
+                      detail: activeEntity
+                    });
+                    window.dispatchEvent(event);
+                    
+                    // Also switch active tab
+                    const tabEvent = new CustomEvent('change-active-tab', {
+                      detail: 'sandbox'
+                    });
+                    window.dispatchEvent(tabEvent);
+                  }}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-slate-800 text-xs font-mono font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-2xl shadow-black/40 active:scale-95"
+                  title="Перенести цей об'єкт зі зв'язками до інтерактивного графу 'Павутина'"
+                >
+                  <Network className="w-3.5 h-3.5" />
+                  <span>Павутина</span>
+                </button>
+              </div>
             </div>
+
+            {/* Conditional Temporal Risk Diff Engine Panel */}
+            {showDiffEngine && activeEntity && (
+              <div className="p-2 border-b border-slate-800">
+                <TemporalRiskDiffEngine entity={activeEntity} />
+              </div>
+            )}
 
             {/* Dossier Details Tablist */}
             <div className="p-2 space-y-5 text-xs">
@@ -3913,6 +3960,26 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* STIX 2.1 & GraphML Export Modal */}
+      <AnimatePresence>
+        {showStixModal && activeEntity && (
+          <StixExporterModal
+            entity={activeEntity}
+            onClose={() => setShowStixModal(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Official OSINT Memorandum PDF Generator Modal */}
+      <AnimatePresence>
+        {showReportModal && activeEntity && (
+          <OsintReportGeneratorModal
+            entity={activeEntity}
+            onClose={() => setShowReportModal(false)}
+          />
         )}
       </AnimatePresence>
 
