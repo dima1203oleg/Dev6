@@ -26,7 +26,16 @@ export default function RoadmapTab() {
   const [runDocTR, setRunDocTR] = useState(false);
   const [userConcurrency, setUserConcurrency] = useState(5); // concurrent analysts
 
-  const activePhase = ROADMAP_PHASES.find(p => p.id === activePhaseId) || ROADMAP_PHASES[0];
+  const activePhase = ROADMAP_PHASES.find(p => p.id === activePhaseId) || ROADMAP_PHASES[0] || {
+    id: 'phase1',
+    title: 'Етап 1',
+    timeframe: 'Місяці 1 - 3',
+    focus: '',
+    components: [],
+    milestones: [],
+    risks: [],
+    gpuRequirements: ''
+  };
 
   const handleToggleMilestone = (phaseId: string, idx: number) => {
     setMilestonesState(prev => {

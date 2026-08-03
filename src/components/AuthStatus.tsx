@@ -5,7 +5,7 @@ import { User, LogIn, LogOut } from 'lucide-react';
 export function AuthStatus() {
   const { user, loading, signInWithGoogle, logout } = useAuth();
 
-  if (loading) return <div className="text-xs text-slate-500 animate-pulse">Loading auth...</div>;
+  if (loading) return <div className="text-xs text-slate-500 animate-pulse">Завантаження авторизації...</div>;
 
   if (user) {
     return (

@@ -1,3 +1,5 @@
+import { executeWithConnectorLogging, logConnectorEvent } from "./connectorLogger";
+
 export interface ConnectorMetadata {
   id: string;
   name: string;
@@ -38,6 +40,31 @@ export class BaseConnectorRegistry {
   public listAll(): ConnectorMetadata[] {
     return Array.from(this.connectors.values()).map(c => c.metadata());
   }
+
+  public async executeSearch(connectorId: string, query: string, options?: any): Promise<any> {
+    const connector = this.get(connectorId);
+    if (!connector) {
+      throw new Error(`Connector '${connectorId}' not found in registry`);
+    }
+
+    const meta = connector.metadata();
+    return executeWithConnectorLogging(
+      {
+        connectorId: meta.id,
+        connectorName: meta.name,
+        endpoint: `/connector/${meta.id}/search`,
+        method: "POST",
+        queryParams: { query },
+        body: options,
+      },
+      async () => {
+        const data = await connector.search(query, options);
+        return { statusCode: 200, data };
+      }
+    );
+  }
 }
 
 export const connectorRegistry = new BaseConnectorRegistry();
+export { executeWithConnectorLogging, logConnectorEvent } from "./connectorLogger";
+

@@ -46,53 +46,51 @@ export default function ApiDiagnosticDashboard() {
   useEffect(() => {
     if (!isPinging) return;
 
-    const interval = setInterval(() => {
-      setMetrics((prev) => {
-        const next = { ...prev };
-        
-        Object.keys(next).forEach((key) => {
-          const item = next[key];
-          // Simulate latency 40-150ms
-          const newLatency = Math.floor(40 + Math.random() * 110);
-          
-          // Occasional failures
-          const isFailure = Math.random() < 0.05; 
-          const statusCode = isFailure ? (Math.random() > 0.5 ? 500 : 429) : 200;
-          
-          const newRequests = item.requests + 1;
-          const newFailed = item.failedRequests + (isFailure ? 1 : 0);
-          const newSuccessRate = ((newRequests - newFailed) / newRequests) * 100;
-          
-          let status: "ONLINE" | "OFFLINE" | "DEGRADED" = "ONLINE";
-          if (newSuccessRate < 90) status = "DEGRADED";
-          if (newSuccessRate < 80) status = "OFFLINE";
-
-          next[key] = {
-            ...item,
-            latency: newLatency,
-            statusCode,
-            successRate: parseFloat(newSuccessRate.toFixed(2)),
-            lastPing: new Date().toLocaleTimeString(),
-            status,
-            requests: newRequests,
-            failedRequests: newFailed,
-          };
+    const pingBackend = async () => {
+      const start = Date.now();
+      try {
+        const res = await fetch('/api/health');
+        const latency = Date.now() - start;
+        const statusCode = res.status;
+        setMetrics((prev) => {
+          const next = { ...prev };
+          Object.keys(next).forEach((key) => {
+            const item = next[key];
+            const newRequests = item.requests + 1;
+            const newFailed = item.failedRequests + (res.ok ? 0 : 1);
+            const newSuccessRate = ((newRequests - newFailed) / newRequests) * 100;
+            next[key] = {
+              ...item,
+              latency,
+              statusCode,
+              successRate: parseFloat(newSuccessRate.toFixed(2)),
+              lastPing: new Date().toLocaleTimeString(),
+              status: res.ok ? "ONLINE" : "DEGRADED",
+              requests: newRequests,
+              failedRequests: newFailed,
+            };
+          });
+          return next;
         });
-        return next;
-      });
-    }, 3000);
+      } catch (e) {
+        console.warn("[Diagnostic Ping Error]", e);
+      }
+    };
+
+    pingBackend();
+    const interval = setInterval(pingBackend, 5000);
 
     return () => clearInterval(interval);
   }, [isPinging]);
 
   const handleManualPing = (id: string) => {
     showToast(`Manual ping sent to ${metrics[id].name}`, "info");
-    const newLatency = Math.floor(30 + Math.random() * 50);
+    const newЗатримка = Math.floor(30 + Math.random() * 50);
     setMetrics(prev => ({
       ...prev,
       [id]: {
         ...prev[id],
-        latency: newLatency,
+        latency: newЗатримка,
         statusCode: 200,
         lastPing: new Date().toLocaleTimeString(),
         status: "ONLINE",
@@ -158,7 +156,7 @@ export default function ApiDiagnosticDashboard() {
 
             <div className="grid grid-cols-2 gap-3 pt-2">
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-xs text-slate-500 font-bold uppercase block">Latency</span>
+                <span className="text-xs text-slate-500 font-bold uppercase block">Затримка</span>
                 <div className="flex items-center gap-2">
                   <Clock className={`w-4 h-4 ${metric.latency < 100 ? 'text-emerald-400' : 'text-amber-400'}`} />
                   <span className="text-lg font-mono text-white">{metric.latency}ms</span>
@@ -166,7 +164,7 @@ export default function ApiDiagnosticDashboard() {
               </div>
               
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-xs text-slate-500 font-bold uppercase block">Status Code</span>
+                <span className="text-xs text-slate-500 font-bold uppercase block">Код Статусу</span>
                 <div className="flex items-center gap-2">
                   <Server className={`w-4 h-4 ${metric.statusCode === 200 ? 'text-emerald-400' : 'text-rose-400'}`} />
                   <span className={`text-lg font-mono ${metric.statusCode === 200 ? 'text-emerald-400' : 'text-rose-400'}`}>
@@ -176,7 +174,7 @@ export default function ApiDiagnosticDashboard() {
               </div>
 
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-xs text-slate-500 font-bold uppercase block">Success Rate</span>
+                <span className="text-xs text-slate-500 font-bold uppercase block">Відсоток Успіху</span>
                 <div className="flex items-center gap-2">
                   <BarChart3 className="w-4 h-4 text-blue-400" />
                   <span className="text-lg font-mono text-white">{metric.successRate}%</span>
@@ -184,7 +182,7 @@ export default function ApiDiagnosticDashboard() {
               </div>
 
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-xs text-slate-500 font-bold uppercase block">Last Ping</span>
+                <span className="text-xs text-slate-500 font-bold uppercase block">Останній Пінг</span>
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-purple-400" />
                   <span className="text-sm font-mono text-slate-300">{metric.lastPing}</span>
@@ -194,7 +192,7 @@ export default function ApiDiagnosticDashboard() {
             
             <div className="pt-2">
               <div className="flex justify-between text-xs text-slate-500 mb-1">
-                <span>Success Rate Monitor</span>
+                <span>Монітор Успішності</span>
                 <span>{metric.successRate}%</span>
               </div>
               <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">

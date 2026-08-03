@@ -3612,7 +3612,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                           Замість розробки десятків ізольованих ручних
                           інтеграцій (конекторів), сучасна платформа впроваджує
                           парадигму{" "}
-                          <strong>AI Intelligence Acquisition Platform</strong>.
+                          <strong>Платформа Збору Даних ШІ</strong>.
                           Це означає перехід від "фабрики конекторів" (яка чекає
                           на завдання) до системи, яка активно шукає нові API,
                           реєстри та датасети в інтернеті, самостійно оцінює їх
@@ -4147,7 +4147,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                           </p>
                         </div>
                         <p className="text-xs text-slate-300 leading-relaxed">
-                          Щоб обробляти різні класи джерел (Public Open Data, Investigative, Breach Intelligence, Darknet, Cyber Recon), Data Connector Hub використовує стратегію трьох контурів: <strong>Green Zone</strong> (Direct ETL/API), <strong>Yellow Zone</strong> (Rate-Limited Scraping), та <strong>Red Zone</strong> (Isolated Tor Sandbox).
+                          Щоб обробляти різні класи джерел (Public Open Data, Investigative, Breach Intelligence, Darknet, Cyber Recon), Data Connector Hub використовує стратегію трьох контурів: <strong>Зелена Зона</strong> (Direct ETL/API), <strong>Жовта Зона</strong> (Rate-Limited Scraping), та <strong>Червона Зона</strong> (Isolated Tor Sandbox).
                         </p>
 
                         <div className="space-y-3 font-mono text-xs">

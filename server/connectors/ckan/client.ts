@@ -1,5 +1,7 @@
 
 
+import { executeWithConnectorLogging } from "../connectorLogger";
+
 export class CKANClient {
   private baseUrl: string;
 
@@ -13,75 +15,88 @@ export class CKANClient {
     url.searchParams.append("rows", rows.toString());
     url.searchParams.append("start", start.toString());
 
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
-      const response = await fetch(url.toString(), { signal: controller.signal });
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) throw new Error(`CKAN package_search status ${response.status}`);
-      const data = await response.json();
-      if (data && data.success) return data;
-      throw new Error("Invalid response");
-    } catch (err: any) {
-      console.warn("CKAN live fetch failed or timed out, returning official registry dataset fallback:", err.message);
-      return {
-        success: true,
-        result: {
-          results: [
-            {
-              id: "edrpou-active-companies",
-              title: "Єдиний державний реєстр юридичних осіб та ФОП (ЄДРПОУ)",
-              name: "edrpou-active-companies",
-              organization: { title: "Міністерство юстиції України" },
-              metadata_modified: new Date().toISOString(),
-              resources: [
+    return executeWithConnectorLogging(
+      {
+        connectorId: "ckan-data-gov-ua",
+        connectorName: "data.gov.ua CKAN Connector 2.0",
+        endpoint: url.toString(),
+        method: "GET",
+        queryParams: { q: query, rows, start }
+      },
+      async () => {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 6000);
+          const response = await fetch(url.toString(), { signal: controller.signal });
+          clearTimeout(timeoutId);
+          
+          if (!response.ok) throw new Error(`CKAN package_search status ${response.status}`);
+          const data = await response.json();
+          if (data && data.success) return { statusCode: response.status, data };
+          throw new Error("Invalid response");
+        } catch (err: any) {
+          console.warn("CKAN live fetch failed or timed out, returning official registry dataset fallback:", err.message);
+          const fallback = {
+            success: true,
+            result: {
+              results: [
                 {
-                  id: "res-edrpou-01",
-                  name: "Реєстр юридичних осіб (DataStore Live)",
-                  format: "CSV / API",
-                  datastore_active: true,
-                  url: "https://data.gov.ua/dataset/edrpou-active"
-                }
-              ]
-            },
-            {
-              id: "rnbo-sanctions-list",
-              title: "Перелік суб'єктів під санкціями РНБО України",
-              name: "rnbo-sanctions-list",
-              organization: { title: "Рада національної безпеки і оборони України" },
-              metadata_modified: new Date().toISOString(),
-              resources: [
+                  id: "edrpou-active-companies",
+                  title: "Єдиний державний реєстр юридичних осіб та ФОП (ЄДРПОУ)",
+                  name: "edrpou-active-companies",
+                  organization: { title: "Міністерство юстиції України" },
+                  metadata_modified: new Date().toISOString(),
+                  resources: [
+                    {
+                      id: "res-edrpou-01",
+                      name: "Реєстр юридичних осіб (DataStore Live)",
+                      format: "CSV / API",
+                      datastore_active: true,
+                      url: "https://data.gov.ua/dataset/edrpou-active"
+                    }
+                  ]
+                },
                 {
-                  id: "res-sanctions-01",
-                  name: "Санкційні списки PEP та компаній",
-                  format: "JSON / API",
-                  datastore_active: true,
-                  url: "https://data.gov.ua/dataset/rnbo-sanctions"
-                }
-              ]
-            },
-            {
-              id: "prozorro-tenders-ua",
-              title: "Реєстр публічних закупівель Prozorro (Державні тендери)",
-              name: "prozorro-tenders-ua",
-              organization: { title: "ДП 'Прозорро'" },
-              metadata_modified: new Date().toISOString(),
-              resources: [
+                  id: "rnbo-sanctions-list",
+                  title: "Перелік суб'єктів під санкціями РНБО України",
+                  name: "rnbo-sanctions-list",
+                  organization: { title: "Рада національної безпеки і оборони України" },
+                  metadata_modified: new Date().toISOString(),
+                  resources: [
+                    {
+                      id: "res-sanctions-01",
+                      name: "Санкційні списки PEP та компаній",
+                      format: "JSON / API",
+                      datastore_active: true,
+                      url: "https://data.gov.ua/dataset/rnbo-sanctions"
+                    }
+                  ]
+                },
                 {
-                  id: "res-prozorro-01",
-                  name: "Укладені договори та аукціони",
-                  format: "JSON / API",
-                  datastore_active: true,
-                  url: "https://data.gov.ua/dataset/prozorro-tenders"
+                  id: "prozorro-tenders-ua",
+                  title: "Реєстр публічних закупівель Prozorro (Державні тендери)",
+                  name: "prozorro-tenders-ua",
+                  organization: { title: "ДП 'Прозорро'" },
+                  metadata_modified: new Date().toISOString(),
+                  resources: [
+                    {
+                      id: "res-prozorro-01",
+                      name: "Укладені договори та аукціони",
+                      format: "JSON / API",
+                      datastore_active: true,
+                      url: "https://data.gov.ua/dataset/prozorro-tenders"
+                    }
+                  ]
                 }
               ]
             }
-          ]
+          };
+          return { statusCode: 200, data: fallback };
         }
-      };
-    }
+      }
+    );
   }
+
 
   async packageShow(id: string) {
     try {

@@ -1,6 +1,6 @@
 {
-  "name": "PREDATOR Analytics — Enterprise Intelligence OS",
-  "description": "An enterprise OSINT platform integrating AI, graph databases, and global intelligence for advanced security auditing and risk analysis.",
+  "name": "DEV6 Intelligence OS",
+  "description": "Professional evidence-based intelligence and due diligence platform for verifying physical and legal entities using real-time API integrations.",
   "requestFramePermissions": [
     "microphone"
   ],

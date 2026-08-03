@@ -257,10 +257,10 @@ export default function AdvisorTab() {
               {/* Right Column: Conversational Advisor Console */}
               <div className="lg:col-span-2 flex flex-col justify-center items-center bg-black/30 border border-slate-800 backdrop-blur-md rounded-2xl p-10 text-center h-[620px]">
                 <Bot className="w-16 h-12 text-blue-400/50 mb-4" />
-                <h3 className="text-base font-bold text-slate-200 mb-2">Глобальний ШІ-Асистент MARIARTI</h3>
+                <h3 className="text-base font-bold text-slate-200 mb-2">Глобальний ШІ-Асистент PREDATOR</h3>
                 <p className="text-xs text-slate-300 w-full">
                   Чат-бот архітектора інтегровано в єдиний глобальний комунікаційний модуль NEXUS (внизу праворуч). 
-                  Використовуйте плаваючий віджет для текстового та голосового спілкування з MARIARTI з будь-какого екрану.
+                  Використовуйте плаваючий віджет для текстового та голосового спілкування з PREDATOR з будь-какого екрану.
                 </p>
               </div>
             </div>

@@ -95,7 +95,7 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     badge: "W3C Standards",
     summary: "Семантичний шар для векторного пошуку, автоматичного логічного виводу та відповідності ISO стандартам.",
     details: [
-      "Semantic Search & Ontology Reasoning: Використання SHACL та OWL для логічної перевірки фактів.",
+      "Семантичний пошук та онтологічний висновок: Використання SHACL та OWL для логічної перевірки фактів.",
       "W3C & ISO Alignment: Повна підтримка JSON-LD, RDF, ISO 8000 (Data Quality) та ISO 11179.",
       "Knowledge Inference Engine: Автоматичне виведення нових зв'язків на основі транзитивності (A -> B -> C).",
       "Semantic Versioning of Schemas: Автоматична перевірка зворотної сумісності онтологій."
@@ -112,7 +112,7 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     details: [
       "Data Lakehouse & Warehouse: Поєднання MinIO/S3 + ClickHouse для миттєвої OLAP-аналітики.",
       "Vector Storage: Qdrant / Milvus для семантичного пошуку по мільйонах текстових embeddings.",
-      "Operational & Search DB: PostgreSQL / TimescaleDB + OpenSearch для швидкого повнотекстового пошуку.",
+      "Операційна та пошукова БД: PostgreSQL / TimescaleDB + OpenSearch для швидкого повнотекстового пошуку.",
       "Feature Store & Metadata Catalog: Централізований каталог даних та відстеження Lineage."
     ],
     components: ["MinIO S3 Lake", "ClickHouse OLAP", "Qdrant Vector Cluster", "PostgreSQL / TimescaleDB", "OpenSearch"],
@@ -304,7 +304,7 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Playbooks & Disaster Recovery Guides: Авто-оновлювані інструкції для операторів та SRE."
     ],
     components: ["OpenAPI / AsyncAPI Exporter", "PlantUML / Mermaid Generator", "SDK Code Generator"],
-    invariants: ["Специфікація та код завжди 100% синхронізовані", "Zero Manual Documentation Edit"]
+    invariants: ["Специфікація та код завжди 100% синхронізовані", "Жодного ручного редагування документації"]
   },
   {
     id: 20,
@@ -389,7 +389,7 @@ export default function MasterSpecificationViewer() {
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
                 <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
-                DEV5 Master Specification v5.0
+                DEV5 Головна специфікація v5.0
               </span>
               <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
@@ -448,7 +448,7 @@ export default function MasterSpecificationViewer() {
         </div>
       </div>
 
-      {/* TAB 0: DEV5 MASTER SPECIFICATION (145 ITEMS) */}
+      {/* ВКЛАДКА 0: DEV5 ГОЛОВНА СПЕЦИФІКАЦІЯ (145 ITEMS) */}
       {activeTab === "dev5-spec" && (
         <div className="space-y-6">
           <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">

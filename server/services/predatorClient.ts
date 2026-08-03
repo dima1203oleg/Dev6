@@ -1,105 +1,156 @@
-import { CanonicalEntity, EvidenceClaim, DataProvenanceChain, RiskLevel, InvestigationWorkspace } from "../../src/types/predator";
+import { 
+  CanonicalEntity, 
+  EvidenceClaim, 
+  DataProvenanceChain, 
+  RiskLevel, 
+  InvestigationWorkspace,
+  IntelligenceDossier,
+  EntityType,
+  VerificationStatus
+} from "../../src/types/predator";
+import { queryYouScore } from "./youscore";
+import { queryOpendatabot } from "./opendatabot";
+import { intelligenceOrchestrator } from "./IntelligenceOrchestrator";
+import crypto from "crypto";
 
 /**
  * PREDATOR Analytics Core Data & Intelligence Integration Engine
- * DEV5 works over PREDATOR as a Data & Intelligence Control Plane.
+ * DEV6 works over PREDATOR as a Data & Intelligence Control Plane.
  */
 export class PredatorAnalyticsClient {
   private predatorEndpoint = process.env.PREDATOR_CORE_URL || "https://predator-core.internal.net/api/v1";
 
   /**
-   * Universal Search API
+   * Universal Search API - Performs LEVEL 1: IDENTIFICATION (Entity Resolution)
    */
   public async searchEntities(query: string, entityType?: string): Promise<{
     entities: CanonicalEntity[];
     total: number;
     provenanceSummary: string;
   }> {
-    const q = query.trim().toLowerCase();
-    
-    // Check if query is specific EDRPOU or IPN
+    const q = (query || "").trim().toLowerCase();
+    if (!q) return { entities: [], total: 0, provenanceSummary: "No query provided" };
+
     const isEdrpou = /^\d{8}$/.test(q);
     const isIpn = /^\d{10}$/.test(q);
 
-    const canonicalName = isEdrpou ? `ТОВ "${query}"` : isIpn ? `ФОП / Фізична Особа (${query})` : query;
-    const resolvedType = entityType ? (entityType.toUpperCase() as any) : isEdrpou ? "COMPANY" : isIpn ? "PERSON" : "COMPANY";
+    const candidates: CanonicalEntity[] = [];
 
-    const mockEntity: CanonicalEntity = {
-      id: `predator-ent-${Date.now()}`,
-      type: resolvedType,
-      canonicalName: canonicalName,
-      aliases: [query, `Реєстровий запис ЄДР ${query}`],
+    try {
+      // Parallel Discovery from multiple sources
+      // Search by name or code
+      const [odbResult, ysResult] = await Promise.allSettled([
+        queryOpendatabot("edr", q), 
+        queryYouScore("usr", q)
+      ]);
+
+      // Normalize results from Opendatabot
+      if (odbResult.status === "fulfilled" && odbResult.value.status === "SUCCESS") {
+        const data = odbResult.value.data;
+        if (Array.isArray(data)) {
+          data.forEach(item => candidates.push(this.normalizeOdbToEntity(item)));
+        } else if (data) {
+          candidates.push(this.normalizeOdbToEntity(data));
+        }
+      }
+
+      // Normalize results from YouScore
+      if (ysResult.status === "fulfilled" && ysResult.value.status === "SUCCESS") {
+        const data = ysResult.value.data;
+        if (Array.isArray(data)) {
+          data.forEach(item => candidates.push(this.normalizeYsToEntity(item)));
+        } else if (data) {
+          candidates.push(this.normalizeYsToEntity(data));
+        }
+      }
+
+      // Basic Entity Resolution: Merge by EDRPOU/IPN
+      const merged = this.resolveEntities(candidates);
+
+      return {
+        entities: merged,
+        total: merged.length,
+        provenanceSummary: `Found ${merged.length} resolved entities across sources.`
+      };
+
+    } catch (err) {
+      console.error("[PredatorClient] Search error:", err);
+      return { entities: [], total: 0, provenanceSummary: "Search execution failed or sources unavailable." };
+    }
+  }
+
+  /**
+   * LEVEL 2: CROSS-SOURCE VERIFICATION & DOSSIER GENERATION
+   */
+  public async getDossier(entityId: string, identifiers: { edrpou?: string; ipn?: string }): Promise<IntelligenceDossier> {
+    return await intelligenceOrchestrator.buildDossier(entityId, identifiers);
+  }
+
+  private normalizeOdbToEntity(data: any): CanonicalEntity {
+    if (!data) return {} as any;
+    const code = data.code || data.number || data.id;
+    return {
+      id: `odb-${code}-${crypto.createHash('md5').update(JSON.stringify(data)).digest('hex').substring(0, 8)}`,
+      type: data.type === "fop" ? "FOP" : "COMPANY",
+      canonicalName: data.full_name || data.name || data.fio || "Unknown ODB Entity",
+      aliases: [],
       identifiers: {
-        edrpou: isEdrpou ? query : "42345678",
-        ipn: isIpn ? query : "3111724753"
+        edrpou: code?.length === 8 ? code : undefined,
+        ipn: code?.length === 10 ? code : undefined
       },
-      attributes: [
-        { key: "Legal Status", value: "ДІЮЧИЙ (Зареєстровано в ЄДР)", confidence: 100, sourceId: "src-opendatabot", verified: true },
-        { key: "Tax Debt Status", value: "Борг відсутній", confidence: 98, sourceId: "src-dps", verified: true },
-        { key: "Registered Address", value: "м. Київ, проспект Степана Бандери, буд. 12", confidence: 95, sourceId: "src-edr", verified: true }
-      ],
-      relationships: [
-        {
-          id: "rel-1",
-          sourceId: `predator-ent-${Date.now()}`,
-          targetId: "ent-partner-101",
-          targetName: "ТОВ 'ЗАХІДНА ЛОГІСТИЧНА ГРУПА'",
-          type: "COUNTERPARTY",
-          risk: "LOW",
-          confidence: 94,
-          evidenceIds: ["ev-claim-101"]
-        },
-        {
-          id: "rel-2",
-          sourceId: `predator-ent-${Date.now()}`,
-          targetId: "ent-owner-202",
-          targetName: "Кізима Дмитро Миколайович",
-          type: "BENEFICIARY",
-          risk: "CLEAN",
-          confidence: 99,
-          evidenceIds: ["ev-claim-102"]
-        }
-      ],
-      riskScore: isEdrpou ? 12 : 5,
-      riskLevel: "LOW",
-      confidenceScore: 98,
-      sourcesCount: 4,
-      evidenceClaims: [
-        {
-          id: "ev-claim-101",
-          claim: "Зареєстровано в Державному реєстрі юридичних осіб (ЄДР). Голова компанії має 100% частку.",
-          sourceId: "src-edr-ukraine",
-          sourceType: "REGISTRY",
-          sourceName: "Державний реєстр ЄДР / OpenDataBot",
-          sourceUrl: "https://opendatabot.com/api/v3/company/42345678",
-          retrievedAt: new Date().toISOString(),
-          rawHash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          parserName: "EDR_Universal_Parser_v2",
-          confidence: 99,
-          verifiedStatus: "VERIFIED"
-        },
-        {
-          id: "ev-claim-102",
-          claim: "Перевірено по санкційних списках РНБО, OFAC, ЄС, ICIJ Offshore Leaks.",
-          sourceId: "src-sanctions-global",
-          sourceType: "SANCTIONS",
-          sourceName: "PREDATOR Global Sanctions Matrix",
-          retrievedAt: new Date().toISOString(),
-          rawHash: "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
-          parserName: "Sanctions_Screening_Engine",
-          confidence: 100,
-          verifiedStatus: "VERIFIED"
-        }
-      ],
-      createdAt: "2026-01-15T10:00:00Z",
+      attributes: [],
+      relationships: [],
+      riskScore: 0,
+      riskLevel: "CLEAN",
+      confidenceScore: 100,
+      sourcesCount: 1,
+      evidenceClaims: [],
+      createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
+  }
 
+  private normalizeYsToEntity(data: any): CanonicalEntity {
+    if (!data) return {} as any;
+    const code = data.code || data.edrpou || data.ipn;
     return {
-      entities: [mockEntity],
-      total: 1,
-      provenanceSummary: "4 підтверджених джерела (ЄДР, Опендатабот, НАЗК, РНБО). Достовірність 98%."
+      id: `ys-${code}-${crypto.createHash('md5').update(JSON.stringify(data)).digest('hex').substring(0, 8)}`,
+      type: "COMPANY", // YouScore usr is usually company
+      canonicalName: data.name || data.fullName || "Unknown YS Entity",
+      aliases: [],
+      identifiers: {
+        edrpou: code?.length === 8 ? code : undefined,
+        ipn: code?.length === 10 ? code : undefined
+      },
+      attributes: [],
+      relationships: [],
+      riskScore: 0,
+      riskLevel: "CLEAN",
+      confidenceScore: 100,
+      sourcesCount: 1,
+      evidenceClaims: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
+  }
+
+  private resolveEntities(entities: CanonicalEntity[]): CanonicalEntity[] {
+    const map = new Map<string, CanonicalEntity>();
+    entities.forEach(ent => {
+      const code = ent.identifiers?.edrpou || ent.identifiers?.ipn;
+      const key = code || ent.canonicalName;
+      if (!key) return;
+      
+      if (map.has(key)) {
+        const existing = map.get(key)!;
+        existing.sourcesCount += 1;
+        // Basic merge of identifiers
+        existing.identifiers = { ...existing.identifiers, ...ent.identifiers };
+      } else {
+        map.set(key, { ...ent });
+      }
+    });
+    return Array.from(map.values());
   }
 
   /**
@@ -117,9 +168,11 @@ export class PredatorAnalyticsClient {
           sourceName: "Міністерство юстиції України (ЄДР)",
           sourceUrl: "https://usr.minjust.gov.ua",
           retrievedAt: new Date().toISOString(),
+          contentHash: "a4f5b6c7d8e9f0123456789abcdef0123456789a",
           rawHash: "a4f5b6c7d8e9f0123456789abcdef0123456789a",
           parserName: "Minjust_Parser_v1",
           confidence: 100,
+          status: "CONFIRMED",
           verifiedStatus: "VERIFIED"
         },
         {
@@ -129,9 +182,11 @@ export class PredatorAnalyticsClient {
           sourceType: "REGISTRY",
           sourceName: "Державна податкова служба України",
           retrievedAt: new Date().toISOString(),
+          contentHash: "b5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y",
           rawHash: "b5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y",
           parserName: "Tax_Registry_Parser",
           confidence: 98,
+          status: "CONFIRMED",
           verifiedStatus: "VERIFIED"
         }
       ],

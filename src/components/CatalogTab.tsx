@@ -427,7 +427,7 @@ export default function CatalogTab() {
                       Переваги / Плюси
                     </h4>
                     <ul className="space-y-1.5">
-                      {selectedSolution.advantages.map((adv, idx) => (
+                      {(selectedSolution.advantages || []).map((adv, idx) => (
                         <li key={idx} className="text-xs text-slate-300 flex items-start gap-1.5">
                           <span className="text-emerald-500 font-bold mt-0.5">•</span>
                           <span>{adv}</span>
@@ -443,7 +443,7 @@ export default function CatalogTab() {
                       Ризики & Недоліки
                     </h4>
                     <ul className="space-y-1.5">
-                      {selectedSolution.disadvantages.map((dis, idx) => (
+                      {(selectedSolution.disadvantages || []).map((dis, idx) => (
                         <li key={idx} className="text-xs text-slate-300 flex items-start gap-1.5">
                           <span className="text-rose-500 font-bold mt-0.5">•</span>
                           <span>{dis}</span>

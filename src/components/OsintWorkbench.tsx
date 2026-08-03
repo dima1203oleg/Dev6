@@ -1973,8 +1973,8 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                           </div>
                           <div className="flex justify-between font-mono">
                             <span className="text-slate-500 font-sans">Партнери:</span>
-                            <span className="truncate max-w-[120px]" title={activeEntity.customs.mainPartners.join(', ')}>
-                              {activeEntity.customs.mainPartners[0]}
+                            <span className="truncate max-w-[120px]" title={activeEntity.customs.mainPartners?.join(', ')}>
+                              {activeEntity.customs.mainPartners?.[0] || '—'}
                             </span>
                           </div>
                           <div className="text-xs text-slate-300 bg-black/40 backdrop-blur-md shadow-[0_4px_40px_rgba(30,58,138,0.15)] p-1 rounded text-center border border-slate-800 truncate mt-1">
@@ -3211,7 +3211,7 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                       <div>
                         <div className="text-xs font-bold text-red-600 tracking-wider uppercase font-mono">ЦЛКОМ ТАЄМНО / CLASSIFIED SECURITY</div>
                         <h1 className="text-lg font-bold tracking-tight text-slate-900 mt-1 uppercase">ОФІЦІЙНИЙ АНАЛІТИЧНИЙ ЗВІТ OSINT</h1>
-                        <div className="text-xs text-slate-500 font-mono mt-0.5">NEXUS SECURITY INTELLIGENCE MATRIX</div>
+                        <div className="text-xs text-slate-500 font-mono mt-0.5">МАТРИЦЯ БЕЗПЕКИ NEXUS</div>
                       </div>
                       <div className="text-right font-mono text-xs text-slate-600 space-y-0.5 border-l border-slate-200 pl-4">
                         <div>ДАТА: {new Date().toLocaleDateString('uk-UA')}</div>
@@ -3328,7 +3328,7 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                     )}
                     <div className="flex justify-between items-center text-xs text-slate-500">
                       <div>
-                        <span className="font-bold uppercase tracking-wider text-slate-700 block">Nexus Intelligence Security</span>
+                        <span className="font-bold uppercase tracking-wider text-slate-700 block">Служба Безпеки Nexus</span>
                         <span>Документ згенеровано автоматично в захищеному сеансі користувача.</span>
                       </div>
                       <div className="text-right font-mono text-blue-600 text-xs">
@@ -3761,7 +3761,7 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                   <div>
                     <h5 className="text-xs font-bold text-slate-200">Інтелектуальний OSINT-пошук (AI Aggregation)</h5>
                     <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                      У випадках відсутності об'єкта в локальній базі, <span className="font-bold text-blue-400">NEXUS AI ENGINE</span> автоматично підключається до вищезазначених джерел через API, аналізує неструктуровані дані (у т.ч. дампи з Darknet та закриті БД МВС), і синтезує єдине досьє з графом зв'язків у реальному часі.
+                      У випадках відсутності об'єкта в локальній базі, <span className="font-bold text-blue-400">ШІ-ДВИГУН NEXUS</span> автоматично підключається до вищезазначених джерел через API, аналізує неструктуровані дані (у т.ч. дампи з Darknet та закриті БД МВС), і синтезує єдине досьє з графом зв'язків у реальному часі.
                     </p>
                   </div>
                 </div>

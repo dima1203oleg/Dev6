@@ -144,50 +144,43 @@ export default function ConnectorHealthDashboard() {
 
   const [isScanningAll, setIsScanningAll] = useState(false);
 
-  // Live telemetry pulse effect
+  // Live telemetry pulse effect using real backend endpoints
   useEffect(() => {
     if (!isLiveTelemetryActive) return;
 
-    const interval = setInterval(() => {
-      setTelemetryData((prev) => {
-        const updated = { ...prev };
-        const keys = Object.keys(updated);
-        const randomKey = keys[Math.floor(Math.random() * keys.length)];
-        const item = updated[randomKey];
-
-        if (item) {
-          const isCore = FREE_CONNECTORS_CATALOG.find((c) => c.id === item.id)?.isCoreSeven;
-          const latencyDelta = Math.floor(Math.random() * 16) - 8;
-          const newLatency = Math.max(8, item.latencyMs + latencyDelta);
-          const newQuota = Math.min(item.quotaMax, item.quotaUsed + Math.floor(Math.random() * 5));
-
-          updated[randomKey] = {
-            ...item,
-            latencyMs: newLatency,
-            quotaUsed: newQuota,
-            requestsTotal: item.requestsTotal + 1,
-            lastPingTime: new Date().toLocaleTimeString(),
-          };
-
-          // Occasionally log ping event
-          if (Math.random() < 0.35) {
-            setTelemetryLogs((logs) => [
-              {
-                id: `log_${Date.now()}`,
-                timestamp: new Date().toLocaleTimeString(),
-                connectorId: item.id,
-                connectorName: item.name,
-                type: "PING",
-                message: `HTTP 200 OK — Telemetry ping passed (${newLatency}ms). Quota: ${((newQuota / item.quotaMax) * 100).toFixed(1)}%`,
-                latency: newLatency,
-              },
-              ...logs.slice(0, 49),
-            ]);
-          }
+    const fetchLiveHealth = async () => {
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) {
+          const healthData = await res.json();
+          setTelemetryData((prev) => {
+            const updated = { ...prev };
+            if (updated['youscore'] && healthData.connectors?.youscore) {
+              const ys = healthData.connectors.youscore;
+              updated['youscore'] = {
+                ...updated['youscore'],
+                status: ys.status === 'HEALTHY' || ys.status === 'OK' ? 'HEALTHY' : 'DEGRADED',
+                lastPingTime: new Date().toLocaleTimeString(),
+              };
+            }
+            if (updated['opendatabot'] && healthData.connectors?.opendatabot) {
+              const odb = healthData.connectors.opendatabot;
+              updated['opendatabot'] = {
+                ...updated['opendatabot'],
+                status: odb.status === 'HEALTHY' || odb.status === 'OK' ? 'HEALTHY' : 'DEGRADED',
+                lastPingTime: new Date().toLocaleTimeString(),
+              };
+            }
+            return updated;
+          });
         }
-        return updated;
-      });
-    }, 2000);
+      } catch (e) {
+        console.warn("[Health Check Error]", e);
+      }
+    };
+
+    fetchLiveHealth();
+    const interval = setInterval(fetchLiveHealth, 10000);
 
     return () => clearInterval(interval);
   }, [isLiveTelemetryActive]);

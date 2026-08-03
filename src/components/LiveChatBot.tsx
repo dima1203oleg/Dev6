@@ -33,7 +33,7 @@ export function LiveChatBot() {
   const isTTSMutedRef = useRef(false);
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     try {
-      const saved = localStorage.getItem('mariarti_chat_history');
+      const saved = localStorage.getItem('predator_chat_history') || localStorage.getItem('mariarti_chat_history');
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error('Failed to load chat history', e);
@@ -46,7 +46,7 @@ export function LiveChatBot() {
   }, [isTTSMuted]);
 
   useEffect(() => {
-    localStorage.setItem('mariarti_chat_history', JSON.stringify(messages));
+    localStorage.setItem('predator_chat_history', JSON.stringify(messages));
   }, [messages]);
   
   const wsRef = useRef<WebSocket | null>(null);
@@ -150,70 +150,71 @@ export function LiveChatBot() {
         const sourceNode = outputAudioCtx.createBufferSource();
         sourceNode.buffer = audioBuffer;
         
-        // Deepen and mask the voice by lowering playback rate
-        sourceNode.playbackRate.value = 0.82; // Lower pitch slightly for depth
+        // PREDATOR COLD ANALYST (Profile B)
+        // Rate is 0.82 - slower, controlled delivery
+        sourceNode.playbackRate.value = 0.82; 
 
-        // Anonymous/Masked voice effect: Bandpass filter
-        const bandpass = outputAudioCtx.createBiquadFilter();
-        bandpass.type = 'bandpass';
-        bandpass.frequency.value = 1000;
-        bandpass.Q.value = 0.8;
+        // 1. Low Shelf Filter: Extreme Deep Sub-Bass
+        // Massive boost to sub-low frequencies for an earth-shaking deep bass
+        const chestResonance = outputAudioCtx.createBiquadFilter();
+        chestResonance.type = 'lowshelf';
+        chestResonance.frequency.value = 85; // Deep sub-bass resonance
+        chestResonance.gain.value = 18.0; // Extreme +18dB push for powerful bass
 
-        // Add a bit of distortion
-        const distortion = outputAudioCtx.createWaveShaper();
-        function makeDistortionCurve(amount) {
-          const k = typeof amount === 'number' ? amount : 50,
-            n_samples = 44100,
-            curve = new Float32Array(n_samples),
-            deg = Math.PI / 180;
-          for (let i = 0; i < n_samples; ++i) {
-            const x = (i * 2) / n_samples - 1;
-            curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
-          }
-          return curve;
-        }
-        distortion.curve = makeDistortionCurve(10);
-        distortion.oversample = '4x';
+        // 1.5 Peaking Filter: Sub-bass rumble boost
+        const subBassRumble = outputAudioCtx.createBiquadFilter();
+        subBassRumble.type = 'peaking';
+        subBassRumble.frequency.value = 60; // Sub-bass frequency
+        subBassRumble.Q.value = 0.7; // Wide band
+        subBassRumble.gain.value = 10.0; // Additional +10dB for the deep rumble
 
+        // 2. Peaking Filter: Nasal Cut (1000-1200 Hz)
+        // Cut nasal frequencies to achieve a dark, matte sound
+        const nasalCut = outputAudioCtx.createBiquadFilter();
+        nasalCut.type = 'peaking';
+        nasalCut.frequency.value = 1000;
+        nasalCut.Q.value = 1.0;
+        nasalCut.gain.value = -10.0; // Strong cut to eliminate nasality
+
+        // 3. High Shelf Filter: Brightness Cut (4000+ Hz)
+        // Make the voice "DARK" but retain articulation
+        const darkHighCut = outputAudioCtx.createBiquadFilter();
+        darkHighCut.type = 'highshelf';
+        darkHighCut.frequency.value = 4000;
+        darkHighCut.gain.value = -8.0; // Cut high frequencies to remove brightness
+
+        // 4. Dynamics Compressor: Dense and Monolithic
+        // Compress dynamic range for a steady, unwavering delivery
+        const roboticCompressor = outputAudioCtx.createDynamicsCompressor();
+        roboticCompressor.threshold.value = -20; // Moderate threshold
+        roboticCompressor.knee.value = 10;
+        roboticCompressor.ratio.value = 4; // 4:1 compression ratio
+        roboticCompressor.attack.value = 0.1; // Slow attack (100ms) to let hard consonants through
+        roboticCompressor.release.value = 0.25;
 
         if (!analyserRef.current) {
-          analyserRef.current = outputAudioCtx.createAnalyser();
-          analyserRef.current.fftSize = 64;
-        }
-        
-        // We connect source to a specific gain node for volume control, then to analyser, then to destination.
-        // Wait, if it's muted, we want visualizer to still work.
-        // So source -> analyser -> gain -> destination.
-        // To avoid connecting analyser to multiple gain nodes, we just create a single gain node per outputAudioCtx, but we don't have a ref for it.
-        // Let's just mute at the source if we don't care about visualizer when muted, OR we can attach the gainNode to the outputAudioCtxRef.
-        // Actually, if we just set gainNode per source before analyser, visualizer won't work when muted.
-        // To keep it simple, let's just make the volume 0 for the source if muted, visualizer will be flat. 
-        // Or better: source -> gainNode -> analyser -> destination (analyser is connected to destination once).
-        // Wait, if gain is 0, analyser gets 0.
-        // Let's do: source -> analyser -> destination. And if muted, just don't play? The user asked to toggle TTS, they probably expect visualizer to still show the bot is speaking.
-        // Let's add a gainNodeRef.
-        
-        if (!analyserRef.current) {
-            // First time setup
-            const analyser = outputAudioCtx.createAnalyser();
-            analyser.fftSize = 64;
-            analyserRef.current = analyser;
-            
-            const gainNode = outputAudioCtx.createGain();
-            gainNodeRef.current = gainNode;
-            
-            // source -> analyser -> gain -> destination
-            analyser.connect(gainNode);
-            gainNode.connect(outputAudioCtx.destination);
+          const analyser = outputAudioCtx.createAnalyser();
+          analyser.fftSize = 64;
+          analyserRef.current = analyser;
+          
+          const gainNode = outputAudioCtx.createGain();
+          gainNodeRef.current = gainNode;
+          
+          analyser.connect(gainNode);
+          gainNode.connect(outputAudioCtx.destination);
         }
         
         if (gainNodeRef.current) {
             gainNodeRef.current.gain.value = isTTSMutedRef.current ? 0 : 1;
         }
         
-        sourceNode.connect(distortion);
-          distortion.connect(bandpass);
-          bandpass.connect(analyserRef.current);
+        // Connect the dark, menacing heavy audio pipeline
+        sourceNode.connect(chestResonance);
+        chestResonance.connect(subBassRumble);
+        subBassRumble.connect(nasalCut);
+        nasalCut.connect(darkHighCut);
+        darkHighCut.connect(roboticCompressor);
+        roboticCompressor.connect(analyserRef.current);
         
         if (nextStartTimeRef.current < outputAudioCtx.currentTime) {
           nextStartTimeRef.current = outputAudioCtx.currentTime;
@@ -242,7 +243,7 @@ export function LiveChatBot() {
       setError(null);
       const ws = wsRef.current;
       if (!ws || ws.readyState !== WebSocket.OPEN) {
-        throw new Error("WebSocket disconnected. Please refresh the page.");
+        throw new Error("WebSocket відключено. Будь ласка, оновіть сторінку.");
       }
 
       const inputAudioCtx = new AudioContext({ sampleRate: 16000 });
@@ -251,6 +252,14 @@ export function LiveChatBot() {
       const outputAudioCtx = new AudioContext({ sampleRate: 24000 });
       outputAudioCtxRef.current = outputAudioCtx;
       nextStartTimeRef.current = outputAudioCtx.currentTime;
+
+      // Force resume AudioContext on mobile/iOS devices
+      if (inputAudioCtx.state === 'suspended') {
+        await inputAudioCtx.resume();
+      }
+      if (outputAudioCtx.state === 'suspended') {
+        await outputAudioCtx.resume();
+      }
 
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
@@ -325,21 +334,21 @@ export function LiveChatBot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed sm:bottom-6 bottom-24 right-6 z-50">
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="absolute bottom-20 right-0 w-[380px] h-[550px] bg-slate-900 border border-slate-800 border-glow rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.5)] backdrop-blur-md flex flex-col overflow-hidden"
+            className="absolute bottom-20 right-0 w-[calc(100vw-32px)] sm:w-[380px] h-[480px] sm:h-[550px] bg-slate-900 border border-slate-800 border-glow rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.5)] backdrop-blur-md flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="px-2 py-1.5 bg-black/30 border-b border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Bot className="w-4 h-4 text-blue-400" />
                 <div>
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">MARIARTI AI</h3>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">PREDATOR AI</h3>
                   <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ONLINE | ВЕРИФІКАЦІЯ ЄДРПОУ/ЄДРСР
                   </span>
@@ -356,7 +365,7 @@ export function LiveChatBot() {
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
                   <div className="opacity-50 flex flex-col items-center justify-center space-y-2">
                     <Bot className="w-12 h-12 text-blue-400" />
-                    <p className="text-xs text-slate-300 font-mono">MARIARTI готовий.<br/>Задайте питання або увімкніть мікрофон.</p>
+                    <p className="text-xs text-slate-300 font-mono">PREDATOR готовий.<br/>Задайте питання або увімкніть мікрофон.</p>
                   </div>
                   <div className="w-full px-2 pt-2 space-y-1.5 text-left">
                     <p className="text-xs uppercase tracking-wider font-mono text-blue-400/70 font-semibold px-1">Швидкі розслідування:</p>

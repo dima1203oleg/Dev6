@@ -389,9 +389,9 @@ const PROFILER_ASSETS: ProfilerAsset[] = [
   }
 ];
 
-export default function PersonProfiler() {
+export default function PersonProfiler({ initialTab = 'overview' }: { initialTab?: 'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse' }) {
   const [selectedPersonId, setSelectedPersonId] = useState<string>('kizyma-dmytro');
-  const [activeTab, setActiveTab] = useState<'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse'>(initialTab);
   const [isAuditing, setIsAuditing] = useState(false);
   const [isPurgedNoise, setIsPurgedNoise] = useState(false);
   const terminalEndRef = useRef<HTMLDivElement>(null);

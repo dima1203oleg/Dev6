@@ -1,0 +1,15 @@
+export const config = {
+  YOUSCORE_API_KEY: process.env.YOUSCORE_API_KEY || process.env.YOUCONTROL_API_KEY || "",
+  YOUSCORE_BASE_URL: process.env.YOUSCORE_API_BASE_URL || "https://api.youcontrol.com.ua",
+  YOUSCORE_TIMEOUT_MS: parseInt(process.env.YOUSCORE_TIMEOUT_MS || "30000", 10),
+  YOUSCORE_CONNECT_TIMEOUT_MS: parseInt(process.env.YOUSCORE_CONNECT_TIMEOUT_MS || "10000", 10),
+  YOUSCORE_READ_TIMEOUT_MS: parseInt(process.env.YOUSCORE_READ_TIMEOUT_MS || "20000", 10),
+  YOUSCORE_MAX_RETRIES: parseInt(process.env.YOUSCORE_MAX_RETRIES || "5", 10),
+  YOUSCORE_MAX_POLL_ATTEMPTS: parseInt(process.env.YOUSCORE_MAX_POLL_ATTEMPTS || "10", 10),
+  YOUSCORE_POLL_INTERVAL_MS: parseInt(process.env.YOUSCORE_POLL_INTERVAL_MS || "2000", 10),
+  YOUSCORE_MAX_PAGES: parseInt(process.env.YOUSCORE_MAX_PAGES || "5", 10),
+  YOUSCORE_RATE_5S: parseInt(process.env.YOUSCORE_RATE_5S || "50", 10),
+  YOUSCORE_RATE_1M: parseInt(process.env.YOUSCORE_RATE_1M || "200", 10),
+  YOUSCORE_MAX_CONCURRENT_REQUESTS: parseInt(process.env.YOUSCORE_MAX_CONCURRENT_REQUESTS || "10", 10),
+  YOUSCORE_CACHE_TTL_MS: parseInt(process.env.YOUSCORE_CACHE_TTL || "3600", 10) * 1000,
+};

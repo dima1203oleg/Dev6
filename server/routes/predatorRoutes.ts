@@ -1,10 +1,25 @@
 import { Router } from "express";
 import { predatorClient } from "../services/predatorClient";
+import { globalHealthService } from "../services/GlobalHealthService";
 import { buildSafeQueryPlan } from "../services/queryDsl";
 import { checkPermission, maskSensitiveFields, AuthenticatedRequest } from "../middleware/auth";
 import { auditMiddleware } from "../middleware/auditLog";
 
 const router = Router();
+
+// System Health Dashboard
+router.get(
+  "/health",
+  checkPermission("system.health"),
+  async (req, res) => {
+    try {
+      const health = await globalHealthService.getOverallHealth();
+      res.json(health);
+    } catch (err: any) {
+      res.status(500).json({ error: { code: "HEALTH_CHECK_FAILED", message: err.message } });
+    }
+  }
+);
 
 // Universal Entity Search
 router.post(
@@ -29,6 +44,26 @@ router.post(
       });
     } catch (err: any) {
       res.status(500).json({ error: { code: "SEARCH_FAILED", message: err.message, retryable: true } });
+    }
+  }
+);
+
+// Intelligence Dossier Generation
+router.post(
+  "/dossier",
+  checkPermission("entity.read"),
+  auditMiddleware("ENTITY_VIEW", "INTELLIGENCE_DOSSIER"),
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const { entityId, identifiers } = req.body;
+      if (!entityId || !identifiers) {
+        return res.status(400).json({ error: { code: "BAD_REQUEST", message: "Entity ID and identifiers are required" } });
+      }
+
+      const dossier = await predatorClient.getDossier(entityId, identifiers);
+      res.json(dossier);
+    } catch (err: any) {
+      res.status(500).json({ error: { code: "DOSSIER_FAILED", message: err.message } });
     }
   }
 );

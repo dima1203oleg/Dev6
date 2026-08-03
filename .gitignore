@@ -1,9 +1,19 @@
-dist/
 node_modules/
+dist/
+*.local
 coverage/
 .DS_Store
 *.log
 .env*
 !.env.example
-# No dist/ or build outputs in gitignore to allow upload of build artifacts
 
+# Cache and local IDE folders
+.vite/
+.eslintcache
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -12,12 +12,12 @@ interface BehavioralDashboardProps {
 }
 
 const cognitiveData = [
-  { subject: 'Risk Tolerance', A: 85, fullMark: 100 },
-  { subject: 'Deception Prob.', A: 78, fullMark: 100 },
-  { subject: 'Rationality', A: 45, fullMark: 100 },
-  { subject: 'Emotional Stability', A: 30, fullMark: 100 },
-  { subject: 'Aggression', A: 90, fullMark: 100 },
-  { subject: 'Impulsivity', A: 82, fullMark: 100 },
+  { subject: 'Схильність до ризику', A: 85, fullMark: 100 },
+  { subject: 'Ймовірність обману', A: 78, fullMark: 100 },
+  { subject: 'Раціональність', A: 45, fullMark: 100 },
+  { subject: 'Емоційна стабільність', A: 30, fullMark: 100 },
+  { subject: 'Агресивність', A: 90, fullMark: 100 },
+  { subject: 'Імпульсивність', A: 82, fullMark: 100 },
 ];
 
 const stressData = [
@@ -31,10 +31,10 @@ const stressData = [
 ];
 
 const trustMetrics = [
-  { name: 'Credibility', value: 35, fill: '#ef4444' }, // red
-  { name: 'Consistency', value: 42, fill: '#f97316' }, // orange
-  { name: 'Transparency', value: 20, fill: '#ef4444' }, // red
-  { name: 'Reliability', value: 48, fill: '#f59e0b' }, // amber
+  { name: 'Достовірність', value: 35, fill: '#ef4444' }, // red
+  { name: 'Послідовність', value: 42, fill: '#f97316' }, // orange
+  { name: 'Прозорість', value: 20, fill: '#ef4444' }, // red
+  { name: 'Надійність', value: 48, fill: '#f59e0b' }, // amber
 ];
 
 export default function BehavioralDashboard({ personName = 'Об\'єкт' }: BehavioralDashboardProps) {
@@ -49,20 +49,20 @@ export default function BehavioralDashboard({ personName = 'Об\'єкт' }: Beh
             <Brain className="w-5 h-5 text-indigo-400 relative z-10" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-slate-100">Behavioral & Cognitive Profile</h2>
-            <p className="text-xs text-slate-400 font-mono">ID: {personName.toUpperCase()} // PREDATOR PSYCH-ANALYSIS</p>
+            <h2 className="text-lg font-bold text-slate-100">Поведінковий та Когнітивний Профіль</h2>
+            <p className="text-xs text-slate-400 font-mono">ID: {personName.toUpperCase()} // PREDATOR ПСИХО-АНАЛІЗ</p>
           </div>
         </div>
         <div className="flex items-center gap-6">
           <div className="text-right">
-            <div className="text-[10px] text-slate-500 font-mono uppercase tracking-widest mb-1">Overall Trust Score</div>
+            <div className="text-[10px] text-slate-500 font-mono uppercase tracking-widest mb-1">Загальний Рейтинг Довіри</div>
             <div className="text-3xl font-black font-mono text-rose-500 flex items-baseline justify-end gap-1">
               28<span className="text-xs text-slate-500 font-medium">/100</span>
             </div>
           </div>
           <div className="h-10 w-px bg-slate-800" />
           <div className="text-right">
-            <div className="text-[10px] text-slate-500 font-mono uppercase tracking-widest mb-1">Threat Level</div>
+            <div className="text-[10px] text-slate-500 font-mono uppercase tracking-widest mb-1">Рівень Загрози</div>
             <div className="text-sm font-bold text-rose-500 uppercase tracking-widest flex items-center gap-2">
                <ShieldAlert className="w-4 h-4" />
                Critical
@@ -78,7 +78,7 @@ export default function BehavioralDashboard({ personName = 'Об\'єкт' }: Beh
           <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2" />
           <div className="flex items-center gap-2 mb-4">
             <Target className="w-4 h-4 text-indigo-400" />
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Cognitive Fingerprint</h3>
+            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Когнітивний Відбиток</h3>
           </div>
           <div className="flex-1 min-h-[250px] w-full relative z-10">
             <ResponsiveContainer width="100%" height="100%">
@@ -143,7 +143,7 @@ export default function BehavioralDashboard({ personName = 'Об\'єкт' }: Beh
         <div className="lg:col-span-2 bg-slate-900/40 border border-slate-800/60 rounded-2xl p-5">
           <div className="flex items-center gap-2 mb-6">
             <ShieldAlert className="w-4 h-4 text-amber-400" />
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Trust Assessment Matrix</h3>
+            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Матриця Оцінки Довіри</h3>
           </div>
           <div className="h-44 w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -169,13 +169,13 @@ export default function BehavioralDashboard({ personName = 'Об\'єкт' }: Beh
         <div className="lg:col-span-2 bg-slate-900/40 border border-slate-800/60 rounded-2xl p-5">
           <div className="flex items-center gap-2 mb-5">
             <Fingerprint className="w-4 h-4 text-slate-400" />
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Key Behavioral Flags</h3>
+            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Ключові Поведінкові Маркери</h3>
           </div>
           <div className="space-y-3">
             <div className="flex items-start gap-3 p-3.5 bg-rose-500/5 border border-rose-500/20 rounded-xl hover:bg-rose-500/10 transition-colors">
               <Eye className="w-4 h-4 text-rose-400 mt-0.5 shrink-0" />
               <div>
-                <h4 className="text-[11px] font-bold text-rose-300 uppercase tracking-wide mb-1.5">Deceptive Linguistics</h4>
+                <h4 className="text-[11px] font-bold text-rose-300 uppercase tracking-wide mb-1.5">Оманлива Лінгвістика</h4>
                 <p className="text-[10px] text-rose-200/60 leading-relaxed font-medium">Систематичне уникнення прямих відповідей, використання пасивного стану та дистанціювання в мовленні під час стресових інтерв'ю.</p>
               </div>
             </div>

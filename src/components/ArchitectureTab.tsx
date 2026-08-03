@@ -370,8 +370,9 @@ export default function ArchitectureTab() {
                       const toCoord = NODE_COORDS[edge.to];
                       if (!fromCoord || !toCoord) return null;
 
-                      const fromNode = ARCHITECTURE_NODES.find(n => n.id === edge.from)!;
-                      const toNode = ARCHITECTURE_NODES.find(n => n.id === edge.to)!;
+                      const fromNode = ARCHITECTURE_NODES.find(n => n.id === edge.from);
+                      const toNode = ARCHITECTURE_NODES.find(n => n.id === edge.to);
+                      if (!fromNode || !toNode) return null;
                       const isSelectedEdge = edge.from === selectedNodeId || edge.to === selectedNodeId;
                       const isDimmedEdge = isNodeDimmed(fromNode) || isNodeDimmed(toNode);
 

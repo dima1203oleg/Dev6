@@ -30,6 +30,10 @@ const MapsTab = React.lazy(() => import("./components/MapsTab"));
 const CKANExplorerTab = React.lazy(() => import("./components/CKANExplorerTab"));
 const InvestigationSandbox = React.lazy(() => import("./components/InvestigationSandbox"));
 const MasterSpecificationViewer = React.lazy(() => import("./components/MasterSpecificationViewer"));
+const YouScoreTab = React.lazy(() => import("./components/YouScoreTab"));
+const OpendatabotTab = React.lazy(() => import("./components/OpendatabotTab"));
+const SearchPortal = React.lazy(() => import("./components/SearchPortal"));
+const DossierView = React.lazy(() => import("./components/DossierView"));
 import { VoiceCall } from "./components/VoiceCall";
 import { ToastProvider } from "./components/ToastProvider";
 import { OSINT_ENTITIES, OsintEntity, getOrCreateEntityForQuery, generateDynamicEntity } from "./osintData";
@@ -102,11 +106,15 @@ type TabId =
   | "investigation-workspace"
   | "audit-log"
   | "master-specification"
+  | "youscore"
+  | "opendatabot"
+  | "predator-intel"
   | "ckan-explorer";
 
 export default function App() {
   const [ecosystem, setEcosystem] = useState<"user" | "admin">("user");
-  const [activeTab, setActiveTab] = useState<TabId>("dashboard");
+  const [activeTab, setActiveTab] = useState<TabId>("predator-intel");
+  const [activeDossier, setActiveDossier] = useState<any>(null);
   const [selectedScenario, setSelectedScenario] = useState<string>("business");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isInspectorOpen, setIsInspectorOpen] = useState(true);
@@ -1108,6 +1116,14 @@ export default function App() {
             case "media-forensics": return <MediaForensicsTab />;
             case "data-ingestion": return <DataIngestionTab />;
             case "ckan-explorer": return <CKANExplorerTab />;
+            case "youscore": return <YouScoreTab />;
+            case "opendatabot": return <OpendatabotTab />;
+            case "predator-intel":
+              return activeDossier ? (
+                <DossierView dossier={activeDossier} onBack={() => setActiveDossier(null)} />
+              ) : (
+                <SearchPortal onDossierGenerated={(dossier) => setActiveDossier(dossier)} />
+              );
             case "autonomous-factory": return <AutonomousFactory />;
             case "predator-control": return <PredatorControlPlane />;
             case "investigation-workspace": return <InvestigationWorkspaceTab />;
@@ -1312,8 +1328,17 @@ export default function App() {
                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2 px-1">
                           Інструменти пошуку
                         </span>
+                        <button onClick={() => {setActiveTab("predator-intel"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
+                          <Shield className="w-4 h-4 text-blue-400"/> <span className="font-bold">PREDATOR Intelligence</span>
+                        </button>
                         <button onClick={() => {setActiveTab("ckan-explorer"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
                           <Database className="w-4 h-4"/> Державні Реєстри
+                        </button>
+                        <button onClick={() => {setActiveTab("youscore"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
+                          <ShieldCheck className="w-4 h-4 text-indigo-400"/> YouScore Комплаєнс
+                        </button>
+                        <button onClick={() => {setActiveTab("opendatabot"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
+                          <ShieldCheck className="w-4 h-4 text-blue-400"/> Opendatabot Комплаєнс
                         </button>
                         <button onClick={() => {setActiveTab("osint"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
                           <Search className="w-4 h-4"/> Глобальний Пошук
@@ -1378,7 +1403,6 @@ export default function App() {
                             <button
                               key={tab.id}
                               onClick={() => {
-                                id: tab.id;
                                 setActiveTab(tab.id as TabId);
                                 setMobileMenuOpen(false);
                               }}
@@ -1797,7 +1821,7 @@ const renderDesktopLayout = () => {
                         setEcosystem("user");
                         setActiveTab("live-analytical-center");
                       }}
-                      className={`flex-1 py-1.5 px-1 rounded-md text-[10px] font-medium transition-all flex items-center justify-center gap-1 ${ecosystem === "user" ? "bg-blue-600 text-white shadow-sm" : "hover:bg-slate-900 text-slate-500"}`}
+                      className={`flex-1 py-1.5 px-1 rounded-md text-[10px] font-medium transition-all flex items-center justify-center gap-1 cursor-pointer ${ecosystem === "user" ? "bg-blue-600 text-white shadow-sm" : "hover:bg-slate-900 text-slate-500"}`}
                     >
                       <User className="w-3.5 h-3.5" /> Користувач
                     </button>
@@ -1806,7 +1830,7 @@ const renderDesktopLayout = () => {
                         setEcosystem("admin");
                         setActiveTab("admin-back-office");
                       }}
-                      className={`flex-1 py-1.5 px-1 rounded-md text-[10px] font-medium transition-all flex items-center justify-center gap-1 ${ecosystem === "admin" ? "bg-emerald-600 text-white shadow-sm" : "hover:bg-slate-900 text-slate-500"}`}
+                      className={`flex-1 py-1.5 px-1 rounded-md text-[10px] font-medium transition-all flex items-center justify-center gap-1 cursor-pointer ${ecosystem === "admin" ? "bg-emerald-600 text-white shadow-sm" : "hover:bg-slate-900 text-slate-500"}`}
                     >
                       <Shield className="w-3.5 h-3.5" /> Адмін
                     </button>
@@ -1825,8 +1849,8 @@ const renderDesktopLayout = () => {
                           setActiveTab("live-analytical-center");
                         }
                       }}
-                      className="w-10 h-10 rounded-lg bg-slate-950/50 border border-slate-800/80 flex items-center justify-center text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
-                      title={ecosystem === "user" ? "Switch to Admin" : "Switch to User"}
+                      className="w-10 h-10 rounded-lg bg-slate-950/50 border border-slate-800/80 flex items-center justify-center text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                      title={ecosystem === "user" ? "Перейти в адмінку" : "Перейти до користувача"}
                     >
                       {ecosystem === "user" ? <User className="w-5 h-5" /> : <Shield className="w-5 h-5 text-emerald-400" />}
                     </button>
@@ -1834,216 +1858,146 @@ const renderDesktopLayout = () => {
               )}
 
               {ecosystem === "user" ? (
-                <>
-                  <div className="space-y-6">
-                    {/* 📊 ГОЛОВНЕ */}
-                    <div className="space-y-1">
+                <div className="space-y-6">
+                  {[
+                    {
+                      title: "Головне",
+                      items: [
+                        { id: "dashboard", label: "Дашборд", icon: LayoutDashboard, color: "text-blue-400" },
+                        { id: "investigation-workspace", label: "Мої Розслідування", icon: Briefcase, color: "text-blue-400" },
+                        { id: "live-analytical-center", label: "ШІ Аналітика", icon: Bot, color: "text-blue-400" },
+                      ]
+                    },
+                    {
+                      title: "Інструменти пошуку",
+                      items: [
+                        { id: "predator-intel", label: "PREDATOR Intelligence", icon: Shield, color: "text-blue-400", isBold: true },
+                        { id: "ckan-explorer", label: "Державні Реєстри", icon: Database, color: "text-emerald-400" },
+                        { id: "youscore", label: "YouScore Комплаєнс", icon: ShieldCheck, color: "text-indigo-400" },
+                        { id: "opendatabot", label: "Opendatabot Комплаєнс", icon: ShieldCheck, color: "text-blue-400" },
+                        { id: "osint", label: "Глобальний Пошук", icon: Search, color: "text-blue-400" },
+                        { id: "person-profiler", label: "Досьє на Осіб", icon: UserCheck, color: "text-blue-400" },
+                        { id: "media-forensics", label: "Аналіз Медіа", icon: Camera, color: "text-blue-400" },
+                      ]
+                    },
+                    {
+                      title: "Аналіз та Зв'язки",
+                      items: [
+                        { id: "sandbox", label: "Граф Зв'язків", icon: Network, color: "text-indigo-400" },
+                        { id: "maps", label: "Геопросторова Карта", icon: Map, color: "text-blue-400" },
+                      ]
+                    }
+                  ].map((section, idx) => (
+                    <div key={idx} className="space-y-1">
                       {!sidebarCollapsed && (
-                        <div className="px-3 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Головне
+                        <div className="px-3 pb-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                          {section.title}
                         </div>
                       )}
-                      
-                      <button
-                        onClick={() => setActiveTab("dashboard")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "dashboard" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <LayoutDashboard className={`w-4 h-4 ${activeTab === "dashboard" ? "text-blue-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Дашборд</span>}
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab("investigation-workspace")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "investigation-workspace" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <Briefcase className={`w-4 h-4 ${activeTab === "investigation-workspace" ? "text-blue-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Мої Розслідування</span>}
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab("live-analytical-center")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "live-analytical-center" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <Bot className={`w-4 h-4 ${activeTab === "live-analytical-center" ? "text-blue-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>ШІ Аналітика</span>}
-                      </button>
+                      {section.items.map((item) => {
+                        const Icon = item.icon;
+                        const isActive = activeTab === item.id || (item.id === "person-profiler" && activeTab === "adverse");
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => setActiveTab(item.id as TabId)}
+                            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                              isActive
+                                ? "bg-slate-900 text-blue-400 border border-slate-800"
+                                : "hover:bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-transparent"
+                            }`}
+                          >
+                            <Icon className={`w-4 h-4 shrink-0 ${isActive ? item.color : "text-slate-400"}`} />
+                            {!sidebarCollapsed && <span className={item.isBold ? "font-bold" : ""}>{item.label}</span>}
+                          </button>
+                        );
+                      })}
                     </div>
-
-                    {/* 🔍 ІНСТРУМЕНТИ OSINT */}
-                    <div className="space-y-1">
-                      {!sidebarCollapsed && (
-                        <div className="px-3 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Інструменти пошуку
-                        </div>
-                      )}
-
-                      <button
-                        onClick={() => setActiveTab("ckan-explorer")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "ckan-explorer" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <Database className={`w-4 h-4 ${activeTab === "ckan-explorer" ? "text-emerald-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Державні Реєстри</span>}
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab("osint")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "osint" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <Search className={`w-4 h-4 ${activeTab === "osint" ? "text-blue-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Глобальний Пошук</span>}
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab("person-profiler")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "person-profiler" || activeTab === "adverse" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <UserCheck className={`w-4 h-4 ${activeTab === "person-profiler" || activeTab === "adverse" ? "text-blue-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Досьє на Осіб</span>}
-                      </button>
-                      
-                      <button
-                        onClick={() => setActiveTab("media-forensics")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "media-forensics" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <Camera className={`w-4 h-4 ${activeTab === "media-forensics" ? "text-blue-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Аналіз Медіа</span>}
-                      </button>
-                    </div>
-
-                    {/* 🛠 АНАЛІЗ ТА ЗВ'ЯЗКИ */}
-                    <div className="space-y-1">
-                      {!sidebarCollapsed && (
-                        <div className="px-3 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Аналіз та Зв'язки
-                        </div>
-                      )}
-
-                      <button
-                        onClick={() => setActiveTab("sandbox")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "sandbox" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <Network className={`w-4 h-4 ${activeTab === "sandbox" ? "text-indigo-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Граф Зв'язків</span>}
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab("maps")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "maps" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                      >
-                        <Map className={`w-4 h-4 ${activeTab === "maps" ? "text-blue-400" : "text-slate-400"}`} />
-                        {!sidebarCollapsed && <span>Геопросторова Карта</span>}
-                      </button>
-                    </div>
-                  </div>
-                </>
+                  ))}
+                </div>
               ) : (
-                <>
-                  <div className="space-y-1">
-                    {!sidebarCollapsed && (
-                      <div className="px-3 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                        Адміністрування
-                      </div>
-                    )}
-                    <button
-                      onClick={() => setActiveTab("admin-back-office")}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "admin-back-office" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                    >
-                      <Settings className={`w-4 h-4 ${activeTab === "admin-back-office" ? "text-emerald-400" : "text-slate-400"}`} />
-                      {!sidebarCollapsed && <span>Консоль управління</span>}
-                    </button>
-                    
-                    <button
-                      onClick={() => setActiveTab("predator-control")}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "predator-control" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                    >
-                      <ShieldAlert className={`w-4 h-4 ${activeTab === "predator-control" ? "text-indigo-400" : "text-slate-400"}`} />
-                      {!sidebarCollapsed && <span>Панель PREDATOR</span>}
-                    </button>
-
-                    <button
-                      onClick={() => setActiveTab("data-ingestion")}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "data-ingestion" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                    >
-                      <Database className={`w-4 h-4 ${activeTab === "data-ingestion" ? "text-blue-400" : "text-slate-400"}`} />
-                      {!sidebarCollapsed && <span>Завантаження Даних</span>}
-                    </button>
-                    <button
-                      onClick={() => setActiveTab("audit-log")}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "audit-log" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                    >
-                      <ShieldAlert className={`w-4 h-4 ${activeTab === "audit-log" ? "text-amber-400" : "text-slate-400"}`} />
-                      {!sidebarCollapsed && <span>Журнал Аудиту</span>}
-                    </button>
-
-                    <button
-                      onClick={() => setActiveTab("autonomous-factory")}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${activeTab === "autonomous-factory" ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                    >
-                      <Cpu className={`w-4 h-4 ${activeTab === "autonomous-factory" ? "text-purple-400" : "text-slate-400"}`} />
-                      {!sidebarCollapsed && <span>Автономна Фабрика</span>}
-                    </button>
-                  </div>
-
-                  <div className="space-y-1 mt-6">
-                    {!sidebarCollapsed && (
-                      <div className="px-3 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                        Архітектура Інфраструктури
-                      </div>
-                    )}
-                    {[
-                      { id: "master-specification", label: "DEV5 ТЗ (145 Пунктів)", icon: FileText },
-                      { id: "architecture", label: "Граф залежностей", icon: Network },
-                      { id: "gap", label: "Аналіз прогалин", icon: Wrench },
-                      { id: "roadmap", label: "Дорожня карта", icon: Calendar },
-                      { id: "catalog", label: "Каталог рішень", icon: Layers },
-                      { id: "license", label: "Сумісність ліцензій", icon: ShieldAlert },
-                      { id: "volumes", label: "Томи ТЗ", icon: Database },
-                      { id: "advisor", label: "ШІ-Архітектор", icon: Cpu },
-                    ].map((tab) => {
-                      const Icon = tab.icon;
-                      const isActive = activeTab === tab.id;
-                      return (
-                        <button
-                          key={tab.id}
-                          onClick={() => {
-                            setActiveTab(tab.id as TabId);
-                            if (tab.id === "architecture") {
-                              setSelectedNode({
-                                id: "core_api",
-                                label: "Core REST API",
-                                group: "Core",
-                              });
-                              setSelectedEntity(null);
-                              setSelectedTool(null);
-                            }
-                          }}
-                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer ${isActive ? "bg-slate-900 text-indigo-400" : "hover:bg-slate-900 text-slate-500"}`}
-                        >
-                          <Icon className={`w-4 h-4 ${isActive ? "text-blue-400" : "text-slate-400"}`} />
-                          {!sidebarCollapsed && <span>{tab.label}</span>}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </>
+                <div className="space-y-6">
+                  {[
+                    {
+                      title: "Адміністрування",
+                      items: [
+                        { id: "admin-back-office", label: "Консоль управління", icon: Settings, color: "text-emerald-400" },
+                        { id: "predator-control", label: "Панель PREDATOR", icon: ShieldAlert, color: "text-indigo-400" },
+                        { id: "data-ingestion", label: "Завантаження Даних", icon: Database, color: "text-blue-400" },
+                        { id: "audit-log", label: "Журнал Аудиту", icon: ShieldAlert, color: "text-amber-400" },
+                        { id: "autonomous-factory", label: "Автономна Фабрика", icon: Cpu, color: "text-purple-400" },
+                      ]
+                    },
+                    {
+                      title: "Архітектура Інфраструктури",
+                      items: [
+                        { id: "master-specification", label: "DEV5 ТЗ (145 Пунктів)", icon: FileText, color: "text-blue-400" },
+                        { id: "architecture", label: "Граф залежностей", icon: Network, color: "text-blue-400" },
+                        { id: "gap", label: "Аналіз прогалин", icon: Wrench, color: "text-blue-400" },
+                        { id: "roadmap", label: "Дорожня карта", icon: Calendar, color: "text-blue-400" },
+                        { id: "catalog", label: "Каталог рішень", icon: Layers, color: "text-blue-400" },
+                        { id: "license", label: "Сумісність ліцензій", icon: ShieldAlert, color: "text-blue-400" },
+                        { id: "volumes", label: "Томи ТЗ", icon: Database, color: "text-blue-400" },
+                        { id: "advisor", label: "ШІ-Архітектор", icon: Cpu, color: "text-blue-400" },
+                      ]
+                    }
+                  ].map((section, idx) => (
+                    <div key={idx} className="space-y-1">
+                      {!sidebarCollapsed && (
+                        <div className="px-3 pb-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                          {section.title}
+                        </div>
+                      )}
+                      {section.items.map((item) => {
+                        const Icon = item.icon;
+                        const isActive = activeTab === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => {
+                              setActiveTab(item.id as TabId);
+                              if (item.id === "architecture") {
+                                setSelectedNode({
+                                  id: "core_api",
+                                  label: "Core REST API",
+                                  group: "Core",
+                                });
+                                setSelectedEntity(null);
+                                setSelectedTool(null);
+                              }
+                            }}
+                            className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                              isActive
+                                ? "bg-slate-900 text-blue-400 border border-slate-800"
+                                : "hover:bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-transparent"
+                            }`}
+                          >
+                            <Icon className={`w-4 h-4 shrink-0 ${isActive ? item.color : "text-slate-400"}`} />
+                            {!sidebarCollapsed && <span>{item.label}</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
               )}
               
               {!sidebarCollapsed && (
-                <div className="bg-slate-800/30 border border-slate-700/50 p-3 rounded-xl space-y-3 mt-6">
-                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">
+                <div className="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl space-y-3 mt-6">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">
                     Стан Системи
                   </span>
                   <div className="space-y-2 text-xs text-slate-400">
                     <div className="flex justify-between items-center">
                       <span>Kafka:</span>
-                      <span className="text-emerald-400 font-medium flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                      <span className="text-emerald-400 font-medium flex items-center gap-1 font-mono">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         0 lag
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>Qdrant:</span>
-                      <span className="text-blue-400 font-medium">98% Match</span>
+                      <span className="text-blue-400 font-medium font-mono">98% Match</span>
                     </div>
                   </div>
                 </div>
@@ -2051,12 +2005,12 @@ const renderDesktopLayout = () => {
             </div>
 
             {/* Collapsed control */}
-            <div className="p-3 border-t border-slate-800">
+            <div className="p-3 border-t border-slate-800/80">
               <button
                 onClick={() => setIsInspectorOpen(!isInspectorOpen)}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2"
+                className="w-full bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800/60 text-slate-300 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2"
               >
-                {!sidebarCollapsed && <LayoutDashboard className="w-4 h-4" />}
+                {!sidebarCollapsed && <LayoutDashboard className="w-4 h-4 text-slate-400" />}
                 {sidebarCollapsed
                   ? "INSP"
                   : isInspectorOpen
@@ -2065,6 +2019,10 @@ const renderDesktopLayout = () => {
               </button>
             </div>
           </aside>
+
+
+
+
           {/* MAIN WORKSPACE (Section 8) */}
           <main
             className="flex-1 overflow-y-auto flex flex-col bg-slate-950 relative"
@@ -2211,8 +2169,8 @@ const renderDesktopLayout = () => {
           <span>Node 20.x</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> System Synced</span>
-          <span>1024.768MB / 1.5GB Memory</span>
+          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Систему синхронізовано</span>
+          <span>1024.768МБ / 1.5ГБ Пам'яті</span>
         </div>
       </footer>
         ) : (
@@ -2223,8 +2181,8 @@ const renderDesktopLayout = () => {
           <span>Node 20.x</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> System Synced</span>
-          <span>1024.768MB / 1.5GB Memory</span>
+          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Систему синхронізовано</span>
+          <span>1024.768МБ / 1.5ГБ Пам'яті</span>
         </div>
       </footer>
         )}

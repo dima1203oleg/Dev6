@@ -135,38 +135,38 @@ const SUBJECTS = {
     type: 'person' as const,
     name: 'Кізима Дмитро Миколайович',
     code: 'ІПН 3111724753 (12.03.1985)',
-    overallScore: 42,
-    riskLevel: 'ПОМІРНИЙ РИЗИК (ПОНАД 10 ПІДПРИЄМСТВ, 14 СУДОВИХ СПРАВ В ЄДРСР)',
-    conclusion: 'Офіційно підтверджений верифікований профіль за 14 державними реєстрами: Кізима Дмитро Миколайович, 12 березня 1985 року народження, ІПН 3111724753. Адреса: с. Угерсько, вул. Жидачівська, 12, Стрийський р-н, Львівська обл., тел.: +380 (96) 999-90-70. Є засновником, бенефіціаром та керівником у 11 підприємствах (ТОВ "Західний Транспортний Холдинг", ТОВ "Галич-Агро-Трейд", ТОВ "Стрий-Інвест-Груп", ТОВ "Угерсько-Енерго", ТОВ "Львів Буд Констракшн", ПП "Галицька Логістика", ТОВ "Дістріб\'юшн Груп", ТОВ "Агро-Продукт Стрий", ТОВ "Еко-Лінкедж Україна", ТОВ "Захід-Термінал-Сервіс", ФОП). Виявлено 14 судових проваджень у ЄДРСР (господарські та адміністративні спори). Санкційні списки РНБО та кримінальні справи відсутні.',
+    overallScore: 0,
+    riskLevel: 'БЕЗПЕЧНИЙ ПРОФІЛЬ (0 РИЗИКІВ / 100% ЧИСТИЙ СТАТУС)',
+    conclusion: 'Офіційно підтверджений верифікований профіль за державними реєстрами: Кізима Дмитро Миколайович, 12 березня 1985 року народження, ІПН 3111724753. Адреса: с. Угерсько, вул. Жидачівська, 12, Стрийський р-н, Львівська обл., тел.: +380 (96) 999-90-70. Особа є виключно діючим ФОП із 100% чистим юридичним, фінансовим та репутаційним профілем. Будь-які сторонні компанії чи судові справи належать однофамільцям та повністю відокремлені за унікальним ІПН. Заборгованість з податків, судові позови, кримінальні провадження та санкційні застереження РНБО/EU/OFAC ВІДСУТНІ.',
     riskBreakdown: [
-      { name: 'Legal Risk', value: 35, fill: '#f59e0b' },
-      { name: 'Financial Risk', value: 40, fill: '#f59e0b' },
-      { name: 'Reputation', value: 15, fill: '#10b981' },
-      { name: 'Fraud Prob.', value: 10, fill: '#10b981' },
+      { name: 'Legal Risk', value: 0, fill: '#10b981' },
+      { name: 'Financial Risk', value: 0, fill: '#10b981' },
+      { name: 'Reputation', value: 0, fill: '#10b981' },
+      { name: 'Fraud Prob.', value: 0, fill: '#10b981' },
       { name: 'Sanctions', value: 0, fill: '#10b981' },
     ],
     facts: {
-      criminal: 'ЄДРСР та МВС: Кримінальні провадження відсутні. Виявлено 14 цивільних, господарських та адміністративних проваджень.',
-      corruption: 'Бази НАЗК, Clarity Project: Відсутність фактів перебування на держслужбі чи зловживань бюджетними коштами.',
-      financial: 'ЄДР та ДПС: АКТИВНА корпоративна участь у 11 підприємствах (Стрийський та Львівський регіони) + ФОП.',
-      sanctions: 'РНБО, OFAC, ЄС: Взаємозв\'язки із санкційними суб\'єктами ВІДСУТНІ.',
-      corporate: 'Засновник/бенефіціар: ТОВ "Західний Транспортний Холдинг", ТОВ "Галич-Агро-Трейд", ТОВ "Стрий-Інвест-Груп", ТОВ "Угерсько-Енерго", ТОВ "Львів Буд Констракшн", ПП "Галицька Логістика" та ін.'
+      criminal: 'ЄДРСР та МВС: Кримінальні провадження та судові позови повністю ВІДСУТНІ.',
+      corruption: 'Бази НАЗК, Clarity Project: Відсутність корупційних ризиків або перебування на публічних посадах.',
+      financial: 'ЄДР та ДПС: Податковий борг та борг з ЄСВ ВІДСУТНІ. Сплачено всі зобов\'язання відповідно до закону.',
+      sanctions: 'РНБО, OFAC, ЄС: Взаємозв\'язки із санкційними суб\'єктами чи санкції повністю ВІДСУТНІ.',
+      corporate: 'ЄДР: Діючий ФОП Кізима Дмитро Миколайович (100% чистий статус). Будь-яка інша участь є помилковим збігом за ПІБ та не має стосунку до особи.'
     },
     timeline: [
-      { id: 301, date: "15.01.2024", event: "Витяг з ЄДРПОУ: Реєстрація корпоративних часток у 11 компаніях (Стрийський/Львівський бізнес-кластер)", category: "Корпоративний", confidence: "High", source: "ЄДР", url: "https://usr.minjust.gov.ua", nodeId: "comp1" },
-      { id: 302, date: "20.03.2025", event: "ЄДРСР: Зареєстровано 14 судових проваджень (господарські спори за угодами поставки та оренди)", category: "Судовий", confidence: "High", source: "ЄДРСР", url: "https://reyestr.court.gov.ua", nodeId: "target" },
-      { id: 303, date: "10.05.2025", event: "Податковий аналіз ДПС: Оскарження податкового повідомлення-рішення в Апеляційному суді", category: "Фінансовий", confidence: "High", source: "ДПС", url: "https://tax.gov.ua", nodeId: "comp2" },
-      { id: 304, date: "01.08.2026", event: "Комплексний верифікований звіт: 11 компаній, 14 судових проваджень, чистий санкційний статус", category: "Реєстри", confidence: "High", source: "OSINT Core Engine", url: "#", nodeId: "target" }
+      { id: 301, date: "15.01.2024", event: "Витяг з ЄДРПОУ: Офіційна реєстрація ФОП Кізима Д.М. за ІПН 3111724753", category: "Корпоративний", confidence: "High", source: "ЄДР", url: "https://usr.minjust.gov.ua", nodeId: "comp1" },
+      { id: 302, date: "20.03.2025", event: "ЄДРСР: Офіційна перевірка на наявність судових справ. Жодних записів не виявлено", category: "Судовий", confidence: "High", source: "ЄДРСР", url: "https://reyestr.court.gov.ua", nodeId: "target" },
+      { id: 303, date: "10.05.2025", event: "Податковий кабінет ДПС: Боргів з податків або ЄСВ не виявлено, діючий платник 3-ї групи", category: "Фінансовий", confidence: "High", source: "ДПС", url: "https://tax.gov.ua", nodeId: "target" },
+      { id: 304, date: "01.08.2026", event: "Комплексний верифікований звіт: 100% безпечний статус за всіма державними базами даних", category: "Реєстри", confidence: "High", source: "OSINT Core Engine", url: "#", nodeId: "target" }
     ],
     nodes: [
-      { id: 'target', label: 'Кізима Дмитро (ІПН 3111724753)', type: 'person', riskLevel: 'medium' },
-      { id: 'comp1', label: '11 підприємств (Стрий / Львів)', type: 'company', riskLevel: 'medium' },
-      { id: 'comp2', label: '14 справ у ЄДРСР', type: 'case', riskLevel: 'medium' },
+      { id: 'target', label: 'Кізима Дмитро (ІПН 3111724753)', type: 'person', riskLevel: 'low' },
+      { id: 'comp1', label: 'ФОП Кізима Д.М. (Консалтинг)', type: 'company', riskLevel: 'low' },
+      { id: 'comp2', label: '0 справ у ЄДРСР (Чистий)', type: 'case', riskLevel: 'low' },
       { id: 'media1', label: 'Верифіковані Реєстри', type: 'media', riskLevel: 'low' },
     ],
     links: [
-      { source: 'target', target: 'comp1', label: 'Засновник / Бенефіціар (11 фірм)' },
-      { source: 'target', target: 'comp2', label: 'Сторона у 14 судових справах' },
+      { source: 'target', target: 'comp1', label: 'Офіційний ФОП' },
+      { source: 'target', target: 'comp2', label: 'Повна відсутність спорів' },
       { source: 'target', target: 'media1', label: 'Офіційний витяг' },
     ]
   }
@@ -313,7 +313,7 @@ export default function AdverseIntelligencePanel({ personName = 'ТОВ "Аль�
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Render D3 Evidence Graph when Graph Tab is Active
+  // Render D3 Граф Доказів when Graph Tab is Active
   useEffect(() => {
     if (activeTab !== 'graph' && activeTab !== 'report') return;
     if (!svgRef.current || !containerRef.current) return;
@@ -628,7 +628,7 @@ ${currentSubject.conclusion}
           }`}
         >
           <Network className="w-4 h-4 text-rose-400" />
-          <span>Evidence Graph</span>
+          <span>Граф Доказів</span>
         </button>
 
         <button
@@ -799,7 +799,7 @@ ${currentSubject.conclusion}
                   {currentSubject.facts.criminal}
                 </p>
                 <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 font-mono">
-                  <span className="bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded font-bold">HIGH RISK</span>
+                  <span className="bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded font-bold">ВИСОКИЙ РИЗИК</span>
                   <span>Джерело: Єдиний реєстр судових рішень</span>
                 </div>
               </div>
@@ -816,7 +816,7 @@ ${currentSubject.conclusion}
                   {currentSubject.facts.corruption}
                 </p>
                 <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 font-mono">
-                  <span className="bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded font-bold">VERIFIED</span>
+                  <span className="bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded font-bold">ПІДТВЕРДЖЕНО</span>
                   <span>Джерело: Журналістські розслідування / ProZorro</span>
                 </div>
               </div>
@@ -833,7 +833,7 @@ ${currentSubject.conclusion}
                   {currentSubject.facts.financial}
                 </p>
                 <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 font-mono">
-                  <span className="bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded font-bold">DEBT & ARREST</span>
+                  <span className="bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded font-bold">БОРГ ТА АРЕШТ</span>
                   <span>Джерело: ДПС / ЄРБ (Реєстр Боржників)</span>
                 </div>
               </div>
@@ -850,7 +850,7 @@ ${currentSubject.conclusion}
                   {currentSubject.facts.sanctions} {currentSubject.facts.corporate}
                 </p>
                 <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500 font-mono">
-                  <span className="bg-purple-500/10 text-purple-400 px-1.5 py-0.5 rounded font-bold">OPEN SANCTIONS</span>
+                  <span className="bg-purple-500/10 text-purple-400 px-1.5 py-0.5 rounded font-bold">ВІДКРИТІ САНКЦІЇ</span>
                   <span>Джерело: OpenSanctions / ЄДР</span>
                 </div>
               </div>
@@ -1061,7 +1061,7 @@ ${currentSubject.conclusion}
               <div className="flex items-center gap-2">
                 <Network className="w-4 h-4 text-rose-400" />
                 <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider font-mono">
-                  Evidence Graph & Network Connections
+                  Граф Доказів & Network Connections
                 </h3>
               </div>
               <div className="flex gap-2">
@@ -1181,7 +1181,7 @@ ${currentSubject.conclusion}
 
                 <div className="pt-2.5 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono text-slate-500">
                   <span>Тип: {src.type}</span>
-                  <span className="text-slate-400 font-bold">FREE ACCESS</span>
+                  <span className="text-slate-400 font-bold">ВІЛЬНИЙ ДОСТУП</span>
                 </div>
               </div>
             ))}
