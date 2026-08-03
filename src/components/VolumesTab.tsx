@@ -657,7 +657,7 @@ export default function VolumesTab() {
             <div className="w-[1px] h-8 bg-slate-850"></div>
             <div>
               <span className="text-slate-500 block">СПЕЦИФІКАЦІЇ</span>
-              <span className="text-amber-400 font-bold text-sm">100% Verified</span>
+              <span className="text-amber-400 font-bold text-sm">Статус заявлено в документації</span>
             </div>
           </div>
         </div>

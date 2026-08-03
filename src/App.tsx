@@ -79,7 +79,7 @@ function TabContent({
     case "dashboard":
       return <DashboardView onSelectTab={onSelectTab} onSelectEntity={() => onSelectTab("entity-profile")} />;
     case "procurement":
-      return <ProcurementAnalyticsTab tenderId={selectedTenderId} />;
+      return <ProcurementAnalyticsTab tenderId={selectedTenderId} onSelectTab={onSelectTab} />;
     case "open-data":
       return <OpenDataAnalyticsTab />;
     case "entity-profile":

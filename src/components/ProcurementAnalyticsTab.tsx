@@ -2,43 +2,34 @@ import React from "react";
 import DataState from "./DataState";
 import SourceBadge from "./SourceBadge";
 import { dataApi } from "../services/dataApi";
-import type { DataSourceError, ProcurementAnalytics, ProzorroRecentResponse, Provenance } from "../services/dataTypes";
+import type { ProcurementAnalytics, ProzorroRecentResponse } from "../services/dataTypes";
 import TenderDetailView from "./TenderDetailView";
+import { useData } from "../hooks/useData";
 
-const useLoad = <T,>(loader: () => Promise<import("../services/dataTypes").DataSourceResult<T>>) => {
-  const [state, setState] = React.useState<{
-    loading: boolean;
-    data?: T;
-    provenance?: Provenance;
-    error?: DataSourceError;
-  }>({ loading: true });
-  const reload = React.useCallback(async () => {
-    setState({ loading: true });
-    const result = await loader();
-    setState(
-      "error" in result
-        ? { loading: false, error: result.error }
-        : { loading: false, data: result.data, provenance: result.provenance },
-    );
-  }, [loader]);
-  React.useEffect(() => {
-    void reload();
-  }, [reload]);
-  return { ...state, reload };
-};
-
-export default function ProcurementAnalyticsTab({ tenderId }: { tenderId?: string }) {
-  return tenderId ? <TenderDetailView tenderId={tenderId} onBack={() => window.history.back()} /> : <ProcurementList />;
+export default function ProcurementAnalyticsTab({
+  tenderId,
+  onSelectTab,
+}: {
+  tenderId?: string;
+  onSelectTab?: (tab: string) => void;
+}) {
+  return tenderId ? (
+    <TenderDetailView tenderId={tenderId} onBack={() => onSelectTab?.("procurement")} />
+  ) : (
+    <ProcurementList onSelectTab={onSelectTab} />
+  );
 }
 
-function ProcurementList() {
+function ProcurementList({ onSelectTab }: { onSelectTab?: (tab: string) => void }) {
   const [query, setQuery] = React.useState("");
   const [submitted, setSubmitted] = React.useState("");
-  const recent = useLoad<ProzorroRecentResponse>(() => dataApi.procurementRecent(20));
-  const search = useLoad<ProcurementAnalytics>(() =>
-    submitted
-      ? dataApi.procurementSearch(submitted, 100)
-      : Promise.resolve({ ok: true as const, data: undefined, provenance: undefined as never }),
+  const recent = useData<ProzorroRecentResponse>(() => dataApi.procurementRecent(20), []);
+  const search = useData<ProcurementAnalytics>(
+    () =>
+      submitted
+        ? dataApi.procurementSearch(submitted, 100)
+        : Promise.resolve({ ok: true as const, data: undefined, provenance: undefined as never }),
+    [submitted],
   );
   return (
     <main className="space-y-6 p-4 md:p-8">
@@ -54,13 +45,18 @@ function ProcurementList() {
           </div>
           <div className="space-y-2">
             {recent.data?.records.map((tender) => (
-              <article key={tender.tenderID} className="rounded-lg border border-slate-800 p-3">
+              <button
+                type="button"
+                key={tender.tenderID}
+                onClick={() => onSelectTab?.(`tender:${tender.internalId ?? tender.tenderID}`)}
+                className="block w-full rounded-lg border border-slate-800 p-3 text-left hover:border-cyan-700"
+              >
                 <p className="text-sm text-white">{tender.title}</p>
                 <p className="text-xs text-slate-400">
                   {tender.status} · {tender.value?.amount?.toLocaleString("uk-UA") ?? "сума недоступна"}{" "}
                   {tender.value?.currency ?? ""}
                 </p>
-              </article>
+              </button>
             ))}
           </div>
           {recent.data && recent.data.unavailableRecords > 0 && (
@@ -142,9 +138,14 @@ function ProcurementList() {
                     <p className="text-sm text-slate-400">Точних збігів не знайдено.</p>
                   ) : (
                     search.data.exactEdrpouMatches.map((tender) => (
-                      <p key={tender.tenderID} className="text-sm text-white">
+                      <button
+                        type="button"
+                        key={tender.tenderID}
+                        onClick={() => onSelectTab?.(`tender:${tender.internalId ?? tender.tenderID}`)}
+                        className="block text-left text-sm text-white hover:text-cyan-300"
+                      >
                         {tender.tenderID}: {tender.title}
-                      </p>
+                      </button>
                     ))
                   )}
                 </div>
@@ -152,14 +153,19 @@ function ProcurementList() {
                   <h3 className="mb-2 text-xs text-slate-500">Повернуті тендери</h3>
                   <div className="space-y-2">
                     {search.data.records.map((tender) => (
-                      <article key={tender.tenderID} className="rounded-lg border border-slate-800 p-3">
+                      <button
+                        type="button"
+                        key={tender.tenderID}
+                        onClick={() => onSelectTab?.(`tender:${tender.internalId ?? tender.tenderID}`)}
+                        className="block w-full rounded-lg border border-slate-800 p-3 text-left hover:border-cyan-700"
+                      >
                         <p className="text-sm text-white">{tender.title}</p>
                         <p className="text-xs text-slate-400">
                           {tender.tenderID} · {tender.status} ·{" "}
                           {tender.value?.amount?.toLocaleString("uk-UA") ?? "сума недоступна"}{" "}
                           {tender.value?.currency ?? ""} · {tender.procuringEntity?.name ?? "замовник недоступний"}
                         </p>
-                      </article>
+                      </button>
                     ))}
                   </div>
                 </div>

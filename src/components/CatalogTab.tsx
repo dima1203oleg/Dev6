@@ -365,13 +365,15 @@ export default function CatalogTab() {
 
                         {/* Dynamic Score Indicator */}
                         <div className="text-right">
-                          <span className="text-xs text-slate-500 uppercase font-mono block">Сумісність</span>
+                          <span className="text-xs text-slate-500 uppercase font-mono block">
+                            Орієнтовна сумісність
+                          </span>
                           <span
                             className={`text-base font-mono font-bold ${dynamicScore >= 90 ? "text-emerald-400" : dynamicScore >= 80 ? "text-amber-400" : "text-red-400"}`}
                           >
                             {dynamicScore}
                           </span>
-                          <span className="text-xs text-slate-600 font-mono">/100</span>
+                          <span className="text-xs text-slate-600 font-mono">/100 · ілюстративно</span>
                         </div>
                       </div>
 
@@ -440,11 +442,11 @@ export default function CatalogTab() {
                   </h2>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs text-slate-500 block font-mono">Сум. (з урахуванням ваг)</span>
+                  <span className="text-xs text-slate-500 block font-mono">Орієнтовна сума (ілюстративно)</span>
                   <span className="text-2xl font-mono font-bold text-blue-400">
                     {getDynamicScore(selectedSolution)}
                   </span>
-                  <span className="text-xs text-slate-600 font-mono"> /100</span>
+                  <span className="text-xs text-slate-600 font-mono"> /100 · ілюстративно</span>
                 </div>
               </div>
 

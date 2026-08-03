@@ -4,40 +4,13 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import DataState from "./DataState";
 import SourceBadge from "./SourceBadge";
 import { dataApi } from "../services/dataApi";
-import type { CryptoSpot, DataSourceError, FxAnalytics, NbuRate, Provenance } from "../services/dataTypes";
-import type { DataSourceResult } from "../services/dataTypes";
+import type { CryptoSpot, FxAnalytics, NbuRate, Provenance } from "../services/dataTypes";
+import { useData } from "../hooks/useData";
 
 interface DashboardViewProps {
   onSelectTab: (tabId: string) => void;
   onSelectEntity: (entityId: string) => void;
 }
-
-interface AsyncData<T> {
-  loading: boolean;
-  data?: T;
-  provenance?: Provenance;
-  error?: DataSourceError;
-}
-
-const useData = <T,>(
-  loader: () => Promise<DataSourceResult<T>>,
-  dependencies: React.DependencyList,
-): AsyncData<T> & { reload: () => Promise<void> } => {
-  const [state, setState] = React.useState<AsyncData<T>>({ loading: true });
-  const load = React.useCallback(async () => {
-    setState({ loading: true });
-    const result = await loader();
-    setState(
-      "error" in result
-        ? { loading: false, error: result.error }
-        : { loading: false, data: result.data, provenance: result.provenance },
-    );
-  }, dependencies);
-  React.useEffect(() => {
-    void load();
-  }, [load]);
-  return { ...state, reload: load };
-};
 
 const formatNumber = (value: number | null | undefined, digits = 2): string =>
   typeof value === "number" ? value.toLocaleString("uk-UA", { maximumFractionDigits: digits }) : "—";
@@ -249,7 +222,7 @@ export default function DashboardView({ onSelectTab }: DashboardViewProps) {
                   <button
                     key={tender.tenderID}
                     type="button"
-                    onClick={() => onSelectTab(`tender:${tender.tenderID}`)}
+                    onClick={() => onSelectTab(`tender:${tender.internalId ?? tender.tenderID}`)}
                     className="block w-full rounded-lg border border-slate-800 p-3 text-left hover:border-cyan-700"
                   >
                     <p className="text-sm text-white">{tender.title}</p>

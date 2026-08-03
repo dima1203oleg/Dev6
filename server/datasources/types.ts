@@ -79,6 +79,7 @@ export interface CkanSearchResponse {
 }
 
 export interface ProzorroTenderSummary {
+  internalId?: string;
   tenderID: string;
   title: string;
   status: string;
@@ -142,6 +143,7 @@ export interface OpenDataSearchData {
 }
 
 export interface ProzorroTenderDetail {
+  internalId?: string;
   tenderID: string;
   title?: string;
   status?: string;

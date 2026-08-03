@@ -21,6 +21,7 @@ const parseTender = (value: unknown): ProzorroTenderSummary => {
     throw new Error("Prozorro tender is missing required fields");
   }
   return {
+    internalId: typeof item.id === "string" ? item.id : undefined,
     tenderID: item.tenderID,
     title: item.title,
     status: item.status,
@@ -172,6 +173,7 @@ export const recent = async (rows: number): Promise<DataSourceResult<ProzorroRec
           if (typeof item.title === "string" && typeof item.status === "string") {
             records.push({
               tenderID: item.tenderID,
+              internalId: item.internalId,
               title: item.title,
               status: item.status,
               value: item.value,
@@ -221,6 +223,23 @@ export const recent = async (rows: number): Promise<DataSourceResult<ProzorroRec
 };
 
 export const detail = async (id: string): Promise<DataSourceResult<ProzorroTenderDetail>> => {
+  if (id.startsWith("UA-")) {
+    const resolved = await search(id, 20);
+    if ("error" in resolved) return { ok: false, error: resolved.error };
+    const match = resolved.data.data.find((tender) => tender.tenderID === id && tender.internalId);
+    if (!match?.internalId) {
+      return {
+        ok: false,
+        error: {
+          code: "tender_id_unresolved",
+          message: `Не вдалося знайти внутрішній ідентифікатор тендера ${id}`,
+          sourceUrl: SEARCH_URL,
+          attemptedAt: new Date().toISOString(),
+        },
+      };
+    }
+    return detail(match.internalId);
+  }
   const sourceUrl = `${RECENT_URL}/${encodeURIComponent(id)}`;
   const cached = detailCache.read(id);
   if (cached && !cached.stale) {
@@ -254,7 +273,14 @@ export const detail = async (id: string): Promise<DataSourceResult<ProzorroTende
     if (typeof parsed.title !== "string" || typeof parsed.status !== "string") {
       throw new Error("Prozorro detail is missing title or status");
     }
-    const data = { ...(tender as Record<string, unknown>), ...parsed } as ProzorroTenderDetail;
+    const data = {
+      ...(tender as Record<string, unknown>),
+      ...parsed,
+      internalId:
+        typeof (tender as Record<string, unknown>).id === "string"
+          ? ((tender as Record<string, unknown>).id as string)
+          : id,
+    } as ProzorroTenderDetail;
     detailCache.write(id, data, response.fetchedAt);
     return {
       ok: true,

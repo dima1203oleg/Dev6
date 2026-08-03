@@ -102,7 +102,7 @@ export default function EntityProfileTab({
                       <button
                         type="button"
                         key={tender.tenderID}
-                        onClick={() => onSelectTab?.(`tender:${tender.tenderID}`)}
+                        onClick={() => onSelectTab?.(`tender:${tender.internalId ?? tender.tenderID}`)}
                         className="block w-full rounded-lg border border-slate-800 p-3 text-left hover:border-cyan-700"
                       >
                         <p className="text-sm text-white">{tender.title}</p>

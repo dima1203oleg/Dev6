@@ -397,7 +397,7 @@ export default function RoadmapTab() {
                 <div className="bg-teal-500/5 border border-teal-500/15 p-2.5 rounded-lg text-center">
                   <span className="text-xs text-slate-500 uppercase block">Оренда заліза (місяць)</span>
                   <span className="text-xs font-mono font-bold text-teal-400">
-                    ~ ${gpuCalculations.cost.toLocaleString()} / міс
+                    Орієнтовно ~ ${gpuCalculations.cost.toLocaleString()} / міс (планова оцінка)
                   </span>
                 </div>
               ) : (
