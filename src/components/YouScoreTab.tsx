@@ -1,5 +1,5 @@
 import React from "react";
-import UnavailableSurface from "./UnavailableSurface";
+import KeyedLookupSurface from "./KeyedLookupSurface";
 export default function YouScoreTab(_props: Record<string, unknown>) {
-  return <UnavailableSurface title="YouScore" source="YOUSCORE_API_KEY" />;
+  return <KeyedLookupSurface title="YouScore / YouControl" envVar="YOUSCORE_API_KEY" endpoint="/api/youscore/query" />;
 }

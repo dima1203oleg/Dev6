@@ -6,7 +6,7 @@ import * as ckan from "../datasources/ckan";
 import * as prozorro from "../datasources/prozorro";
 import * as wikipedia from "../datasources/wikipedia";
 import { DataSourceResult } from "../datasources/types";
-import { DataSourceError, OpenDataSearchData } from "../datasources/types";
+import { DataSourceError, EntityProfileData, OpenDataSearchData } from "../datasources/types";
 import { TtlCache } from "../datasources/cache";
 
 const router = Router();
@@ -241,6 +241,96 @@ router.get("/procurement/search", async (req: Request, res: Response) => {
     provenance: result.provenance,
     dependencies: rates.ok ? [rates.provenance] : [{ source: "nbu", error: resultError(rates).error }],
   });
+});
+
+router.get("/entity/profile", async (req: Request, res: Response) => {
+  const query = typeof req.query.q === "string" ? req.query.q.trim() : "";
+  if (!query) {
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_query",
+        message: "q is required",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
+    return;
+  }
+  const [procurement, openData, wiki, rates] = await Promise.all([
+    prozorro.search(query, 100),
+    ckan.search(query, 50),
+    wikipedia.search(query, 5),
+    getRates(),
+  ]);
+  const profile: EntityProfileData = {
+    query,
+    procurement: !procurement.ok
+      ? { ok: false, error: resultError(procurement).error }
+      : {
+          ok: true,
+          data: (() => {
+            const analytics = calculateProcurementAnalytics(query, procurement.data, rates.ok ? rates.data : []);
+            const dates = procurement.data.data
+              .map((record) => record.dateCreated ?? record.dateModified)
+              .filter((date): date is string => Boolean(date))
+              .sort();
+            const counterpartCounts = procurement.data.data.reduce<Record<string, number>>((counts, record) => {
+              const name = record.procuringEntity?.name;
+              if (name) counts[name] = (counts[name] ?? 0) + 1;
+              return counts;
+            }, {});
+            return {
+              analytics,
+              firstTenderDate: dates[0] ?? null,
+              lastTenderDate: dates.at(-1) ?? null,
+              topCounterpartEntities: Object.entries(counterpartCounts)
+                .map(([name, count]) => ({ name, count }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 10),
+            };
+          })(),
+          provenance: procurement.provenance,
+        },
+    openData: !openData.ok
+      ? { ok: false, error: resultError(openData).error }
+      : {
+          ok: true,
+          data: {
+            query,
+            total: openData.data.result.count,
+            datasets: openData.data.result.results.map((dataset) => ({
+              id: dataset.id,
+              title: dataset.title,
+              organizationTitle: dataset.organization?.title,
+              metadataModified: dataset.metadata_modified,
+              resourceFormats: dataset.resources
+                .map((resource) => resource.format)
+                .filter((format): format is string => Boolean(format)),
+              url: `https://data.gov.ua/dataset/${encodeURIComponent(dataset.name)}`,
+              resources: dataset.resources.map((resource) => ({
+                id: resource.id,
+                name: resource.name,
+                format: resource.format,
+                url: resource.url,
+                datastoreActive: resource.datastore_active,
+              })),
+            })),
+          },
+          provenance: openData.provenance,
+        },
+    wikipedia: !wiki.ok
+      ? { ok: false, error: resultError(wiki).error }
+      : { ok: true, data: wiki.data, provenance: wiki.provenance },
+  };
+  const provenance = !procurement.ok
+    ? !openData.ok
+      ? !wiki.ok
+        ? undefined
+        : wiki.provenance
+      : openData.provenance
+    : procurement.provenance;
+  res.json({ ok: true, data: profile, ...(provenance ? { provenance } : {}) });
 });
 
 router.get("/procurement/tender/:id", async (req: Request, res: Response) => {

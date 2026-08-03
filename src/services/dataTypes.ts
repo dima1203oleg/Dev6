@@ -1,5 +1,6 @@
 export type {
   CkanDatastoreResponse,
+  EntityProfileData,
   CryptoSpot,
   DataSourceDependency,
   DataSourceError,

@@ -19,7 +19,6 @@ import {
   BookOpen,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import SkeManifesto from "./SkeManifesto";
 
 interface PredefinedQA {
   question: string;
@@ -213,9 +212,7 @@ export default function AdvisorTab() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-          >
-            <SkeManifesto />
-          </motion.div>
+          ></motion.div>
         ) : (
           <motion.div
             key="architecture-tab"

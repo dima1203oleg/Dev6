@@ -1,6 +1,7 @@
 import type {
   CryptoSpot,
   CkanDatastoreResponse,
+  EntityProfileData,
   DataSourceResult,
   FxAnalytics,
   NbuRate,
@@ -32,6 +33,7 @@ export const dataApi = {
     request<OpenDataSearchData>(`/opendata/search?q=${encodeURIComponent(query)}&rows=${rows}`),
   openDataDatastore: (resourceId: string) =>
     request<CkanDatastoreResponse>(`/opendata/datastore/${encodeURIComponent(resourceId)}`),
+  entityProfile: (query: string) => request<EntityProfileData>(`/entity/profile?q=${encodeURIComponent(query)}`),
   procurementSearch: (query: string, rows = 20) =>
     request<ProcurementAnalytics>(`/procurement/search?q=${encodeURIComponent(query)}&rows=${rows}`),
   procurementRecent: (rows = 20) => request<ProzorroRecentResponse>(`/procurement/recent?rows=${rows}`),

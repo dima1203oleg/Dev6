@@ -11,33 +11,24 @@ import GapAnalysisTab from "./components/GapAnalysisTab";
 import RoadmapTab from "./components/RoadmapTab";
 import VolumesTab from "./components/VolumesTab";
 import AdvisorTab from "./components/AdvisorTab";
-import PersonProfiler from "./components/PersonProfiler";
-import DataIngestionTab from "./components/DataIngestionTab";
 import InspectorPanel from "./components/InspectorPanel";
-import LiveAnalyticalCenter from "./components/LiveAnalyticalCenter";
-import AdminBackOffice from "./components/AdminBackOffice";
-import AutonomousFactory from "./components/AutonomousFactory";
-import AdverseIntelligenceTab from "./components/AdverseIntelligenceTab";
 import AuditLogViewer from "./components/AuditLogViewer";
 import ProcurementAnalyticsTab from "./components/ProcurementAnalyticsTab";
 import OpenDataAnalyticsTab from "./components/OpenDataAnalyticsTab";
+import EntityProfileTab from "./components/EntityProfileTab";
+import SourceStatusTab from "./components/SourceStatusTab";
 
 // Dynamic Code Splitting via React.lazy() for Client Performance
-const OsintWorkbench = React.lazy(() => import("./components/OsintWorkbench"));
 const DashboardView = React.lazy(() => import("./components/DashboardView"));
 const MediaForensicsTab = React.lazy(() =>
   import("./components/MediaForensicsTab").then((m) => ({ default: m.MediaForensicsTab })),
 );
-const PredatorControlPlane = React.lazy(() => import("./components/PredatorControlPlane"));
 const InvestigationWorkspaceTab = React.lazy(() => import("./components/InvestigationWorkspaceTab"));
 const MapsTab = React.lazy(() => import("./components/MapsTab"));
 const CKANExplorerTab = React.lazy(() => import("./components/CKANExplorerTab"));
-const InvestigationSandbox = React.lazy(() => import("./components/InvestigationSandbox"));
 const MasterSpecificationViewer = React.lazy(() => import("./components/MasterSpecificationViewer"));
 const YouScoreTab = React.lazy(() => import("./components/YouScoreTab"));
 const OpendatabotTab = React.lazy(() => import("./components/OpendatabotTab"));
-const SearchPortal = React.lazy(() => import("./components/SearchPortal"));
-const DossierView = React.lazy(() => import("./components/DossierView"));
 import { VoiceCall } from "./components/VoiceCall";
 import { ToastProvider } from "./components/ToastProvider";
 import { OSINT_ENTITIES, OsintEntity, getOrCreateEntityForQuery, generateDynamicEntity } from "./types/osint";
@@ -119,11 +110,13 @@ type TabId =
   | "predator-intel"
   | "ckan-explorer"
   | "procurement"
-  | "open-data";
+  | "open-data"
+  | "entity-profile"
+  | "source-status";
 
 export default function App() {
   const [ecosystem, setEcosystem] = useState<"user" | "admin">("user");
-  const [activeTab, setActiveTab] = useState<TabId>("predator-intel");
+  const [activeTab, setActiveTab] = useState<TabId>("dashboard");
   const [activeDossier, setActiveDossier] = useState<any>(null);
   const [selectedTenderId, setSelectedTenderId] = useState<string | undefined>();
   const [selectedScenario, setSelectedScenario] = useState<string>("business");
@@ -957,21 +950,6 @@ export default function App() {
       >
         {(() => {
           switch (activeTab) {
-            case "live-analytical-center":
-              return (
-                <LiveAnalyticalCenter
-                  selectedEntity={selectedEntity}
-                  onSelectEntityGlobal={(ent) => {
-                    setSelectedEntity(ent);
-                    setSelectedTool(null);
-                    setSelectedNode(null);
-                  }}
-                  selectedScenario={selectedScenario}
-                  onSelectScenario={setSelectedScenario}
-                />
-              );
-            case "admin-back-office":
-              return <AdminBackOffice />;
             case "dashboard":
               return (
                 <DashboardView
@@ -981,33 +959,15 @@ export default function App() {
                       setActiveTab("procurement");
                       return;
                     }
-                    if (tabId === "osint") setActiveTab("live-analytical-center");
+                    if (tabId === "osint") setActiveTab("entity-profile");
                     else setActiveTab(tabId as TabId);
                   }}
                   onSelectEntity={(entId) => {
                     selectEntityById(entId);
-                    setActiveTab("live-analytical-center");
+                    setActiveTab("entity-profile");
                   }}
                 />
               );
-            case "osint":
-              return (
-                <OsintWorkbench
-                  selectedEntity={selectedEntity}
-                  onSelectEntityForInspector={(ent) => {
-                    setSelectedEntity(ent);
-                    setSelectedTool(null);
-                    setSelectedNode(null);
-                    setIsInspectorOpen(true);
-                  }}
-                />
-              );
-            case "person-profiler":
-              return <PersonProfiler />;
-            case "adverse":
-              return <PersonProfiler initialTab="adverse" />;
-            case "sandbox":
-              return <InvestigationSandbox />;
             case "maps":
               return (
                 <MapsTab
@@ -1015,7 +975,7 @@ export default function App() {
                     setSelectedEntity(ent);
                     setSelectedTool(null);
                     setSelectedNode(null);
-                    setActiveTab("live-analytical-center");
+                    setActiveTab("entity-profile");
                   }}
                 />
               );
@@ -1035,28 +995,31 @@ export default function App() {
               return <AdvisorTab />;
             case "media-forensics":
               return <MediaForensicsTab />;
-            case "data-ingestion":
-              return <DataIngestionTab />;
             case "ckan-explorer":
               return <CKANExplorerTab />;
             case "procurement":
               return <ProcurementAnalyticsTab tenderId={selectedTenderId} />;
             case "open-data":
               return <OpenDataAnalyticsTab />;
+            case "entity-profile":
+              return (
+                <EntityProfileTab
+                  onSelectTab={(tab) => {
+                    if (tab.startsWith("tender:")) {
+                      setSelectedTenderId(tab.slice("tender:".length));
+                      setActiveTab("procurement");
+                    }
+                  }}
+                />
+              );
+            case "source-status":
+              return <SourceStatusTab />;
             case "youscore":
               return <YouScoreTab />;
             case "opendatabot":
               return <OpendatabotTab />;
             case "predator-intel":
-              return activeDossier ? (
-                <DossierView dossier={activeDossier} onBack={() => setActiveDossier(null)} />
-              ) : (
-                <SearchPortal onDossierGenerated={(dossier) => setActiveDossier(dossier)} />
-              );
-            case "autonomous-factory":
-              return <AutonomousFactory />;
-            case "predator-control":
-              return <PredatorControlPlane />;
+              return <EntityProfileTab />;
             case "investigation-workspace":
               return <InvestigationWorkspaceTab />;
             case "audit-log":

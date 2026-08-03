@@ -81,4 +81,30 @@ describe("data routes", () => {
     expect(recent.status).toBe(200);
     expect(recent.body.data).toEqual({ records: [], unavailableRecords: 0 });
   });
+
+  it("returns a partial entity profile when one source fails", async () => {
+    const prozorro = await import("../datasources/prozorro");
+    vi.mocked(prozorro.search).mockResolvedValueOnce({
+      ok: false,
+      error: {
+        code: "timeout",
+        message: "Prozorro timeout",
+        sourceUrl: "https://prozorro.gov.ua",
+        attemptedAt: "2026-08-03T00:00:00.000Z",
+      },
+    });
+    const { app } = await import("../../server");
+    const response = await request(app).get("/api/v1/data/entity/profile?q=Тестова компанія");
+    expect(response.status).toBe(200);
+    expect(response.body.data.procurement).toMatchObject({ ok: false, error: { code: "timeout" } });
+    expect(response.body.data.openData.ok).toBe(true);
+    expect(response.body.data.wikipedia.ok).toBe(true);
+  });
+
+  it("rejects an entity profile without a query", async () => {
+    const { app } = await import("../../server");
+    const response = await request(app).get("/api/v1/data/entity/profile");
+    expect(response.status).toBe(400);
+    expect(response.body.error.code).toBe("invalid_query");
+  });
 });

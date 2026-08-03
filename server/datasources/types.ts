@@ -120,6 +120,21 @@ export interface CkanDatastoreResponse {
   records: Array<Record<string, unknown>>;
 }
 
+export type EntityProfileSource<T> =
+  { ok: true; data: T; provenance: Provenance } | { ok: false; error: DataSourceError };
+
+export interface EntityProfileData {
+  query: string;
+  procurement: EntityProfileSource<{
+    analytics: import("../analytics/procurement").ProcurementAnalytics;
+    firstTenderDate: string | null;
+    lastTenderDate: string | null;
+    topCounterpartEntities: Array<{ name: string; count: number }>;
+  }>;
+  openData: EntityProfileSource<OpenDataSearchData>;
+  wikipedia: EntityProfileSource<WikipediaSearchItem[]>;
+}
+
 export interface OpenDataSearchData {
   query: string;
   total: number;
