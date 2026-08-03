@@ -25,7 +25,9 @@ import OpenDataAnalyticsTab from "./components/OpenDataAnalyticsTab";
 // Dynamic Code Splitting via React.lazy() for Client Performance
 const OsintWorkbench = React.lazy(() => import("./components/OsintWorkbench"));
 const DashboardView = React.lazy(() => import("./components/DashboardView"));
-const MediaForensicsTab = React.lazy(() => import("./components/MediaForensicsTab").then(m => ({ default: m.MediaForensicsTab })));
+const MediaForensicsTab = React.lazy(() =>
+  import("./components/MediaForensicsTab").then((m) => ({ default: m.MediaForensicsTab })),
+);
 const PredatorControlPlane = React.lazy(() => import("./components/PredatorControlPlane"));
 const InvestigationWorkspaceTab = React.lazy(() => import("./components/InvestigationWorkspaceTab"));
 const MapsTab = React.lazy(() => import("./components/MapsTab"));
@@ -38,11 +40,12 @@ const SearchPortal = React.lazy(() => import("./components/SearchPortal"));
 const DossierView = React.lazy(() => import("./components/DossierView"));
 import { VoiceCall } from "./components/VoiceCall";
 import { ToastProvider } from "./components/ToastProvider";
-import { OSINT_ENTITIES, OsintEntity, getOrCreateEntityForQuery, generateDynamicEntity } from "./osintData";
+import { OSINT_ENTITIES, OsintEntity, getOrCreateEntityForQuery, generateDynamicEntity } from "./types/osint";
 import { SOLUTIONS } from "./data";
 import {
   Layers,
-  ShieldCheck, Shield,
+  ShieldCheck,
+  Shield,
   Network,
   Wrench,
   Calendar,
@@ -79,7 +82,10 @@ import {
   Users,
   Map,
   Mic,
-  UserCheck, Tablet, LayoutDashboard} from "lucide-react";
+  UserCheck,
+  Tablet,
+  LayoutDashboard,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { LiveChatBot } from "./components/LiveChatBot";
 import { AuthStatus } from "./components/AuthStatus";
@@ -119,6 +125,7 @@ export default function App() {
   const [ecosystem, setEcosystem] = useState<"user" | "admin">("user");
   const [activeTab, setActiveTab] = useState<TabId>("predator-intel");
   const [activeDossier, setActiveDossier] = useState<any>(null);
+  const [selectedTenderId, setSelectedTenderId] = useState<string | undefined>();
   const [selectedScenario, setSelectedScenario] = useState<string>("business");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isInspectorOpen, setIsInspectorOpen] = useState(true);
@@ -152,23 +159,15 @@ export default function App() {
   const [isIphoneMuted, setIsIphoneMuted] = useState(false);
   const [iphoneVolume, setIphoneVolume] = useState(65);
   const [showVolumeHUD, setShowVolumeHUD] = useState(false);
-  const [dynamicIslandState, setDynamicIslandState] = useState<
-    "normal" | "expanded" | "mute-alert" | "unmute-alert"
-  >("normal");
+  const [dynamicIslandState, setDynamicIslandState] = useState<"normal" | "expanded" | "mute-alert" | "unmute-alert">(
+    "normal",
+  );
   const [volumeTimer, setVolumeTimer] = useState<any>(null);
   const [lockscreenDate, setLockscreenDate] = useState("Четвер, 16 липня");
 
   // Dynamic date calculation for Lock Screen
   useEffect(() => {
-    const days = [
-      "Неділя",
-      "Понеділок",
-      "Вівторок",
-      "Середа",
-      "Четвер",
-      "П'ятниця",
-      "Субота",
-    ];
+    const days = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"];
     const months = [
       "січня",
       "лютого",
@@ -230,8 +229,8 @@ export default function App() {
       setIphoneTime(`${hrs}:${mins}`);
     };
     updateTime();
-    const interval = setInterval(updateTime, 10000);
-    return () => clearInterval(interval);
+    const timeout = window.setTimeout(updateTime, 10000);
+    return () => window.clearTimeout(timeout);
   }, []);
 
   // Detect real narrow-screen mobile device on load and resize
@@ -239,8 +238,8 @@ export default function App() {
     const handleResize = () => {
       const isMobileUA = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const isMobileSize = window.innerWidth < 768 || isMobileUA;
-      const isTabletSize = !isMobileSize && (window.innerWidth >= 768 && window.innerWidth < 1024);
-      
+      const isTabletSize = !isMobileSize && window.innerWidth >= 768 && window.innerWidth < 1024;
+
       setIsRealMobile(isMobileSize);
       if (isMobileSize) {
         setDeviceMode("iphone");
@@ -260,9 +259,7 @@ export default function App() {
 
   // Inspector contents
   const [entitiesList, setEntitiesList] = useState<OsintEntity[]>(OSINT_ENTITIES);
-  const [selectedEntity, setSelectedEntity] = useState<OsintEntity | null>(
-    OSINT_ENTITIES[0],
-  );
+  const [selectedEntity, setSelectedEntity] = useState<OsintEntity | null>(OSINT_ENTITIES[0]);
   const [selectedTool, setSelectedTool] = useState<any | null>(SOLUTIONS[0]);
   const [selectedNode, setSelectedNode] = useState<any | null>({
     id: "core_api",
@@ -296,9 +293,7 @@ export default function App() {
 
   // Microsoft TTS Engine state (Web Speech Synthesis Integration)
   const [isTtsEnabled, setIsTtsEnabled] = useState(true);
-  const [selectedTtsVoice, setSelectedTtsVoice] = useState(
-    "Microsoft Pavel (UA)",
-  );
+  const [selectedTtsVoice, setSelectedTtsVoice] = useState("Microsoft Pavel (UA)");
   const [availableVoices, setAvailableVoices] = useState<any[]>([]);
 
   // Initialize and load Speech Synthesis voices natively supporting Microsoft cloud-inspired voices
@@ -354,24 +349,14 @@ export default function App() {
 
       if (selectedTtsVoice.includes("Irina")) {
         matchedVoice =
-          voices.find(
-            (v) => v.lang.startsWith("uk") && v.name.includes("Irina"),
-          ) ||
-          voices.find(
-            (v) => v.lang.startsWith("uk") && v.name.includes("Microsoft"),
-          );
+          voices.find((v) => v.lang.startsWith("uk") && v.name.includes("Irina")) ||
+          voices.find((v) => v.lang.startsWith("uk") && v.name.includes("Microsoft"));
       } else if (selectedTtsVoice.includes("Pavel")) {
         matchedVoice =
-          voices.find(
-            (v) => v.lang.startsWith("uk") && v.name.includes("Pavel"),
-          ) ||
-          voices.find(
-            (v) => v.lang.startsWith("uk") && v.name.includes("Microsoft"),
-          );
+          voices.find((v) => v.lang.startsWith("uk") && v.name.includes("Pavel")) ||
+          voices.find((v) => v.lang.startsWith("uk") && v.name.includes("Microsoft"));
       } else {
-        matchedVoice = voices.find(
-          (v) => v.lang.startsWith("uk") && v.name.includes("Microsoft"),
-        );
+        matchedVoice = voices.find((v) => v.lang.startsWith("uk") && v.name.includes("Microsoft"));
       }
 
       if (!matchedVoice) {
@@ -403,47 +388,28 @@ export default function App() {
     }, 4000);
 
     // 1. Navigation commands
-    if (
-      lower.includes("дашборд") ||
-      lower.includes("dashboard") ||
-      lower.includes("панель")
-    ) {
+    if (lower.includes("дашборд") || lower.includes("dashboard") || lower.includes("панель")) {
       setActiveTab("dashboard");
       const msg = `Перехід на інтерактивний Дашборд`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("мапа") ||
-      lower.includes("карта") ||
-      lower.includes("maps") ||
-      lower.includes("map")
-    ) {
+    if (lower.includes("мапа") || lower.includes("карта") || lower.includes("maps") || lower.includes("map")) {
       setActiveTab("maps");
       const msg = `Перехід на інтерактивну карту`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("пошук") ||
-      lower.includes("search") ||
-      lower.includes("осінт") ||
-      lower.includes("osint")
-    ) {
+    if (lower.includes("пошук") || lower.includes("search") || lower.includes("осінт") || lower.includes("osint")) {
       setActiveTab("osint");
       const msg = `Перехід на пошуковий робочий стіл OSINT`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("ядро") ||
-      lower.includes("центр") ||
-      lower.includes("live") ||
-      lower.includes("шi")
-    ) {
+    if (lower.includes("ядро") || lower.includes("центр") || lower.includes("live") || lower.includes("шi")) {
       setActiveTab("live-analytical-center");
       const msg = `Перехід до живого аналітичного ядра NEXUS`;
       setVoiceFeedback(msg);
@@ -488,44 +454,28 @@ export default function App() {
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("прогалини") ||
-      lower.includes("ризики") ||
-      lower.includes("gap")
-    ) {
+    if (lower.includes("прогалини") || lower.includes("ризики") || lower.includes("gap")) {
       setActiveTab("gap");
       const msg = `Завантаження аналізу прогалин та ризиків комплаєнсу`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("дорожня карта") ||
-      lower.includes("план") ||
-      lower.includes("roadmap")
-    ) {
+    if (lower.includes("дорожня карта") || lower.includes("план") || lower.includes("roadmap")) {
       setActiveTab("roadmap");
       const msg = `Показ дорожньої карти впровадження системи`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("томи") ||
-      lower.includes("регламенти") ||
-      lower.includes("volumes")
-    ) {
+    if (lower.includes("томи") || lower.includes("регламенти") || lower.includes("volumes")) {
       setActiveTab("volumes");
       const msg = `Відкриття електронних томів технічного завдання`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("архітектор") ||
-      lower.includes("радник") ||
-      lower.includes("advisor")
-    ) {
+    if (lower.includes("архітектор") || lower.includes("радник") || lower.includes("advisor")) {
       setActiveTab("advisor");
       const msg = `Підключення до радника ШІ архітектора`;
       setVoiceFeedback(msg);
@@ -546,34 +496,21 @@ export default function App() {
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("беззвучний") ||
-      lower.includes("звук") ||
-      lower.includes("mute") ||
-      lower.includes("unmute")
-    ) {
+    if (lower.includes("беззвучний") || lower.includes("звук") || lower.includes("mute") || lower.includes("unmute")) {
       handleActionButton();
       const msg = `Перемикання звукового режиму`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("гучніше") ||
-      lower.includes("гучність плюс") ||
-      lower.includes("volume up")
-    ) {
+    if (lower.includes("гучніше") || lower.includes("гучність плюс") || lower.includes("volume up")) {
       adjustVolume(10);
       const msg = `Гучність збільшено`;
       setVoiceFeedback(msg);
       speakText(msg);
       return;
     }
-    if (
-      lower.includes("тихіше") ||
-      lower.includes("гучність мінус") ||
-      lower.includes("volume down")
-    ) {
+    if (lower.includes("тихіше") || lower.includes("гучність мінус") || lower.includes("volume down")) {
       adjustVolume(-10);
       const msg = `Гучність зменшено`;
       setVoiceFeedback(msg);
@@ -610,9 +547,7 @@ export default function App() {
       const matched =
         (window as any).OSINT_ENTITIES ||
         (typeof OSINT_ENTITIES !== "undefined" ? OSINT_ENTITIES : []).find(
-          (ent: any) =>
-            ent.name.toLowerCase().includes(queryLower) ||
-            ent.code.includes(queryLower),
+          (ent: any) => ent.name.toLowerCase().includes(queryLower) || ent.code.includes(queryLower),
         );
 
       if (matched) {
@@ -648,11 +583,7 @@ export default function App() {
       } else if (lower.includes("pdf")) {
         aiResponse =
           "Надішліть PDF-файл ТЗ чи митної декларації в чат. Я проведу миттєвий комплаєнс-аналіз згідно з 16 томами.";
-      } else if (
-        lower.includes("привіт") ||
-        lower.includes("вітаю") ||
-        lower.includes("hello")
-      ) {
+      } else if (lower.includes("привіт") || lower.includes("вітаю") || lower.includes("hello")) {
         aiResponse =
           "Вітаю! Я уважно слухаю ваші голосові команди. Ви можете сказати 'Перейди на дашборд', 'Покажи карту' або запитати про санкції.";
       }
@@ -663,13 +594,9 @@ export default function App() {
   };
 
   const startVoiceControl = () => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      setVoiceError(
-        "Web Speech API не підтримується у цьому браузері. Будь ласка, використовуйте Google Chrome.",
-      );
+      setVoiceError("Web Speech API не підтримується у цьому браузері. Будь ласка, використовуйте Google Chrome.");
       setTimeout(() => setVoiceError(null), 5000);
       return;
     }
@@ -700,17 +627,11 @@ export default function App() {
     rec.onerror = (event: any) => {
       console.warn("Speech recognition notice (non-fatal):", event);
       if (event.error === "no-speech") {
-        setVoiceError(
-          "Голос не виявлено. Спробуйте ще раз або виберіть симуляцію нижче:",
-        );
+        setVoiceError("Голос не виявлено. Спробуйте ще раз або виберіть симуляцію нижче:");
       } else if (event.error === "not-allowed") {
-        setVoiceError(
-          "Доступ заблоковано (запуск у пісочниці/фреймі). Виберіть симуляцію:",
-        );
+        setVoiceError("Доступ заблоковано (запуск у пісочниці/фреймі). Виберіть симуляцію:");
       } else {
-        setVoiceError(
-          `Помилка розпізнавання: ${event.error}. Виберіть симуляцію:`,
-        );
+        setVoiceError(`Помилка розпізнавання: ${event.error}. Виберіть симуляцію:`);
       }
       setIsVoiceListening(false);
       setDynamicIslandState("normal");
@@ -720,9 +641,7 @@ export default function App() {
     rec.onend = () => {
       setIsVoiceListening(false);
       setTimeout(() => {
-        setDynamicIslandState((prev) =>
-          prev === "voice-listening" ? "normal" : prev,
-        );
+        setDynamicIslandState((prev) => (prev === "voice-listening" ? "normal" : prev));
       }, 3000);
     };
 
@@ -737,10 +656,7 @@ export default function App() {
     try {
       rec.start();
     } catch (err) {
-      console.warn(
-        "Could not start speech recognition directly (non-fatal):",
-        err,
-      );
+      console.warn("Could not start speech recognition directly (non-fatal):", err);
       setIsVoiceListening(false);
       setDynamicIslandState("normal");
     }
@@ -755,8 +671,7 @@ export default function App() {
       }
     };
     window.addEventListener("change-active-tab", handleTabChange);
-    return () =>
-      window.removeEventListener("change-active-tab", handleTabChange);
+    return () => window.removeEventListener("change-active-tab", handleTabChange);
   }, []);
 
   useEffect(() => {
@@ -807,9 +722,7 @@ export default function App() {
       const allActions = [
         {
           id: "toggle-inspector",
-          label: isInspectorOpen
-            ? "📂 Закрити бічний інспектор"
-            : "📂 Відкрити бічний інспектор",
+          label: isInspectorOpen ? "📂 Закрити бічний інспектор" : "📂 Відкрити бічний інспектор",
           type: "action",
         },
       ];
@@ -825,12 +738,8 @@ export default function App() {
       const query = spotlightQuery.toLowerCase();
 
       return {
-        navigation: allNavs.filter((n) =>
-          n.label.toLowerCase().includes(query),
-        ),
-        actions: allActions.filter((a) =>
-          a.label.toLowerCase().includes(query),
-        ),
+        navigation: allNavs.filter((n) => n.label.toLowerCase().includes(query)),
+        actions: allActions.filter((a) => a.label.toLowerCase().includes(query)),
         entities: [],
       };
     } else {
@@ -858,16 +767,12 @@ export default function App() {
       const allActions = [
         {
           id: "mute-toggle",
-          label: isIphoneMuted
-            ? "🔊 Увімкнути звук коментаря (NEXUS uk-UA)"
-            : "🔇 Вимкнути звук коментаря",
+          label: isIphoneMuted ? "🔊 Увімкнути звук коментаря (NEXUS uk-UA)" : "🔇 Вимкнути звук коментаря",
           type: "action",
         },
         {
           id: "lock-toggle",
-          label: isIphoneLocked
-            ? "🔓 Розблокувати iPhone 15 Pro"
-            : "🔒 Заблокувати iPhone 15 Pro",
+          label: isIphoneLocked ? "🔓 Розблокувати iPhone 15 Pro" : "🔒 Заблокувати iPhone 15 Pro",
           type: "action",
         },
         {
@@ -882,9 +787,7 @@ export default function App() {
         },
         {
           id: "toggle-inspector",
-          label: isInspectorOpen
-            ? "📂 Закрити бічний інспектор"
-            : "📂 Відкрити бічний інспектор",
+          label: isInspectorOpen ? "📂 Закрити бічний інспектор" : "📂 Відкрити бічний інспектор",
           type: "action",
         },
       ];
@@ -929,23 +832,12 @@ export default function App() {
       }
 
       return {
-        navigation: allNavs.filter((n) =>
-          n.label.toLowerCase().includes(query),
-        ),
-        actions: allActions.filter((a) =>
-          a.label.toLowerCase().includes(query),
-        ),
+        navigation: allNavs.filter((n) => n.label.toLowerCase().includes(query)),
+        actions: allActions.filter((a) => a.label.toLowerCase().includes(query)),
         entities: matchedEntities,
       };
     }
-  }, [
-    ecosystem,
-    spotlightQuery,
-    isIphoneMuted,
-    isIphoneLocked,
-    isInspectorOpen,
-    entitiesList,
-  ]);
+  }, [ecosystem, spotlightQuery, isIphoneMuted, isIphoneLocked, isInspectorOpen, entitiesList]);
 
   const handleSpotlightSelect = (item: any) => {
     if (item.type === "nav") {
@@ -1058,9 +950,7 @@ export default function App() {
               <span className="text-xs font-bold text-slate-200 uppercase tracking-widest block">
                 Завантаження модуля NEXUS...
               </span>
-              <span className="text-[10px] text-slate-500">
-                Code Splitting & Dynamic Bundle Hydration
-              </span>
+              <span className="text-[10px] text-slate-500">Code Splitting & Dynamic Bundle Hydration</span>
             </div>
           </div>
         }
@@ -1080,11 +970,17 @@ export default function App() {
                   onSelectScenario={setSelectedScenario}
                 />
               );
-            case "admin-back-office": return <AdminBackOffice />;
+            case "admin-back-office":
+              return <AdminBackOffice />;
             case "dashboard":
               return (
                 <DashboardView
                   onSelectTab={(tabId) => {
+                    if (tabId.startsWith("tender:")) {
+                      setSelectedTenderId(tabId.slice("tender:".length));
+                      setActiveTab("procurement");
+                      return;
+                    }
                     if (tabId === "osint") setActiveTab("live-analytical-center");
                     else setActiveTab(tabId as TabId);
                   }}
@@ -1106,36 +1002,69 @@ export default function App() {
                   }}
                 />
               );
-            case "person-profiler": return <PersonProfiler />;
-            case "adverse": return <PersonProfiler initialTab="adverse" />;
-            case "sandbox": return <InvestigationSandbox />;
-            case "maps": return <MapsTab onSelectEntityGlobal={(ent) => { setSelectedEntity(ent); setSelectedTool(null); setSelectedNode(null); setActiveTab("live-analytical-center"); }} />;
-            case "catalog": return <CatalogTab />;
-            case "license": return <LicenseTab />;
-            case "architecture": return <ArchitectureTab />;
-            case "gap": return <GapAnalysisTab />;
-            case "roadmap": return <RoadmapTab />;
-            case "volumes": return <VolumesTab />;
-            case "advisor": return <AdvisorTab />;
-            case "media-forensics": return <MediaForensicsTab />;
-            case "data-ingestion": return <DataIngestionTab />;
-            case "ckan-explorer": return <CKANExplorerTab />;
-            case "procurement": return <ProcurementAnalyticsTab />;
-            case "open-data": return <OpenDataAnalyticsTab />;
-            case "youscore": return <YouScoreTab />;
-            case "opendatabot": return <OpendatabotTab />;
+            case "person-profiler":
+              return <PersonProfiler />;
+            case "adverse":
+              return <PersonProfiler initialTab="adverse" />;
+            case "sandbox":
+              return <InvestigationSandbox />;
+            case "maps":
+              return (
+                <MapsTab
+                  onSelectEntityGlobal={(ent) => {
+                    setSelectedEntity(ent);
+                    setSelectedTool(null);
+                    setSelectedNode(null);
+                    setActiveTab("live-analytical-center");
+                  }}
+                />
+              );
+            case "catalog":
+              return <CatalogTab />;
+            case "license":
+              return <LicenseTab />;
+            case "architecture":
+              return <ArchitectureTab />;
+            case "gap":
+              return <GapAnalysisTab />;
+            case "roadmap":
+              return <RoadmapTab />;
+            case "volumes":
+              return <VolumesTab />;
+            case "advisor":
+              return <AdvisorTab />;
+            case "media-forensics":
+              return <MediaForensicsTab />;
+            case "data-ingestion":
+              return <DataIngestionTab />;
+            case "ckan-explorer":
+              return <CKANExplorerTab />;
+            case "procurement":
+              return <ProcurementAnalyticsTab tenderId={selectedTenderId} />;
+            case "open-data":
+              return <OpenDataAnalyticsTab />;
+            case "youscore":
+              return <YouScoreTab />;
+            case "opendatabot":
+              return <OpendatabotTab />;
             case "predator-intel":
               return activeDossier ? (
                 <DossierView dossier={activeDossier} onBack={() => setActiveDossier(null)} />
               ) : (
                 <SearchPortal onDossierGenerated={(dossier) => setActiveDossier(dossier)} />
               );
-            case "autonomous-factory": return <AutonomousFactory />;
-            case "predator-control": return <PredatorControlPlane />;
-            case "investigation-workspace": return <InvestigationWorkspaceTab />;
-            case "audit-log": return <AuditLogViewer />;
-            case "master-specification": return <MasterSpecificationViewer />;
-            default: return null;
+            case "autonomous-factory":
+              return <AutonomousFactory />;
+            case "predator-control":
+              return <PredatorControlPlane />;
+            case "investigation-workspace":
+              return <InvestigationWorkspaceTab />;
+            case "audit-log":
+              return <AuditLogViewer />;
+            case "master-specification":
+              return <MasterSpecificationViewer />;
+            default:
+              return null;
           }
         })()}
       </React.Suspense>
@@ -1144,10 +1073,7 @@ export default function App() {
 
   const renderMobileMainContent = () => {
     return (
-      <div
-        className="h-full flex flex-col relative bg-slate-950 text-slate-200 font-sans"
-        id="mobile-viewport-root"
-      >
+      <div className="h-full flex flex-col relative bg-slate-950 text-slate-200 font-sans" id="mobile-viewport-root">
         {/* Compact iOS / Mobile App Header */}
         <header className="border-b border-slate-800 bg-slate-900 shadow-sm px-3 py-2.5 flex items-center justify-between gap-2 z-40 shrink-0">
           <div className="flex items-center gap-3">
@@ -1161,9 +1087,7 @@ export default function App() {
               <div className="w-6 h-6 rounded-md bg-blue-600 flex items-center justify-center font-bold text-xs text-white shadow-sm">
                 N
               </div>
-              <span className="text-sm font-bold tracking-wide text-slate-200">
-                Nexus
-              </span>
+              <span className="text-sm font-bold tracking-wide text-slate-200">Nexus</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -1190,9 +1114,7 @@ export default function App() {
             <span>Nexus</span>
             <span>/</span>
             <span className="text-blue-400 truncate max-w-[150px]">
-              {activeTab === "live-analytical-center"
-                ? "Аналітика"
-                : activeTab.toUpperCase().replace("-", " ")}
+              {activeTab === "live-analytical-center" ? "Аналітика" : activeTab.toUpperCase().replace("-", " ")}
             </span>
           </div>
 
@@ -1220,7 +1142,7 @@ export default function App() {
             { id: "more", label: "Меню", icon: Menu },
           ].map((tab) => {
             const Icon = tab.icon;
-            const isActive = tab.id === "more" ? mobileMenuOpen : (activeTab === tab.id);
+            const isActive = tab.id === "more" ? mobileMenuOpen : activeTab === tab.id;
             return (
               <button
                 key={tab.id}
@@ -1269,9 +1191,7 @@ export default function App() {
                       N
                     </div>
                     <div>
-                      <h2 className="text-sm font-bold tracking-wide text-slate-200">
-                        Nexus Analytics
-                      </h2>
+                      <h2 className="text-sm font-bold tracking-wide text-slate-200">Nexus Analytics</h2>
                     </div>
                   </div>
                   <button
@@ -1319,14 +1239,32 @@ export default function App() {
                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2 px-1">
                           Головне
                         </span>
-                        <button onClick={() => {setActiveTab("dashboard"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <LayoutDashboard className="w-4 h-4"/> Дашборд
+                        <button
+                          onClick={() => {
+                            setActiveTab("dashboard");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <LayoutDashboard className="w-4 h-4" /> Дашборд
                         </button>
-                        <button onClick={() => {setActiveTab("investigation-workspace"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Briefcase className="w-4 h-4"/> Мої Розслідування
+                        <button
+                          onClick={() => {
+                            setActiveTab("investigation-workspace");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Briefcase className="w-4 h-4" /> Мої Розслідування
                         </button>
-                        <button onClick={() => {setActiveTab("live-analytical-center"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Bot className="w-4 h-4"/> ШІ-Аналітика
+                        <button
+                          onClick={() => {
+                            setActiveTab("live-analytical-center");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Bot className="w-4 h-4" /> ШІ-Аналітика
                         </button>
                       </div>
 
@@ -1334,26 +1272,69 @@ export default function App() {
                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2 px-1">
                           Інструменти пошуку
                         </span>
-                        <button onClick={() => {setActiveTab("predator-intel"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Shield className="w-4 h-4 text-blue-400"/> <span className="font-bold">PREDATOR Intelligence</span>
+                        <button
+                          onClick={() => {
+                            setActiveTab("predator-intel");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Shield className="w-4 h-4 text-blue-400" />{" "}
+                          <span className="font-bold">PREDATOR Intelligence</span>
                         </button>
-                        <button onClick={() => {setActiveTab("ckan-explorer"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Database className="w-4 h-4"/> Державні Реєстри
+                        <button
+                          onClick={() => {
+                            setActiveTab("ckan-explorer");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Database className="w-4 h-4" /> Державні Реєстри
                         </button>
-                        <button onClick={() => {setActiveTab("youscore"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <ShieldCheck className="w-4 h-4 text-indigo-400"/> YouScore Комплаєнс
+                        <button
+                          onClick={() => {
+                            setActiveTab("youscore");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <ShieldCheck className="w-4 h-4 text-indigo-400" /> YouScore Комплаєнс
                         </button>
-                        <button onClick={() => {setActiveTab("opendatabot"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <ShieldCheck className="w-4 h-4 text-blue-400"/> Opendatabot Комплаєнс
+                        <button
+                          onClick={() => {
+                            setActiveTab("opendatabot");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <ShieldCheck className="w-4 h-4 text-blue-400" /> Opendatabot Комплаєнс
                         </button>
-                        <button onClick={() => {setActiveTab("osint"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Search className="w-4 h-4"/> Глобальний Пошук
+                        <button
+                          onClick={() => {
+                            setActiveTab("osint");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Search className="w-4 h-4" /> Глобальний Пошук
                         </button>
-                        <button onClick={() => {setActiveTab("person-profiler"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <UserCheck className="w-4 h-4"/> Досьє на Осіб
+                        <button
+                          onClick={() => {
+                            setActiveTab("person-profiler");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <UserCheck className="w-4 h-4" /> Досьє на Осіб
                         </button>
-                        <button onClick={() => {setActiveTab("media-forensics"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Camera className="w-4 h-4"/> Аналіз Медіа
+                        <button
+                          onClick={() => {
+                            setActiveTab("media-forensics");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Camera className="w-4 h-4" /> Аналіз Медіа
                         </button>
                       </div>
 
@@ -1361,11 +1342,23 @@ export default function App() {
                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2 px-1">
                           Аналіз та Зв'язки
                         </span>
-                        <button onClick={() => {setActiveTab("sandbox"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Network className="w-4 h-4"/> Граф Зв'язків
+                        <button
+                          onClick={() => {
+                            setActiveTab("sandbox");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Network className="w-4 h-4" /> Граф Зв'язків
                         </button>
-                        <button onClick={() => {setActiveTab("maps"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Map className="w-4 h-4"/> Геопросторова Карта
+                        <button
+                          onClick={() => {
+                            setActiveTab("maps");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Map className="w-4 h-4" /> Геопросторова Карта
                         </button>
                       </div>
                     </>
@@ -1375,20 +1368,50 @@ export default function App() {
                         <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2 px-1">
                           Адміністрування
                         </span>
-                        <button onClick={() => {setActiveTab("admin-back-office"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Settings className="w-4 h-4"/> Back Office Консоль
+                        <button
+                          onClick={() => {
+                            setActiveTab("admin-back-office");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Settings className="w-4 h-4" /> Back Office Консоль
                         </button>
-                        <button onClick={() => {setActiveTab("predator-control"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <ShieldAlert className="w-4 h-4"/> Панель PREDATOR
+                        <button
+                          onClick={() => {
+                            setActiveTab("predator-control");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <ShieldAlert className="w-4 h-4" /> Панель PREDATOR
                         </button>
-                        <button onClick={() => {setActiveTab("data-ingestion"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Database className="w-4 h-4"/> Завантаження Даних
+                        <button
+                          onClick={() => {
+                            setActiveTab("data-ingestion");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Database className="w-4 h-4" /> Завантаження Даних
                         </button>
-                        <button onClick={() => {setActiveTab("audit-log"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <ShieldAlert className="w-4 h-4"/> Журнал Аудиту
+                        <button
+                          onClick={() => {
+                            setActiveTab("audit-log");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <ShieldAlert className="w-4 h-4" /> Журнал Аудиту
                         </button>
-                        <button onClick={() => {setActiveTab("autonomous-factory"); setMobileMenuOpen(false);}} className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3">
-                          <Cpu className="w-4 h-4"/> Автономна Фабрика
+                        <button
+                          onClick={() => {
+                            setActiveTab("autonomous-factory");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                        >
+                          <Cpu className="w-4 h-4" /> Автономна Фабрика
                         </button>
                       </div>
                       <div className="space-y-1">
@@ -1437,7 +1460,7 @@ export default function App() {
         id="ipad-simulator-view"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.1)_0%,transparent_100%)] pointer-events-none" />
-        
+
         {/* Floating Controls Header Bar */}
         <div className="mb-4 flex items-center gap-2 bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-full shadow-xl z-50">
           <span className="text-xs font-mono font-bold text-slate-400 mr-2">Пристрій:</span>
@@ -1471,11 +1494,11 @@ export default function App() {
           <div className="absolute top-1/2 -left-0.5 w-1 h-12 bg-slate-700 rounded-l-md -translate-y-1/2"></div>
           <div className="absolute top-1/2 -right-0.5 w-1 h-12 bg-slate-700 rounded-r-md -translate-y-1/2"></div>
           <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-black border border-slate-800 flex items-center justify-center">
-             <div className="w-1 h-1 rounded-full bg-blue-900/40" />
+            <div className="w-1 h-1 rounded-full bg-blue-900/40" />
           </div>
-          
+
           <div className="flex-1 rounded-[20px] overflow-hidden bg-slate-950 flex flex-col relative border border-black shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-             {renderDesktopLayout()}
+            {renderDesktopLayout()}
           </div>
         </motion.div>
       </div>
@@ -1553,9 +1576,7 @@ export default function App() {
                   <motion.h1 className="text-5xl font-extralight tracking-tight text-white font-sans">
                     {iphoneTime}
                   </motion.h1>
-                  <p className="text-sm font-medium text-slate-300">
-                    {lockscreenDate}
-                  </p>
+                  <p className="text-sm font-medium text-slate-300">{lockscreenDate}</p>
                 </div>
 
                 <div className="my-auto flex flex-col gap-3">
@@ -1662,7 +1683,7 @@ export default function App() {
     );
   };
 
-const renderDesktopLayout = () => {
+  const renderDesktopLayout = () => {
     return (
       <div
         className="h-full bg-slate-950 text-slate-200 flex flex-col font-sans selection:bg-blue-500/30"
@@ -1783,7 +1804,11 @@ const renderDesktopLayout = () => {
                   ? "bg-slate-800 border-slate-700 text-blue-300 hover:bg-slate-700"
                   : "bg-emerald-950/80 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/80"
               }`}
-              title={ecosystem === "user" ? "Переключити на технічну консоль Адміна" : "Переключити на простий режим Користувача"}
+              title={
+                ecosystem === "user"
+                  ? "Переключити на технічну консоль Адміна"
+                  : "Переключити на простий режим Користувача"
+              }
             >
               {ecosystem === "user" ? (
                 <>
@@ -1797,10 +1822,23 @@ const renderDesktopLayout = () => {
                 </>
               )}
             </button>
-            
+
             <button className="relative p-2 text-slate-400 hover:text-slate-200 transition-colors rounded-lg hover:bg-slate-800">
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.8)]"></span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+              </svg>
             </button>
           </div>
         </header>
@@ -1814,7 +1852,6 @@ const renderDesktopLayout = () => {
           >
             {/* Navigation group */}
             <div className="p-4 flex flex-col gap-1 overflow-y-auto flex-1 custom-scrollbar">
-              
               {/* Ecosystem Selector Desktop */}
               {!sidebarCollapsed && (
                 <div className="mb-4 space-y-2 pb-4 border-b border-slate-800/60">
@@ -1845,21 +1882,25 @@ const renderDesktopLayout = () => {
               )}
               {sidebarCollapsed && (
                 <div className="mb-4 pb-4 border-b border-slate-800/60 flex justify-center">
-                   <button
-                      onClick={() => {
-                        if (ecosystem === "user") {
-                          setEcosystem("admin");
-                          setActiveTab("admin-back-office");
-                        } else {
-                          setEcosystem("user");
-                          setActiveTab("live-analytical-center");
-                        }
-                      }}
-                      className="w-10 h-10 rounded-lg bg-slate-950/50 border border-slate-800/80 flex items-center justify-center text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-                      title={ecosystem === "user" ? "Перейти в адмінку" : "Перейти до користувача"}
-                    >
-                      {ecosystem === "user" ? <User className="w-5 h-5" /> : <Shield className="w-5 h-5 text-emerald-400" />}
-                    </button>
+                  <button
+                    onClick={() => {
+                      if (ecosystem === "user") {
+                        setEcosystem("admin");
+                        setActiveTab("admin-back-office");
+                      } else {
+                        setEcosystem("user");
+                        setActiveTab("live-analytical-center");
+                      }
+                    }}
+                    className="w-10 h-10 rounded-lg bg-slate-950/50 border border-slate-800/80 flex items-center justify-center text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                    title={ecosystem === "user" ? "Перейти в адмінку" : "Перейти до користувача"}
+                  >
+                    {ecosystem === "user" ? (
+                      <User className="w-5 h-5" />
+                    ) : (
+                      <Shield className="w-5 h-5 text-emerald-400" />
+                    )}
+                  </button>
                 </div>
               )}
 
@@ -1872,29 +1913,45 @@ const renderDesktopLayout = () => {
                         { id: "dashboard", label: "Дашборд", icon: LayoutDashboard, color: "text-blue-400" },
                         { id: "procurement", label: "Публічні закупівлі", icon: Landmark, color: "text-emerald-400" },
                         { id: "open-data", label: "Відкриті дані", icon: Database, color: "text-emerald-400" },
-                        { id: "investigation-workspace", label: "Мої Розслідування", icon: Briefcase, color: "text-blue-400" },
+                        {
+                          id: "investigation-workspace",
+                          label: "Мої Розслідування",
+                          icon: Briefcase,
+                          color: "text-blue-400",
+                        },
                         { id: "live-analytical-center", label: "ШІ Аналітика", icon: Bot, color: "text-blue-400" },
-                      ]
+                      ],
                     },
                     {
                       title: "Інструменти пошуку",
                       items: [
-                        { id: "predator-intel", label: "PREDATOR Intelligence", icon: Shield, color: "text-blue-400", isBold: true },
+                        {
+                          id: "predator-intel",
+                          label: "PREDATOR Intelligence",
+                          icon: Shield,
+                          color: "text-blue-400",
+                          isBold: true,
+                        },
                         { id: "ckan-explorer", label: "Державні Реєстри", icon: Database, color: "text-emerald-400" },
                         { id: "youscore", label: "YouScore Комплаєнс", icon: ShieldCheck, color: "text-indigo-400" },
-                        { id: "opendatabot", label: "Opendatabot Комплаєнс", icon: ShieldCheck, color: "text-blue-400" },
+                        {
+                          id: "opendatabot",
+                          label: "Opendatabot Комплаєнс",
+                          icon: ShieldCheck,
+                          color: "text-blue-400",
+                        },
                         { id: "osint", label: "Глобальний Пошук", icon: Search, color: "text-blue-400" },
                         { id: "person-profiler", label: "Досьє на Осіб", icon: UserCheck, color: "text-blue-400" },
                         { id: "media-forensics", label: "Аналіз Медіа", icon: Camera, color: "text-blue-400" },
-                      ]
+                      ],
                     },
                     {
                       title: "Аналіз та Зв'язки",
                       items: [
                         { id: "sandbox", label: "Граф Зв'язків", icon: Network, color: "text-indigo-400" },
                         { id: "maps", label: "Геопросторова Карта", icon: Map, color: "text-blue-400" },
-                      ]
-                    }
+                      ],
+                    },
                   ].map((section, idx) => (
                     <div key={idx} className="space-y-1">
                       {!sidebarCollapsed && (
@@ -1904,7 +1961,8 @@ const renderDesktopLayout = () => {
                       )}
                       {section.items.map((item) => {
                         const Icon = item.icon;
-                        const isActive = activeTab === item.id || (item.id === "person-profiler" && activeTab === "adverse");
+                        const isActive =
+                          activeTab === item.id || (item.id === "person-profiler" && activeTab === "adverse");
                         return (
                           <button
                             key={item.id}
@@ -1929,17 +1987,32 @@ const renderDesktopLayout = () => {
                     {
                       title: "Адміністрування",
                       items: [
-                        { id: "admin-back-office", label: "Консоль управління", icon: Settings, color: "text-emerald-400" },
-                        { id: "predator-control", label: "Панель PREDATOR", icon: ShieldAlert, color: "text-indigo-400" },
+                        {
+                          id: "admin-back-office",
+                          label: "Консоль управління",
+                          icon: Settings,
+                          color: "text-emerald-400",
+                        },
+                        {
+                          id: "predator-control",
+                          label: "Панель PREDATOR",
+                          icon: ShieldAlert,
+                          color: "text-indigo-400",
+                        },
                         { id: "data-ingestion", label: "Завантаження Даних", icon: Database, color: "text-blue-400" },
                         { id: "audit-log", label: "Журнал Аудиту", icon: ShieldAlert, color: "text-amber-400" },
                         { id: "autonomous-factory", label: "Автономна Фабрика", icon: Cpu, color: "text-purple-400" },
-                      ]
+                      ],
                     },
                     {
                       title: "Архітектура Інфраструктури",
                       items: [
-                        { id: "master-specification", label: "DEV5 ТЗ (145 Пунктів)", icon: FileText, color: "text-blue-400" },
+                        {
+                          id: "master-specification",
+                          label: "DEV5 ТЗ (145 Пунктів)",
+                          icon: FileText,
+                          color: "text-blue-400",
+                        },
                         { id: "architecture", label: "Граф залежностей", icon: Network, color: "text-blue-400" },
                         { id: "gap", label: "Аналіз прогалин", icon: Wrench, color: "text-blue-400" },
                         { id: "roadmap", label: "Дорожня карта", icon: Calendar, color: "text-blue-400" },
@@ -1947,8 +2020,8 @@ const renderDesktopLayout = () => {
                         { id: "license", label: "Сумісність ліцензій", icon: ShieldAlert, color: "text-blue-400" },
                         { id: "volumes", label: "Томи ТЗ", icon: Database, color: "text-blue-400" },
                         { id: "advisor", label: "ШІ-Архітектор", icon: Cpu, color: "text-blue-400" },
-                      ]
-                    }
+                      ],
+                    },
                   ].map((section, idx) => (
                     <div key={idx} className="space-y-1">
                       {!sidebarCollapsed && (
@@ -1989,7 +2062,7 @@ const renderDesktopLayout = () => {
                   ))}
                 </div>
               )}
-              
+
               {!sidebarCollapsed && (
                 <div className="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl space-y-3 mt-6">
                   <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">
@@ -1999,8 +2072,7 @@ const renderDesktopLayout = () => {
                     <div className="flex justify-between items-center">
                       <span>Kafka:</span>
                       <span className="text-emerald-400 font-medium flex items-center gap-1 font-mono">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        0 lag
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>0 lag
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -2019,33 +2091,28 @@ const renderDesktopLayout = () => {
                 className="w-full bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800/60 text-slate-300 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2"
               >
                 {!sidebarCollapsed && <LayoutDashboard className="w-4 h-4 text-slate-400" />}
-                {sidebarCollapsed
-                  ? "INSP"
-                  : isInspectorOpen
-                    ? "Сховати Інспектор"
-                    : "Показати Інспектор"}
+                {sidebarCollapsed ? "INSP" : isInspectorOpen ? "Сховати Інспектор" : "Показати Інспектор"}
               </button>
             </div>
           </aside>
 
-
-
-
           {/* MAIN WORKSPACE (Section 8) */}
-          <main
-            className="flex-1 overflow-y-auto flex flex-col bg-slate-950 relative"
-            id="workspace-main"
-          >
+          <main className="flex-1 overflow-y-auto flex flex-col bg-slate-950 relative" id="workspace-main">
             {/* Content Sub-header */}
             <div className="shrink-0 h-10 border-b border-slate-800 flex items-center px-3 gap-3 bg-slate-900/20">
               <button className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded border border-slate-700 text-xs text-slate-200">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                  />
+                </svg>
                 main
               </button>
               <div className="h-4 w-px bg-slate-800"></div>
-              <div className="text-xs text-slate-500 font-mono tracking-tight">
-                DEV5 / src / core / {activeTab}.py
-              </div>
+              <div className="text-xs text-slate-500 font-mono tracking-tight">DEV5 / src / core / {activeTab}.py</div>
             </div>
 
             <div className="flex-1">
@@ -2116,10 +2183,7 @@ const renderDesktopLayout = () => {
                         NEXUS ШІ-Асистент
                       </span>
                     </div>
-                    <button
-                      onClick={() => setIsAiChatOpen(false)}
-                      className="text-slate-500 hover:text-slate-300"
-                    >
+                    <button onClick={() => setIsAiChatOpen(false)} className="text-slate-500 hover:text-slate-300">
                       <X className="w-4 h-4" />
                     </button>
                   </div>
@@ -2171,28 +2235,32 @@ const renderDesktopLayout = () => {
         {/* 4. BOTTOM STATUS BAR (Section 10) */}
         {ecosystem === "admin" ? (
           <footer className="h-8 bg-indigo-600 px-6 flex items-center justify-between text-[10px] text-indigo-100 shrink-0 z-40 relative">
-        <div className="flex items-center gap-4">
-          <span>UTF-8</span>
-          <span>LF</span>
-          <span>Node 20.x</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Систему синхронізовано</span>
-          <span>1024.768МБ / 1.5ГБ Пам'яті</span>
-        </div>
-      </footer>
+            <div className="flex items-center gap-4">
+              <span>UTF-8</span>
+              <span>LF</span>
+              <span>Node 20.x</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Систему синхронізовано
+              </span>
+              <span>1024.768МБ / 1.5ГБ Пам'яті</span>
+            </div>
+          </footer>
         ) : (
           <footer className="h-8 bg-indigo-600 px-6 flex items-center justify-between text-[10px] text-indigo-100 shrink-0 z-40 relative">
-        <div className="flex items-center gap-4">
-          <span>UTF-8</span>
-          <span>LF</span>
-          <span>Node 20.x</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Систему синхронізовано</span>
-          <span>1024.768МБ / 1.5ГБ Пам'яті</span>
-        </div>
-      </footer>
+            <div className="flex items-center gap-4">
+              <span>UTF-8</span>
+              <span>LF</span>
+              <span>Node 20.x</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Систему синхронізовано
+              </span>
+              <span>1024.768МБ / 1.5ГБ Пам'яті</span>
+            </div>
+          </footer>
         )}
 
         {/* 6. COMMAND CENTER SPOTLIGHT PANEL (Ctrl+K) */}
@@ -2248,9 +2316,7 @@ const renderDesktopLayout = () => {
                             className="w-full text-left px-2 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-blue-600/20 hover:border-slate-800 border border-transparent transition-all duration-300 hover:-translate-y-[1px] hover:shadow-[0_2px_10px_rgba(99,102,241,0.15)] flex items-center justify-between cursor-pointer"
                           >
                             <span>{n.label}</span>
-                            <span className="text-xs text-blue-500 font-mono">
-                              Перейти →
-                            </span>
+                            <span className="text-xs text-blue-500 font-mono">Перейти →</span>
                           </button>
                         ))}
                       </div>
@@ -2271,9 +2337,7 @@ const renderDesktopLayout = () => {
                             className="text-left px-2 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-amber-600/20 hover:border-slate-800 border border-transparent bg-black/30 transition-all flex items-center justify-between cursor-pointer"
                           >
                             <span>{a.label}</span>
-                            <span className="text-xs text-amber-500 font-mono">
-                              Виконати
-                            </span>
+                            <span className="text-xs text-amber-500 font-mono">Виконати</span>
                           </button>
                         ))}
                       </div>
@@ -2295,9 +2359,7 @@ const renderDesktopLayout = () => {
                           >
                             <span>{e.label}</span>
                             <span className="text-xs bg-rose-500/10 border border-slate-800 px-2 py-1 rounded text-rose-400 font-mono font-bold">
-                              {e.raw.risk_level === "CRITICAL"
-                                ? "⚠️ КРИТИЧНИЙ"
-                                : "🔴 ВИСОКИЙ"}
+                              {e.raw.risk_level === "CRITICAL" ? "⚠️ КРИТИЧНИЙ" : "🔴 ВИСОКИЙ"}
                             </span>
                           </button>
                         ))}
@@ -2314,9 +2376,7 @@ const renderDesktopLayout = () => {
                         <p className="text-xs text-slate-300 font-semibold">
                           Жодного збігу не знайдено для "{spotlightQuery}"
                         </p>
-                        <p className="text-xs text-slate-600 mt-1 font-mono">
-                          Спробуйте ввести інший пошуковий термін
-                        </p>
+                        <p className="text-xs text-slate-600 mt-1 font-mono">Спробуйте ввести інший пошуковий термін</p>
                       </div>
                     )}
                 </div>
@@ -2334,9 +2394,7 @@ const renderDesktopLayout = () => {
                     </strong>
                     <span>для запуску</span>
                   </span>
-                  <span className="text-blue-400 font-bold uppercase tracking-wider">
-                    NEXUS COMMAND PANEL v2.5
-                  </span>
+                  <span className="text-blue-400 font-bold uppercase tracking-wider">NEXUS COMMAND PANEL v2.5</span>
                 </div>
               </motion.div>
             </div>
@@ -2349,11 +2407,13 @@ const renderDesktopLayout = () => {
   return (
     <>
       <AnimatePresence mode="wait">
-        {deviceMode === "iphone" ? renderIphoneLayout() : deviceMode === "ipad" ? renderIpadLayout() : (
-    <div className="h-screen w-full bg-slate-950 overflow-hidden">
-      {renderDesktopLayout()}
-    </div>
-  )}
+        {deviceMode === "iphone" ? (
+          renderIphoneLayout()
+        ) : deviceMode === "ipad" ? (
+          renderIpadLayout()
+        ) : (
+          <div className="h-screen w-full bg-slate-950 overflow-hidden">{renderDesktopLayout()}</div>
+        )}
       </AnimatePresence>
 
       {/* Floating Voice Control HUD Overlay */}
@@ -2374,31 +2434,15 @@ const renderDesktopLayout = () => {
                 🎙️ Голосовий аналізатор NEXUS активний
               </p>
               <p className="text-xs text-slate-200 font-medium truncate mt-0.5 font-sans">
-                {voiceFeedback ||
-                  "Слухаю голос... Назвіть команду навігації чи пошуку"}
+                {voiceFeedback || "Слухаю голос... Назвіть команду навігації чи пошуку"}
               </p>
             </div>
             <div className="flex gap-0.5 items-center justify-end h-5 w-12 shrink-0">
-              <motion.div
-                className="w-[3px] bg-red-400 rounded-full animate-pulse"
-                style={{ height: 12 }}
-              />
-              <motion.div
-                className="w-[3px] bg-red-400 rounded-full animate-pulse"
-                style={{ height: 20 }}
-              />
-              <motion.div
-                className="w-[3px] bg-red-400 rounded-full animate-pulse"
-                style={{ height: 8 }}
-              />
-              <motion.div
-                className="w-[3px] bg-red-400 rounded-full animate-pulse"
-                style={{ height: 24 }}
-              />
-              <motion.div
-                className="w-[3px] bg-red-400 rounded-full animate-pulse"
-                style={{ height: 14 }}
-              />
+              <motion.div className="w-[3px] bg-red-400 rounded-full animate-pulse" style={{ height: 12 }} />
+              <motion.div className="w-[3px] bg-red-400 rounded-full animate-pulse" style={{ height: 20 }} />
+              <motion.div className="w-[3px] bg-red-400 rounded-full animate-pulse" style={{ height: 8 }} />
+              <motion.div className="w-[3px] bg-red-400 rounded-full animate-pulse" style={{ height: 24 }} />
+              <motion.div className="w-[3px] bg-red-400 rounded-full animate-pulse" style={{ height: 14 }} />
             </div>
           </motion.div>
         )}
@@ -2414,14 +2458,10 @@ const renderDesktopLayout = () => {
             className={`fixed top-20 left-1/2 -translate-x-1/2 shadow-[0_15px_40px_rgba(0,0,0,0.5)] rounded-lg p-2 z-50 flex flex-col gap-2 w-[450px] max-w-[90vw] backdrop-blur-md border ${voiceError ? "bg-red-950/95 border-red-500/40 text-red-200 shadow-red-900/10" : "bg-slate-950/95 border-slate-800 text-slate-200 shadow-indigo-900/10"}`}
           >
             <div className="flex items-start gap-2.5">
-              <span className="text-xs shrink-0 mt-0.5">
-                {voiceError ? "⚠️" : "🎙️"}
-              </span>
+              <span className="text-xs shrink-0 mt-0.5">{voiceError ? "⚠️" : "🎙️"}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
-                  {voiceError
-                    ? "Помилка голосового аналізатора"
-                    : "Аналітичний голос NEXUS"}
+                  {voiceError ? "Помилка голосового аналізатора" : "Аналітичний голос NEXUS"}
                 </p>
                 <p className="text-xs font-semibold tracking-wide leading-relaxed mt-0.5">
                   {voiceError || voiceFeedback}
@@ -2492,7 +2532,9 @@ const renderDesktopLayout = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-white">Проста інструкція для користувача</h3>
-                    <p className="text-xs text-slate-400">Як швидко перевірити компанію або людину без технічних навичок</p>
+                    <p className="text-xs text-slate-400">
+                      Як швидко перевірити компанію або людину без технічних навичок
+                    </p>
                   </div>
                 </div>
                 <button
@@ -2509,7 +2551,9 @@ const renderDesktopLayout = () => {
                     <span>1. Як знайти інформацію про компанію чи особу?</span>
                   </h4>
                   <p className="text-slate-300 text-xs leading-relaxed">
-                    Введіть назву фірми (наприклад, <strong>"СпецТехПостач"</strong>), код ЄДРПОУ або ПІБ особи у верхньому полі пошуку або у розділі <strong>"Глибокий Пошук"</strong>. Система миттєво перевірить понад 125 відкритих реєстрів.
+                    Введіть назву фірми (наприклад, <strong>"СпецТехПостач"</strong>), код ЄДРПОУ або ПІБ особи у
+                    верхньому полі пошуку або у розділі <strong>"Глибокий Пошук"</strong>. Система миттєво перевірить
+                    понад 125 відкритих реєстрів.
                   </p>
                 </div>
 
@@ -2535,7 +2579,9 @@ const renderDesktopLayout = () => {
                       <span className="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
                       Червоний колір
                     </div>
-                    <p className="text-slate-300 text-[11px]">Критичний ризик: санкції РНБО, судови справи або зв'язок з агресором.</p>
+                    <p className="text-slate-300 text-[11px]">
+                      Критичний ризик: санкції РНБО, судови справи або зв'язок з агресором.
+                    </p>
                   </div>
                 </div>
 
@@ -2544,7 +2590,8 @@ const renderDesktopLayout = () => {
                     <span>2. Як завантажити документ на перевірку?</span>
                   </h4>
                   <p className="text-slate-300 text-xs leading-relaxed">
-                    Перейдіть у розділ <strong>"Завантаження Даних"</strong> у лівому меню, виберіть файл Excel або PDF з вашого комп'ютера та натисніть "Перевірити".
+                    Перейдіть у розділ <strong>"Завантаження Даних"</strong> у лівому меню, виберіть файл Excel або PDF
+                    з вашого комп'ютера та натисніть "Перевірити".
                   </p>
                 </div>
 
@@ -2553,7 +2600,9 @@ const renderDesktopLayout = () => {
                     <span>3. Потрібен адмінський/технічний вигляд?</span>
                   </h4>
                   <p className="text-slate-300 text-xs leading-relaxed">
-                    Якщо ви системний адміністратор і бажаєте бачити телеметрію, стан Kubernetes, ArgoCD та логування, натисніть кнопку <strong>"Режим: Користувач"</strong> у правому верхньому кутку для перемикання в <strong>"Режим: Адмін"</strong>.
+                    Якщо ви системний адміністратор і бажаєте бачити телеметрію, стан Kubernetes, ArgoCD та логування,
+                    натисніть кнопку <strong>"Режим: Користувач"</strong> у правому верхньому кутку для перемикання в{" "}
+                    <strong>"Режим: Адмін"</strong>.
                   </p>
                 </div>
               </div>

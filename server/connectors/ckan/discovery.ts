@@ -10,7 +10,7 @@ export class CKANDiscoveryAgent {
   async discoverDatasets(query: string, rows: number = 10) {
     const data = await this.client.packageSearch(query, rows);
     if (!data.success) throw new Error("Failed to discover datasets");
-    
+
     return data.result.results.map((pkg: any) => ({
       dataset_id: pkg.id,
       title: pkg.title,
@@ -23,8 +23,8 @@ export class CKANDiscoveryAgent {
         name: res.name,
         format: res.format,
         datastore_active: res.datastore_active,
-        url: res.url
-      }))
+        url: res.url,
+      })),
     }));
   }
 
@@ -34,22 +34,25 @@ export class CKANDiscoveryAgent {
 
     const fields = data.result.fields;
     const recordsCount = data.result.total;
-    
+
     return {
       resource_id: resourceId,
       schema_hash: this.generateSchemaHash(fields),
       fields: fields.map((f: any) => ({
         name: f.id,
-        type: f.type
+        type: f.type,
       })),
       total_records: recordsCount,
-      observed_at: new Date().toISOString()
+      observed_at: new Date().toISOString(),
     };
   }
 
   private generateSchemaHash(fields: any[]) {
     // A simplified deterministic hash representation
-    const sortedFields = fields.map(f => `${f.id}:${f.type}`).sort().join("|");
+    const sortedFields = fields
+      .map((f) => `${f.id}:${f.type}`)
+      .sort()
+      .join("|");
     return `schema-${Buffer.from(sortedFields).toString("base64")}`;
   }
 }

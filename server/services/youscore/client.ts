@@ -19,11 +19,7 @@ export class YouScoreClient {
   /**
    * Executes a direct HTTPS request to YouScore API with structured logging & latency metrics.
    */
-  public async executeRequest<T = any>(
-    path: string,
-    method: "GET" | "POST" = "GET",
-    body?: any
-  ): Promise<T> {
+  public async executeRequest<T = any>(path: string, method: "GET" | "POST" = "GET", body?: any): Promise<T> {
     const apiKey = config.YOUSCORE_API_KEY;
     if (!apiKey) {
       throw new YouScoreError("AUTHENTICATION_ERROR", "YouScore API key is not configured in the environment");
@@ -32,7 +28,7 @@ export class YouScoreClient {
     const url = `${config.YOUSCORE_BASE_URL}/${path}`;
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
+      Authorization: `Bearer ${apiKey}`,
     };
 
     return executeWithConnectorLogging<T>(
@@ -43,7 +39,7 @@ export class YouScoreClient {
         method,
         headers,
         body,
-        isEmulated: false
+        isEmulated: false,
       },
       async () => {
         const controller = new AbortController();
@@ -54,7 +50,7 @@ export class YouScoreClient {
             method,
             headers,
             body: body ? JSON.stringify(body) : undefined,
-            signal: controller.signal
+            signal: controller.signal,
           });
 
           clearTimeout(timeoutId);
@@ -79,22 +75,26 @@ export class YouScoreClient {
           if (err.name === "AbortError") {
             throw new YouScoreError("TIMEOUT", `YouScore request timed out after ${config.YOUSCORE_TIMEOUT_MS}ms`);
           }
-          throw new YouScoreError("PROVIDER_UNAVAILABLE", `YouScore network connection failed: ${err.message}`, undefined, err);
+          throw new YouScoreError(
+            "PROVIDER_UNAVAILABLE",
+            `YouScore network connection failed: ${err.message}`,
+            undefined,
+            err,
+          );
         }
-      }
+      },
     );
   }
 
   /**
    * High-fidelity query executor with retry, rate limits, circuit breaker, and structured logging.
    */
-  public async query<T = any>(
-    endpoint: string,
-    contractorCode: string,
-    apiPath: string
-  ): Promise<YouScoreResponse<T>> {
+  public async query<T = any>(endpoint: string, contractorCode: string, apiPath: string): Promise<YouScoreResponse<T>> {
     if (!config.YOUSCORE_API_KEY) {
-      throw new YouScoreError("AUTHENTICATION_ERROR", "credentials_missing: YOUSCORE_API_KEY or YOUCONTROL_API_KEY is not configured");
+      throw new YouScoreError(
+        "AUTHENTICATION_ERROR",
+        "credentials_missing: YOUSCORE_API_KEY or YOUCONTROL_API_KEY is not configured",
+      );
     }
 
     // Call real API using retry policy
@@ -116,8 +116,8 @@ export class YouScoreClient {
         evidence: {
           evidenceId: `ev_live_${Math.random().toString(36).substring(2, 11)}`,
           contentHash: `sha256-live-${Math.random().toString(36).substring(2, 11)}`,
-          schemaVersion: "v1.2.4"
-        }
+          schemaVersion: "v1.2.4",
+        },
       };
     } catch (err: any) {
       console.error(`[YouScoreClient] Error querying ${apiPath}:`, err);
@@ -125,6 +125,5 @@ export class YouScoreClient {
     }
   }
 }
-
 
 export const youScoreClient = YouScoreClient.getInstance();

@@ -4,10 +4,7 @@ import { config } from "./config";
  * Executes a function with exponential backoff and jitter retry policy.
  * Only retries on retryable errors (429, 5xx, timeouts, connection issues).
  */
-export async function withRetry<T>(
-  fn: () => Promise<T>,
-  retryCountRef: { count: number } = { count: 0 }
-): Promise<T> {
+export async function withRetry<T>(fn: () => Promise<T>, retryCountRef: { count: number } = { count: 0 }): Promise<T> {
   let attempt = 0;
   const maxAttempts = config.OPENDATABOT_MAX_RETRIES;
   const baseDelay = 500; // milliseconds
@@ -35,12 +32,12 @@ export async function withRetry<T>(
       // Exponential Backoff with Jitter
       const jitter = Math.random() * 200;
       const backoffDelay = baseDelay * Math.pow(2, attempt - 1) + jitter;
-      
+
       console.warn(
-        `[OpendatabotRetry] Attempt ${attempt}/${maxAttempts} failed. Retrying in ${Math.round(backoffDelay)}ms. Reason: ${error.message}`
+        `[OpendatabotRetry] Attempt ${attempt}/${maxAttempts} failed. Retrying in ${Math.round(backoffDelay)}ms. Reason: ${error.message}`,
       );
 
-      await new Promise(resolve => setTimeout(resolve, backoffDelay));
+      await new Promise((resolve) => setTimeout(resolve, backoffDelay));
     }
   }
 

@@ -1,8 +1,5 @@
 import React from "react";
-import { 
-  FileText, ExternalLink, Clock, Database, Shield, 
-  Hash, Code, ChevronRight, X, Activity
-} from "lucide-react";
+import { FileText, ExternalLink, Clock, Database, Shield, Hash, Code, ChevronRight, X, Activity } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Evidence } from "../types";
 
@@ -17,15 +14,15 @@ export default function EvidenceViewer({ evidence, onClose }: EvidenceViewerProp
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[100] flex items-center justify-end">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
           className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
         />
-        
-        <motion.div 
+
+        <motion.div
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
           exit={{ x: "100%" }}
@@ -45,7 +42,7 @@ export default function EvidenceViewer({ evidence, onClose }: EvidenceViewerProp
                 </div>
               </div>
             </div>
-            <button 
+            <button
               onClick={onClose}
               className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors"
             >
@@ -59,7 +56,8 @@ export default function EvidenceViewer({ evidence, onClose }: EvidenceViewerProp
               <div className="p-6 bg-slate-950 rounded-2xl border border-slate-800 border-l-4 border-l-blue-500">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Observation Summary</h3>
                 <p className="text-sm text-slate-300 leading-relaxed">
-                  Evidence retrieved from {evidence.sourceName} confirms the presence of entity in the specified record set with a confidence interval of {Math.floor(evidence.confidence * 100)}%.
+                  Evidence retrieved from {evidence.sourceName} confirms the presence of entity in the specified record
+                  set with a confidence interval of {Math.floor(evidence.confidence * 100)}%.
                 </p>
               </div>
             </section>
@@ -122,14 +120,17 @@ export default function EvidenceViewer({ evidence, onClose }: EvidenceViewerProp
 
             {/* Actions */}
             {evidence.sourceUrl && (
-              <a 
+              <a
                 href={evidence.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 p-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all group"
               >
                 <span>View Original Source</span>
-                <ExternalLink size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                <ExternalLink
+                  size={16}
+                  className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                />
               </a>
             )}
           </div>

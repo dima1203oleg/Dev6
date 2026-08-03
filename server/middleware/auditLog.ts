@@ -25,7 +25,7 @@ export function recordAuditLog(entry: Omit<AuditLogEntry, "id" | "timestamp">) {
   const fullEntry: AuditLogEntry = {
     ...entry,
     id: `audit-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   auditLogsBuffer.unshift(fullEntry);
@@ -34,7 +34,9 @@ export function recordAuditLog(entry: Omit<AuditLogEntry, "id" | "timestamp">) {
   }
 
   // Console telemetry
-  console.log(`[AUDIT TRAIL] ${fullEntry.timestamp} | User:${fullEntry.userEmail} (${fullEntry.role}) | Action:${fullEntry.action} | Resource:${fullEntry.resource} | Result:${fullEntry.result}`);
+  console.log(
+    `[AUDIT TRAIL] ${fullEntry.timestamp} | User:${fullEntry.userEmail} (${fullEntry.role}) | Action:${fullEntry.action} | Resource:${fullEntry.resource} | Result:${fullEntry.result}`,
+  );
   return fullEntry;
 }
 
@@ -48,7 +50,7 @@ export function auditMiddleware(action: string, resource: string) {
         id: "usr-analyst-001",
         email: "analyst@predator.gov.ua",
         role: "SENIOR_ANALYST",
-        tenantId: "tenant-predator-core"
+        tenantId: "tenant-predator-core",
       };
 
       const isError = res.statusCode >= 400 || (body && body.error);
@@ -61,12 +63,12 @@ export function auditMiddleware(action: string, resource: string) {
         tenantId: user.tenantId,
         action: action,
         resource: resource,
-        resourceId: req.body?.id || req.body?.code || req.query?.q as string || undefined,
+        resourceId: req.body?.id || req.body?.code || (req.query?.q as string) || undefined,
         ip: req.ip || req.socket.remoteAddress || "127.0.0.1",
         userAgent: req.headers["user-agent"] || "DEV5 Workstation",
         requestId: (req.headers["x-request-id"] as string) || `req-${Date.now()}`,
         result: isDenied ? "DENIED" : isError ? "ERROR" : "SUCCESS",
-        riskScore: isError ? 75 : 10
+        riskScore: isError ? 75 : 10,
       });
 
       return originalJson.call(this, body);
@@ -78,7 +80,7 @@ export function auditMiddleware(action: string, resource: string) {
 
 export function getAuditLogs(limit = 100, filterAction?: string): AuditLogEntry[] {
   if (filterAction) {
-    return auditLogsBuffer.filter(l => l.action === filterAction).slice(0, limit);
+    return auditLogsBuffer.filter((l) => l.action === filterAction).slice(0, limit);
   }
   return auditLogsBuffer.slice(0, limit);
 }

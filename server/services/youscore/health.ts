@@ -1,7 +1,8 @@
 import { config } from "./config";
 
 export interface YouScoreHealthStatus {
-  status: "LIVE" | "DEGRADED" | "AUTH_FAILED" | "RATE_LIMITED" | "OFFLINE" | "SCHEMA_DRIFT" | "UNKNOWN" | "NOT_CONFIGURED";
+  status:
+    "LIVE" | "DEGRADED" | "AUTH_FAILED" | "RATE_LIMITED" | "OFFLINE" | "SCHEMA_DRIFT" | "UNKNOWN" | "NOT_CONFIGURED";
   message: string;
   provider: string;
   apiVersion: string;
@@ -42,15 +43,17 @@ export class YouScoreHealthService {
       timestamp: new Date().toISOString(),
       circuitBreaker: "CLOSED",
       rateLimitingLevel: "OK",
-      datasets: hasKey ? {
-        usr: "UNKNOWN",
-        tax: "UNKNOWN",
-        court: "UNKNOWN",
-        sanctions: "UNKNOWN",
-        pep: "UNKNOWN",
-        property: "UNKNOWN",
-        vehicles: "UNKNOWN"
-      } : {}
+      datasets: hasKey
+        ? {
+            usr: "UNKNOWN",
+            tax: "UNKNOWN",
+            court: "UNKNOWN",
+            sanctions: "UNKNOWN",
+            pep: "UNKNOWN",
+            property: "UNKNOWN",
+            vehicles: "UNKNOWN",
+          }
+        : {},
     };
   }
 }

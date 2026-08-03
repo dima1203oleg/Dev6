@@ -73,13 +73,13 @@ export const PREDATOR_VOICE_PROFILE_V1: VoiceProfile = {
     target: "absolute_sub_bass",
     variation: "zero_monolithic",
     average: "50 Hz - 70 Hz (Extreme Sub-Bass)",
-    range: "Zero"
+    range: "Zero",
   },
   intonation: {
     variation: "absolute_zero",
     sentence_end: "flat_cutoff",
     questions: "flat_statement",
-    prosody_style: "Absolute flatline, emotionless abyss"
+    prosody_style: "Absolute flatline, emotionless abyss",
   },
   emotion: {
     intensity: 0,
@@ -91,13 +91,13 @@ export const PREDATOR_VOICE_PROFILE_V1: VoiceProfile = {
     enthusiasm: 0,
     dramatic_expression: 0,
     tension: 100,
-    mystery: 90
+    mystery: 90,
   },
   delivery: {
     speed: "extreme_slow_heavy",
     energy: "crushing_chest_pressure",
     articulation: "strict_clinical",
-    dramatic_expression: "zero"
+    dramatic_expression: "zero",
   },
   timbre: {
     depth: 100,
@@ -106,14 +106,15 @@ export const PREDATOR_VOICE_PROFILE_V1: VoiceProfile = {
     breathiness: 0,
     nasality: 0,
     roughness: 50,
-    resonance: 100
+    resonance: 100,
   },
   pauses: {
     short_ms: "250-400",
     medium_ms: "600-800",
-    long_ms: "1000-1500"
+    long_ms: "1000-1500",
   },
-  voice_design_prompt: "Voice Persona: Speak in an extremely low pitch, deep heavy bass (around 70-80 Hz). Use a very rough, gravelly, and rugged male voice. Overwhelming chest-resonant character and a dense, heavy vocal body. Completely cold, detached, and emotionless. Minimal intonation; perfectly flat delivery. Speaking rate 140 words per minute, steady. Precise articulation, hard consonants."
+  voice_design_prompt:
+    "Voice Persona: Speak in an extremely low pitch, deep heavy bass (around 70-80 Hz). Use a very rough, gravelly, and rugged male voice. Overwhelming chest-resonant character and a dense, heavy vocal body. Completely cold, detached, and emotionless. Minimal intonation; perfectly flat delivery. Speaking rate 140 words per minute, steady. Precise articulation, hard consonants.",
 };
 
 export const PRODUCTION_TTS_CONFIG_V1: ProductionTtsConfig = {
@@ -126,7 +127,7 @@ export const PRODUCTION_TTS_CONFIG_V1: ProductionTtsConfig = {
   style: "Deep Authority / Extreme Sub-Bass / Cold Intelligence Analyst / Zero Emotion",
   ssml_strategy: "AUTOMATIC_MARKER_PARSER",
   pause_strategy: "300ms_SHORT / 750ms_MEDIUM / 1000ms_LONG",
-  emphasis_strategy: "PITCH_FLATLINE"
+  emphasis_strategy: "PITCH_FLATLINE",
 };
 
 /**
@@ -142,7 +143,7 @@ export const REFERENCE_VIDEO_ANALYSIS = {
   intonation: "Monotone flat-line with subtle falling terminal contours",
   emotional_intensity: "10/100 (Extremely cold / stoic, confidence: 100%)",
   perceived_authority: "95/100 (Absolute analytical dominance, confidence: 98%)",
-  timbre_resonance: "Chest heavy, dry, very dense and controlled"
+  timbre_resonance: "Chest heavy, dry, very dense and controlled",
 };
 
 /**
@@ -158,7 +159,7 @@ export const TOP_5_GOOGLE_VOICES = [
     pitch_characteristics: "Deep, rich, extremely stoic and heavy bass register.",
     timbre: "Dark, dense, dry, very low brightness.",
     controllability: "High (via systemInstruction prompts & speed multiplier).",
-    compatibility_score: 98
+    compatibility_score: 98,
   },
   {
     rank: 2,
@@ -169,7 +170,7 @@ export const TOP_5_GOOGLE_VOICES = [
     pitch_characteristics: "Robust, deep Ukrainian male voice. Highly stable.",
     timbre: "Warm, resonant, excellent articulation of Cyrillic terms.",
     controllability: "Maximum (supports SSML pitch, rate, and emphasis control).",
-    compatibility_score: 95
+    compatibility_score: 95,
   },
   {
     rank: 3,
@@ -180,7 +181,7 @@ export const TOP_5_GOOGLE_VOICES = [
     pitch_characteristics: "Deep, calm, extremely crisp news-briefing narrator.",
     timbre: "Professional, dry, medium-low resonance.",
     controllability: "High (pitch shifting down achieves perfect cold detective tone).",
-    compatibility_score: 90
+    compatibility_score: 90,
   },
   {
     rank: 4,
@@ -191,7 +192,7 @@ export const TOP_5_GOOGLE_VOICES = [
     pitch_characteristics: "Calm, conversational, medium-low baritone.",
     timbre: "Slightly warmer, more natural than Fenrir but less dry.",
     controllability: "High (speed 0.88x makes it very analytical).",
-    compatibility_score: 85
+    compatibility_score: 85,
   },
   {
     rank: 5,
@@ -202,8 +203,8 @@ export const TOP_5_GOOGLE_VOICES = [
     pitch_characteristics: "Standard Cyrillic male, clean and robotic-neutral.",
     timbre: "Slightly metallic, very low natural emotional modulation.",
     controllability: "High (easily flattened via standard prosody tags).",
-    compatibility_score: 82
-  }
+    compatibility_score: 82,
+  },
 ];
 
 /**
@@ -227,24 +228,46 @@ export function preprocessPredatorText(text: string): string {
 
   // 3. Break long compound sentences with coordinating conjunctions like "але", "оскільки", "тому що"
   const conjunctions = ["але", "тому що", "оскільки", "однак", "проте", "внаслідок", "через те що"];
-  conjunctions.forEach(conj => {
+  conjunctions.forEach((conj) => {
     const regex = new RegExp(`,\\s+\\[PAUSE_SHORT\\]\\s+${conj}\\s+`, "gi");
     processed = processed.replace(regex, `. [PAUSE_MEDIUM] ${conj.charAt(0).toUpperCase() + conj.slice(1)} `);
   });
 
   // 4. Highlight key intelligence identifiers with [EMPHASIS] or pitch drops for stability
   const keywords = [
-    "РИЗИК", "ризик", "РИЗИКУ", "ризику", "ризики", "РИЗИКИ",
-    "НЕГАТИВНИЙ", "негативний", "негативні",
-    "ЄДРПОУ", "Єдрпоу", "ЕДРПОУ",
-    "САНКЦІЇ", "санкції", "санкційний",
-    "ПОВ'ЯЗАНИЙ", "пов'язаний", "пов'язані",
-    "ЗНАЙДЕНО", "знайдено", "виявлено", "ВИЯВЛЕНО",
-    "АКТИВИ", "активи", "МАЙНО", "майно",
-    "УСПІШНО", "успішно", "ПОПЕРЕДЖЕННЯ", "попередження"
+    "РИЗИК",
+    "ризик",
+    "РИЗИКУ",
+    "ризику",
+    "ризики",
+    "РИЗИКИ",
+    "НЕГАТИВНИЙ",
+    "негативний",
+    "негативні",
+    "ЄДРПОУ",
+    "Єдрпоу",
+    "ЕДРПОУ",
+    "САНКЦІЇ",
+    "санкції",
+    "санкційний",
+    "ПОВ'ЯЗАНИЙ",
+    "пов'язаний",
+    "пов'язані",
+    "ЗНАЙДЕНО",
+    "знайдено",
+    "виявлено",
+    "ВИЯВЛЕНО",
+    "АКТИВИ",
+    "активи",
+    "МАЙНО",
+    "майно",
+    "УСПІШНО",
+    "успішно",
+    "ПОПЕРЕДЖЕННЯ",
+    "попередження",
   ];
 
-  keywords.forEach(word => {
+  keywords.forEach((word) => {
     const regex = new RegExp(`\\b${word}\\b`, "g");
     processed = processed.replace(regex, `[EMPHASIS]${word}[/EMPHASIS]`);
   });
@@ -279,11 +302,11 @@ export function convertToSsml(rawText: string, config: ProductionTtsConfig = PRO
     .replace(/\[PAUSE_MEDIUM\]/g, '<break time="750ms"/>')
     .replace(/\[PAUSE_LONG\]/g, '<break time="1000ms"/>')
     .replace(/\[LOWER_PITCH\]/g, '<prosody pitch="-7st">')
-    .replace(/\[\/LOWER_PITCH\]/g, '</prosody>')
+    .replace(/\[\/LOWER_PITCH\]/g, "</prosody>")
     .replace(/\[SLOWER\]/g, '<prosody rate="0.80">')
-    .replace(/\[\/SLOWER\]/g, '</prosody>')
+    .replace(/\[\/SLOWER\]/g, "</prosody>")
     .replace(/\[FASTER\]/g, '<prosody rate="1.0">')
-    .replace(/\[\/FASTER\]/g, '</prosody>');
+    .replace(/\[\/FASTER\]/g, "</prosody>");
 
   // Handle [EMPHASIS]text[/EMPHASIS]
   // In extreme sub-bass style, emphasis is marked by a volume cut and slower rate, absolutely NO pitch change

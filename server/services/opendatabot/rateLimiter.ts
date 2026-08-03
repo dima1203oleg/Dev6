@@ -54,13 +54,14 @@ export class OpendatabotRateLimiter {
       remainingPerMinute: Math.max(0, config.OPENDATABOT_RATE_1M - hits60s),
       limitPer5Sec: config.OPENDATABOT_RATE_5S,
       remainingPer5Sec: Math.max(0, config.OPENDATABOT_RATE_5S - hits5s),
-      status: hits60s > config.OPENDATABOT_RATE_1M * 0.8 || hits5s > config.OPENDATABOT_RATE_5S * 0.8 ? "ORANGE" : "GREEN"
+      status:
+        hits60s > config.OPENDATABOT_RATE_1M * 0.8 || hits5s > config.OPENDATABOT_RATE_5S * 0.8 ? "ORANGE" : "GREEN",
     };
   }
 
   private cleanUp(now: number): void {
     const cutoff = now - 60000;
-    this.requests = this.requests.filter(t => t >= cutoff);
+    this.requests = this.requests.filter((t) => t >= cutoff);
   }
 
   private getHitsInWindow(now: number, windowMs: number): number {

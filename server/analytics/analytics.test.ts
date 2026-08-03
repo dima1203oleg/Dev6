@@ -3,7 +3,8 @@ import { describe, expect, it } from "vitest";
 import { calculateFxAnalytics, calculateOpenDataOverview, calculateProcurementAnalytics } from "./index";
 import { NbuRate, NbuSeriesObservation, ProzorroSearchResponse } from "../datasources/types";
 
-const fixture = <T>(name: string): T => JSON.parse(readFileSync(new URL(`../datasources/__fixtures__/${name}`, import.meta.url), "utf8")) as T;
+const fixture = <T>(name: string): T =>
+  JSON.parse(readFileSync(new URL(`../datasources/__fixtures__/${name}`, import.meta.url), "utf8")) as T;
 
 describe("FX analytics", () => {
   it("calculates deterministic metrics from the captured NBU series", () => {
@@ -34,7 +35,14 @@ describe("FX analytics", () => {
 
 describe("open data analytics", () => {
   it("uses CKAN total and facets while counting only returned recent results", () => {
-    const response = fixture<{ success: boolean; result: { count: number; results: Array<Record<string, unknown>>; facets: Record<string, Record<string, number>> } }>("ckan-search.json");
+    const response = fixture<{
+      success: boolean;
+      result: {
+        count: number;
+        results: Array<Record<string, unknown>>;
+        facets: Record<string, Record<string, number>>;
+      };
+    }>("ckan-search.json");
     const result = calculateOpenDataOverview(response as never, new Date("2026-08-03T00:00:00Z"));
     expect(result.totalDatasets).toBe(response.result.count);
     expect(result.basedOnSearchResults).toBe(response.result.results.length);

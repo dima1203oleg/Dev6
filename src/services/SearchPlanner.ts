@@ -1,6 +1,7 @@
-export type EntityType = 'PERSON' | 'ORGANIZATION' | 'VEHICLE' | 'DOMAIN' | 'UNKNOWN';
-export type IntentType = 'EXACT_IDENTIFIER_SEARCH' | 'ENTITY_DISCOVERY' | 'RELATIONSHIP_SEARCH';
-export type SearchDomain = 'company' | 'ownership' | 'management' | 'courts' | 'sanctions' | 'procurement' | 'declarations';
+export type EntityType = "PERSON" | "ORGANIZATION" | "VEHICLE" | "DOMAIN" | "UNKNOWN";
+export type IntentType = "EXACT_IDENTIFIER_SEARCH" | "ENTITY_DISCOVERY" | "RELATIONSHIP_SEARCH";
+export type SearchDomain =
+  "company" | "ownership" | "management" | "courts" | "sanctions" | "procurement" | "declarations";
 
 export interface QueryContext {
   raw_query: string;
@@ -40,9 +41,9 @@ export interface EvidenceCoverage {
 
 export interface InvestigationResult {
   logs: string[];
-  finalStatus: 'VERIFIED' | 'PARTIALLY_VERIFIED' | 'UNVERIFIED' | 'CONTRADICTED' | 'NO_DATA' | 'SOURCE_UNAVAILABLE';
+  finalStatus: "VERIFIED" | "PARTIALLY_VERIFIED" | "UNVERIFIED" | "CONTRADICTED" | "NO_DATA" | "SOURCE_UNAVAILABLE";
   truthScore: number;
-  confidence: 'HIGH' | 'MEDIUM' | 'LOW' | 'UNVERIFIED';
+  confidence: "HIGH" | "MEDIUM" | "LOW" | "UNVERIFIED";
   evidenceCoverage: EvidenceCoverage;
   contradictions: string[];
   sourcesUsed: string[];
@@ -63,8 +64,8 @@ export class SearchPlanner {
 
   // 1. Intent / Entity Extraction & 2. Identity Resolution
   private extractContext(rawQuery: string, normalized: string): QueryContext {
-    let intent: IntentType = 'ENTITY_DISCOVERY';
-    let entityType: EntityType = 'UNKNOWN';
+    let intent: IntentType = "ENTITY_DISCOVERY";
+    let entityType: EntityType = "UNKNOWN";
     let identifiers: string[] = [];
 
     // Check for EDRPOU (8 digits) or IPN (10 digits)
@@ -73,21 +74,26 @@ export class SearchPlanner {
     const isVin = /^[A-HJ-NPR-Z0-9]{17}$/.test(normalized.toUpperCase());
 
     if (isEdrpouOrIpn) {
-      intent = 'EXACT_IDENTIFIER_SEARCH';
-      entityType = normalized.length === 8 ? 'ORGANIZATION' : 'PERSON';
+      intent = "EXACT_IDENTIFIER_SEARCH";
+      entityType = normalized.length === 8 ? "ORGANIZATION" : "PERSON";
       identifiers.push(normalized);
       this.log(`[IDENTITY RESOLUTION] Виявлено точний ідентифікатор (${normalized}). Режим: Exact Match.`);
     } else if (isVin) {
-      intent = 'EXACT_IDENTIFIER_SEARCH';
-      entityType = 'VEHICLE';
+      intent = "EXACT_IDENTIFIER_SEARCH";
+      entityType = "VEHICLE";
       identifiers.push(normalized.toUpperCase());
       this.log(`[IDENTITY RESOLUTION] Виявлено VIN (${normalized.toUpperCase()}). Режим: Exact Match.`);
     } else {
       // Name or company string
-      if (normalized.includes('тов ') || normalized.includes('llc') || normalized.includes('спд') || normalized.includes('пп ')) {
-        entityType = 'ORGANIZATION';
+      if (
+        normalized.includes("тов ") ||
+        normalized.includes("llc") ||
+        normalized.includes("спд") ||
+        normalized.includes("пп ")
+      ) {
+        entityType = "ORGANIZATION";
       } else {
-        entityType = 'PERSON'; // Defaulting for typical OSINT search
+        entityType = "PERSON"; // Defaulting for typical OSINT search
       }
       this.log(`[IDENTITY RESOLUTION] Виявлено текстовий запит. Режим: Candidate Identity Search (Fuzzy/Phonetic).`);
     }
@@ -95,7 +101,14 @@ export class SearchPlanner {
     this.log(`[INTENT EXTRACTION] Визначення наміру: ${intent}, Entity: ${entityType}`);
 
     // Determine requested domains based on keywords or default full search
-    const requested_domains: SearchDomain[] = ['company', 'ownership', 'courts', 'sanctions', 'procurement', 'declarations'];
+    const requested_domains: SearchDomain[] = [
+      "company",
+      "ownership",
+      "courts",
+      "sanctions",
+      "procurement",
+      "declarations",
+    ];
 
     return {
       raw_query: rawQuery,
@@ -103,40 +116,40 @@ export class SearchPlanner {
       entity_type: entityType,
       intent,
       identifiers,
-      requested_domains
+      requested_domains,
     };
   }
 
   // 5. Search Planner & 7. Source Router
   private createPlan(context: QueryContext): SearchPlan {
     this.log(`[SEARCH PLANNER] Формування плану пошуку...`);
-    
+
     const tasks: SearchTask[] = [];
 
-    if (context.requested_domains.includes('company') || context.requested_domains.includes('ownership')) {
-      tasks.push({ domain: 'company', sources: ['EDR', 'YouControl', 'OpenDataBot'], tier: 0 });
+    if (context.requested_domains.includes("company") || context.requested_domains.includes("ownership")) {
+      tasks.push({ domain: "company", sources: ["EDR", "YouControl", "OpenDataBot"], tier: 0 });
     }
-    if (context.requested_domains.includes('declarations') && context.entity_type === 'PERSON') {
-      tasks.push({ domain: 'declarations', sources: ['NAZK_API'], tier: 0 });
+    if (context.requested_domains.includes("declarations") && context.entity_type === "PERSON") {
+      tasks.push({ domain: "declarations", sources: ["NAZK_API"], tier: 0 });
     }
-    if (context.requested_domains.includes('procurement')) {
-      tasks.push({ domain: 'procurement', sources: ['Prozorro'], tier: 1 });
+    if (context.requested_domains.includes("procurement")) {
+      tasks.push({ domain: "procurement", sources: ["Prozorro"], tier: 1 });
     }
-    if (context.requested_domains.includes('courts')) {
-      tasks.push({ domain: 'courts', sources: ['CourtRegistry', 'Opendatabot_Courts'], tier: 0 });
+    if (context.requested_domains.includes("courts")) {
+      tasks.push({ domain: "courts", sources: ["CourtRegistry", "Opendatabot_Courts"], tier: 0 });
     }
-    if (context.requested_domains.includes('sanctions')) {
-      tasks.push({ domain: 'sanctions', sources: ['RNBO', 'OFAC', 'EU_Sanctions'], tier: 0 });
+    if (context.requested_domains.includes("sanctions")) {
+      tasks.push({ domain: "sanctions", sources: ["RNBO", "OFAC", "EU_Sanctions"], tier: 0 });
     }
 
-    this.log(` - domain: ${context.requested_domains.join(', ')}`);
+    this.log(` - domain: ${context.requested_domains.join(", ")}`);
     this.log(` - budget: max_sources=14, timeout=30s`);
     this.log(`[SOURCE ROUTER] Маршрутизація до офіційних джерел (TIER 0 - TIER 2)...`);
 
     return {
-      entity_resolution: context.intent === 'ENTITY_DISCOVERY',
+      entity_resolution: context.intent === "ENTITY_DISCOVERY",
       budget: { max_sources: 14, timeout_ms: 30000 },
-      tasks
+      tasks,
     };
   }
 
@@ -144,15 +157,15 @@ export class SearchPlanner {
   private async runDiscoveryPhase(context: QueryContext, plan: SearchPlan): Promise<any[]> {
     this.log(`[STAGE 1: DISCOVERY] Пошук потенційних збігів у джерелах...`);
     // Simulated discovery
-    return [{ candidateId: 'cand-1', matchScore: 92 }];
+    return [{ candidateId: "cand-1", matchScore: 92 }];
   }
 
   // 4. Two-stage search: VERIFICATION
   private async runVerificationPhase(candidates: any[], context: QueryContext, plan: SearchPlan) {
     this.log(`[STAGE 2: VERIFICATION] Перевірка знайдених кандидатів за точними ідентифікаторами...`);
-    
+
     // Simulate parallel requests
-    plan.tasks.forEach(task => {
+    plan.tasks.forEach((task) => {
       this.log(`[PARALLEL SEARCH] ${task.sources[0]} (TIER ${task.tier}) - Запит відправлено...`);
     });
 
@@ -166,15 +179,18 @@ export class SearchPlanner {
 
   private checkContradictions(context: QueryContext) {
     this.log(`[CONTRADICTION CHECK] Перевірка розбіжностей у даних...`);
-    
+
     // Custom check for Kizyma based on previous static log
-    const isKizymaQuery = context.normalized_query.includes('кізима') || context.normalized_query.includes('kizyma') || context.identifiers.includes('3111724753');
-    
+    const isKizymaQuery =
+      context.normalized_query.includes("кізима") ||
+      context.normalized_query.includes("kizyma") ||
+      context.identifiers.includes("3111724753");
+
     if (isKizymaQuery) {
-        this.log(`[CONTRADICTION CHECK] Конфліктів не виявлено. Сторонні фірми відфільтровано за унікальним ІПН.`);
-        return [];
+      this.log(`[CONTRADICTION CHECK] Конфліктів не виявлено. Сторонні фірми відфільтровано за унікальним ІПН.`);
+      return [];
     }
-    
+
     this.log(`[CONTRADICTION CHECK] Конфліктів не виявлено.`);
     return [];
   }
@@ -183,8 +199,8 @@ export class SearchPlanner {
     this.log(`[TRUTH / CONFIDENCE] Оцінка достовірності: CONFIDENCE = HIGH (97%). Source agreement: 100%.`);
     return {
       truthScore: 97,
-      confidence: 'HIGH' as const,
-      finalStatus: 'VERIFIED' as const
+      confidence: "HIGH" as const,
+      finalStatus: "VERIFIED" as const,
     };
   }
 
@@ -199,13 +215,13 @@ export class SearchPlanner {
       procurement: 100,
       sanctions: 100,
       declarations: 78,
-      media: 64
+      media: 64,
     };
-    
+
     this.log(` - Identity: ${coverage.identity}%`);
     this.log(` - Registration: ${coverage.registration}%`);
     this.log(` - Courts: ${coverage.courts}%`);
-    
+
     return coverage;
   }
 
@@ -243,14 +259,14 @@ export class SearchPlanner {
 
     // 28: Stop Condition
     this.log(`[STOP CONDITION] Identity confidence >= 0.95. Required evidence >= threshold. Розслідування завершено.`);
-    
+
     // Graph & Risk Engines
     this.log(`[GRAPH ENGINE] Побудова зв'язків та графів...`);
     this.log(`[RISK ENGINE] Оцінка ризиків та санкцій...`);
-    
+
     // 31: AI Layer
     this.log(`[AI LAYER] Генерація Facts, Inferences, Hypotheses...`);
-    
+
     this.log(`[SUCCESS] Фінальна відповідь та докази готові. Дані завантажено.`);
 
     return {
@@ -260,7 +276,7 @@ export class SearchPlanner {
       confidence,
       evidenceCoverage,
       contradictions,
-      sourcesUsed: plan.tasks.flatMap(t => t.sources)
+      sourcesUsed: plan.tasks.flatMap((t) => t.sources),
     };
   }
 }

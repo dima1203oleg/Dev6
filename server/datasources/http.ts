@@ -58,9 +58,10 @@ export const fetchJson = async <T>(
       return { data, fetchedAt: new Date().toISOString() };
     } catch (error) {
       clearTimeout(timeout);
-      lastError = error instanceof Error && error.name === "AbortError"
-        ? new UpstreamError("timeout", `Upstream timed out after ${timeoutMs}ms`, url)
-        : error;
+      lastError =
+        error instanceof Error && error.name === "AbortError"
+          ? new UpstreamError("timeout", `Upstream timed out after ${timeoutMs}ms`, url)
+          : error;
       if (attempt >= retries || !shouldRetry(lastError)) break;
       await sleep(250 * (attempt + 1));
     }
@@ -71,11 +72,12 @@ export const fetchJson = async <T>(
 };
 
 export const toDataSourceError = (error: unknown, sourceUrl: string): DataSourceError => ({
-  code: error instanceof UpstreamError
-    ? error.code
-    : error instanceof Error && /invalid|missing|not an object/i.test(error.message)
-      ? "parse_error"
-      : "upstream_error",
+  code:
+    error instanceof UpstreamError
+      ? error.code
+      : error instanceof Error && /invalid|missing|not an object/i.test(error.message)
+        ? "parse_error"
+        : "upstream_error",
   message: error instanceof Error ? error.message : "Upstream request failed",
   sourceUrl,
   attemptedAt: new Date().toISOString(),

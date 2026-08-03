@@ -8,18 +8,14 @@ import { auditMiddleware } from "../middleware/auditLog";
 const router = Router();
 
 // System Health Dashboard
-router.get(
-  "/health",
-  checkPermission("system.health"),
-  async (req, res) => {
-    try {
-      const health = await globalHealthService.getOverallHealth();
-      res.json(health);
-    } catch (err: any) {
-      res.status(500).json({ error: { code: "HEALTH_CHECK_FAILED", message: err.message } });
-    }
+router.get("/health", checkPermission("system.health"), async (req, res) => {
+  try {
+    const health = await globalHealthService.getOverallHealth();
+    res.json(health);
+  } catch (err: any) {
+    res.status(500).json({ error: { code: "HEALTH_CHECK_FAILED", message: err.message } });
   }
-);
+});
 
 // Universal Entity Search
 router.post(
@@ -34,18 +30,18 @@ router.post(
       }
 
       const result = await predatorClient.searchEntities(query, entityType);
-      
+
       // Apply server-side data masking based on user role
-      const maskedEntities = result.entities.map(ent => maskSensitiveFields(ent, req.user?.role || "ANALYST"));
+      const maskedEntities = result.entities.map((ent) => maskSensitiveFields(ent, req.user?.role || "ANALYST"));
 
       res.json({
         ...result,
-        entities: maskedEntities
+        entities: maskedEntities,
       });
     } catch (err: any) {
       res.status(500).json({ error: { code: "SEARCH_FAILED", message: err.message, retryable: true } });
     }
-  }
+  },
 );
 
 // Intelligence Dossier Generation
@@ -57,7 +53,9 @@ router.post(
     try {
       const { entityId, identifiers } = req.body;
       if (!entityId || !identifiers) {
-        return res.status(400).json({ error: { code: "BAD_REQUEST", message: "Entity ID and identifiers are required" } });
+        return res
+          .status(400)
+          .json({ error: { code: "BAD_REQUEST", message: "Entity ID and identifiers are required" } });
       }
 
       const dossier = await predatorClient.getDossier(entityId, identifiers);
@@ -65,7 +63,7 @@ router.post(
     } catch (err: any) {
       res.status(500).json({ error: { code: "DOSSIER_FAILED", message: err.message } });
     }
-  }
+  },
 );
 
 // Provenance Chain Inspection
@@ -81,7 +79,7 @@ router.get(
     } catch (err: any) {
       res.status(500).json({ error: { code: "PROVENANCE_ERROR", message: err.message } });
     }
-  }
+  },
 );
 
 // Safe Query DSL Execution (replacing raw SQL)
@@ -99,14 +97,14 @@ router.post(
           code: "source_unavailable",
           message: "Query DSL execution requires a configured live CKAN resource",
           sourceUrl: "/api/v1/predator/query-dsl",
-          attemptedAt: new Date().toISOString()
+          attemptedAt: new Date().toISOString(),
         },
-        queryPlan: plan
+        queryPlan: plan,
       });
     } catch (err: any) {
       res.status(500).json({ error: { code: "QUERY_PLAN_FAILED", message: err.message } });
     }
-  }
+  },
 );
 
 // Investigation Workspace Storage
@@ -121,7 +119,7 @@ router.get(
     } catch (err: any) {
       res.status(500).json({ error: { code: "INVESTIGATION_FETCH_FAILED", message: err.message } });
     }
-  }
+  },
 );
 
 export default router;

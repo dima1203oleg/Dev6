@@ -11,8 +11,13 @@ const parse = (value: unknown): WikipediaSearchItem[] => {
     throw new Error("Wikipedia payload is missing query.search");
   }
   return ((search as Record<string, unknown>).search as unknown[]).map((item) => {
-    if (typeof item !== "object" || item === null || typeof (item as Record<string, unknown>).pageid !== "number" ||
-      typeof (item as Record<string, unknown>).title !== "string" || typeof (item as Record<string, unknown>).snippet !== "string") {
+    if (
+      typeof item !== "object" ||
+      item === null ||
+      typeof (item as Record<string, unknown>).pageid !== "number" ||
+      typeof (item as Record<string, unknown>).title !== "string" ||
+      typeof (item as Record<string, unknown>).snippet !== "string"
+    ) {
       throw new Error("Wikipedia search item is invalid");
     }
     return item as WikipediaSearchItem;
@@ -21,5 +26,12 @@ const parse = (value: unknown): WikipediaSearchItem[] => {
 
 export const search = async (query: string, rows: number): Promise<DataSourceResult<WikipediaSearchItem[]>> => {
   const sourceUrl = `https://uk.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&utf8=&format=json&srlimit=${rows}`;
-  return cachedFetch<WikipediaSearchItem[]>(cache, `${query}:${rows}`, "wikipedia-uk", "Українська Вікіпедія", sourceUrl, parse);
+  return cachedFetch<WikipediaSearchItem[]>(
+    cache,
+    `${query}:${rows}`,
+    "wikipedia-uk",
+    "Українська Вікіпедія",
+    sourceUrl,
+    parse,
+  );
 };

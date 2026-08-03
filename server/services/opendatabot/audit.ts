@@ -19,9 +19,9 @@ export class OpendatabotAuditHub {
     const transaction: OpendatabotTransaction = {
       ...tx,
       id: `tx_odb_${crypto.randomUUID()}`,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
-    
+
     this.transactions.unshift(transaction);
     if (this.transactions.length > this.maxItems) {
       this.transactions.pop();
@@ -32,7 +32,7 @@ export class OpendatabotAuditHub {
     const log: OpendatabotAuditLog = {
       ...audit,
       auditId: `audit_odb_${crypto.randomUUID()}`,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     this.logs.unshift(log);
@@ -47,23 +47,23 @@ export class OpendatabotAuditHub {
 
   public getMetrics() {
     const total = this.transactions.length;
-    const successes = this.transactions.filter(t => t.status >= 200 && t.status < 300).length;
+    const successes = this.transactions.filter((t) => t.status >= 200 && t.status < 300).length;
     const failures = total - successes;
     const latencySum = this.transactions.reduce((sum, t) => sum + t.latencyMs, 0);
     const avgLatency = total > 0 ? Math.round(latencySum / total) : 0;
-    const cacheHits = this.transactions.filter(t => t.cache === "HIT").length;
+    const cacheHits = this.transactions.filter((t) => t.cache === "HIT").length;
     const cacheHitRatio = total > 0 ? `${Math.round((cacheHits / total) * 100)}%` : "0%";
 
     return {
       requests_total: total,
       requests_success_total: successes,
       requests_failed_total: failures,
-      rate_limit_429_total: this.transactions.filter(t => t.status === 429).length,
+      rate_limit_429_total: this.transactions.filter((t) => t.status === 429).length,
       average_latency_ms: avgLatency,
       circuit_breaker_state: "CLOSED",
       cache_hit_ratio: cacheHitRatio,
       cache_hits: cacheHits,
-      cache_misses: total - cacheHits
+      cache_misses: total - cacheHits,
     };
   }
 }

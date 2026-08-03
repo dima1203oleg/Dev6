@@ -1,5 +1,3 @@
-
-
 import { executeWithConnectorLogging } from "../connectorLogger";
 
 export class CKANClient {
@@ -21,7 +19,7 @@ export class CKANClient {
         connectorName: "data.gov.ua CKAN Connector 2.0",
         endpoint: url.toString(),
         method: "GET",
-        queryParams: { q: query, rows, start }
+        queryParams: { q: query, rows, start },
       },
       async () => {
         try {
@@ -29,7 +27,7 @@ export class CKANClient {
           const timeoutId = setTimeout(() => controller.abort(), 6000);
           const response = await fetch(url.toString(), { signal: controller.signal });
           clearTimeout(timeoutId);
-          
+
           if (!response.ok) throw new Error(`CKAN package_search status ${response.status}`);
           const data = await response.json();
           if (data && data.success) return { statusCode: response.status, data };
@@ -37,10 +35,9 @@ export class CKANClient {
         } catch (err) {
           throw err;
         }
-      }
+      },
     );
   }
-
 
   async packageShow(id: string) {
     try {

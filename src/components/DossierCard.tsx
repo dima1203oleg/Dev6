@@ -1,4 +1,3 @@
-
 import React from "react";
 import { User, Landmark, Briefcase, Activity, ChevronRight, ShieldCheck } from "lucide-react";
 import { CanonicalEntity } from "../types/predator";
@@ -12,7 +11,7 @@ export const DossierCard: React.FC<DossierCardProps> = ({ entity, onClick }) => 
   const Icon = entity.type === "PERSON" ? User : entity.type === "FOP" ? Briefcase : Landmark;
 
   return (
-    <div 
+    <div
       onClick={onClick}
       className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500/50 hover:bg-slate-800/50 transition-all cursor-pointer relative overflow-hidden"
     >
@@ -31,9 +30,7 @@ export const DossierCard: React.FC<DossierCardProps> = ({ entity, onClick }) => 
                 <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
                   {entity.canonicalName}
                 </h3>
-                {entity.confidenceScore >= 95 && (
-                  <ShieldCheck size={16} className="text-green-500" />
-                )}
+                {entity.confidenceScore >= 95 && <ShieldCheck size={16} className="text-green-500" />}
               </div>
               <div className="text-xs text-slate-500 font-mono tracking-widest uppercase mt-1">
                 {entity.type} • {entity.sourcesCount} Sources

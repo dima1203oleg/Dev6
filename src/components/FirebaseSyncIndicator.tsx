@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useFirebaseSync } from '../hooks/useFirebaseSync';
-import { Cloud, CloudOff, RefreshCw, CheckCircle2, AlertTriangle, Database, Wifi, WifiOff, Zap } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState } from "react";
+import { useFirebaseSync } from "../hooks/useFirebaseSync";
+import { Cloud, CloudOff, RefreshCw, CheckCircle2, AlertTriangle, Database, Wifi, WifiOff, Zap } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 interface FirebaseSyncIndicatorProps {
   /** Компактне відображення для вузьких або мобільних шапок */
@@ -10,18 +10,9 @@ interface FirebaseSyncIndicatorProps {
   className?: string;
 }
 
-export function FirebaseSyncIndicator({ compact = false, className = '' }: FirebaseSyncIndicatorProps) {
-  const {
-    isOnline,
-    isSynced,
-    hasPendingWrites,
-    fromCache,
-    lastSyncedAt,
-    syncError,
-    isChecking,
-    latencyMs,
-    reconnect,
-  } = useFirebaseSync();
+export function FirebaseSyncIndicator({ compact = false, className = "" }: FirebaseSyncIndicatorProps) {
+  const { isOnline, isSynced, hasPendingWrites, fromCache, lastSyncedAt, syncError, isChecking, latencyMs, reconnect } =
+    useFirebaseSync();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -37,40 +28,40 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
   const getStatusDetails = () => {
     if (isChecking && !latencyMs) {
       return {
-        dotClass: 'bg-blue-400 animate-ping',
-        badgeBg: 'bg-blue-500/10 border-blue-500/30 text-blue-400',
-        label: 'Перевірка з\'єднання...',
+        dotClass: "bg-blue-400 animate-ping",
+        badgeBg: "bg-blue-500/10 border-blue-500/30 text-blue-400",
+        label: "Перевірка з'єднання...",
         icon: <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-400" />,
-        stateName: 'CHECKING'
+        stateName: "CHECKING",
       };
     }
 
     if (!isOnline) {
       return {
-        dotClass: 'bg-rose-500',
-        badgeBg: 'bg-rose-500/10 border-rose-500/30 text-rose-400',
-        label: 'Firestore: Офлайн',
+        dotClass: "bg-rose-500",
+        badgeBg: "bg-rose-500/10 border-rose-500/30 text-rose-400",
+        label: "Firestore: Офлайн",
         icon: <WifiOff className="w-3.5 h-3.5 text-rose-400" />,
-        stateName: 'OFFLINE'
+        stateName: "OFFLINE",
       };
     }
 
     if (hasPendingWrites || (fromCache && isSynced)) {
       return {
-        dotClass: 'bg-amber-400 animate-pulse',
-        badgeBg: 'bg-amber-500/10 border-amber-500/30 text-amber-400',
-        label: hasPendingWrites ? 'Синхронізація змін...' : 'Кеш Firestore',
+        dotClass: "bg-amber-400 animate-pulse",
+        badgeBg: "bg-amber-500/10 border-amber-500/30 text-amber-400",
+        label: hasPendingWrites ? "Синхронізація змін..." : "Кеш Firestore",
         icon: <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" />,
-        stateName: 'SYNCING'
+        stateName: "SYNCING",
       };
     }
 
     return {
-      dotClass: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]',
-      badgeBg: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
-      label: 'Firestore: Онлайн',
+      dotClass: "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]",
+      badgeBg: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
+      label: "Firestore: Онлайн",
       icon: <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />,
-      stateName: 'ONLINE'
+      stateName: "ONLINE",
     };
   };
 
@@ -82,7 +73,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
       <div
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             setIsOpen(!isOpen);
           }
         }}
@@ -99,11 +90,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
           <span className={`relative inline-flex rounded-full h-2 w-2 ${status.dotClass}`}></span>
         </span>
 
-        {!compact && (
-          <span className="truncate max-w-[140px] font-bold">
-            {status.label}
-          </span>
-        )}
+        {!compact && <span className="truncate max-w-[140px] font-bold">{status.label}</span>}
 
         {isOnline && latencyMs !== null && !compact && (
           <span className="hidden xl:inline-block text-[10px] opacity-70 border-l border-slate-700/60 pl-1.5 ml-0.5">
@@ -117,7 +104,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
           className="p-0.5 hover:text-white transition-colors ml-0.5"
           title="Оновити з'єднання"
         >
-          <RefreshCw className={`w-3 h-3 ${isRefreshing || isChecking ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-3 h-3 ${isRefreshing || isChecking ? "animate-spin" : ""}`} />
         </button>
       </div>
 
@@ -126,10 +113,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
         {isOpen && (
           <>
             {/* Прозорий фоновий шар для закриття */}
-            <div
-              className="fixed inset-0 z-40"
-              onClick={() => setIsOpen(false)}
-            />
+            <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
 
             <motion.div
               initial={{ opacity: 0, y: 6, scale: 0.96 }}
@@ -154,11 +138,15 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
                 {/* Мережевий стан */}
                 <div className="flex items-center justify-between py-1 border-b border-slate-800/50">
                   <span className="text-slate-400 flex items-center gap-1.5">
-                    {isOnline ? <Wifi className="w-3.5 h-3.5 text-emerald-400" /> : <WifiOff className="w-3.5 h-3.5 text-rose-400" />}
+                    {isOnline ? (
+                      <Wifi className="w-3.5 h-3.5 text-emerald-400" />
+                    ) : (
+                      <WifiOff className="w-3.5 h-3.5 text-rose-400" />
+                    )}
                     Мережеве з'єднання:
                   </span>
-                  <span className={`font-mono font-bold ${isOnline ? 'text-emerald-400' : 'text-rose-400'}`}>
-                    {isOnline ? 'АКТИВНЕ' : 'ОФЛАЙН'}
+                  <span className={`font-mono font-bold ${isOnline ? "text-emerald-400" : "text-rose-400"}`}>
+                    {isOnline ? "АКТИВНЕ" : "ОФЛАЙН"}
                   </span>
                 </div>
 
@@ -169,7 +157,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
                     Режим зберігання:
                   </span>
                   <span className="font-mono font-bold text-slate-200">
-                    {fromCache ? 'Локальний кеш (Offline)' : 'Хмара Firestore (Live)'}
+                    {fromCache ? "Локальний кеш (Offline)" : "Хмара Firestore (Live)"}
                   </span>
                 </div>
 
@@ -180,9 +168,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
                       <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
                       Ненадіслані зміни:
                     </span>
-                    <span className="font-mono font-bold text-amber-400">
-                      В черзі синхронізації
-                    </span>
+                    <span className="font-mono font-bold text-amber-400">В черзі синхронізації</span>
                   </div>
                 )}
 
@@ -193,9 +179,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
                       <Zap className="w-3.5 h-3.5 text-amber-300" />
                       Затримка (Ping):
                     </span>
-                    <span className="font-mono font-bold text-slate-200">
-                      {latencyMs} ms
-                    </span>
+                    <span className="font-mono font-bold text-slate-200">{latencyMs} ms</span>
                   </div>
                 )}
 
@@ -203,7 +187,7 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
                 <div className="flex items-center justify-between py-1">
                   <span className="text-slate-400">Остання синхронізація:</span>
                   <span className="font-mono text-slate-300">
-                    {lastSyncedAt ? lastSyncedAt.toLocaleTimeString() : 'Н/Д'}
+                    {lastSyncedAt ? lastSyncedAt.toLocaleTimeString() : "Н/Д"}
                   </span>
                 </div>
 
@@ -221,8 +205,8 @@ export function FirebaseSyncIndicator({ compact = false, className = '' }: Fireb
                 disabled={isChecking}
                 className="w-full mt-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-mono font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isChecking ? 'animate-spin' : ''}`} />
-                <span>{isChecking ? 'Перевірка з\'єднання...' : 'Перевірити з\'єднання'}</span>
+                <RefreshCw className={`w-3.5 h-3.5 ${isChecking ? "animate-spin" : ""}`} />
+                <span>{isChecking ? "Перевірка з'єднання..." : "Перевірити з'єднання"}</span>
               </button>
             </motion.div>
           </>

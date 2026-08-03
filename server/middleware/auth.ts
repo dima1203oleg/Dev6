@@ -1,13 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-export type UserRole = 
-  | "VIEWER"
-  | "ANALYST"
-  | "SENIOR_ANALYST"
-  | "INVESTIGATOR"
-  | "SUPERVISOR"
-  | "ADMIN"
-  | "SUPER_ADMIN";
+export type UserRole =
+  "VIEWER" | "ANALYST" | "SENIOR_ANALYST" | "INVESTIGATOR" | "SUPERVISOR" | "ADMIN" | "SUPER_ADMIN";
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -21,32 +15,74 @@ export interface AuthenticatedRequest extends Request {
 const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   VIEWER: ["entity.read", "entity.search", "graph.read", "source.read"],
   ANALYST: [
-    "entity.read", "entity.search", "graph.read", "source.read",
-    "investigation.create", "investigation.share", "ai.use"
+    "entity.read",
+    "entity.search",
+    "graph.read",
+    "source.read",
+    "investigation.create",
+    "investigation.share",
+    "ai.use",
   ],
   SENIOR_ANALYST: [
-    "entity.read", "entity.search", "entity.export", "graph.read",
-    "source.read", "investigation.create", "investigation.share", "ai.use"
+    "entity.read",
+    "entity.search",
+    "entity.export",
+    "graph.read",
+    "source.read",
+    "investigation.create",
+    "investigation.share",
+    "ai.use",
   ],
   INVESTIGATOR: [
-    "entity.read", "entity.search", "entity.export", "graph.read",
-    "source.read", "investigation.create", "investigation.share", "ai.use"
+    "entity.read",
+    "entity.search",
+    "entity.export",
+    "graph.read",
+    "source.read",
+    "investigation.create",
+    "investigation.share",
+    "ai.use",
   ],
   SUPERVISOR: [
-    "entity.read", "entity.search", "entity.export", "graph.read",
-    "source.read", "investigation.create", "investigation.share",
-    "ai.use", "ai.admin"
+    "entity.read",
+    "entity.search",
+    "entity.export",
+    "graph.read",
+    "source.read",
+    "investigation.create",
+    "investigation.share",
+    "ai.use",
+    "ai.admin",
   ],
   ADMIN: [
-    "entity.read", "entity.search", "entity.export", "graph.read",
-    "source.read", "source.admin", "connector.admin", "investigation.create",
-    "investigation.share", "ai.use", "ai.admin", "user.admin"
+    "entity.read",
+    "entity.search",
+    "entity.export",
+    "graph.read",
+    "source.read",
+    "source.admin",
+    "connector.admin",
+    "investigation.create",
+    "investigation.share",
+    "ai.use",
+    "ai.admin",
+    "user.admin",
   ],
   SUPER_ADMIN: [
-    "entity.read", "entity.search", "entity.export", "graph.read",
-    "source.read", "source.admin", "connector.admin", "investigation.create",
-    "investigation.share", "ai.use", "ai.admin", "user.admin", "system.admin"
-  ]
+    "entity.read",
+    "entity.search",
+    "entity.export",
+    "graph.read",
+    "source.read",
+    "source.admin",
+    "connector.admin",
+    "investigation.create",
+    "investigation.share",
+    "ai.use",
+    "ai.admin",
+    "user.admin",
+    "system.admin",
+  ],
 };
 
 export function checkPermission(requiredPermission: string) {
@@ -57,7 +93,7 @@ export function checkPermission(requiredPermission: string) {
         id: "usr-analyst-001",
         email: "analyst@predator.gov.ua",
         role: (req.headers["x-user-role"] as UserRole) || "SENIOR_ANALYST",
-        tenantId: "tenant-predator-core"
+        tenantId: "tenant-predator-core",
       };
     }
 
@@ -67,8 +103,8 @@ export function checkPermission(requiredPermission: string) {
         error: {
           code: "FORBIDDEN",
           message: `Required permission '${requiredPermission}' is not granted for role '${req.user.role}'`,
-          retryable: false
-        }
+          retryable: false,
+        },
       });
     }
 
@@ -81,7 +117,7 @@ export function checkPermission(requiredPermission: string) {
  */
 export function maskSensitiveFields(data: any, role: UserRole): any {
   if (!data) return data;
-  
+
   // High-privileged roles see unmasked data
   if (["SENIOR_ANALYST", "INVESTIGATOR", "SUPERVISOR", "ADMIN", "SUPER_ADMIN"].includes(role)) {
     return data;

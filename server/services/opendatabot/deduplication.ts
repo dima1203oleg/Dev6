@@ -23,10 +23,7 @@ export class OpendatabotDeduplicator {
   /**
    * Coalesces duplicate requests. If a request is already running, it returns the same promise.
    */
-  public async executeCoalesced<T>(
-    hash: string,
-    requestFn: () => Promise<T>
-  ): Promise<T> {
+  public async executeCoalesced<T>(hash: string, requestFn: () => Promise<T>): Promise<T> {
     const active = this.activeRequests.get(hash);
     if (active) {
       console.log(`[OpendatabotDeduplicator] Request coalescing HIT for hash: ${hash}`);

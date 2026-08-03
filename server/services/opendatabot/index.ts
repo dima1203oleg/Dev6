@@ -24,7 +24,7 @@ export * from "./audit";
 export async function queryOpendatabot<T = any>(
   endpoint: string,
   contractorCode: string,
-  priority: "P0" | "P1" | "P2" | "P3" | "P4" = "P0"
+  priority: "P0" | "P1" | "P2" | "P3" | "P4" = "P0",
 ): Promise<OpendatabotResponse<T>> {
   const code = (contractorCode || "").trim();
   const reqHash = deduplicator.generateHash(endpoint, code);
@@ -40,7 +40,7 @@ export async function queryOpendatabot<T = any>(
     enforcements: `v3/enforcements?query=${encodeURIComponent(code)}`,
     sanctions: `v3/sanctions?query=${encodeURIComponent(code)}`,
     pep: `v3/pep?query=${encodeURIComponent(code)}`,
-    real_estate: `v3/realestate?query=${encodeURIComponent(code)}`
+    real_estate: `v3/realestate?query=${encodeURIComponent(code)}`,
   };
 
   const apiPath = endpointMappings[endpoint] || `v3/${endpoint}/${encodeURIComponent(code)}`;
@@ -61,7 +61,7 @@ export async function queryOpendatabot<T = any>(
       status: 200,
       latencyMs,
       cache: "MISS",
-      requestId
+      requestId,
     });
 
     auditHub.logAudit({
@@ -71,11 +71,10 @@ export async function queryOpendatabot<T = any>(
       requestId,
       status: 200,
       latencyMs,
-      retryCount: 0
+      retryCount: 0,
     });
 
     return result;
-
   } catch (err: any) {
     const latencyMs = Date.now() - startTime;
     const status = err.status || 500;
@@ -86,7 +85,7 @@ export async function queryOpendatabot<T = any>(
       status,
       latencyMs,
       cache: "MISS",
-      requestId
+      requestId,
     });
 
     auditHub.logAudit({
@@ -96,7 +95,7 @@ export async function queryOpendatabot<T = any>(
       requestId,
       status,
       latencyMs,
-      retryCount: 0
+      retryCount: 0,
     });
 
     throw err;

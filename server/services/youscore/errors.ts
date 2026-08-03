@@ -18,7 +18,7 @@ export class YouScoreError extends Error {
     public readonly code: YouScoreErrorCode,
     message: string,
     public readonly status?: number,
-    public readonly originalResponse?: any
+    public readonly originalResponse?: any,
   ) {
     super(message);
     this.name = "YouScoreError";

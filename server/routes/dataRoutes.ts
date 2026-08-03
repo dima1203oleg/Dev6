@@ -10,14 +10,16 @@ import { DataSourceError, OpenDataSearchData } from "../datasources/types";
 import { TtlCache } from "../datasources/cache";
 
 const router = Router();
-const sourceStatusCache = new TtlCache<Array<{
-  source: string;
-  status: "online" | "unavailable";
-  checkedAt: string;
-  sourceUrl: string;
-  stale: boolean;
-  error?: DataSourceError;
-}>>(60000);
+const sourceStatusCache = new TtlCache<
+  Array<{
+    source: string;
+    status: "online" | "unavailable";
+    checkedAt: string;
+    sourceUrl: string;
+    stale: boolean;
+    error?: DataSourceError;
+  }>
+>(60000);
 
 const sendResult = <T>(res: Response, result: DataSourceResult<T>): void => {
   if (result.ok) {
@@ -66,7 +68,7 @@ router.get("/sources", async (_req: Request, res: Response) => {
   const names = ["nbu", "coingecko", "ckan", "prozorro", "wikipedia"];
   const data = checks.map((check, index) => ({
     source: names[index],
-    status: check.ok ? "online" as const : "unavailable" as const,
+    status: check.ok ? ("online" as const) : ("unavailable" as const),
     checkedAt: check.ok ? check.provenance.fetchedAt : resultError(check).error.attemptedAt,
     sourceUrl: check.ok ? check.provenance.sourceUrl : resultError(check).error.sourceUrl,
     stale: check.ok ? check.provenance.stale : false,
@@ -94,12 +96,28 @@ router.get("/fx/rates", async (_req: Request, res: Response) => {
 router.get("/fx/series", async (req: Request, res: Response) => {
   const code = typeof req.query.code === "string" ? req.query.code.trim().toUpperCase() : "USD";
   if (!/^[A-Z]{3}$/.test(code)) {
-    res.status(400).json({ ok: false, error: { code: "invalid_code", message: "code must be a three-letter currency code", sourceUrl: "", attemptedAt: new Date().toISOString() } });
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_code",
+        message: "code must be a three-letter currency code",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
     return;
   }
   const days = parseInteger(req.query.days, 180, 1, 730);
   if (days === null) {
-    res.status(400).json({ ok: false, error: { code: "invalid_days", message: "days must be an integer from 1 to 730", sourceUrl: "", attemptedAt: new Date().toISOString() } });
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_days",
+        message: "days must be an integer from 1 to 730",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
     return;
   }
   const result = await getSeries(code, days);
@@ -127,7 +145,15 @@ router.get("/opendata/search", async (req: Request, res: Response) => {
   const query = typeof req.query.q === "string" ? req.query.q : "";
   const rows = parseInteger(req.query.rows, 20, 1, 100);
   if (rows === null) {
-    res.status(400).json({ ok: false, error: { code: "invalid_rows", message: "rows must be an integer from 1 to 100", sourceUrl: "", attemptedAt: new Date().toISOString() } });
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_rows",
+        message: "rows must be an integer from 1 to 100",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
     return;
   }
   const result = await ckan.search(query, rows);
@@ -147,20 +173,60 @@ router.get("/opendata/search", async (req: Request, res: Response) => {
         .map((resource) => resource.format)
         .filter((format): format is string => Boolean(format)),
       url: `https://data.gov.ua/dataset/${encodeURIComponent(dataset.name)}`,
+      resources: (dataset.resources ?? []).map((resource) => ({
+        id: resource.id,
+        name: resource.name,
+        format: resource.format,
+        url: resource.url,
+        datastoreActive: resource.datastore_active,
+      })),
     })),
   };
   res.json({ ok: true, data, provenance: result.provenance });
+});
+
+router.get("/opendata/datastore/:resourceId", async (req: Request, res: Response) => {
+  const resourceId = typeof req.params.resourceId === "string" ? req.params.resourceId : "";
+  if (!resourceId) {
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_resource_id",
+        message: "resourceId is required",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
+    return;
+  }
+  sendResult(res, await ckan.datastore(resourceId));
 });
 
 router.get("/procurement/search", async (req: Request, res: Response) => {
   const query = typeof req.query.q === "string" ? req.query.q.trim() : "";
   const rows = parseInteger(req.query.rows, 20, 1, 100);
   if (!query) {
-    res.status(400).json({ ok: false, error: { code: "invalid_query", message: "q is required", sourceUrl: "", attemptedAt: new Date().toISOString() } });
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_query",
+        message: "q is required",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
     return;
   }
   if (rows === null) {
-    res.status(400).json({ ok: false, error: { code: "invalid_rows", message: "rows must be an integer from 1 to 100", sourceUrl: "", attemptedAt: new Date().toISOString() } });
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_rows",
+        message: "rows must be an integer from 1 to 100",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
     return;
   }
   const result = await prozorro.search(query, rows);
@@ -180,7 +246,15 @@ router.get("/procurement/search", async (req: Request, res: Response) => {
 router.get("/procurement/tender/:id", async (req: Request, res: Response) => {
   const id = req.params.id.trim();
   if (!/^[A-Za-z0-9._-]+$/.test(id)) {
-    res.status(400).json({ ok: false, error: { code: "invalid_tender_id", message: "Invalid tender id", sourceUrl: "", attemptedAt: new Date().toISOString() } });
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_tender_id",
+        message: "Invalid tender id",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
     return;
   }
   sendResult(res, await prozorro.detail(id));
@@ -189,7 +263,15 @@ router.get("/procurement/tender/:id", async (req: Request, res: Response) => {
 router.get("/procurement/recent", async (req: Request, res: Response) => {
   const rows = parseInteger(req.query.rows, 20, 1, 100);
   if (rows === null) {
-    res.status(400).json({ ok: false, error: { code: "invalid_rows", message: "rows must be an integer from 1 to 100", sourceUrl: "", attemptedAt: new Date().toISOString() } });
+    res.status(400).json({
+      ok: false,
+      error: {
+        code: "invalid_rows",
+        message: "rows must be an integer from 1 to 100",
+        sourceUrl: "",
+        attemptedAt: new Date().toISOString(),
+      },
+    });
     return;
   }
   const result = await prozorro.recent(rows);

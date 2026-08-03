@@ -60,11 +60,11 @@ export const SERVER_PREDATOR_VOICE_PROFILE: VoiceProfile = {
   pitch: {
     average: "85 Hz - 110 Hz (Low Bass / Baritone)",
     range: "Narrow-Controlled",
-    variation: "Low-to-Medium"
+    variation: "Low-to-Medium",
   },
   speaking_rate: {
     words_per_minute: "120 - 135 WPM",
-    relative_speed: "0.90x"
+    relative_speed: "0.90x",
   },
   timbre: {
     warmth: 78,
@@ -74,7 +74,7 @@ export const SERVER_PREDATOR_VOICE_PROFILE: VoiceProfile = {
     breathiness: 12,
     nasality: 5,
     metallic: 8,
-    resonance: 90
+    resonance: 90,
   },
   delivery: {
     confidence: 96,
@@ -84,7 +84,7 @@ export const SERVER_PREDATOR_VOICE_PROFILE: VoiceProfile = {
     mystery: 82,
     tension: 68,
     charisma: 90,
-    emotional_intensity: 58
+    emotional_intensity: 58,
   },
   prosody: {
     pause_frequency: "High-Deliberate",
@@ -92,15 +92,16 @@ export const SERVER_PREDATOR_VOICE_PROFILE: VoiceProfile = {
     sentence_endings: "Falling Intonation (Pitch-drop on final syllable)",
     emphasis_style: "Measured Stress on Key OSINT Identifiers",
     rhythm: "Cadenced / Controlled",
-    intonation: "Low-Key Controlled Forensic"
+    intonation: "Low-Key Controlled Forensic",
   },
   articulation: {
     clarity: 96,
     consonant_strength: 92,
-    vowel_clarity: 90
+    vowel_clarity: 90,
   },
   overall_style: "Deep Cinematic OSINT Investigator & Intelligence Briefing Narrator",
-  voice_design_prompt: "Deep, authoritative baritone male voice with resonant chest tone, deliberate pace (0.9x speed), crisp consonant articulation, measured dramatic pauses, and falling intonation at sentence ends for intelligence briefings."
+  voice_design_prompt:
+    "Deep, authoritative baritone male voice with resonant chest tone, deliberate pace (0.9x speed), crisp consonant articulation, measured dramatic pauses, and falling intonation at sentence ends for intelligence briefings.",
 };
 
 export function buildSystemVoiceInstruction(): string {

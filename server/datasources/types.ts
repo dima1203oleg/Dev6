@@ -112,6 +112,12 @@ export interface OpenDataSearchDataset {
   metadataModified?: string;
   resourceFormats: string[];
   url: string;
+  resources: Array<{ id: string; name?: string; format?: string; url?: string; datastoreActive?: boolean }>;
+}
+
+export interface CkanDatastoreResponse {
+  total: number;
+  records: Array<Record<string, unknown>>;
 }
 
 export interface OpenDataSearchData {

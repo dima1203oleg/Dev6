@@ -28,7 +28,7 @@ export class MediaPipelineService {
   public createPresignedUpload(filename: string, mimeType: string, sizeBytes: number): MediaJob {
     const jobId = `media-job-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     const storageObjectId = `obj-store/${Date.now()}/${filename.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-    
+
     // Calculate synthetic hash template
     const rawHash = crypto.createHash("sha256").update(`${filename}-${Date.now()}`).digest("hex");
 
@@ -41,7 +41,7 @@ export class MediaPipelineService {
       uploadUrl: `/api/v1/media/upload/${jobId}`,
       storageObjectId,
       status: "PENDING_UPLOAD",
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     mediaJobsMap.set(jobId, job);
@@ -58,7 +58,7 @@ export class MediaPipelineService {
     }
 
     job.status = "SCANNING";
-    
+
     // Simulate async pipeline
     setTimeout(() => {
       job.status = "PROCESSING";
@@ -69,7 +69,7 @@ export class MediaPipelineService {
           transcript: "Розшифровка аудіофайлу виконана успішно. Мова: Українська.",
           detectedFaces: 1,
           anomaliesScore: 3,
-          evidenceId: `ev-media-${Date.now()}`
+          evidenceId: `ev-media-${Date.now()}`,
         };
       }, 1500);
     }, 1000);

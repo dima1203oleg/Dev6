@@ -7,14 +7,14 @@ export enum EntityType {
   PERSON = "PERSON",
   COMPANY = "COMPANY",
   FOP = "FOP",
-  VEHICLE = "VEHICLE"
+  VEHICLE = "VEHICLE",
 }
 
 export enum VerificationStatus {
   CONFIRMED = "CONFIRMED",
   UNVERIFIED = "UNVERIFIED",
   CONFLICT = "CONFLICT",
-  SINGLE_SOURCE = "SINGLE_SOURCE"
+  SINGLE_SOURCE = "SINGLE_SOURCE",
 }
 
 export interface PersonProfile {
@@ -68,7 +68,7 @@ export enum RelationshipType {
   DIRECTOR = "DIRECTOR",
   RELATIVE = "RELATIVE",
   ASSOCIATE = "ASSOCIATE",
-  BENEFICIARY = "BENEFICIARY"
+  BENEFICIARY = "BENEFICIARY",
 }
 
 export interface Relationship {
@@ -131,9 +131,9 @@ export interface OpenSourceSolution {
   advantages?: string[];
   disadvantages?: string[];
   role?: string;
-  securityRating?: 'A' | 'B' | 'C' | 'D';
-  licenseType?: 'Permissive' | 'Commercial' | 'Weak Copyleft' | 'Copyleft';
-  productionReady?: 'Tak' | 'Hi';
+  securityRating?: "A" | "B" | "C" | "D";
+  licenseType?: "Permissive" | "Commercial" | "Weak Copyleft" | "Copyleft";
+  productionReady?: "Tak" | "Hi";
   license?: string;
 }
 

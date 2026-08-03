@@ -18,7 +18,7 @@ export class OpendatabotError extends Error {
     public readonly code: OpendatabotErrorCode,
     message: string,
     public readonly status?: number,
-    public readonly originalResponse?: any
+    public readonly originalResponse?: any,
   ) {
     super(message);
     this.name = "OpendatabotError";

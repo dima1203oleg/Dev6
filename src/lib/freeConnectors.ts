@@ -1,13 +1,5 @@
-export type StageId = 
-  | "CORE_7"
-  | "STAGE_1"
-  | "STAGE_2"
-  | "STAGE_3"
-  | "STAGE_4"
-  | "STAGE_5"
-  | "STAGE_6"
-  | "STAGE_7"
-  | "STAGE_8";
+export type StageId =
+  "CORE_7" | "STAGE_1" | "STAGE_2" | "STAGE_3" | "STAGE_4" | "STAGE_5" | "STAGE_6" | "STAGE_7" | "STAGE_8";
 
 export interface StageConfig {
   id: StageId;
@@ -16,15 +8,47 @@ export interface StageConfig {
 }
 
 export const STAGES_CONFIG: StageConfig[] = [
-  { id: "CORE_7", title: "Велика Сімка (Core Data Layer)", description: "7 основних джерел розвідки з найвищою достовірністю" },
+  {
+    id: "CORE_7",
+    title: "Велика Сімка (Core Data Layer)",
+    description: "7 основних джерел розвідки з найвищою достовірністю",
+  },
   { id: "STAGE_1", title: "Стадія 1 (Державні та Судові Реєстри)", description: "Державні реєстри України, ЄС та США" },
-  { id: "STAGE_2", title: "Стадія 2 (Міжнародні Санкції та PEP)", description: "Глобальні санкційні списки та публічні діячі" },
-  { id: "STAGE_3", title: "Стадія 3 (Офшори та Витоки Даних)", description: "ICIJ Offshore Leaks, витоки та корпоративні структури" },
-  { id: "STAGE_4", title: "Стадія 4 (Кіберрозвідка та IP/DNS)", description: "IP, DNS, WHOIS, Shodan, Threat Intelligence" },
-  { id: "STAGE_5", title: "Стадія 5 (Наукові та Патентні БД)", description: "arXiv, PubMed, Lens.org, патенти та дослідження" },
-  { id: "STAGE_6", title: "Стадія 6 (Геопросторові та Супутникові)", description: "OpenStreetMap, Sentinel, GIS, супутникові знімки" },
-  { id: "STAGE_7", title: "Стадія 7 (Фінансові та Крипто Моніторинг)", description: "Blockchain Explorers, криптогаманці, SWIFT/SEPA" },
-  { id: "STAGE_8", title: "Стадія 8 (Автономна Фабрика API)", description: "Universal Discovery Engine та генерація конекторів" },
+  {
+    id: "STAGE_2",
+    title: "Стадія 2 (Міжнародні Санкції та PEP)",
+    description: "Глобальні санкційні списки та публічні діячі",
+  },
+  {
+    id: "STAGE_3",
+    title: "Стадія 3 (Офшори та Витоки Даних)",
+    description: "ICIJ Offshore Leaks, витоки та корпоративні структури",
+  },
+  {
+    id: "STAGE_4",
+    title: "Стадія 4 (Кіберрозвідка та IP/DNS)",
+    description: "IP, DNS, WHOIS, Shodan, Threat Intelligence",
+  },
+  {
+    id: "STAGE_5",
+    title: "Стадія 5 (Наукові та Патентні БД)",
+    description: "arXiv, PubMed, Lens.org, патенти та дослідження",
+  },
+  {
+    id: "STAGE_6",
+    title: "Стадія 6 (Геопросторові та Супутникові)",
+    description: "OpenStreetMap, Sentinel, GIS, супутникові знімки",
+  },
+  {
+    id: "STAGE_7",
+    title: "Стадія 7 (Фінансові та Крипто Моніторинг)",
+    description: "Blockchain Explorers, криптогаманці, SWIFT/SEPA",
+  },
+  {
+    id: "STAGE_8",
+    title: "Стадія 8 (Автономна Фабрика API)",
+    description: "Universal Discovery Engine та генерація конекторів",
+  },
 ];
 
 export interface FreeConnectorPassport {
@@ -89,7 +113,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
     stage: "CORE_7",
     category: "Санкції та PEP",
     subCategory: "CORE",
-    description: "Агрегатор понад 50 глобальних санкційних списків, PEP, терористів та злочинців у стандарті FollowTheMoney.",
+    description:
+      "Агрегатор понад 50 глобальних санкційних списків, PEP, терористів та злочинців у стандарті FollowTheMoney.",
     endpoint: "https://api.opensanctions.org/match/default",
     sampleQuery: "q=ТОВ Спеціальні Технології",
     enabled: true,
@@ -106,8 +131,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Щодня",
       dataFormats: ["JSON-LD", "FollowTheMoney"],
       license: "CC-BY-4.0",
-      legalBasis: "Open Data Directive EU"
-    }
+      legalBasis: "Open Data Directive EU",
+    },
   },
   {
     id: "data_gov_ua",
@@ -133,8 +158,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "В режимі реального часу",
       dataFormats: ["JSON", "CSV", "XML"],
       license: "Open Government License UA",
-      legalBasis: "ЗУ Про доступ до публічної інформації"
-    }
+      legalBasis: "ЗУ Про доступ до публічної інформації",
+    },
   },
   {
     id: "courtlistener",
@@ -160,8 +185,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Щогодини",
       dataFormats: ["JSON", "PDF"],
       license: "Public Domain / Non-Profit",
-      legalBasis: "US Freedom of Information Act"
-    }
+      legalBasis: "US Freedom of Information Act",
+    },
   },
   {
     id: "icij_offshore_leaks",
@@ -170,7 +195,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
     stage: "CORE_7",
     category: "Офшори & Бенефіціари",
     subCategory: "CORE",
-    description: "База даних журналістських розслідувань ICIJ: понад 800,000 офшорних компаній, трастів та бенефіціарів.",
+    description:
+      "База даних журналістських розслідувань ICIJ: понад 800,000 офшорних компаній, трастів та бенефіціарів.",
     endpoint: "https://api.offshoreleaks.icij.org/v1/search",
     sampleQuery: "q=Kovalenko",
     enabled: true,
@@ -187,8 +213,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Щомісяця",
       dataFormats: ["JSON", "CSV", "GraphML"],
       license: "Open Investigative License",
-      legalBasis: "Public Interest Journalism"
-    }
+      legalBasis: "Public Interest Journalism",
+    },
   },
   {
     id: "companies_house_uk",
@@ -197,7 +223,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
     stage: "CORE_7",
     category: "Корпоративний Реєстр",
     subCategory: "CORE",
-    description: "Офіційний API Companies House для перевірки бенефіціарів (PSC), фінансових звітів та директур у Британії.",
+    description:
+      "Офіційний API Companies House для перевірки бенефіціарів (PSC), фінансових звітів та директур у Британії.",
     endpoint: "https://api.company-information.service.gov.uk/search/companies",
     sampleQuery: "q=Tech Innovations",
     enabled: true,
@@ -214,8 +241,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Realtime",
       dataFormats: ["JSON"],
       license: "Open Government Licence v3.0",
-      legalBasis: "Companies Act 2006 UK"
-    }
+      legalBasis: "Companies Act 2006 UK",
+    },
   },
   {
     id: "shodan_free",
@@ -241,8 +268,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Безперервно",
       dataFormats: ["JSON"],
       license: "Commercial / Free Tier",
-      legalBasis: "Public Network Scanning"
-    }
+      legalBasis: "Public Network Scanning",
+    },
   },
   {
     id: "gdelt_project",
@@ -251,7 +278,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
     stage: "CORE_7",
     category: "Медіа & Моніторинг",
     subCategory: "OSINT",
-    description: "Моніторинг новинних стрічок 100+ мовами світу, вилучення тональності, згадок персон та географії подій.",
+    description:
+      "Моніторинг новинних стрічок 100+ мовами світу, вилучення тональності, згадок персон та географії подій.",
     endpoint: "https://api.gdeltproject.org/api/v2/doc/doc",
     sampleQuery: "query=cyberattack Ukraine",
     enabled: true,
@@ -268,8 +296,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Кожні 15 хвилин",
       dataFormats: ["JSON", "CSV"],
       license: "Open Research Data",
-      legalBasis: "Academic Research License"
-    }
+      legalBasis: "Academic Research License",
+    },
   },
   {
     id: "sec_edgar",
@@ -292,8 +320,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Realtime",
       dataFormats: ["JSON", "XBRL"],
       license: "Public Domain",
-      legalBasis: "Securities Exchange Act 1934"
-    }
+      legalBasis: "Securities Exchange Act 1934",
+    },
   },
   {
     id: "arxiv_api",
@@ -316,8 +344,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Щодня",
       dataFormats: ["XML", "Atom"],
       license: "CC-BY",
-      legalBasis: "Open Access Scholarly Repository"
-    }
+      legalBasis: "Open Access Scholarly Repository",
+    },
   },
   {
     id: "open_street_map",
@@ -340,8 +368,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Realtime Community",
       dataFormats: ["JSON", "GeoJSON"],
       license: "ODbL",
-      legalBasis: "Open Data Commons"
-    }
+      legalBasis: "Open Data Commons",
+    },
   },
   {
     id: "etherscan_api",
@@ -364,8 +392,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Realtime Blockchain",
       dataFormats: ["JSON"],
       license: "Free API Tier",
-      legalBasis: "Public Blockchain Indexer"
-    }
+      legalBasis: "Public Blockchain Indexer",
+    },
   },
   {
     id: "universal_discovery_factory",
@@ -374,7 +402,8 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
     stage: "STAGE_8",
     category: "Автономний ШІ",
     subCategory: "CORE",
-    description: "Генератор конекторів, контролер Schema Drift та автоматичний мапінг об'єктів у стандарт FollowTheMoney.",
+    description:
+      "Генератор конекторів, контролер Schema Drift та автоматичний мапінг об'єктів у стандарт FollowTheMoney.",
     endpoint: "https://predator-factory.internal/api/v1/synthesize",
     sampleQuery: "url=https://data.gov.ua/api/3/action/package_show",
     enabled: true,
@@ -388,21 +417,20 @@ export const FREE_CONNECTORS_CATALOG: FreeConnector[] = [
       updateFreq: "Realtime Adaptive",
       dataFormats: ["TypeScript", "JSON Schema", "FtM DTO"],
       license: "Proprietary Core",
-      legalBasis: "Autonomous System"
-    }
-  }
+      legalBasis: "Autonomous System",
+    },
+  },
 ];
 
 export const executeFreeConnectorQuery = async (
   connectorId?: string,
-  query?: string
+  query?: string,
 ): Promise<QueryExecutionResult> => {
   const targetId = connectorId || "opensanctions_yente";
   const targetTerm = query || "ТОВ Спеціальні Технології";
   const start = Date.now();
 
-  // Simulate dynamic execution delay
-  await new Promise((resolve) => setTimeout(resolve, 250 + Math.floor(Math.random() * 200)));
+  await new Promise((resolve) => setTimeout(resolve, 250));
 
   return {
     success: true,
@@ -415,7 +443,7 @@ export const executeFreeConnectorQuery = async (
       hitsCount: 1,
       results: [
         {
-          id: `entity-${Math.floor(Math.random() * 89999 + 10000)}`,
+          id: `entity-${targetTerm}`,
           caption: targetTerm,
           schema: "Company",
           properties: {

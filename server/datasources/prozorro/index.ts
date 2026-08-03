@@ -1,5 +1,11 @@
 import { TtlCache } from "../cache";
-import { DataSourceResult, ProzorroRecentResponse, ProzorroSearchResponse, ProzorroTenderDetail, ProzorroTenderSummary } from "../types";
+import {
+  DataSourceResult,
+  ProzorroRecentResponse,
+  ProzorroSearchResponse,
+  ProzorroTenderDetail,
+  ProzorroTenderSummary,
+} from "../types";
 import { fetchJson, toDataSourceError } from "../http";
 
 const SEARCH_URL = "https://prozorro.gov.ua/api/search/tenders";
@@ -18,14 +24,27 @@ const parseTender = (value: unknown): ProzorroTenderSummary => {
     tenderID: item.tenderID,
     title: item.title,
     status: item.status,
-    value: typeof item.value === "object" && item.value !== null ? {
-      amount: typeof (item.value as Record<string, unknown>).amount === "number" ? (item.value as Record<string, unknown>).amount as number : undefined,
-      currency: typeof (item.value as Record<string, unknown>).currency === "string" ? (item.value as Record<string, unknown>).currency as string : undefined,
-      valueAddedTaxIncluded: typeof (item.value as Record<string, unknown>).valueAddedTaxIncluded === "boolean"
-        ? (item.value as Record<string, unknown>).valueAddedTaxIncluded as boolean : undefined,
-    } : undefined,
-    procuringEntity: typeof item.procuringEntity === "object" && item.procuringEntity !== null
-      ? item.procuringEntity as ProzorroTenderSummary["procuringEntity"] : undefined,
+    value:
+      typeof item.value === "object" && item.value !== null
+        ? {
+            amount:
+              typeof (item.value as Record<string, unknown>).amount === "number"
+                ? ((item.value as Record<string, unknown>).amount as number)
+                : undefined,
+            currency:
+              typeof (item.value as Record<string, unknown>).currency === "string"
+                ? ((item.value as Record<string, unknown>).currency as string)
+                : undefined,
+            valueAddedTaxIncluded:
+              typeof (item.value as Record<string, unknown>).valueAddedTaxIncluded === "boolean"
+                ? ((item.value as Record<string, unknown>).valueAddedTaxIncluded as boolean)
+                : undefined,
+          }
+        : undefined,
+    procuringEntity:
+      typeof item.procuringEntity === "object" && item.procuringEntity !== null
+        ? (item.procuringEntity as ProzorroTenderSummary["procuringEntity"])
+        : undefined,
     dateModified: typeof item.dateModified === "string" ? item.dateModified : undefined,
     dateCreated: typeof item.dateCreated === "string" ? item.dateCreated : undefined,
   };
@@ -34,7 +53,12 @@ const parseTender = (value: unknown): ProzorroTenderSummary => {
 const parseSearch = (value: unknown): ProzorroSearchResponse => {
   if (typeof value !== "object" || value === null) throw new Error("Prozorro search payload is not an object");
   const payload = value as Record<string, unknown>;
-  if (typeof payload.page !== "number" || typeof payload.per_page !== "number" || typeof payload.total !== "number" || !Array.isArray(payload.data)) {
+  if (
+    typeof payload.page !== "number" ||
+    typeof payload.per_page !== "number" ||
+    typeof payload.total !== "number" ||
+    !Array.isArray(payload.data)
+  ) {
     throw new Error("Prozorro search payload is invalid");
   }
   return {
@@ -62,7 +86,18 @@ export const search = async (query: string, rows: number): Promise<DataSourceRes
   const sourceUrl = SEARCH_URL;
   const cached = searchCache.read(`${query}:${rows}`);
   if (cached && !cached.stale) {
-    return { ok: true, data: cached.value, provenance: { source: "prozorro", sourceName: "Prozorro public search", sourceUrl, fetchedAt: cached.fetchedAt, cached: true, stale: false } };
+    return {
+      ok: true,
+      data: cached.value,
+      provenance: {
+        source: "prozorro",
+        sourceName: "Prozorro public search",
+        sourceUrl,
+        fetchedAt: cached.fetchedAt,
+        cached: true,
+        stale: false,
+      },
+    };
   }
   try {
     const response = await fetchJson<unknown>(SEARCH_URL, {
@@ -86,19 +121,20 @@ export const search = async (query: string, rows: number): Promise<DataSourceRes
       },
     };
   } catch (error) {
-    if (cached) return {
-      ok: true,
-      data: cached.value,
-      provenance: {
-        source: "prozorro",
-        sourceName: "Prozorro public search",
-        sourceUrl,
-        fetchedAt: cached.fetchedAt,
-        cached: true,
-        stale: true,
-        request: { method: "POST", body: { filters: [], text: query } },
-      },
-    };
+    if (cached)
+      return {
+        ok: true,
+        data: cached.value,
+        provenance: {
+          source: "prozorro",
+          sourceName: "Prozorro public search",
+          sourceUrl,
+          fetchedAt: cached.fetchedAt,
+          cached: true,
+          stale: true,
+          request: { method: "POST", body: { filters: [], text: query } },
+        },
+      };
     return { ok: false, error: toDataSourceError(error, sourceUrl) };
   }
 };
@@ -203,10 +239,15 @@ export const detail = async (id: string): Promise<DataSourceResult<ProzorroTende
   }
   try {
     const response = await fetchJson<unknown>(sourceUrl);
-    if (typeof response.data !== "object" || response.data === null) throw new Error("Prozorro detail payload is invalid");
+    if (typeof response.data !== "object" || response.data === null)
+      throw new Error("Prozorro detail payload is invalid");
     const payload = response.data as Record<string, unknown>;
     const tender = payload.data;
-    if (typeof tender !== "object" || tender === null || typeof (tender as Record<string, unknown>).tenderID !== "string") {
+    if (
+      typeof tender !== "object" ||
+      tender === null ||
+      typeof (tender as Record<string, unknown>).tenderID !== "string"
+    ) {
       throw new Error("Prozorro detail is missing tender data");
     }
     const parsed = parseTender(tender);
@@ -215,10 +256,32 @@ export const detail = async (id: string): Promise<DataSourceResult<ProzorroTende
     }
     const data = { ...(tender as Record<string, unknown>), ...parsed } as ProzorroTenderDetail;
     detailCache.write(id, data, response.fetchedAt);
-    return { ok: true, data, provenance: { source: "prozorro", sourceName: "OpenProcurement tender detail", sourceUrl, fetchedAt: response.fetchedAt, cached: false, stale: false } };
+    return {
+      ok: true,
+      data,
+      provenance: {
+        source: "prozorro",
+        sourceName: "OpenProcurement tender detail",
+        sourceUrl,
+        fetchedAt: response.fetchedAt,
+        cached: false,
+        stale: false,
+      },
+    };
   } catch (error) {
     if (cached) {
-      return { ok: true, data: cached.value, provenance: { source: "prozorro", sourceName: "OpenProcurement tender detail", sourceUrl, fetchedAt: cached.fetchedAt, cached: true, stale: true } };
+      return {
+        ok: true,
+        data: cached.value,
+        provenance: {
+          source: "prozorro",
+          sourceName: "OpenProcurement tender detail",
+          sourceUrl,
+          fetchedAt: cached.fetchedAt,
+          cached: true,
+          stale: true,
+        },
+      };
     }
     return { ok: false, error: toDataSourceError(error, sourceUrl) };
   }

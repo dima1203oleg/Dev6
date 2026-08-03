@@ -1,7 +1,8 @@
 import { config } from "./config";
 
 export interface OpendatabotHealthStatus {
-  status: "LIVE" | "DEGRADED" | "AUTH_FAILED" | "RATE_LIMITED" | "OFFLINE" | "SCHEMA_DRIFT" | "UNKNOWN" | "NOT_CONFIGURED";
+  status:
+    "LIVE" | "DEGRADED" | "AUTH_FAILED" | "RATE_LIMITED" | "OFFLINE" | "SCHEMA_DRIFT" | "UNKNOWN" | "NOT_CONFIGURED";
   message: string;
   provider: string;
   apiVersion: string;
@@ -42,15 +43,17 @@ export class OpendatabotHealthService {
       timestamp: new Date().toISOString(),
       circuitBreaker: "CLOSED",
       rateLimitingLevel: "OK",
-      datasets: hasKey ? {
-        edr: "UNKNOWN",
-        court_decisions: "UNKNOWN",
-        debtors: "UNKNOWN",
-        enforcements: "UNKNOWN",
-        real_estate: "UNKNOWN",
-        sanctions: "UNKNOWN",
-        pep: "UNKNOWN"
-      } : {}
+      datasets: hasKey
+        ? {
+            edr: "UNKNOWN",
+            court_decisions: "UNKNOWN",
+            debtors: "UNKNOWN",
+            enforcements: "UNKNOWN",
+            real_estate: "UNKNOWN",
+            sanctions: "UNKNOWN",
+            pep: "UNKNOWN",
+          }
+        : {},
     };
   }
 }

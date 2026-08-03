@@ -8,7 +8,12 @@ describe("TtlCache", () => {
     const cache = new TtlCache<string>(1000);
     cache.write("key", "value", "2026-08-03T00:00:00.000Z");
     vi.advanceTimersByTime(1001);
-    expect(cache.read("key")).toMatchObject({ value: "value", cached: true, stale: true, fetchedAt: "2026-08-03T00:00:00.000Z" });
+    expect(cache.read("key")).toMatchObject({
+      value: "value",
+      cached: true,
+      stale: true,
+      fetchedAt: "2026-08-03T00:00:00.000Z",
+    });
     vi.useRealTimers();
   });
 });

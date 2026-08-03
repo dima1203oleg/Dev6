@@ -11,13 +11,13 @@ export function createRateLimiter(maxRequests = 100, windowMs = 60000) {
   return (req: Request, res: Response, next: NextFunction) => {
     const ip = req.ip || req.socket.remoteAddress || "127.0.0.1";
     const now = Date.now();
-    
+
     let record = requestCounts.get(ip);
-    
+
     if (!record || now > record.resetTime) {
       record = {
         count: 1,
-        resetTime: now + windowMs
+        resetTime: now + windowMs,
       };
       requestCounts.set(ip, record);
     } else {
@@ -33,8 +33,8 @@ export function createRateLimiter(maxRequests = 100, windowMs = 60000) {
         error: {
           code: "RATE_LIMIT_EXCEEDED",
           message: `Too many requests. Limit is ${maxRequests} requests per ${windowMs / 1000}s.`,
-          retryable: true
-        }
+          retryable: true,
+        },
       });
     }
 

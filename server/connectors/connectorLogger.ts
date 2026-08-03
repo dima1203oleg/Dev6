@@ -44,7 +44,8 @@ const MAX_LOG_ENTRIES = 1000;
 const logsBuffer: ConnectorLogEntry[] = [];
 
 // Sensitive field patterns to redact from logs
-const SENSITIVE_KEY_REGEX = /^(authorization|bearer|token|api_?key|sec_?key|secret|password|passwd|auth|credential|cookie|private_?key|jwt|x-api-key)$/i;
+const SENSITIVE_KEY_REGEX =
+  /^(authorization|bearer|token|api_?key|sec_?key|secret|password|passwd|auth|credential|cookie|private_?key|jwt|x-api-key)$/i;
 const SENSITIVE_VALUE_REGEX = /(api_?key|token|secret|auth|bearer|key)=([^&"'\s]+)/gi;
 
 /**
@@ -75,7 +76,7 @@ export function sanitizeObject(obj: any, depth = 0): any {
   if (typeof obj !== "object") return obj;
 
   if (Array.isArray(obj)) {
-    return obj.slice(0, 10).map(item => sanitizeObject(item, depth + 1));
+    return obj.slice(0, 10).map((item) => sanitizeObject(item, depth + 1));
   }
 
   const sanitized: Record<string, any> = {};
@@ -85,7 +86,11 @@ export function sanitizeObject(obj: any, depth = 0): any {
     } else if (typeof value === "object" && value !== null) {
       sanitized[key] = sanitizeObject(value, depth + 1);
     } else if (typeof value === "string") {
-      if (key.toLowerCase().includes("key") || key.toLowerCase().includes("token") || key.toLowerCase().includes("auth")) {
+      if (
+        key.toLowerCase().includes("key") ||
+        key.toLowerCase().includes("token") ||
+        key.toLowerCase().includes("auth")
+      ) {
         sanitized[key] = "[REDACTED]";
       } else {
         sanitized[key] = sanitizeUrl(value);
@@ -104,12 +109,12 @@ export function sanitizeObject(obj: any, depth = 0): any {
 function createSafePreview(data: any): any {
   if (!data) return null;
   const sanitized = sanitizeObject(data);
-  
+
   if (typeof sanitized === "object" && !Array.isArray(sanitized)) {
     const keys = Object.keys(sanitized);
     if (keys.length > 10) {
       const truncated: Record<string, any> = {};
-      keys.slice(0, 10).forEach(k => {
+      keys.slice(0, 10).forEach((k) => {
         truncated[k] = sanitized[k];
       });
       truncated["_truncated"] = `Total keys: ${keys.length}`;
@@ -122,9 +127,7 @@ function createSafePreview(data: any): any {
 /**
  * Records a structured connector log entry with sanitization and outputs standard JSON telemetry.
  */
-export function logConnectorEvent(
-  entryInput: Omit<ConnectorLogEntry, "id" | "timestamp">
-): ConnectorLogEntry {
+export function logConnectorEvent(entryInput: Omit<ConnectorLogEntry, "id" | "timestamp">): ConnectorLogEntry {
   const fullEntry: ConnectorLogEntry = {
     ...entryInput,
     id: `connlog-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
@@ -163,7 +166,7 @@ export function logConnectorEvent(
       success: fullEntry.response.success,
       isEmulated: fullEntry.isEmulated || false,
       timestamp: fullEntry.timestamp,
-    })
+    }),
   );
 
   return fullEntry;
@@ -172,17 +175,13 @@ export function logConnectorEvent(
 /**
  * Retrieves connector log entries with optional limits and filters
  */
-export function getConnectorLogs(
-  limit = 100,
-  connectorId?: string,
-  onlyErrors = false
-): ConnectorLogEntry[] {
+export function getConnectorLogs(limit = 100, connectorId?: string, onlyErrors = false): ConnectorLogEntry[] {
   let filtered = logsBuffer;
   if (connectorId) {
-    filtered = filtered.filter(l => l.connectorId === connectorId);
+    filtered = filtered.filter((l) => l.connectorId === connectorId);
   }
   if (onlyErrors) {
-    filtered = filtered.filter(l => !l.response.success);
+    filtered = filtered.filter((l) => !l.response.success);
   }
   return filtered.slice(0, limit);
 }
@@ -191,14 +190,17 @@ export function getConnectorLogs(
  * Computes aggregated latency and request metrics for all or a specific connector
  */
 export function getConnectorMetrics(connectorId?: string): ConnectorAggregatedMetrics[] {
-  const map = new Map<string, {
-    name: string;
-    total: number;
-    success: number;
-    failed: number;
-    latencies: number[];
-    lastTimestamp: string | null;
-  }>();
+  const map = new Map<
+    string,
+    {
+      name: string;
+      total: number;
+      success: number;
+      failed: number;
+      latencies: number[];
+      lastTimestamp: string | null;
+    }
+  >();
 
   for (const log of logsBuffer) {
     if (connectorId && log.connectorId !== connectorId) continue;
@@ -268,7 +270,7 @@ export async function executeWithConnectorLogging<T>(
     retryCount?: number;
     isEmulated?: boolean;
   },
-  fn: () => Promise<{ statusCode?: number; data: T; rawSize?: number }>
+  fn: () => Promise<{ statusCode?: number; data: T; rawSize?: number }>,
 ): Promise<T> {
   const reqId = params.requestId || `req-conn-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
   const method = params.method || "GET";

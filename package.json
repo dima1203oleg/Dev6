@@ -9,6 +9,8 @@
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
+    "lint:eslint": "eslint .",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"server/**/*.ts\" \"server.ts\"",
     "test": "vitest run"
   },
   "dependencies": {
@@ -44,6 +46,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@firebase/eslint-plugin-security-rules": "^0.0.2",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/d3": "^7.4.3",
@@ -54,8 +57,13 @@
     "@types/supertest": "^7.2.1",
     "@types/three": "^0.185.1",
     "@types/ws": "^8.18.1",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
     "eslint": "^10.7.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.9.0",
     "jsdom": "^26.1.0",
+    "prettier": "^3.9.6",
     "supertest": "^7.2.2",
     "vite": "^6.2.3",
     "vitest": "^4.1.10"

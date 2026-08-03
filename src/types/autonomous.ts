@@ -1,8 +1,7 @@
-
 export interface AgentStatus {
   id: string;
   name: string;
-  status: 'idle' | 'busy' | 'error';
+  status: "idle" | "busy" | "error";
   task?: string;
   progress?: number;
   [key: string]: any;
@@ -35,7 +34,7 @@ export interface SchemaDriftEvent {
   sourceName?: string;
   detectedAt?: string;
   driftType?: string;
-  severity?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  severity?: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   details?: string;
   autoPatchStatus?: string;
   [key: string]: any;
@@ -44,7 +43,7 @@ export interface SchemaDriftEvent {
 export interface FunctionalEngine {
   id: string;
   name: string;
-  status: 'online' | 'offline';
+  status: "online" | "offline";
   [key: string]: any;
 }
 

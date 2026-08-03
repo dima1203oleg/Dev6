@@ -4,14 +4,14 @@
  * Official OSINT Report & Memorandum Generator Modal
  */
 
-import React, { useRef } from 'react';
-import { FileText, Printer, Download, X, ShieldCheck, CheckCircle2, Lock, Award, QrCode } from 'lucide-react';
-import { motion } from 'motion/react';
-import { QRCodeSVG } from 'qrcode.react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import { OsintEntity } from '../osintData';
-import { useToast } from './ToastProvider';
+import React, { useRef } from "react";
+import { FileText, Printer, Download, X, ShieldCheck, CheckCircle2, Lock, Award, QrCode } from "lucide-react";
+import { motion } from "motion/react";
+import { QRCodeSVG } from "qrcode.react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { OsintEntity } from "../types/osint";
+import { useToast } from "./ToastProvider";
 
 interface OsintReportGeneratorModalProps {
   entity: OsintEntity;
@@ -22,8 +22,8 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
   const reportRef = useRef<HTMLDivElement>(null);
   const { showToast } = useToast();
 
-  const currentDate = new Date().toLocaleDateString('uk-UA', { year: 'numeric', month: 'long', day: 'numeric' });
-  const docReference = `NEXUS-MEMO-${entity.code}-${Math.floor(1000 + Math.random() * 9000)}`;
+  const currentDate = new Date().toLocaleDateString("uk-UA", { year: "numeric", month: "long", day: "numeric" });
+  const docReference = `NEXUS-MEMO-${entity.code}-${crypto.randomUUID()}`;
 
   const handlePrint = () => {
     window.print();
@@ -31,32 +31,32 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
 
   const handleDownloadPdf = async () => {
     if (!reportRef.current) return;
-    showToast('Генерація офіційного PDF меморандуму...', 'info');
+    showToast("Генерація офіційного PDF меморандуму...", "info");
 
     try {
-      const canvas = await html2canvas(reportRef.current, { scale: 2, backgroundColor: '#ffffff' });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
+      const canvas = await html2canvas(reportRef.current, { scale: 2, backgroundColor: "#ffffff" });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
       const imgWidth = 210;
       const pageHeight = 295;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
       let position = 0;
 
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 
       pdf.save(`${docReference}_OSINT_MEMORANDUM.pdf`);
-      showToast('Офіційний аналітичний меморандум завантажено!', 'success');
+      showToast("Офіційний аналітичний меморандум завантажено!", "success");
     } catch (err) {
-      showToast('Помилка формування PDF', 'error');
+      showToast("Помилка формування PDF", "error");
     }
   };
 
@@ -105,8 +105,8 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
 
         {/* Printable Formal Document Preview */}
         <div className="flex-1 p-6 overflow-y-auto bg-slate-950 custom-scrollbar flex justify-center">
-          <div 
-            ref={reportRef} 
+          <div
+            ref={reportRef}
             className="bg-white text-slate-900 p-8 rounded shadow-2xl w-full max-w-[210mm] font-serif text-sm leading-relaxed space-y-6 select-text"
           >
             {/* Document Header */}
@@ -132,17 +132,27 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
             {/* Subject Information Header */}
             <div className="bg-slate-50 border border-slate-300 p-4 rounded space-y-2 font-sans">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest font-mono">Об'єкт Перевірки</span>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest font-mono">
+                  Об'єкт Перевірки
+                </span>
                 <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-rose-600 text-white">
                   Індекс ризику: {entity.riskScore}% ({entity.status})
                 </span>
               </div>
               <h2 className="text-lg font-bold text-slate-950">{entity.name}</h2>
               <div className="grid grid-cols-2 gap-2 text-xs font-mono text-slate-700">
-                <div>Код ЄДРПОУ / ІПН: <strong>{entity.code}</strong></div>
-                <div>Тип суб'єкта: <strong>{entity.type.toUpperCase()}</strong></div>
-                <div>Офшорний прапорець: <strong>{entity.isOffshoreFlag ? 'ТАК (Критично)' : 'НІ'}</strong></div>
-                <div>PEP пов'язаність: <strong>{entity.isPepFlag ? 'ТАК (Виявлено)' : 'НІ'}</strong></div>
+                <div>
+                  Код ЄДРПОУ / ІПН: <strong>{entity.code}</strong>
+                </div>
+                <div>
+                  Тип суб'єкта: <strong>{entity.type.toUpperCase()}</strong>
+                </div>
+                <div>
+                  Офшорний прапорець: <strong>{entity.isOffshoreFlag ? "ТАК (Критично)" : "НІ"}</strong>
+                </div>
+                <div>
+                  PEP пов'язаність: <strong>{entity.isPepFlag ? "ТАК (Виявлено)" : "НІ"}</strong>
+                </div>
               </div>
             </div>
 
@@ -152,7 +162,10 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
                 1. РЕЗЮМЕ АНАЛІТИЧНОГО ОГЛЯДУ (EXECUTIVE SUMMARY)
               </h3>
               <p className="text-xs text-slate-800 text-justify">
-                За результатами сканування публічних державних реєстрів, митних баз даних, санкційних списків РНБО, OFAC та аналізу криптовалютних транзакцій щодо суб'єкта <strong>{entity.name}</strong> (Код {entity.code}) зафіксовано сукупний показник загрози у <strong>{entity.riskScore}%</strong>. Виявлено структуровані аномалії у структурі власності та фінансових потоках.
+                За результатами сканування публічних державних реєстрів, митних баз даних, санкційних списків РНБО, OFAC
+                та аналізу криптовалютних транзакцій щодо суб'єкта <strong>{entity.name}</strong> (Код {entity.code})
+                зафіксовано сукупний показник загрози у <strong>{entity.riskScore}%</strong>. Виявлено структуровані
+                аномалії у структурі власності та фінансових потоках.
               </p>
             </div>
 
@@ -176,13 +189,17 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
                       <tr key={i} className="text-slate-800">
                         <td className="p-2 font-bold">{rel.targetName}</td>
                         <td className="p-2 font-mono text-[11px]">{rel.relationType}</td>
-                        <td className="p-2 font-mono text-[11px]">{rel.sharePercent ? `${rel.sharePercent}%` : '100%'}</td>
+                        <td className="p-2 font-mono text-[11px]">
+                          {rel.sharePercent ? `${rel.sharePercent}%` : "100%"}
+                        </td>
                         <td className="p-2 font-mono font-bold text-rose-600">{rel.riskScore || 65}%</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={4} className="p-2 text-slate-500 italic">Прямих афілійованих осіб у першому колі не виявлено</td>
+                      <td colSpan={4} className="p-2 text-slate-500 italic">
+                        Прямих афілійованих осіб у першому колі не виявлено
+                      </td>
                     </tr>
                   )}
                 </tbody>
@@ -195,10 +212,22 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
                 3. КЛЮЧОВІ ІНДИКАТОРИ РИЗИКУ (RED FLAGS)
               </h3>
               <ul className="list-disc list-inside text-xs text-slate-800 space-y-1">
-                {entity.isOffshoreFlag && <li><strong>Офшорна юрисдикція:</strong> Присутня фіктивна компанія-засновник у юрисдикції BVI/Cyprus.</li>}
-                {entity.isPepFlag && <li><strong>Політично значуща особа (PEP):</strong> Взаємодія з екс-посадовцями державних органів.</li>}
-                <li><strong>Фінансова аномалія:</strong> Невідповідність статутного капіталу обсягам державних закупівель.</li>
-                <li><strong>Санкційний статус:</strong> Включено до моніторингового списку ризикових суб'єктів.</li>
+                {entity.isOffshoreFlag && (
+                  <li>
+                    <strong>Офшорна юрисдикція:</strong> Присутня фіктивна компанія-засновник у юрисдикції BVI/Cyprus.
+                  </li>
+                )}
+                {entity.isPepFlag && (
+                  <li>
+                    <strong>Політично значуща особа (PEP):</strong> Взаємодія з екс-посадовцями державних органів.
+                  </li>
+                )}
+                <li>
+                  <strong>Фінансова аномалія:</strong> Невідповідність статутного капіталу обсягам державних закупівель.
+                </li>
+                <li>
+                  <strong>Санкційний статус:</strong> Включено до моніторингового списку ризикових суб'єктів.
+                </li>
               </ul>
             </div>
 
@@ -206,7 +235,9 @@ export default function OsintReportGeneratorModal({ entity, onClose }: OsintRepo
             <div className="pt-6 border-t border-slate-300 flex items-center justify-between font-sans text-xs">
               <div className="space-y-1">
                 <p className="font-bold text-slate-900">Автоматизований підпис NEXUS OSINT ENGINE</p>
-                <p className="text-[10px] text-slate-500 font-mono">SHA-256 Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</p>
+                <p className="text-[10px] text-slate-500 font-mono">
+                  SHA-256 Hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+                </p>
               </div>
 
               <div className="border-2 border-emerald-600 text-emerald-800 px-3 py-1.5 rounded font-mono font-bold text-[10px] uppercase text-center rotate-[-3deg]">

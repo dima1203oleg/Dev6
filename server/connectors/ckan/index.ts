@@ -20,7 +20,7 @@ export class CKANUniversalConnector {
       records: data.result.records,
       total: data.result.total,
       limit: limit,
-      offset: offset
+      offset: offset,
     };
   }
 
@@ -31,7 +31,7 @@ export class CKANUniversalConnector {
     return {
       sql: sql,
       retrieved_at: new Date().toISOString(),
-      records: data.result.records
+      records: data.result.records,
     };
   }
 }

@@ -3,16 +3,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
-import { SOLUTIONS } from '../data';
-import { OpenSourceSolution } from '../types';
-import { Search, Info, Shield, CheckCircle2, AlertTriangle, Cpu, HelpCircle, Sliders, RefreshCw, Layers } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState } from "react";
+import { SOLUTIONS } from "../data";
+import { OpenSourceSolution } from "../types";
+import {
+  Search,
+  Info,
+  Shield,
+  CheckCircle2,
+  AlertTriangle,
+  Cpu,
+  HelpCircle,
+  Sliders,
+  RefreshCw,
+  Layers,
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function CatalogTab() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedLicenseType, setSelectedLicenseType] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedLicenseType, setSelectedLicenseType] = useState<string>("all");
   const [selectedSolution, setSelectedSolution] = useState<OpenSourceSolution | null>(null);
 
   // Dynamic compatibility simulator state
@@ -24,8 +35,8 @@ export default function CatalogTab() {
     community: 10,
   });
 
-  const categories = ['all', ...Array.from(new Set(SOLUTIONS.map(s => s.category)))];
-  const licenseTypes = ['all', ...Array.from(new Set(SOLUTIONS.map(s => s.licenseType)))];
+  const categories = ["all", ...Array.from(new Set(SOLUTIONS.map((s) => s.category)))];
+  const licenseTypes = ["all", ...Array.from(new Set(SOLUTIONS.map((s) => s.licenseType)))];
 
   const handleResetWeights = () => {
     setWeights({
@@ -38,7 +49,7 @@ export default function CatalogTab() {
   };
 
   const handleWeightChange = (key: keyof typeof weights, value: number) => {
-    setWeights(prev => {
+    setWeights((prev) => {
       const updated = { ...prev, [key]: value };
       const total = (Object.values(updated) as number[]).reduce((a, b) => a + b, 0);
       return updated;
@@ -48,50 +59,71 @@ export default function CatalogTab() {
   // Recalculate compatibility score dynamically based on user weights
   const getDynamicScore = (solution: OpenSourceSolution) => {
     // Determine base ratings out of 10
-    const funcBase = solution.id === 'opensanctions' || solution.id === 'qdrant' || solution.id === 'vllm' || solution.id === 'doctr' ? 10 : 9;
-    const secBase = solution.securityRating === 'A' ? 10 : 8;
-    const licBase = solution.licenseType === 'Permissive' ? 10 : solution.licenseType === 'Commercial' ? 7 : solution.licenseType === 'Weak Copyleft' ? 8 : 6;
-    const stackBase = solution.id === 'qdrant' || solution.id === 'bbot' || solution.id === 'vllm' ? 10 : 9;
-    const commBase = solution.id === 'neo4j' || solution.id === 'opensearch' || solution.id === 'airbyte' ? 10 : 8;
+    const funcBase =
+      solution.id === "opensanctions" || solution.id === "qdrant" || solution.id === "vllm" || solution.id === "doctr"
+        ? 10
+        : 9;
+    const secBase = solution.securityRating === "A" ? 10 : 8;
+    const licBase =
+      solution.licenseType === "Permissive"
+        ? 10
+        : solution.licenseType === "Commercial"
+          ? 7
+          : solution.licenseType === "Weak Copyleft"
+            ? 8
+            : 6;
+    const stackBase = solution.id === "qdrant" || solution.id === "bbot" || solution.id === "vllm" ? 10 : 9;
+    const commBase = solution.id === "neo4j" || solution.id === "opensearch" || solution.id === "airbyte" ? 10 : 8;
 
     const totalWeight = weights.functional + weights.security + weights.license + weights.stack + weights.community;
     if (totalWeight === 0) return 0;
 
-    const calculated = 
-      (funcBase * weights.functional + 
-       secBase * weights.security + 
-       licBase * weights.license + 
-       stackBase * weights.stack + 
-       commBase * weights.community) / (totalWeight / 10);
+    const calculated =
+      (funcBase * weights.functional +
+        secBase * weights.security +
+        licBase * weights.license +
+        stackBase * weights.stack +
+        commBase * weights.community) /
+      (totalWeight / 10);
 
     return Math.round(calculated * 10) / 10;
   };
 
-  const filteredSolutions = SOLUTIONS.filter(s => {
-    const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          s.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          s.role.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || s.category === selectedCategory;
-    const matchesLicense = selectedLicenseType === 'all' || s.licenseType === selectedLicenseType;
+  const filteredSolutions = SOLUTIONS.filter((s) => {
+    const matchesSearch =
+      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.role.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || s.category === selectedCategory;
+    const matchesLicense = selectedLicenseType === "all" || s.licenseType === selectedLicenseType;
     return matchesSearch && matchesCategory && matchesLicense;
   });
 
-  const getSecurityBadgeColor = (rating: 'A' | 'B' | 'C' | 'D') => {
+  const getSecurityBadgeColor = (rating: "A" | "B" | "C" | "D") => {
     switch (rating) {
-      case 'A': return 'bg-emerald-500/10 text-emerald-400 border-slate-800';
-      case 'B': return 'bg-blue-500/10 text-blue-400 border-slate-800';
-      case 'C': return 'bg-amber-500/10 text-amber-400 border-slate-800';
-      default: return 'bg-red-500/10 text-red-400 border-red-500/20';
+      case "A":
+        return "bg-emerald-500/10 text-emerald-400 border-slate-800";
+      case "B":
+        return "bg-blue-500/10 text-blue-400 border-slate-800";
+      case "C":
+        return "bg-amber-500/10 text-amber-400 border-slate-800";
+      default:
+        return "bg-red-500/10 text-red-400 border-red-500/20";
     }
   };
 
   const getLicenseBadgeColor = (type: string) => {
     switch (type) {
-      case 'Permissive': return 'bg-emerald-500/10 text-emerald-400 border-slate-800';
-      case 'Weak Copyleft': return 'bg-blue-500/10 text-blue-400 border-slate-800';
-      case 'Strong Copyleft': return 'bg-amber-500/10 text-amber-400 border-slate-800';
-      case 'Source Available': return 'bg-blue-500/10 text-blue-400 border-slate-800';
-      default: return 'bg-rose-500/10 text-rose-400 border-slate-800';
+      case "Permissive":
+        return "bg-emerald-500/10 text-emerald-400 border-slate-800";
+      case "Weak Copyleft":
+        return "bg-blue-500/10 text-blue-400 border-slate-800";
+      case "Strong Copyleft":
+        return "bg-amber-500/10 text-amber-400 border-slate-800";
+      case "Source Available":
+        return "bg-blue-500/10 text-blue-400 border-slate-800";
+      default:
+        return "bg-rose-500/10 text-rose-400 border-slate-800";
     }
   };
 
@@ -104,7 +136,9 @@ export default function CatalogTab() {
           Глобальний каталог Open Source рішень для NEXUS Analytics
         </h2>
         <p className="text-slate-300 text-xs leading-relaxed">
-          Професійний каталог перевірених технологій, оптимізованих для K8s-native архітектури та високопродуктивних пайплайнів збору OSINT, векторного пошуку, розпізнавання ШІ та побудови графів зв’язків. Скористайтеся інтерактивними інструментами, щоб оцінити та змоделювати їхню сумісність.
+          Професійний каталог перевірених технологій, оптимізованих для K8s-native архітектури та високопродуктивних
+          пайплайнів збору OSINT, векторного пошуку, розпізнавання ШІ та побудови графів зв’язків. Скористайтеся
+          інтерактивними інструментами, щоб оцінити та змоделювати їхню сумісність.
         </p>
       </div>
 
@@ -114,7 +148,7 @@ export default function CatalogTab() {
           {/* Filtering Card */}
           <div className="glass-panel-premium border-slate-800 rounded-2xl p-2 space-y-4" id="filters-container">
             <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">Пошук та Фільтри</h3>
-            
+
             {/* Search Query */}
             <div className="relative">
               <Search className="absolute left-3 top-2.5 h-4 text-slate-500" />
@@ -138,9 +172,13 @@ export default function CatalogTab() {
                 className="input-premium px-2 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 <option value="all">Усі домени ({SOLUTIONS.length})</option>
-                {categories.filter(c => c !== 'all').map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
+                {categories
+                  .filter((c) => c !== "all")
+                  .map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -154,9 +192,13 @@ export default function CatalogTab() {
                 className="input-premium px-2 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
               >
                 <option value="all">Усі ліцензії</option>
-                {licenseTypes.filter(l => l !== 'all').map(lic => (
-                  <option key={lic} value={lic}>{lic}</option>
-                ))}
+                {licenseTypes
+                  .filter((l) => l !== "all")
+                  .map((lic) => (
+                    <option key={lic} value={lic}>
+                      {lic}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -195,7 +237,7 @@ export default function CatalogTab() {
                   min="0"
                   max="50"
                   value={weights.functional}
-                  onChange={(e) => handleWeightChange('functional', parseInt(e.target.value))}
+                  onChange={(e) => handleWeightChange("functional", parseInt(e.target.value))}
                   className="w-full accent-emerald-500 h-1 bg-slate-800 rounded-2xl appearance-none cursor-pointer"
                 />
               </div>
@@ -212,7 +254,7 @@ export default function CatalogTab() {
                   min="0"
                   max="50"
                   value={weights.security}
-                  onChange={(e) => handleWeightChange('security', parseInt(e.target.value))}
+                  onChange={(e) => handleWeightChange("security", parseInt(e.target.value))}
                   className="w-full accent-emerald-500 h-1 bg-slate-800 rounded-2xl appearance-none cursor-pointer"
                 />
               </div>
@@ -229,7 +271,7 @@ export default function CatalogTab() {
                   min="0"
                   max="50"
                   value={weights.license}
-                  onChange={(e) => handleWeightChange('license', parseInt(e.target.value))}
+                  onChange={(e) => handleWeightChange("license", parseInt(e.target.value))}
                   className="w-full accent-emerald-500 h-1 bg-slate-800 rounded-2xl appearance-none cursor-pointer"
                 />
               </div>
@@ -246,7 +288,7 @@ export default function CatalogTab() {
                   min="0"
                   max="50"
                   value={weights.stack}
-                  onChange={(e) => handleWeightChange('stack', parseInt(e.target.value))}
+                  onChange={(e) => handleWeightChange("stack", parseInt(e.target.value))}
                   className="w-full accent-emerald-500 h-1 bg-slate-800 rounded-2xl appearance-none cursor-pointer"
                 />
               </div>
@@ -263,7 +305,7 @@ export default function CatalogTab() {
                   min="0"
                   max="50"
                   value={weights.community}
-                  onChange={(e) => handleWeightChange('community', parseInt(e.target.value))}
+                  onChange={(e) => handleWeightChange("community", parseInt(e.target.value))}
                   className="w-full accent-emerald-500 h-1 bg-slate-800 rounded-2xl appearance-none cursor-pointer"
                 />
               </div>
@@ -287,7 +329,10 @@ export default function CatalogTab() {
           </div>
 
           {filteredSolutions.length === 0 ? (
-            <div className="bg-slate-900/20 border border-dashed border-slate-800 rounded-2xl p-12 text-center" id="no-results-view">
+            <div
+              className="bg-slate-900/20 border border-dashed border-slate-800 rounded-2xl p-12 text-center"
+              id="no-results-view"
+            >
               <HelpCircle className="w-10 h-10 text-slate-600 mx-auto mb-3" />
               <p className="text-slate-300 text-xs font-medium">Нічого не знайдено</p>
               <p className="text-slate-600 text-xs mt-1">Спробуйте змінити фільтри пошуку або критерії</p>
@@ -312,25 +357,25 @@ export default function CatalogTab() {
                           </span>
                           <h3 className="text-sm font-bold text-slate-200 group-hover:text-white mt-1.5 flex items-center gap-1.5">
                             {sol.name}
-                            {sol.productionReady.startsWith('Tak') && (
+                            {sol.productionReady.startsWith("Tak") && (
                               <CheckCircle2 className="w-4 h-4 text-emerald-500" title="Готово до виробництва" />
                             )}
                           </h3>
                         </div>
-                        
+
                         {/* Dynamic Score Indicator */}
                         <div className="text-right">
                           <span className="text-xs text-slate-500 uppercase font-mono block">Сумісність</span>
-                          <span className={`text-base font-mono font-bold ${dynamicScore >= 90 ? 'text-emerald-400' : dynamicScore >= 80 ? 'text-amber-400' : 'text-red-400'}`}>
+                          <span
+                            className={`text-base font-mono font-bold ${dynamicScore >= 90 ? "text-emerald-400" : dynamicScore >= 80 ? "text-amber-400" : "text-red-400"}`}
+                          >
                             {dynamicScore}
                           </span>
                           <span className="text-xs text-slate-600 font-mono">/100</span>
                         </div>
                       </div>
 
-                      <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
-                        {sol.description}
-                      </p>
+                      <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">{sol.description}</p>
                     </div>
 
                     <div className="space-y-2 pt-2 border-t border-slate-800/50">
@@ -342,9 +387,11 @@ export default function CatalogTab() {
                           Безпека: {sol.securityRating}
                         </span>
                       </div>
-                      
+
                       <div className="flex items-center justify-between text-xs text-slate-500 pt-1 group-hover:text-slate-300">
-                        <span className="truncate max-w-[200px]">Стек: <code className="text-xs text-slate-300 font-mono">{sol.techStack}</code></span>
+                        <span className="truncate max-w-[200px]">
+                          Стек: <code className="text-xs text-slate-300 font-mono">{sol.techStack}</code>
+                        </span>
                         <span className="text-blue-400 font-medium group-hover:underline flex items-center gap-0.5 text-xs">
                           Детальніше &rarr;
                         </span>
@@ -361,7 +408,10 @@ export default function CatalogTab() {
       {/* Expandable Details Modal via AnimatePresence */}
       <AnimatePresence>
         {selectedSolution && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black/70 backdrop-blur-sm" id="solution-modal-container">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black/70 backdrop-blur-sm"
+            id="solution-modal-container"
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -376,7 +426,9 @@ export default function CatalogTab() {
                     <span className="text-xs font-bold text-blue-400 uppercase tracking-wider bg-blue-500/10 px-2 py-1 rounded-full">
                       {selectedSolution.category}
                     </span>
-                    <span className={`text-xs font-bold uppercase tracking-wider border px-2 py-1 rounded-full ${getLicenseBadgeColor(selectedSolution.licenseType)}`}>
+                    <span
+                      className={`text-xs font-bold uppercase tracking-wider border px-2 py-1 rounded-full ${getLicenseBadgeColor(selectedSolution.licenseType)}`}
+                    >
                       {selectedSolution.licenseType}
                     </span>
                   </div>
@@ -411,11 +463,15 @@ export default function CatalogTab() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <div className="space-y-1">
                     <span className="text-xs uppercase text-slate-500 font-medium tracking-wide">Роль у NEXUS</span>
-                    <p className="text-xs text-slate-200 bg-slate-900/20 p-2.5 rounded border border-slate-800">{selectedSolution.role}</p>
+                    <p className="text-xs text-slate-200 bg-slate-900/20 p-2.5 rounded border border-slate-800">
+                      {selectedSolution.role}
+                    </p>
                   </div>
                   <div className="space-y-1">
                     <span className="text-xs uppercase text-slate-500 font-medium tracking-wide">Технічний стек</span>
-                    <p className="text-xs text-slate-200 font-mono bg-slate-900/20 p-2.5 rounded border border-slate-800">{selectedSolution.techStack}</p>
+                    <p className="text-xs text-slate-200 font-mono bg-slate-900/20 p-2.5 rounded border border-slate-800">
+                      {selectedSolution.techStack}
+                    </p>
                   </div>
                 </div>
 
@@ -460,17 +516,23 @@ export default function CatalogTab() {
                     Рекомендація архітектора
                   </h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    {selectedSolution.licenseType === 'Strong Copyleft' ? (
+                    {selectedSolution.licenseType === "Strong Copyleft" ? (
                       <span className="text-amber-400/90 font-medium">
-                        Увага: ліцензія GPL-3.0 вимагає жорсткої мікросервісної ізоляції! Не підключайте бібліотеку прямим імпортом в ядро FastAPI. Спілкуйтеся виключно за допомогою мережевих REST/gRPC викликів або черги повідомлень (Kafka).
+                        Увага: ліцензія GPL-3.0 вимагає жорсткої мікросервісної ізоляції! Не підключайте бібліотеку
+                        прямим імпортом в ядро FastAPI. Спілкуйтеся виключно за допомогою мережевих REST/gRPC викликів
+                        або черги повідомлень (Kafka).
                       </span>
-                    ) : selectedSolution.licenseType === 'Commercial' ? (
+                    ) : selectedSolution.licenseType === "Commercial" ? (
                       <span className="text-rose-400/95 font-medium">
-                        Увага: некомерційна ліцензія обмежує безкоштовне використання у SaaS-платформі. На етапі MVP допускається завантаження обмежених зліпків даних, проте для повноцінного комерційного продажу необхідно укласти комерційну угоду.
+                        Увага: некомерційна ліцензія обмежує безкоштовне використання у SaaS-платформі. На етапі MVP
+                        допускається завантаження обмежених зліпків даних, проте для повноцінного комерційного продажу
+                        необхідно укласти комерційну угоду.
                       </span>
                     ) : (
                       <span>
-                        Компонент володіє високим рівнем сумісності та комерційної свободи (Apache 2.0 / MIT). Допускається впровадження безпосередньо у бізнес-логику, розгортання як окремого мікросервісу або пряма лінковка бібліотек.
+                        Компонент володіє високим рівнем сумісності та комерційної свободи (Apache 2.0 / MIT).
+                        Допускається впровадження безпосередньо у бізнес-логику, розгортання як окремого мікросервісу
+                        або пряма лінковка бібліотек.
                       </span>
                     )}
                   </p>

@@ -1,9 +1,9 @@
-import { 
-  CanonicalEntity, 
-  EvidenceClaim, 
-  IntelligenceDossier, 
+import {
+  CanonicalEntity,
+  EvidenceClaim,
+  IntelligenceDossier,
   VerificationStatus,
-  RiskLevel
+  RiskLevel,
 } from "../../src/types/predator";
 import { queryYouScore } from "./youscore";
 import { queryOpendatabot } from "./opendatabot";
@@ -11,31 +11,31 @@ import crypto from "crypto";
 
 export class IntelligenceOrchestrator {
   private dossierCache = new Map<string, { dossier: IntelligenceDossier; timestamp: number }>();
-  
-  public async buildDossier(entityId: string, identifiers: { edrpou?: string; ipn?: string }): Promise<IntelligenceDossier> {
+
+  public async buildDossier(
+    entityId: string,
+    identifiers: { edrpou?: string; ipn?: string },
+  ): Promise<IntelligenceDossier> {
     const code = identifiers.edrpou || identifiers.ipn;
     if (!code) throw new Error("Identifier (EDRPOU/IPN) required");
 
     const cacheKey = `${entityId}-${code}`;
     const cached = this.dossierCache.get(cacheKey);
     const CACHE_TTL = 10 * 60 * 1000; // 10 minutes cache TTL
-    if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       console.log(`[Cache Hit] Serving cached intelligence dossier for: ${cacheKey}`);
       return cached.dossier;
     }
 
     // Parallel data acquisition
-    const [odbData, ysData] = await Promise.allSettled([
-      this.fetchOpendatabotData(code),
-      this.fetchYouScoreData(code)
-    ]);
+    const [odbData, ysData] = await Promise.allSettled([this.fetchOpendatabotData(code), this.fetchYouScoreData(code)]);
 
     const claims: EvidenceClaim[] = [];
     const sources: string[] = [];
 
     // Process Opendatabot
     if (odbData.status === "fulfilled") {
-      odbData.value.forEach(item => {
+      odbData.value.forEach((item) => {
         claims.push(item.claim);
         if (!sources.includes(item.source)) sources.push(item.source);
       });
@@ -43,7 +43,7 @@ export class IntelligenceOrchestrator {
 
     // Process YouScore
     if (ysData.status === "fulfilled") {
-      ysData.value.forEach(item => {
+      ysData.value.forEach((item) => {
         claims.push(item.claim);
         if (!sources.includes(item.source)) sources.push(item.source);
       });
@@ -81,23 +81,23 @@ export class IntelligenceOrchestrator {
       dataQuality: {
         completeness: this.calculateCompleteness(claims),
         freshness: 1.0,
-        confirmedClaims: claims.filter(c => c.status === "CONFIRMED").length,
-        unverifiedClaims: claims.filter(c => c.status === "UNVERIFIED").length,
-        contradictions: 0 // TODO: Implement contradiction detection
-      }
+        confirmedClaims: claims.filter((c) => c.status === "CONFIRMED").length,
+        unverifiedClaims: claims.filter((c) => c.status === "UNVERIFIED").length,
+        contradictions: 0, // TODO: Implement contradiction detection
+      },
     };
 
     this.dossierCache.set(cacheKey, { dossier, timestamp: Date.now() });
     return dossier;
   }
 
-  private async fetchOpendatabotData(code: string): Promise<{ claim: EvidenceClaim, source: string }[]> {
+  private async fetchOpendatabotData(code: string): Promise<{ claim: EvidenceClaim; source: string }[]> {
     const domains = ["edr", "court", "enforcements", "sanctions"];
-    const results = await Promise.all(domains.map(d => queryOpendatabot(d as any, code)));
-    
+    const results = await Promise.all(domains.map((d) => queryOpendatabot(d as any, code)));
+
     return results
-      .filter(r => r.status === "SUCCESS")
-      .map(r => ({
+      .filter((r) => r.status === "SUCCESS")
+      .map((r) => ({
         source: r.source,
         claim: {
           id: r.evidence.evidenceId,
@@ -111,18 +111,18 @@ export class IntelligenceOrchestrator {
           retrievedAt: r.retrievedAt,
           contentHash: r.evidence.contentHash,
           confidence: 1.0,
-          status: "SINGLE_SOURCE" as VerificationStatus
-        }
+          status: "SINGLE_SOURCE" as VerificationStatus,
+        },
       }));
   }
 
-  private async fetchYouScoreData(code: string): Promise<{ claim: EvidenceClaim, source: string }[]> {
+  private async fetchYouScoreData(code: string): Promise<{ claim: EvidenceClaim; source: string }[]> {
     const domains = ["usr", "court", "enforcement", "sanctions", "vehicles"];
-    const results = await Promise.all(domains.map(d => queryYouScore(d as any, code)));
-    
+    const results = await Promise.all(domains.map((d) => queryYouScore(d as any, code)));
+
     return results
-      .filter(r => r.status === "SUCCESS")
-      .map(r => ({
+      .filter((r) => r.status === "SUCCESS")
+      .map((r) => ({
         source: r.source,
         claim: {
           id: r.evidence.evidenceId,
@@ -136,21 +136,25 @@ export class IntelligenceOrchestrator {
           retrievedAt: r.retrievedAt,
           contentHash: r.evidence.contentHash,
           confidence: 1.0,
-          status: "SINGLE_SOURCE" as VerificationStatus
-        }
+          status: "SINGLE_SOURCE" as VerificationStatus,
+        },
       }));
   }
 
   private resolveEntity(id: string, odb: any, ys: any, identifiers: any): CanonicalEntity {
     // Priority for names and details
-    const odbEdr = odb.status === "fulfilled" ? odb.value.find((v: any) => v.claim.predicate === "has_edr_data")?.claim.object : null;
-    const ysUsr = ys.status === "fulfilled" ? ys.value.find((v: any) => v.claim.predicate === "has_usr_data")?.claim.object : null;
+    const odbEdr =
+      odb.status === "fulfilled"
+        ? odb.value.find((v: any) => v.claim.predicate === "has_edr_data")?.claim.object
+        : null;
+    const ysUsr =
+      ys.status === "fulfilled" ? ys.value.find((v: any) => v.claim.predicate === "has_usr_data")?.claim.object : null;
 
     const name = ysUsr?.name || odbEdr?.full_name || odbEdr?.name || "Unknown Entity";
 
     return {
       id,
-      type: (odbEdr?.type === "fop" || identifiers.ipn) ? "FOP" : "COMPANY",
+      type: odbEdr?.type === "fop" || identifiers.ipn ? "FOP" : "COMPANY",
       canonicalName: name,
       aliases: [],
       identifiers,
@@ -162,7 +166,7 @@ export class IntelligenceOrchestrator {
       sourcesCount: (odb.status === "fulfilled" ? 1 : 0) + (ys.status === "fulfilled" ? 1 : 0),
       evidenceClaims: [],
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
   }
 
@@ -178,33 +182,35 @@ export class IntelligenceOrchestrator {
   private extractMetrics(claims: EvidenceClaim[]) {
     // Real extraction logic based on API schemas
     return {
-      fopCount: claims.some(c => c.object?.type === "fop") ? 1 : 0,
-      companyCount: claims.some(c => c.predicate === "has_usr_data" || c.predicate === "has_edr_data") ? 1 : 0,
+      fopCount: claims.some((c) => c.object?.type === "fop") ? 1 : 0,
+      companyCount: claims.some((c) => c.predicate === "has_usr_data" || c.predicate === "has_edr_data") ? 1 : 0,
       directorshipCount: 0,
       beneficiaryCount: 0,
       relatedPersonsCount: 0,
-      vehicleCount: claims.filter(c => c.predicate === "has_vehicles_data").length,
+      vehicleCount: claims.filter((c) => c.predicate === "has_vehicles_data").length,
       fineCount: 0,
-      courtCount: claims.filter(c => c.predicate.includes("court")).length,
-      enforcementCount: claims.filter(c => c.predicate.includes("enforcement")).length,
-      sanctionMatch: claims.some(c => c.predicate.includes("sanction") && c.object?.length > 0) ? "YES" : "NO" as any,
-      riskFactorsCount: 0
+      courtCount: claims.filter((c) => c.predicate.includes("court")).length,
+      enforcementCount: claims.filter((c) => c.predicate.includes("enforcement")).length,
+      sanctionMatch: claims.some((c) => c.predicate.includes("sanction") && c.object?.length > 0)
+        ? "YES"
+        : ("NO" as any),
+      riskFactorsCount: 0,
     };
   }
 
-  private calculateRisk(claims: EvidenceClaim[]): { score: number, level: RiskLevel, drivers: any[] } {
+  private calculateRisk(claims: EvidenceClaim[]): { score: number; level: RiskLevel; drivers: any[] } {
     let score = 0;
     const drivers: any[] = [];
 
     // Sanctions
-    const sanctions = claims.find(c => c.predicate.includes("sanction"));
+    const sanctions = claims.find((c) => c.predicate.includes("sanction"));
     if (sanctions && Array.isArray(sanctions.object) && sanctions.object.length > 0) {
       score += 50;
       drivers.push({ factor: "Sanction List Match", risk: "CRITICAL", evidenceId: sanctions.id });
     }
 
     // Court cases
-    const courts = claims.filter(c => c.predicate.includes("court"));
+    const courts = claims.filter((c) => c.predicate.includes("court"));
     const courtCount = courts.reduce((acc, c) => acc + (Array.isArray(c.object) ? c.object.length : 0), 0);
     if (courtCount > 0) {
       score += Math.min(courtCount * 5, 30);
@@ -214,7 +220,7 @@ export class IntelligenceOrchestrator {
     return {
       score,
       level: score > 70 ? "CRITICAL" : score > 40 ? "HIGH" : score > 15 ? "MEDIUM" : "CLEAN",
-      drivers
+      drivers,
     };
   }
 
@@ -226,7 +232,7 @@ export class IntelligenceOrchestrator {
 
   private calculateCompleteness(claims: EvidenceClaim[]): number {
     const expectedDomains = 5;
-    const uniqueDomains = new Set(claims.map(c => c.predicate)).size;
+    const uniqueDomains = new Set(claims.map((c) => c.predicate)).size;
     return Math.min(uniqueDomains / expectedDomains, 1);
   }
 }

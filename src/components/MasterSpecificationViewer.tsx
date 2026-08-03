@@ -1,18 +1,44 @@
-import React, { useState, useMemo } from 'react';
-import { 
-  BookOpen, ShieldCheck, Cpu, Terminal, Compass, Zap, Search, 
-  Layers, CheckCircle2, ChevronRight, Sparkles, Network, Globe, 
-  Key, Lock, Database, RefreshCw, Wand2, ArrowRight, Eye, FileText,
-  Workflow, Share2, Scale, Activity, ShieldAlert, Binary, Box, HelpCircle, AlertTriangle
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { useToast } from './ToastProvider';
-import { 
-  FIVE_QUESTIONS_FRAMEWORK, 
-  DEV5_20_STEP_TEST, 
+import React, { useState, useMemo } from "react";
+import {
+  BookOpen,
+  ShieldCheck,
+  Cpu,
+  Terminal,
+  Compass,
+  Zap,
+  Search,
+  Layers,
+  CheckCircle2,
+  ChevronRight,
+  Sparkles,
+  Network,
+  Globe,
+  Key,
+  Lock,
+  Database,
+  RefreshCw,
+  Wand2,
+  ArrowRight,
+  Eye,
+  FileText,
+  Workflow,
+  Share2,
+  Scale,
+  Activity,
+  ShieldAlert,
+  Binary,
+  Box,
+  HelpCircle,
+  AlertTriangle,
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { useToast } from "./ToastProvider";
+import {
+  FIVE_QUESTIONS_FRAMEWORK,
+  DEV5_20_STEP_TEST,
   DEV5_145_SPEC_ITEMS,
-  Dev5SpecItem
-} from '../data/dev5MasterSpecData';
+  Dev5SpecItem,
+} from "../data/dev5MasterSpecData";
 
 export interface SpecChapter {
   id: number;
@@ -31,16 +57,20 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     title: "1. Vision & Strategy",
     category: "Strategic Foundation",
     badge: "Core Vision",
-    summary: "Стратегічне бачення, місія, цінності та ключові вектори розвитку єдиної когнітивної платформи PREDATOR Analytics.",
+    summary:
+      "Стратегічне бачення, місія, цінності та ключові вектори розвитку єдиної когнітивної платформи PREDATOR Analytics.",
     details: [
       "Vision: Стати універсальною операційною системою розвідки (Enterprise Intelligence OS) світового рівня.",
       "Mission: Автоматична агрегація, нормалізація, побудова графу знань та пояснюваний аналіз відкритих даних.",
       "Core Values: Open Source First, Zero Trust, Explainable AI, Evidence Based, Privacy by Design.",
       "Product & Data Strategy: Побудова універсального графу з підтримкою термінових OLAP та Vector запитів.",
-      "Technology Radar: Безперервна оновлюваність стеку (FastAPI, Qdrant, OpenSearch, Neo4j, Ray, Temporal)."
+      "Technology Radar: Безперервна оновлюваність стеку (FastAPI, Qdrant, OpenSearch, Neo4j, Ray, Temporal).",
     ],
     components: ["Business Capability Model", "Enterprise Capability Map", "Technology Radar", "Ecosystem Strategy"],
-    invariants: ["Заборона використання закритих бібліотек без погодження", "Відповідність вимогам GDPR та законодавства"]
+    invariants: [
+      "Заборона використання закритих бібліотек без погодження",
+      "Відповідність вимогам GDPR та законодавства",
+    ],
   },
   {
     id: 2,
@@ -53,10 +83,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "C4 Architecture (Context, Containers, Components, Code): Повна прозорість взаємодій.",
       "Domain Driven Design (DDD) & Hexagonal Architecture: Ізоляція предметної області від інфраструктури.",
       "Event-Driven & Event-Sourcing (Kafka / Redpanda / Debezium): Повна аудитованість та відтворюваність стану.",
-      "CQRS Pattern: Розділення команд збору/інжесту та високонавантажених аналітичних читань."
+      "CQRS Pattern: Розділення команд збору/інжесту та високонавантажених аналітичних читань.",
     ],
     components: ["C4 Model Engine", "Archimate Generator", "UML/BPMN Exporter", "Domain Context Map"],
-    invariants: ["Незмінність контрактів без процедури RFC", "Zero Circular Dependencies"]
+    invariants: ["Незмінність контрактів без процедури RFC", "Zero Circular Dependencies"],
   },
   {
     id: 3,
@@ -68,10 +98,15 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Investigation & Corporate Ontology: Формалізація компаній, PEP, бенефіціарів, офшорних контурів.",
       "Trade & AML Ontology: Опис митних декларацій, HS-кодів, фінансових потоків та крипто-адрес.",
       "OSINT & Geo Ontology: Моделювання супутникових даних, геокоординат, судових справ та новин.",
-      "Supply Chain & Risk Ontology: Графове представлення ланцюгів постачання та векторів загроз."
+      "Supply Chain & Risk Ontology: Графове представлення ланцюгів постачання та векторів загроз.",
     ],
-    components: ["FollowTheMoney Standard", "GLEIF ISO 17442 Integration", "OWL/RDF Schema Repository", "Dynamic Entity Typer"],
-    invariants: ["Усі сутності мусять мати універсальний UUIDv5", "Обов'язкова нормалізація назв та кодів ЄДРПОУ/LEI"]
+    components: [
+      "FollowTheMoney Standard",
+      "GLEIF ISO 17442 Integration",
+      "OWL/RDF Schema Repository",
+      "Dynamic Entity Typer",
+    ],
+    invariants: ["Усі сутності мусять мати універсальний UUIDv5", "Обов'язкова нормалізація назв та кодів ЄДРПОУ/LEI"],
   },
   {
     id: 4,
@@ -83,10 +118,15 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Entity & Event Graph: Пов'язування компаній, людей, майна та подій у єдиній просторово-часовій системі.",
       "Evidence & Document Graph: Доказовий ланцюг (Chain of Custody) з посиланням на першоджерело.",
       "Beneficial Ownership & Influence Graph: Автоматичний розрахунок кінцевих бенефіціарних власників (UBO).",
-      "Timeline & Geo Graph: Трекінг переміщення вантажів, реєстраційних змін та трансферу активів у часі."
+      "Timeline & Geo Graph: Трекінг переміщення вантажів, реєстраційних змін та трансферу активів у часі.",
     ],
-    components: ["Neo4j / Memgraph Cluster", "Cypher Query Engine", "Graph Neural Network (GNN) Embeddings", "Sub-graph Materializer"],
-    invariants: ["Збереження посилання на джерело для кожного ребра графу", "Підтримка версіонування зв'язків"]
+    components: [
+      "Neo4j / Memgraph Cluster",
+      "Cypher Query Engine",
+      "Graph Neural Network (GNN) Embeddings",
+      "Sub-graph Materializer",
+    ],
+    invariants: ["Збереження посилання на джерело для кожного ребра графу", "Підтримка версіонування зв'язків"],
   },
   {
     id: 5,
@@ -98,10 +138,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Семантичний пошук та онтологічний висновок: Використання SHACL та OWL для логічної перевірки фактів.",
       "W3C & ISO Alignment: Повна підтримка JSON-LD, RDF, ISO 8000 (Data Quality) та ISO 11179.",
       "Knowledge Inference Engine: Автоматичне виведення нових зв'язків на основі транзитивності (A -> B -> C).",
-      "Semantic Versioning of Schemas: Автоматична перевірка зворотної сумісності онтологій."
+      "Semantic Versioning of Schemas: Автоматична перевірка зворотної сумісності онтологій.",
     ],
     components: ["SHACL Validator", "JSON-LD Normalizer", "OWL Reasoner", "Semantic Feature Store"],
-    invariants: ["Strict Schema Validation via SHACL", "Semantic Versioning Major.Minor.Patch"]
+    invariants: ["Strict Schema Validation via SHACL", "Semantic Versioning Major.Minor.Patch"],
   },
   {
     id: 6,
@@ -113,25 +153,26 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Data Lakehouse & Warehouse: Поєднання MinIO/S3 + ClickHouse для миттєвої OLAP-аналітики.",
       "Vector Storage: Qdrant / Milvus для семантичного пошуку по мільйонах текстових embeddings.",
       "Операційна та пошукова БД: PostgreSQL / TimescaleDB + OpenSearch для швидкого повнотекстового пошуку.",
-      "Feature Store & Metadata Catalog: Централізований каталог даних та відстеження Lineage."
+      "Feature Store & Metadata Catalog: Централізований каталог даних та відстеження Lineage.",
     ],
     components: ["MinIO S3 Lake", "ClickHouse OLAP", "Qdrant Vector Cluster", "PostgreSQL / TimescaleDB", "OpenSearch"],
-    invariants: ["Шифрування даних at-rest та in-transit (TLS 1.3 + AES-256)", "Ізоляція гарячих і холодних даних"]
+    invariants: ["Шифрування даних at-rest та in-transit (TLS 1.3 + AES-256)", "Ізоляція гарячих і холодних даних"],
   },
   {
     id: 7,
     title: "7. Enterprise Connector Ecosystem",
     category: "Integrations & API",
     badge: "ECIP v2.0",
-    summary: "Екосистема з 100+ авто-згенерованих та самовідновлюваних конекторів до відкритих державних та міжнародних джерел.",
+    summary:
+      "Екосистема з 100+ авто-згенерованих та самовідновлюваних конекторів до відкритих державних та міжнародних джерел.",
     details: [
       "Connector Discovery & Generator: Автоматичне виявлення джерел через GitHub, APIs.guru, CKAN.",
       "Auto-Repair & Schema Drift Engine: Виявлення змін API та оновлення DTO без зупинки системи.",
       "Secret & Vault Management: Безпечна ротація ключів через HashiCorp Vault та Secret Manager.",
-      "Rate Intelligence Scheduler: Розподіл навантаження з підтримкою Token Bucket та Redis Limits."
+      "Rate Intelligence Scheduler: Розподіл навантаження з підтримкою Token Bucket та Redis Limits.",
     ],
     components: ["Universal Connector SDK", "HashiCorp Vault Rotator", "Schema Drift Watchdog", "Rate Limits Engine"],
-    invariants: ["Заборона збереження ключів у коді", "100% заповнення цифрового паспорта джерела"]
+    invariants: ["Заборона збереження ключів у коді", "100% заповнення цифрового паспорта джерела"],
   },
   {
     id: 8,
@@ -143,10 +184,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Role-Based Agents: CEO Agent, CTO Agent, Chief Architect, Lead Security Officer, Critic Agent.",
       "Autonomic Task Execution: Розподіл завдань, автоматичний код-рев'ю, генерація тестів та деплой.",
       "Arbiter & Critic Loop: Валідація галюцинацій LLM перед прийняттям відповідальних рішень.",
-      "Continuous Self-Improvement: Аналіз логів помилок та автоматичне створення Pull Request."
+      "Continuous Self-Improvement: Аналіз логів помилок та автоматичне створення Pull Request.",
     ],
     components: ["LangGraph / CrewAI Supervisor", "Critic Agent Evaluator", "Autonomous Code Reviewer", "Task Router"],
-    invariants: ["Жодних дій без проходження Критика (Critic Agent)", "Суворе дотримання AI Constitution"]
+    invariants: ["Жодних дій без проходження Критика (Critic Agent)", "Суворе дотримання AI Constitution"],
   },
   {
     id: 9,
@@ -158,10 +199,13 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Working Memory: Оперативний контекст поточного розслідування чи сесії.",
       "Semantic Memory: Граф знань та векторизована база нормативних документів.",
       "Procedural Memory: Набір перевірених інструкцій, алгоритмів та правил розслідування.",
-      "Episodic Memory: Історія попередніх розслідувань, виявлених аномалій та рішень оператора."
+      "Episodic Memory: Історія попередніх розслідувань, виявлених аномалій та рішень оператора.",
     ],
     components: ["Episodic Vector DB", "Contextual Window Buffer", "Procedural Rules Graph", "Reasoning Trace Logger"],
-    invariants: ["Повна аудитованість логічних ланцюгів (Reasoning Traces)", "Автоматичний занепад застарілого контексту"]
+    invariants: [
+      "Повна аудитованість логічних ланцюгів (Reasoning Traces)",
+      "Автоматичний занепад застарілого контексту",
+    ],
   },
   {
     id: 10,
@@ -173,10 +217,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Dependency Graph Builder: Автоматичне побудування графу залежностей проектів.",
       "Critical Path Method (CPM): Визначення блокуючих вузлів при розгортанні модулів.",
       "ROI & Risk Estimator: Оцінка вартості обчислень, токенів та часу виконання.",
-      "Gantt & Milestones Generator: Автоматична візуалізація термінів та етапів розробки."
+      "Gantt & Milestones Generator: Автоматична візуалізація термінів та етапів розробки.",
     ],
     components: ["CPM Planner Engine", "Token Cost Predictor", "Dependency Risk Matrix", "Milestone Auto-Tracker"],
-    invariants: ["Обов'язкова наявність Fallback-плану", "Автоматична зупинка при перевищенні ліміту токенів"]
+    invariants: ["Обов'язкова наявність Fallback-плану", "Автоматична зупинка при перевищенні ліміту токенів"],
   },
   {
     id: 11,
@@ -187,10 +231,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     details: [
       "Deep Academic & Code Audit: Сканування ArXiv, PapersWithCode, GitHub, PyPI на нові алгоритми.",
       "OSINT & Security Benchmarks: Аналіз нових векторальних індексів, парсерів та джерел даних.",
-      "Automated RFC & PoC Generation: Створення тестових прототипів для перевірки нових технологій."
+      "Automated RFC & PoC Generation: Створення тестових прототипів для перевірки нових технологій.",
     ],
     components: ["ArXiv / PapersWithCode Crawler", "GitHub Repos Auditor", "PoC Generator Engine"],
-    invariants: ["Заборона впровадження незахищених залежностей", "Перевірка ліцензій (Apache 2.0 / MIT / BSD)"]
+    invariants: ["Заборона впровадження незахищених залежностей", "Перевірка ліцензій (Apache 2.0 / MIT / BSD)"],
   },
   {
     id: 12,
@@ -202,24 +246,30 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Zero Trust Architecture: Повна автентифікація та авторизація кожного міжсервісного запиту.",
       "Policy-as-Code (OPA / Kyverno): Автоматична перевірка маніфестів та правил безпеки.",
       "Supply Chain Security (SBOM, Sigstore, Cosign): Підпис контейнерів та перевірка відсутності CVE.",
-      "Immutable Audit Logs: Запис усіх дій користувачів та AI у незмінний хеш-лог."
+      "Immutable Audit Logs: Запис усіх дій користувачів та AI у незмінний хеш-лог.",
     ],
     components: ["HashiCorp Vault", "OPA Policy Engine", "Falco Runtime Guard", "Trivy Vulnerability Scanner"],
-    invariants: ["Zero Hardcoded Secrets", "100% покриття сервісів mTLS шифруванням"]
+    invariants: ["Zero Hardcoded Secrets", "100% покриття сервісів mTLS шифруванням"],
   },
   {
     id: 13,
     title: "13. Autonomous Quality System",
     category: "Quality Assurance",
     badge: "Mutation & QA",
-    summary: "Комплексна система якості: Unit, Integration, Contract, Property-Based, Mutation та Hallucination тестування.",
+    summary:
+      "Комплексна система якості: Unit, Integration, Contract, Property-Based, Mutation та Hallucination тестування.",
     details: [
       "Polyglot Testing: Автоматична генерація Unit, Integration та Contract тестів (Pact).",
       "Property-Based & Mutation Testing: Перевірка граничних умов та стійкості коду.",
-      "AI Hallucination Review: Оцінка достовірності відповідей LLM на контрольній вибірці."
+      "AI Hallucination Review: Оцінка достовірності відповідей LLM на контрольній вибірці.",
     ],
-    components: ["Mutation Testing Engine", "Pact Contract Validator", "LLM Hallucination Benchmark", "SAST/DAST Pipeline"],
-    invariants: ["Покриття тестами не менше 85%", "100% закриття знайнених критичних CVE"]
+    components: [
+      "Mutation Testing Engine",
+      "Pact Contract Validator",
+      "LLM Hallucination Benchmark",
+      "SAST/DAST Pipeline",
+    ],
+    invariants: ["Покриття тестами не менше 85%", "100% закриття знайнених критичних CVE"],
   },
   {
     id: 14,
@@ -230,10 +280,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     details: [
       "Architecture & API Governance: Контроль відповідності OpenAPI, AsyncAPI та Protobuf контрактам.",
       "Model & Data Governance: Відстеження версій LLM моделей, промптів та джерел даних.",
-      "Regulatory Compliance: Автоматична перевірка відповідності вимогам НБУ, ЄС, FATF та AML."
+      "Regulatory Compliance: Автоматична перевірка відповідності вимогам НБУ, ЄС, FATF та AML.",
     ],
     components: ["API Registry", "Model Lineage Catalog", "Compliance Check Engine", "Data Governance Board"],
-    invariants: ["Обов'язкова наявність версіонування API", "Повне документування ADR для будь-якої зміни"]
+    invariants: ["Обов'язкова наявність версіонування API", "Повне документування ADR для будь-якої зміни"],
   },
   {
     id: 15,
@@ -245,10 +295,15 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "OpenTelemetry & Jaeger Tracing: Відстеження шляху запиту крізь усі мікросервіси.",
       "Prometheus & Grafana: Моніторинг CPU, Memory, Latency, RPS та стану квот API.",
       "LLM & Token Tracking: Облік використання токенів, затримок моделей та вартості операцій.",
-      "Loki Log Aggregator: Централізоване зберігання логів з миттєвим пошуком."
+      "Loki Log Aggregator: Централізоване зберігання логів з миттєвим пошуком.",
     ],
-    components: ["OpenTelemetry Collector", "Prometheus + Grafana Dashboard", "Jaeger Distributed Tracing", "Loki Log Engine"],
-    invariants: ["Кожен запит повинен мати trace_id та span_id", "Alerting про аномалії за затримкою > 500ms"]
+    components: [
+      "OpenTelemetry Collector",
+      "Prometheus + Grafana Dashboard",
+      "Jaeger Distributed Tracing",
+      "Loki Log Engine",
+    ],
+    invariants: ["Кожен запит повинен мати trace_id та span_id", "Alerting про аномалії за затримкою > 500ms"],
   },
   {
     id: 16,
@@ -259,10 +314,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     details: [
       "Automated Dependency & CVE Monitoring: Відстеження нових релізів та патчів безпеки.",
       "Canary & Progressive Rollouts (Argo Rollouts): Автоматичне тестування нових версій на 5% трафіку.",
-      "Automatic ADR & RFC Generator: Фіксація архітектурних рішень у вигляді коду."
+      "Automatic ADR & RFC Generator: Фіксація архітектурних рішень у вигляді коду.",
     ],
     components: ["ArgoCD / Argo Rollouts Engine", "Dep-Bot Auto PR Creator", "Canary Metrics Evaluator"],
-    invariants: ["Обов'язковий відкат (Rollback) при зростанні помилок > 1%", "Zero Downtime Deployments"]
+    invariants: ["Обов'язковий відкат (Rollback) при зростанні помилок > 1%", "Zero Downtime Deployments"],
   },
   {
     id: 17,
@@ -273,10 +328,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     details: [
       "Company & Counterparty Twin: Моделювання фінансового стану, ризиків та афіліацій юридичної особи.",
       "Supply Chain & Customs Twin: Відстеження контейнерів, митних пунктів та логістичних ланцюгів.",
-      "Platform & Connector Twin: Симуляція поведінки та навантаження будь-якого елементу PREDATOR."
+      "Platform & Connector Twin: Симуляція поведінки та навантаження будь-якого елементу PREDATOR.",
     ],
     components: ["Digital Twin Simulator", "Customs Route Tracker", "Financial Risk Emulator"],
-    invariants: ["Синхронізація стану цифрового двійника з реальною базою < 5 сек", "Збереження історії змін стану"]
+    invariants: ["Синхронізація стану цифрового двійника з реальною базою < 5 сек", "Збереження історії змін стану"],
   },
   {
     id: 18,
@@ -287,10 +342,13 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     details: [
       "Multi-Language & Unicode Native: Підтримка української, англійської, арабської, китайської тощо.",
       "Global Registry Adapters: Інтеграція з реєстрами ЄС, США, Британії, Азії, ОАЕ та офшорних зон.",
-      "Dynamic Address & Tax Normalizer: Зведення адрес і податкових номерів до міжнародних стандартів."
+      "Dynamic Address & Tax Normalizer: Зведення адрес і податкових номерів до міжнародних стандартів.",
     ],
     components: ["Global Address Normalizer", "Unicode Entity Resolver", "Multi-Currency Exchange Engine"],
-    invariants: ["Збереження оригінального написання ім'я/назви поруч з транслітерацією", "ISO 3166-1 alpha-2 для країн"]
+    invariants: [
+      "Збереження оригінального написання ім'я/назви поруч з транслітерацією",
+      "ISO 3166-1 alpha-2 для країн",
+    ],
   },
   {
     id: 19,
@@ -301,10 +359,10 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
     details: [
       "Single Source of Truth Doc Generation: Генерація всіх схем та інструкцій із сутності специфікації.",
       "Interactive API & SDK Exporter: Автоматичне формування Python, TypeScript, Go SDK.",
-      "Playbooks & Disaster Recovery Guides: Авто-оновлювані інструкції для операторів та SRE."
+      "Playbooks & Disaster Recovery Guides: Авто-оновлювані інструкції для операторів та SRE.",
     ],
     components: ["OpenAPI / AsyncAPI Exporter", "PlantUML / Mermaid Generator", "SDK Code Generator"],
-    invariants: ["Специфікація та код завжди 100% синхронізовані", "Жодного ручного редагування документації"]
+    invariants: ["Специфікація та код завжди 100% синхронізовані", "Жодного ручного редагування документації"],
   },
   {
     id: 20,
@@ -317,11 +375,11 @@ export const MASTER_SPECIFICATION_CHAPTERS: SpecChapter[] = [
       "Rule 2: Zero Hardcoded Secrets & Vault Mandate. Усі секрети лише у HashiCorp Vault.",
       "Rule 3: Single Source of Truth Model. Будь-який контракт походить від центральної онтології.",
       "Rule 4: Critic Agent & Verification Mandatory. Жоден код чи висновок не приймається без верифікації.",
-      "Rule 5: Legal & Ethical Open Data Compliance. Збір даних виключно у межах чинного законодавства."
+      "Rule 5: Legal & Ethical Open Data Compliance. Збір даних виключно у межах чинного законодавства.",
     ],
     components: ["Constitution Enforcement Agent", "Invariants Linter", "Approval Gate System"],
-    invariants: ["Абсолютна пріоритетність Конституції над будь-яким розширенням", "100% прозорість для аудиту"]
-  }
+    invariants: ["Абсолютна пріоритетність Конституції над будь-яким розширенням", "100% прозорість для аудиту"],
+  },
 ];
 
 export default function MasterSpecificationViewer() {
@@ -329,7 +387,9 @@ export default function MasterSpecificationViewer() {
   const [selectedChapterId, setSelectedChapterId] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [specCategoryFilter, setSpecCategoryFilter] = useState<string>("ALL");
-  const [activeTab, setActiveTab] = useState<"dev5-spec" | "five-questions" | "twenty-steps" | "chapters" | "constitution" | "graph">("dev5-spec");
+  const [activeTab, setActiveTab] = useState<
+    "dev5-spec" | "five-questions" | "twenty-steps" | "chapters" | "constitution" | "graph"
+  >("dev5-spec");
 
   const selectedChapter = useMemo(() => {
     return MASTER_SPECIFICATION_CHAPTERS.find((c) => c.id === selectedChapterId) || MASTER_SPECIFICATION_CHAPTERS[0];
@@ -343,7 +403,7 @@ export default function MasterSpecificationViewer() {
         c.title.toLowerCase().includes(q) ||
         c.category.toLowerCase().includes(q) ||
         c.summary.toLowerCase().includes(q) ||
-        c.details.some((d) => d.toLowerCase().includes(q))
+        c.details.some((d) => d.toLowerCase().includes(q)),
     );
   }, [searchQuery]);
 
@@ -351,7 +411,11 @@ export default function MasterSpecificationViewer() {
     return DEV5_145_SPEC_ITEMS.filter((item) => {
       const matchesCat = specCategoryFilter === "ALL" || item.category === specCategoryFilter;
       const q = searchQuery.toLowerCase();
-      const matchesSearch = !q || item.section.toLowerCase().includes(q) || item.title.toLowerCase().includes(q) || item.summary.toLowerCase().includes(q);
+      const matchesSearch =
+        !q ||
+        item.section.toLowerCase().includes(q) ||
+        item.title.toLowerCase().includes(q) ||
+        item.summary.toLowerCase().includes(q);
       return matchesCat && matchesSearch;
     });
   }, [specCategoryFilter, searchQuery]);
@@ -404,7 +468,8 @@ export default function MasterSpecificationViewer() {
               DEV5 Intelligence OS — Master Technical Specification
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 w-full leading-relaxed">
-              Офіційне ТЗ та архітектурний план перетворення DEV5 на оперативну когнітивну систему розвідки. 100% відповідність вимога прозорості джерел (Evidence, Claims, Confidence, Contradictions, Zero Fake Data).
+              Офіційне ТЗ та архітектурний план перетворення DEV5 на оперативну когнітивну систему розвідки. 100%
+              відповідність вимога прозорості джерел (Evidence, Claims, Confidence, Contradictions, Zero Fake Data).
             </p>
           </div>
 
@@ -454,19 +519,21 @@ export default function MasterSpecificationViewer() {
           <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-slate-400 font-mono font-bold uppercase">Категорія:</span>
-              {["ALL", "Directive", "Architecture", "Connectors", "Intelligence", "AI", "Security", "Operations"].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSpecCategoryFilter(cat)}
-                  className={`px-3 py-1 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                    specCategoryFilter === cat
-                      ? "bg-indigo-600 text-white"
-                      : "bg-slate-950 border border-slate-800 text-slate-400 hover:text-slate-200"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+              {["ALL", "Directive", "Architecture", "Connectors", "Intelligence", "AI", "Security", "Operations"].map(
+                (cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSpecCategoryFilter(cat)}
+                    className={`px-3 py-1 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                      specCategoryFilter === cat
+                        ? "bg-indigo-600 text-white"
+                        : "bg-slate-950 border border-slate-800 text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ),
+              )}
             </div>
 
             <div className="relative w-full md:w-64 font-mono text-xs">
@@ -491,11 +558,15 @@ export default function MasterSpecificationViewer() {
                   <span className="px-2.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-lg font-bold">
                     {item.section}
                   </span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                    item.priority === 'Invariable' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' :
-                    item.priority === 'P0 Critical' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' :
-                    'bg-slate-800 text-slate-300'
-                  }`}>
+                  <span
+                    className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      item.priority === "Invariable"
+                        ? "bg-rose-500/20 text-rose-300 border border-rose-500/40"
+                        : item.priority === "P0 Critical"
+                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                          : "bg-slate-800 text-slate-300"
+                    }`}
+                  >
                     {item.priority}
                   </span>
                 </div>
@@ -566,7 +637,10 @@ export default function MasterSpecificationViewer() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
             {DEV5_20_STEP_TEST.map((step) => (
-              <div key={step.step} className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex items-start gap-3">
+              <div
+                key={step.step}
+                className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl flex items-start gap-3"
+              >
                 <span className="w-7 h-7 rounded-lg bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 font-bold flex items-center justify-center shrink-0">
                   {step.step}
                 </span>
@@ -718,7 +792,9 @@ export default function MasterSpecificationViewer() {
             <div className="flex items-center gap-3">
               <Scale className="w-6 h-6 text-indigo-400" />
               <div>
-                <h3 className="text-lg font-black text-white">Майстер Конституція PREDATOR Analytics (AI Constitution)</h3>
+                <h3 className="text-lg font-black text-white">
+                  Майстер Конституція PREDATOR Analytics (AI Constitution)
+                </h3>
                 <p className="text-xs text-slate-400 font-mono">
                   Закони прямої дії для автономного агента Google Antigravity
                 </p>

@@ -17,7 +17,9 @@ const ok = <T>(data: T, source = "test") => ({
 });
 
 vi.mock("../datasources/nbu", () => ({
-  getRates: vi.fn(async () => ok([{ r030: 840, txt: "Долар США", rate: 41, cc: "USD", exchangedate: "03.08.2026" }], "nbu")),
+  getRates: vi.fn(async () =>
+    ok([{ r030: 840, txt: "Долар США", rate: 41, cc: "USD", exchangedate: "03.08.2026" }], "nbu"),
+  ),
   getSeries: vi.fn(async () => ok([{ exchangedate: "03.08.2026", cc: "USD", txt: "Долар США", rate: 41 }], "nbu")),
 }));
 vi.mock("../datasources/coingecko", () => ({
@@ -56,7 +58,12 @@ describe("data routes", () => {
     const ckan = await import("../datasources/ckan");
     vi.mocked(ckan.search).mockResolvedValueOnce({
       ok: false,
-      error: { code: "timeout", message: "timeout", sourceUrl: "https://data.gov.ua", attemptedAt: "2026-08-03T00:00:00.000Z" },
+      error: {
+        code: "timeout",
+        message: "timeout",
+        sourceUrl: "https://data.gov.ua",
+        attemptedAt: "2026-08-03T00:00:00.000Z",
+      },
     });
     const { app } = await import("../../server");
     const response = await request(app).get("/api/v1/data/opendata/search");

@@ -1,6 +1,6 @@
-import React from 'react';
-import { useAuth } from '../lib/AuthContext';
-import { User, LogIn, LogOut } from 'lucide-react';
+import React from "react";
+import { useAuth } from "../lib/AuthContext";
+import { User, LogIn, LogOut } from "lucide-react";
 
 export function AuthStatus() {
   const { user, loading, signInWithGoogle, logout } = useAuth();
@@ -16,15 +16,9 @@ export function AuthStatus() {
           ) : (
             <User className="w-4 h-4 text-slate-300" />
           )}
-          <span className="text-xs text-slate-300 font-mono font-bold truncate max-w-[100px]">
-            {user.email}
-          </span>
+          <span className="text-xs text-slate-300 font-mono font-bold truncate max-w-[100px]">{user.email}</span>
         </div>
-        <button 
-          onClick={logout}
-          className="text-slate-500 hover:text-red-400 transition-colors"
-          title="Вийти"
-        >
+        <button onClick={logout} className="text-slate-500 hover:text-red-400 transition-colors" title="Вийти">
           <LogOut className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -32,7 +26,7 @@ export function AuthStatus() {
   }
 
   return (
-    <button 
+    <button
       onClick={signInWithGoogle}
       className="flex items-center gap-1.5 bg-blue-600/20 hover:bg-blue-600/40 text-indigo-300 px-3 py-1.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider transition-all border border-slate-800"
     >

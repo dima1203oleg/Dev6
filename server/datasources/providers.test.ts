@@ -31,7 +31,14 @@ describe("provider validation", () => {
         return jsonResponse({ data: [{ id: "hydration-a" }, { id: "hydration-b" }] });
       }
       if (url.endsWith("/hydration-a")) {
-        return jsonResponse({ data: { tenderID: "hydration-a", title: "Реальний тендер", status: "active", value: { amount: 100, currency: "UAH" } } });
+        return jsonResponse({
+          data: {
+            tenderID: "hydration-a",
+            title: "Реальний тендер",
+            status: "active",
+            value: { amount: 100, currency: "UAH" },
+          },
+        });
       }
       return jsonResponse({}, 503);
     });

@@ -39,7 +39,7 @@ export class YouScoreRequestGovernor {
     endpoint: string,
     contractorCode: string,
     priority: "P0" | "P1" | "P2" | "P3" | "P4",
-    apiCallFn: () => Promise<T>
+    apiCallFn: () => Promise<T>,
   ): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       const item: QueueItem = {
@@ -50,13 +50,13 @@ export class YouScoreRequestGovernor {
         apiCallFn,
         resolve,
         reject,
-        submittedAt: Date.now()
+        submittedAt: Date.now(),
       };
 
       this.queue.push(item);
       // Sort the queue by priority (P0 highest, P4 lowest) and submission time
       this.sortQueue();
-      
+
       // Trigger execution attempt
       this.processQueue();
     });

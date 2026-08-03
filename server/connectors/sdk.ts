@@ -38,7 +38,7 @@ export class BaseConnectorRegistry {
   }
 
   public listAll(): ConnectorMetadata[] {
-    return Array.from(this.connectors.values()).map(c => c.metadata());
+    return Array.from(this.connectors.values()).map((c) => c.metadata());
   }
 
   public async executeSearch(connectorId: string, query: string, options?: any): Promise<any> {
@@ -60,11 +60,10 @@ export class BaseConnectorRegistry {
       async () => {
         const data = await connector.search(query, options);
         return { statusCode: 200, data };
-      }
+      },
     );
   }
 }
 
 export const connectorRegistry = new BaseConnectorRegistry();
 export { executeWithConnectorLogging, logConnectorEvent } from "./connectorLogger";
-

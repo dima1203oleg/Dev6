@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Mic, MicOff, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Mic, MicOff, AlertCircle } from "lucide-react";
 
 function pcmToBase64(pcmData: Float32Array): string {
   const buffer = new ArrayBuffer(pcmData.length * 2);
@@ -9,7 +9,7 @@ function pcmToBase64(pcmData: Float32Array): string {
     let s = Math.max(-1, Math.min(1, pcmData[i]));
     view.setInt16(i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
   }
-  let binary = '';
+  let binary = "";
   const bytes = new Uint8Array(buffer);
   const len = bytes.byteLength;
   for (let i = 0; i < len; i++) {
@@ -21,7 +21,7 @@ function pcmToBase64(pcmData: Float32Array): string {
 export function VoiceCall() {
   const [isActive, setIsActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const wsRef = useRef<WebSocket | null>(null);
   const inputAudioCtxRef = useRef<AudioContext | null>(null);
   const outputAudioCtxRef = useRef<AudioContext | null>(null);
@@ -32,7 +32,7 @@ export function VoiceCall() {
   const startCall = async () => {
     try {
       setError(null);
-      const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
       const wsUrl = `${wsProtocol}//${window.location.host}/live`;
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
@@ -45,10 +45,10 @@ export function VoiceCall() {
       nextStartTimeRef.current = outputAudioCtx.currentTime;
 
       // Force resume AudioContext on mobile/iOS
-      if (inputAudioCtx.state === 'suspended') {
+      if (inputAudioCtx.state === "suspended") {
         await inputAudioCtx.resume();
       }
-      if (outputAudioCtx.state === 'suspended') {
+      if (outputAudioCtx.state === "suspended") {
         await outputAudioCtx.resume();
       }
 
@@ -58,7 +58,7 @@ export function VoiceCall() {
       const source = inputAudioCtx.createMediaStreamSource(stream);
       const processor = inputAudioCtx.createScriptProcessor(4096, 1, 1);
       processorRef.current = processor;
-      
+
       source.connect(processor);
       processor.connect(inputAudioCtx.destination);
 
@@ -109,7 +109,7 @@ export function VoiceCall() {
 
           const sourceNode = outputAudioCtx.createBufferSource();
           sourceNode.buffer = audioBuffer;
-          
+
           // PREDATOR COLD ANALYST (Profile B)
           // Rate is 0.82 - slower, controlled delivery
           sourceNode.playbackRate.value = 0.82;
@@ -117,13 +117,13 @@ export function VoiceCall() {
           // 1. Low Shelf Filter: Extreme Deep Sub-Bass
           // Massive boost to sub-low frequencies for an earth-shaking deep bass
           const chestResonance = outputAudioCtx.createBiquadFilter();
-          chestResonance.type = 'lowshelf';
+          chestResonance.type = "lowshelf";
           chestResonance.frequency.value = 85; // Deep sub-bass resonance
           chestResonance.gain.value = 18.0; // Extreme +18dB push for powerful bass
 
           // 1.5 Peaking Filter: Sub-bass rumble boost
           const subBassRumble = outputAudioCtx.createBiquadFilter();
-          subBassRumble.type = 'peaking';
+          subBassRumble.type = "peaking";
           subBassRumble.frequency.value = 60; // Sub-bass frequency
           subBassRumble.Q.value = 0.7; // Wide band
           subBassRumble.gain.value = 10.0; // Additional +10dB for the deep rumble
@@ -131,7 +131,7 @@ export function VoiceCall() {
           // 2. Peaking Filter: Nasal Cut (1000-1200 Hz)
           // Cut nasal frequencies to achieve a dark, matte sound
           const nasalCut = outputAudioCtx.createBiquadFilter();
-          nasalCut.type = 'peaking';
+          nasalCut.type = "peaking";
           nasalCut.frequency.value = 1000;
           nasalCut.Q.value = 1.0;
           nasalCut.gain.value = -10.0; // Strong cut to eliminate nasality
@@ -139,7 +139,7 @@ export function VoiceCall() {
           // 3. High Shelf Filter: Brightness Cut (4000+ Hz)
           // Make the voice "DARK" but retain articulation
           const darkHighCut = outputAudioCtx.createBiquadFilter();
-          darkHighCut.type = 'highshelf';
+          darkHighCut.type = "highshelf";
           darkHighCut.frequency.value = 4000;
           darkHighCut.gain.value = -8.0; // Cut high frequencies to remove brightness
 
@@ -159,7 +159,7 @@ export function VoiceCall() {
           nasalCut.connect(darkHighCut);
           darkHighCut.connect(roboticCompressor);
           roboticCompressor.connect(outputAudioCtx.destination);
-          
+
           if (nextStartTimeRef.current < outputAudioCtx.currentTime) {
             nextStartTimeRef.current = outputAudioCtx.currentTime;
           }
@@ -167,14 +167,14 @@ export function VoiceCall() {
           nextStartTimeRef.current += audioBuffer.duration;
         }
         if (msg.interrupted) {
-           nextStartTimeRef.current = outputAudioCtx.currentTime;
+          nextStartTimeRef.current = outputAudioCtx.currentTime;
         }
       };
 
       ws.onopen = () => {
         setIsActive(true);
       };
-      
+
       ws.onerror = (e) => {
         console.error("WS error", e);
         setError("WebSocket connection failed.");
@@ -201,7 +201,7 @@ export function VoiceCall() {
       processorRef.current = null;
     }
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(t => t.stop());
+      streamRef.current.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
     }
     if (inputAudioCtxRef.current) {
@@ -237,7 +237,7 @@ export function VoiceCall() {
               </div>
             </motion.div>
           )}
-          
+
           {isActive && (
             <motion.div
               initial={{ opacity: 0, scale: 0.8, x: 20 }}
@@ -249,9 +249,7 @@ export function VoiceCall() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
               </div>
-              <div className="text-xs font-mono font-bold tracking-widest text-sky-400 uppercase">
-                PREDATOR LIVE
-              </div>
+              <div className="text-xs font-mono font-bold tracking-widest text-sky-400 uppercase">PREDATOR LIVE</div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -261,9 +259,9 @@ export function VoiceCall() {
           whileTap={{ scale: 0.95 }}
           onClick={isActive ? stopCall : startCall}
           className={`h-10 w-14 rounded-full flex items-center justify-center shadow-2xl transition-all border ${
-            isActive 
-              ? 'bg-red-500/10 hover:bg-red-500/20 text-red-400 border-red-500/30' 
-              : 'bg-slate-900/50 backdrop-blur-md shadow-[0_4px_30px_rgba(30,58,138,0.1)] hover:bg-slate-800 text-slate-300 border-slate-800'
+            isActive
+              ? "bg-red-500/10 hover:bg-red-500/20 text-red-400 border-red-500/30"
+              : "bg-slate-900/50 backdrop-blur-md shadow-[0_4px_30px_rgba(30,58,138,0.1)] hover:bg-slate-800 text-slate-300 border-slate-800"
           }`}
         >
           {isActive ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}

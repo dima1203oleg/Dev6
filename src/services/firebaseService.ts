@@ -1,4 +1,3 @@
-
 import { db as firestoreDb } from "../lib/firebase";
 
 export const db = firestoreDb;

@@ -11,7 +11,7 @@ router.get("/logs", checkPermission("user.admin"), (req, res) => {
   const logs = getAuditLogs(limit, actionFilter);
   res.json({
     total: logs.length,
-    logs: logs
+    logs: logs,
   });
 });
 

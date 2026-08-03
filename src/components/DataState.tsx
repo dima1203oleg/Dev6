@@ -27,7 +27,11 @@ export default function DataState({ loading = false, error, empty = false, onRet
         <p>{credentialsMissing ? `Потрібен ключ API: ${error.message}` : `Джерело недоступне: ${error.message}`}</p>
         <p className="text-xs text-amber-300/70">Код: {error.code}</p>
         {onRetry && (
-          <button type="button" onClick={onRetry} className="inline-flex items-center gap-1 rounded border border-amber-700 px-3 py-1.5 text-xs hover:bg-amber-900/40">
+          <button
+            type="button"
+            onClick={onRetry}
+            className="inline-flex items-center gap-1 rounded border border-amber-700 px-3 py-1.5 text-xs hover:bg-amber-900/40"
+          >
             <RefreshCw size={13} />
             Повторити
           </button>

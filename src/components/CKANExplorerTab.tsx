@@ -1,11 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Database, FileText, Table, AlertCircle, Loader, HardDrive, RefreshCw, Activity, CheckCircle2 } from 'lucide-react';
-import { useToast } from './ToastProvider';
-import { ckanConnector, ConnectorHealthStatus } from '../services/ConnectorSDK';
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Database,
+  FileText,
+  Table,
+  AlertCircle,
+  Loader,
+  HardDrive,
+  RefreshCw,
+  Activity,
+  CheckCircle2,
+} from "lucide-react";
+import { useToast } from "./ToastProvider";
+import { ckanConnector, ConnectorHealthStatus } from "../services/ConnectorSDK";
 
 export default function CKANExplorerTab() {
   const { showToast } = useToast();
-  const [query, setQuery] = useState('реєстр підприємств');
+  const [query, setQuery] = useState("реєстр підприємств");
   const [loading, setLoading] = useState(false);
   const [datasets, setDatasets] = useState<any[]>([]);
   const [selectedDataset, setSelectedDataset] = useState<any | null>(null);
@@ -33,11 +44,11 @@ export default function CKANExplorerTab() {
     setSelectedResource(null);
     try {
       const result = await ckanConnector.search({ query, limit: 15 });
-      if (!result.success || result.error) throw new Error(result.error || 'Не вдалося завантажити набори даних');
+      if (!result.success || result.error) throw new Error(result.error || "Не вдалося завантажити набори даних");
       setDatasets(result.items);
-      showToast(`Знайдено ${result.items.length} наборів даних через ${connectorMeta.name}`, 'success');
+      showToast(`Знайдено ${result.items.length} наборів даних через ${connectorMeta.name}`, "success");
     } catch (err: any) {
-      showToast(err.message, 'error');
+      showToast(err.message, "error");
     } finally {
       setLoading(false);
     }
@@ -60,15 +71,15 @@ export default function CKANExplorerTab() {
         const dataRes = await ckanConnector.fetchResourceData(resource.resource_id, 50);
         if (dataRes.success && dataRes.records) {
           setRecords(dataRes.records);
-          showToast('Дані успішно завантажено та нормалізовано з DataStore SDK', 'success');
+          showToast("Дані успішно завантажено та нормалізовано з DataStore SDK", "success");
         } else if (dataRes.error) {
           throw new Error(dataRes.error);
         }
       } else {
-        showToast('Цей ресурс не підтримує DataStore (лише завантаження файлу)', 'warning');
+        showToast("Цей ресурс не підтримує DataStore (лише завантаження файлу)", "warning");
       }
     } catch (err: any) {
-      showToast(err.message, 'error');
+      showToast(err.message, "error");
     } finally {
       setLoading(false);
     }
@@ -83,9 +94,13 @@ export default function CKANExplorerTab() {
               SDK: {connectorMeta.id} (v{connectorMeta.version})
             </span>
             {healthStatus && (
-              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border flex items-center gap-1 font-bold ${
-                healthStatus.status === 'ONLINE' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
-              }`}>
+              <span
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full border flex items-center gap-1 font-bold ${
+                  healthStatus.status === "ONLINE"
+                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                    : "bg-rose-500/10 border-rose-500/30 text-rose-400"
+                }`}
+              >
                 <Activity className="w-3 h-3 animate-pulse" />
                 {healthStatus.status} ({healthStatus.latencyMs}ms)
               </span>
@@ -108,7 +123,7 @@ export default function CKANExplorerTab() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && searchDatasets()}
+            onKeyDown={(e) => e.key === "Enter" && searchDatasets()}
             placeholder="Шукати набори даних..."
             className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all text-sm sm:text-base"
           />
@@ -134,11 +149,11 @@ export default function CKANExplorerTab() {
             <span className="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full">{datasets.length}</span>
           </div>
           <div className="divide-y divide-slate-800/50">
-            {datasets.map(dataset => (
+            {datasets.map((dataset) => (
               <div
                 key={dataset.dataset_id}
                 onClick={() => setSelectedDataset(dataset)}
-                className={`p-4 cursor-pointer hover:bg-slate-800 transition-colors ${selectedDataset?.dataset_id === dataset.dataset_id ? 'bg-slate-800 border-l-2 border-indigo-500' : ''}`}
+                className={`p-4 cursor-pointer hover:bg-slate-800 transition-colors ${selectedDataset?.dataset_id === dataset.dataset_id ? "bg-slate-800 border-l-2 border-indigo-500" : ""}`}
               >
                 <h4 className="text-sm font-medium text-white line-clamp-2">{dataset.title}</h4>
                 <p className="text-xs text-slate-400 mt-1 line-clamp-1">{dataset.organization}</p>
@@ -153,9 +168,7 @@ export default function CKANExplorerTab() {
               </div>
             ))}
             {!loading && datasets.length === 0 && (
-              <div className="p-8 text-center text-slate-500 text-sm">
-                Немає результатів. Виконайте пошук.
-              </div>
+              <div className="p-8 text-center text-slate-500 text-sm">Немає результатів. Виконайте пошук.</div>
             )}
             {loading && datasets.length === 0 && (
               <div className="p-8 flex justify-center">
@@ -182,11 +195,13 @@ export default function CKANExplorerTab() {
                     <button
                       key={res.resource_id}
                       onClick={() => loadResource(res)}
-                      className={`flex flex-col gap-1 p-3 rounded-lg border text-left min-w-[200px] max-w-[250px] transition-colors ${selectedResource?.resource_id === res.resource_id ? 'bg-emerald-500/10 border-emerald-500/50' : 'bg-slate-800/50 border-slate-700 hover:border-slate-600'}`}
+                      className={`flex flex-col gap-1 p-3 rounded-lg border text-left min-w-[200px] max-w-[250px] transition-colors ${selectedResource?.resource_id === res.resource_id ? "bg-emerald-500/10 border-emerald-500/50" : "bg-slate-800/50 border-slate-700 hover:border-slate-600"}`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase ${res.format === 'JSON' || res.format === 'CSV' ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-700 text-slate-300'}`}>
-                          {res.format || 'FILE'}
+                        <span
+                          className={`text-xs font-bold px-2 py-0.5 rounded uppercase ${res.format === "JSON" || res.format === "CSV" ? "bg-blue-500/20 text-blue-400" : "bg-slate-700 text-slate-300"}`}
+                        >
+                          {res.format || "FILE"}
                         </span>
                         {res.datastore_active && (
                           <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded flex items-center gap-1">
@@ -210,11 +225,12 @@ export default function CKANExplorerTab() {
                     </h3>
                     {schema && (
                       <span className="text-xs text-slate-400">
-                        Всього записів: <strong className="text-slate-200">{schema.total_records.toLocaleString()}</strong>
+                        Всього записів:{" "}
+                        <strong className="text-slate-200">{schema.total_records.toLocaleString()}</strong>
                       </span>
                     )}
                   </div>
-                  
+
                   {loading && !schema ? (
                     <div className="p-8 flex flex-col items-center justify-center flex-1">
                       <Loader className="w-8 h-8 text-indigo-500 animate-spin mb-4" />
@@ -238,8 +254,12 @@ export default function CKANExplorerTab() {
                             {records.map((record: any, idx: number) => (
                               <tr key={idx} className="hover:bg-slate-800/30">
                                 {schema?.fields.map((field: any) => (
-                                  <td key={field.name} className="px-4 py-3 text-slate-300 max-w-[150px] sm:max-w-[200px] lg:max-w-[300px] truncate" title={String(record[field.name] || '')}>
-                                    {String(record[field.name] || '-')}
+                                  <td
+                                    key={field.name}
+                                    className="px-4 py-3 text-slate-300 max-w-[150px] sm:max-w-[200px] lg:max-w-[300px] truncate"
+                                    title={String(record[field.name] || "")}
+                                  >
+                                    {String(record[field.name] || "-")}
                                   </td>
                                 ))}
                               </tr>
@@ -257,8 +277,16 @@ export default function CKANExplorerTab() {
                     <div className="p-8 flex flex-col items-center justify-center flex-1 text-slate-500">
                       <AlertCircle className="w-8 h-8 mb-3 opacity-50" />
                       <p>Цей ресурс не підтримує CKAN DataStore.</p>
-                      <p className="text-sm mt-2">Системі потрібно завантажити файл ({selectedResource.format}) для парсингу, що потребує налаштування Pipeline.</p>
-                      <a href={selectedResource.url} target="_blank" rel="noreferrer" className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm font-medium">
+                      <p className="text-sm mt-2">
+                        Системі потрібно завантажити файл ({selectedResource.format}) для парсингу, що потребує
+                        налаштування Pipeline.
+                      </p>
+                      <a
+                        href={selectedResource.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm font-medium"
+                      >
                         Завантажити файл напряму
                       </a>
                     </div>

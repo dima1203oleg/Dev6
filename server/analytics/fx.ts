@@ -40,13 +40,16 @@ export const calculateFxAnalytics = (observations: NbuSeriesObservation[], reque
   const rates = sorted.map((item) => item.rate);
   const first = rates[0];
   const latest = rates[rates.length - 1];
-  const returns = rates.slice(1).filter((rate, index) => rate > 0 && rates[index] > 0)
+  const returns = rates
+    .slice(1)
+    .filter((rate, index) => rate > 0 && rates[index] > 0)
     .map((rate, index) => Math.log(rate / rates[index]));
   const mean = rates.reduce((sum, rate) => sum + rate, 0) / rates.length;
   const returnMean = returns.length > 0 ? returns.reduce((sum, value) => sum + value, 0) / returns.length : null;
-  const variance = returnMean === null || returns.length < 2
-    ? null
-    : returns.reduce((sum, value) => sum + (value - returnMean) ** 2, 0) / (returns.length - 1);
+  const variance =
+    returnMean === null || returns.length < 2
+      ? null
+      : returns.reduce((sum, value) => sum + (value - returnMean) ** 2, 0) / (returns.length - 1);
   const minRate = Math.min(...rates);
   const maxRate = Math.max(...rates);
   const minObservation = sorted.find((item) => item.rate === minRate);

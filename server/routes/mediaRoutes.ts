@@ -22,7 +22,7 @@ router.post(
     } catch (err: any) {
       res.status(500).json({ error: { code: "MEDIA_PRESIGN_ERROR", message: err.message } });
     }
-  }
+  },
 );
 
 // Trigger Async Processing Pipeline
@@ -37,7 +37,7 @@ router.post(
     } catch (err: any) {
       res.status(500).json({ error: { code: "MEDIA_PROCESS_ERROR", message: err.message } });
     }
-  }
+  },
 );
 
 // Job Status Polling

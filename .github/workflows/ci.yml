@@ -25,6 +25,12 @@ jobs:
       - name: Typecheck
         run: npm run lint
 
+      - name: ESLint
+        run: npm run lint:eslint
+
+      - name: Formatting
+        run: npm run format:check
+
       - name: Unit and integration tests
         run: npm test
 

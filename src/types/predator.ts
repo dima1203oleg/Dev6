@@ -2,27 +2,11 @@
  * DEV5 v2.0 - PREDATOR Analytics Enterprise Intelligence Specification Types
  */
 
-export type EntityType = 
-  | "PERSON"
-  | "COMPANY"
-  | "FOP"
-  | "VEHICLE"
-  | "UNKNOWN"
-  | "ADDRESS"
-  | "PHONE"
-  | "EMAIL"
-  | "DOCUMENT"
-  | "CASE"
-  | "EVENT";
+export type EntityType =
+  "PERSON" | "COMPANY" | "FOP" | "VEHICLE" | "UNKNOWN" | "ADDRESS" | "PHONE" | "EMAIL" | "DOCUMENT" | "CASE" | "EVENT";
 
-export type VerificationStatus = 
-  | "CONFIRMED"
-  | "SINGLE_SOURCE"
-  | "UNVERIFIED"
-  | "CONFLICT"
-  | "NO_DATA"
-  | "STALE"
-  | "OFFLINE";
+export type VerificationStatus =
+  "CONFIRMED" | "SINGLE_SOURCE" | "UNVERIFIED" | "CONFLICT" | "NO_DATA" | "STALE" | "OFFLINE";
 
 export type RiskLevel = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "CLEAN";
 
@@ -154,16 +138,10 @@ export interface DataProvenanceChain {
 }
 
 // RBAC & Governance
-export type UserRole = 
-  | "VIEWER"
-  | "ANALYST"
-  | "SENIOR_ANALYST"
-  | "INVESTIGATOR"
-  | "SUPERVISOR"
-  | "ADMIN"
-  | "SUPER_ADMIN";
+export type UserRole =
+  "VIEWER" | "ANALYST" | "SENIOR_ANALYST" | "INVESTIGATOR" | "SUPERVISOR" | "ADMIN" | "SUPER_ADMIN";
 
-export type Permission = 
+export type Permission =
   | "entity.read"
   | "entity.search"
   | "entity.export"
@@ -197,7 +175,7 @@ export interface AuditLogEntry {
   userEmail: string;
   role: UserRole;
   tenantId: string;
-  action: 
+  action:
     | "LOGIN"
     | "SEARCH"
     | "ENTITY_VIEW"
@@ -221,7 +199,7 @@ export interface AuditLogEntry {
 }
 
 // AI Task Router Registry
-export type AiTaskType = 
+export type AiTaskType =
   | "CLASSIFICATION"
   | "ENTITY_EXTRACTION"
   | "ENTITY_RESOLUTION"

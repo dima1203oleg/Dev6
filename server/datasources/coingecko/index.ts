@@ -2,7 +2,8 @@ import { cachedFetch } from "../helpers";
 import { TtlCache } from "../cache";
 import { CryptoSpot, DataSourceResult } from "../types";
 
-const sourceUrl = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true";
+const sourceUrl =
+  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true";
 const cache = new TtlCache<CryptoSpot>(120000);
 
 const parse = (value: unknown): CryptoSpot => {

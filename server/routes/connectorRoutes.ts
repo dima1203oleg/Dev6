@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/", checkPermission("source.read"), (req, res) => {
   const meta = connectorRegistry.listAll();
-  
+
   // Provide standard initial connectors list if none registered yet
   if (meta.length === 0) {
     return res.json([
@@ -21,7 +21,7 @@ router.get("/", checkPermission("source.read"), (req, res) => {
         owner: "Мінцифри / ДП ДІЯ",
         authMethod: "NONE",
         status: "ONLINE",
-        rateLimitReqPerMin: 120
+        rateLimitReqPerMin: 120,
       },
       {
         id: "opendatabot-api",
@@ -33,7 +33,7 @@ router.get("/", checkPermission("source.read"), (req, res) => {
         owner: "Opendatabot Ltd",
         authMethod: "API_KEY",
         status: "ONLINE",
-        rateLimitReqPerMin: 300
+        rateLimitReqPerMin: 300,
       },
       {
         id: "youcontrol-api",
@@ -45,8 +45,8 @@ router.get("/", checkPermission("source.read"), (req, res) => {
         owner: "YouControl LLC",
         authMethod: "BEARER",
         status: "ONLINE",
-        rateLimitReqPerMin: 200
-      }
+        rateLimitReqPerMin: 200,
+      },
     ]);
   }
 
@@ -57,9 +57,10 @@ router.get("/health", checkPermission("source.read"), (req, res) => {
   const connectorMetrics = getConnectorMetrics();
   const totalQueries = connectorMetrics.reduce((acc, m) => acc + m.totalRequests, 0);
   const failedQueries = connectorMetrics.reduce((acc, m) => acc + m.failedRequests, 0);
-  const avgLatency = connectorMetrics.length > 0
-    ? Math.round(connectorMetrics.reduce((acc, m) => acc + m.averageLatencyMs, 0) / connectorMetrics.length)
-    : 0;
+  const avgLatency =
+    connectorMetrics.length > 0
+      ? Math.round(connectorMetrics.reduce((acc, m) => acc + m.averageLatencyMs, 0) / connectorMetrics.length)
+      : 0;
 
   res.json({
     timestamp: new Date().toISOString(),
@@ -71,8 +72,8 @@ router.get("/health", checkPermission("source.read"), (req, res) => {
       circuitBreakerState: "CLOSED",
       totalQueries24h: totalQueries,
       failedQueries24h: failedQueries,
-      connectorBreakdown: connectorMetrics
-    }
+      connectorBreakdown: connectorMetrics,
+    },
   });
 });
 
@@ -88,7 +89,7 @@ router.get("/logs", checkPermission("source.read"), (req, res) => {
   res.json({
     timestamp: new Date().toISOString(),
     totalRetrieved: logs.length,
-    logs
+    logs,
   });
 });
 
@@ -100,7 +101,7 @@ router.get("/metrics", checkPermission("source.read"), (req, res) => {
   const metrics = getConnectorMetrics(connectorId);
   res.json({
     timestamp: new Date().toISOString(),
-    connectors: metrics
+    connectors: metrics,
   });
 });
 

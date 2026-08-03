@@ -1,16 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { 
-  FolderGit2, Plus, Share2, Download, ShieldAlert, FileText, CheckCircle2, 
-  Clock, User, Link2, Sparkles, MessageSquare, Cloud, CloudUpload, CloudDownload, 
-  FileCode, Check, Loader2, MapPin, ShieldCheck, Hash, Trash2, RefreshCw
+import {
+  FolderGit2,
+  Plus,
+  Share2,
+  Download,
+  ShieldAlert,
+  FileText,
+  CheckCircle2,
+  Clock,
+  User,
+  Link2,
+  Sparkles,
+  MessageSquare,
+  Cloud,
+  CloudUpload,
+  CloudDownload,
+  FileCode,
+  Check,
+  Loader2,
+  MapPin,
+  ShieldCheck,
+  Hash,
+  Trash2,
+  RefreshCw,
 } from "lucide-react";
 import { useToast } from "./ToastProvider";
 import EvidenceProvenanceModal from "./EvidenceProvenanceModal";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../services/firebaseService";
-import { saveInvestigationToFirestore, fetchInvestigationsFromFirestore, subscribeInvestigationsFromFirestore, testFirestoreConnection } from "../services/firebaseService";
+import {
+  saveInvestigationToFirestore,
+  fetchInvestigationsFromFirestore,
+  subscribeInvestigationsFromFirestore,
+  testFirestoreConnection,
+} from "../services/firebaseService";
 import { useFirebaseSync } from "../hooks/useFirebaseSync";
-import { exportInvestigationPDFReport, exportInvestigationGeoJSON, exportInvestigationCSV, calculateSHA256 } from "../utils/exportReport";
+import {
+  exportInvestigationPDFReport,
+  exportInvestigationGeoJSON,
+  exportInvestigationCSV,
+  calculateSHA256,
+} from "../utils/exportReport";
 
 export default function InvestigationWorkspaceTab() {
   const { showToast } = useToast();
@@ -22,7 +52,7 @@ export default function InvestigationWorkspaceTab() {
   const [isExporting, setIsExporting] = useState(false);
   const [cloudSynced, setCloudSynced] = useState(true);
   const [sha256Hash, setSha256Hash] = useState<string>("");
-  
+
   const [investigation, setInvestigation] = useState({
     id: "INV-2026-0801",
     title: "Розслідування: Комплексна перевірка групи пов'язаних контрагентів",
@@ -31,18 +61,57 @@ export default function InvestigationWorkspaceTab() {
     createdAt: "2026-08-01 04:30",
     riskScore: 12,
     entities: [
-      { id: "ent-1", name: "ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'", type: "COMPANY", code: "42345678", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Київ, вул. Хрещатик, 20" },
-      { id: "ent-2", name: "Кізима Дмитро Миколайович (Верифікований ФОП, Чистий Профіль)", type: "PERSON", code: "3111724753", status: "ДІЮЧИЙ", risk: "LOW", address: "с. Угерсько, вул. Жидачівська, 12" },
-      { id: "ent-3", name: "ТОВ 'ЛЬВІВБУДІНВЕСТ-ПЛЮС'", type: "COMPANY", code: "41234500", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Львів, вул. Героїв УПА, 73" }
+      {
+        id: "ent-1",
+        name: "ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'",
+        type: "COMPANY",
+        code: "42345678",
+        status: "ДІЮЧИЙ",
+        risk: "LOW",
+        address: "м. Київ, вул. Хрещатик, 20",
+      },
+      {
+        id: "ent-2",
+        name: "Кізима Дмитро Миколайович (Верифікований ФОП, Чистий Профіль)",
+        type: "PERSON",
+        code: "3111724753",
+        status: "ДІЮЧИЙ",
+        risk: "LOW",
+        address: "с. Угерсько, вул. Жидачівська, 12",
+      },
+      {
+        id: "ent-3",
+        name: "ТОВ 'ЛЬВІВБУДІНВЕСТ-ПЛЮС'",
+        type: "COMPANY",
+        code: "41234500",
+        status: "ДІЮЧИЙ",
+        risk: "LOW",
+        address: "м. Львів, вул. Героїв УПА, 73",
+      },
     ],
     notes: [
-      { id: "n-1", author: "Користувач", text: "Проведено верифікацію через YouControl та OpenDataBot API. Санкційних ризиків не виявлено.", date: "2026-08-01 04:45" }
+      {
+        id: "n-1",
+        author: "Користувач",
+        text: "Проведено верифікацію через YouControl та OpenDataBot API. Санкційних ризиків не виявлено.",
+        date: "2026-08-01 04:45",
+      },
     ],
     timeline: [
       { id: "t-1", date: "2026-08-01 04:30", action: "Створено розслідування в PREDATOR Core", user: "Користувач" },
-      { id: "t-2", date: "2026-08-01 04:40", action: "Додано об'єкт 'ТОВ ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'", user: "Користувач" },
-      { id: "t-3", date: "2026-08-01 04:45", action: "Верифіковано ланцюжок доказової бази (Evidence Chain)", user: "PREDATOR Engine" }
-    ]
+      {
+        id: "t-2",
+        date: "2026-08-01 04:40",
+        action: "Додано об'єкт 'ТОВ ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'",
+        user: "Користувач",
+      },
+      {
+        id: "t-3",
+        date: "2026-08-01 04:45",
+        action: "Верифіковано ланцюжок доказової бази (Evidence Chain)",
+        user: "PREDATOR Engine",
+      },
+    ],
   });
 
   const [newNote, setNewNote] = useState("");
@@ -52,21 +121,24 @@ export default function InvestigationWorkspaceTab() {
     const unsub = subscribeInvestigationsFromFirestore((cloudData) => {
       if (cloudData && cloudData.length > 0) {
         const latest = cloudData[0];
-        setInvestigation(prev => ({
+        setInvestigation((prev) => ({
           ...prev,
           id: latest.id || prev.id,
           title: latest.title || prev.title,
           lead: latest.leadInvestigator || prev.lead,
-          entities: (latest.entities && latest.entities.length > 0) ? latest.entities.map((e: any) => ({
-            id: e.id,
-            name: e.canonicalName || e.name || "Суб'єкт",
-            type: e.type || "COMPANY",
-            code: e.code || e.identifiers?.edrpou || e.identifiers?.ipn || "42345678",
-            status: e.status || "ДІЮЧИЙ",
-            risk: e.riskLevel || "LOW",
-            address: e.address || "Україна"
-          })) : prev.entities,
-          notes: (latest.notes && latest.notes.length > 0) ? latest.notes : prev.notes
+          entities:
+            latest.entities && latest.entities.length > 0
+              ? latest.entities.map((e: any) => ({
+                  id: e.id,
+                  name: e.canonicalName || e.name || "Суб'єкт",
+                  type: e.type || "COMPANY",
+                  code: e.code || e.identifiers?.edrpou || e.identifiers?.ipn || "42345678",
+                  status: e.status || "ДІЮЧИЙ",
+                  risk: e.riskLevel || "LOW",
+                  address: e.address || "Україна",
+                }))
+              : prev.entities,
+          notes: latest.notes && latest.notes.length > 0 ? latest.notes : prev.notes,
         }));
         setCloudSynced(true);
       }
@@ -75,10 +147,9 @@ export default function InvestigationWorkspaceTab() {
   }, []);
 
   useEffect(() => {
-    calculateSHA256(JSON.stringify(investigation)).then(hash => setSha256Hash(hash));
+    calculateSHA256(JSON.stringify(investigation)).then((hash) => setSha256Hash(hash));
   }, [investigation]);
 
-  
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleImportData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,50 +161,49 @@ export default function InvestigationWorkspaceTab() {
       try {
         const text = e.target?.result as string;
         let importedEntities = [];
-        
-        if (file.name.endsWith('.json')) {
-            const data = JSON.parse(text);
-            if (data.entities && Array.isArray(data.entities)) {
-                importedEntities = data.entities;
-            } else if (Array.isArray(data)) {
-                importedEntities = data;
-            }
-        } else if (file.name.endsWith('.csv')) {
-            const lines = text.split('\n');
-            const headers = lines[0].split(',');
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                const values = lines[i].split(',');
-                const ent = {
-                    id: `imported-${Date.now()}-${i}`,
-                    name: values[0] ? values[0].replace(/['"]/g, '') : "Unknown",
-                    type: values[1] ? values[1].replace(/['"]/g, '') : "COMPANY",
-                    code: values[2] ? values[2].replace(/['"]/g, '') : "00000000",
-                    status: "ІМПОРТОВАНО",
-                    risk: "UNKNOWN",
-                    address: values[3] ? values[3].replace(/['"]/g, '') : "N/A"
-                };
-                importedEntities.push(ent);
-            }
+
+        if (file.name.endsWith(".json")) {
+          const data = JSON.parse(text);
+          if (data.entities && Array.isArray(data.entities)) {
+            importedEntities = data.entities;
+          } else if (Array.isArray(data)) {
+            importedEntities = data;
+          }
+        } else if (file.name.endsWith(".csv")) {
+          const lines = text.split("\n");
+          const headers = lines[0].split(",");
+          for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            const values = lines[i].split(",");
+            const ent = {
+              id: `imported-${Date.now()}-${i}`,
+              name: values[0] ? values[0].replace(/['"]/g, "") : "Unknown",
+              type: values[1] ? values[1].replace(/['"]/g, "") : "COMPANY",
+              code: values[2] ? values[2].replace(/['"]/g, "") : "00000000",
+              status: "ІМПОРТОВАНО",
+              risk: "UNKNOWN",
+              address: values[3] ? values[3].replace(/['"]/g, "") : "N/A",
+            };
+            importedEntities.push(ent);
+          }
         }
 
         if (importedEntities.length > 0) {
-            setInvestigation(prev => ({
-                ...prev,
-                entities: [...prev.entities, ...importedEntities]
-            }));
-            showToast(`Успішно імпортовано ${importedEntities.length} об'єктів`, "success");
+          setInvestigation((prev) => ({
+            ...prev,
+            entities: [...prev.entities, ...importedEntities],
+          }));
+          showToast(`Успішно імпортовано ${importedEntities.length} об'єктів`, "success");
           try {
-            await addDoc(collection(db, 'audit_logs'), {
-              action: 'SYSTEM',
-              user: investigation.lead || 'Користувач',
+            await addDoc(collection(db, "audit_logs"), {
+              action: "SYSTEM",
+              user: investigation.lead || "Користувач",
               details: `Імпортовано ${importedEntities.length} об'єктів з файлу ${file.name}`,
-              timestamp: new Date().toISOString()
+              timestamp: new Date().toISOString(),
             });
-          } catch(e) {}
-
+          } catch (e) {}
         } else {
-            showToast("Не знайдено валідних даних для імпорту", "warning");
+          showToast("Не знайдено валідних даних для імпорту", "warning");
         }
       } catch (error) {
         showToast("Помилка обробки файлу", "error");
@@ -141,10 +211,10 @@ export default function InvestigationWorkspaceTab() {
       }
     };
     reader.readAsText(file);
-    
+
     // reset input
     if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -154,14 +224,13 @@ export default function InvestigationWorkspaceTab() {
       await exportInvestigationCSV(investigation as any);
       showToast("CSV звіт із SHA-256 підписом успішно збережено", "success");
       try {
-        await addDoc(collection(db, 'audit_logs'), {
-          action: 'EXPORT',
-          user: investigation.lead || 'Користувач',
+        await addDoc(collection(db, "audit_logs"), {
+          action: "EXPORT",
+          user: investigation.lead || "Користувач",
           details: `Експортовано звіт розслідування ${investigation.id} у форматі CSV з підписом SHA-256`,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
-      } catch(e) {}
-
+      } catch (e) {}
     } catch (err) {
       showToast("Помилка експорту CSV", "error");
     } finally {
@@ -179,7 +248,11 @@ export default function InvestigationWorkspaceTab() {
         relationships: [],
         evidenceBoard: [],
         queriesHistory: [],
-        riskSummary: { overallRisk: investigation.riskScore, highestRiskEntity: investigation.entities[0]?.name || "", threatCategory: "COMPLIANCE" }
+        riskSummary: {
+          overallRisk: investigation.riskScore,
+          highestRiskEntity: investigation.entities[0]?.name || "",
+          threatCategory: "COMPLIANCE",
+        },
       };
       await saveInvestigationToFirestore(invToSave);
       setCloudSynced(true);
@@ -197,20 +270,23 @@ export default function InvestigationWorkspaceTab() {
       const cloudData = await fetchInvestigationsFromFirestore();
       if (cloudData && cloudData.length > 0) {
         const latest = cloudData[0];
-        setInvestigation(prev => ({
+        setInvestigation((prev) => ({
           ...prev,
           id: latest.id || prev.id,
           title: latest.title || prev.title,
           lead: latest.leadInvestigator || prev.lead,
-          entities: (latest.entities && latest.entities.length > 0) ? latest.entities.map((e: any) => ({
-            id: e.id,
-            name: e.canonicalName || e.name || "Суб'єкт",
-            type: e.type || "COMPANY",
-            code: e.code || e.identifiers?.edrpou || e.identifiers?.ipn || "42345678",
-            status: e.status || "ДІЮЧИЙ",
-            risk: e.riskLevel || "LOW",
-            address: e.address || "Україна"
-          })) : prev.entities
+          entities:
+            latest.entities && latest.entities.length > 0
+              ? latest.entities.map((e: any) => ({
+                  id: e.id,
+                  name: e.canonicalName || e.name || "Суб'єкт",
+                  type: e.type || "COMPANY",
+                  code: e.code || e.identifiers?.edrpou || e.identifiers?.ipn || "42345678",
+                  status: e.status || "ДІЮЧИЙ",
+                  risk: e.riskLevel || "LOW",
+                  address: e.address || "Україна",
+                }))
+              : prev.entities,
         }));
         setCloudSynced(true);
         showToast("Дані розслідування успішно відновлено з Firebase Firestore", "success");
@@ -230,8 +306,9 @@ export default function InvestigationWorkspaceTab() {
       const invToExport: any = {
         ...investigation,
         leadInvestigator: investigation.lead,
-        description: "Аналітичний підсумковий звіт розслідувача PREDATOR Analytics Matrix. Верифікацію виконано за державними реєстрами України.",
-        entities: investigation.entities.map(e => ({
+        description:
+          "Аналітичний підсумковий звіт розслідувача PREDATOR Analytics Matrix. Верифікацію виконано за державними реєстрами України.",
+        entities: investigation.entities.map((e) => ({
           id: e.id,
           canonicalName: e.name,
           type: e.type,
@@ -240,12 +317,26 @@ export default function InvestigationWorkspaceTab() {
           riskLevel: e.risk,
           address: e.address,
           confidenceScore: 98,
-          sourcesCount: 4
+          sourcesCount: 4,
         })),
         evidenceBoard: [
-          { sourceType: "REGISTRY", sourceName: "ЄДР / OpenDataBot API", claim: "Офіційний стан суб'єкта - ДІЮЧИЙ. Борг відсутній.", retrievedAt: new Date().toISOString().split('T')[0], confidence: 99, verifiedStatus: "VERIFIED" },
-          { sourceType: "SANCTIONS", sourceName: "РНБО / YouControl Express Score", claim: "Перевірку за санкційними списками пройдено успішно. В списку PEP відсутній.", retrievedAt: new Date().toISOString().split('T')[0], confidence: 96, verifiedStatus: "VERIFIED" }
-        ]
+          {
+            sourceType: "REGISTRY",
+            sourceName: "ЄДР / OpenDataBot API",
+            claim: "Офіційний стан суб'єкта - ДІЮЧИЙ. Борг відсутній.",
+            retrievedAt: new Date().toISOString().split("T")[0],
+            confidence: 99,
+            verifiedStatus: "VERIFIED",
+          },
+          {
+            sourceType: "SANCTIONS",
+            sourceName: "РНБО / YouControl Express Score",
+            claim: "Перевірку за санкційними списками пройдено успішно. В списку PEP відсутній.",
+            retrievedAt: new Date().toISOString().split("T")[0],
+            confidence: 96,
+            verifiedStatus: "VERIFIED",
+          },
+        ],
       };
 
       await exportInvestigationPDFReport(invToExport);
@@ -262,7 +353,7 @@ export default function InvestigationWorkspaceTab() {
       const invToExport: any = {
         ...investigation,
         leadInvestigator: investigation.lead,
-        entities: investigation.entities.map(e => ({
+        entities: investigation.entities.map((e) => ({
           id: e.id,
           canonicalName: e.name,
           type: e.type,
@@ -271,11 +362,20 @@ export default function InvestigationWorkspaceTab() {
           riskLevel: e.risk,
           address: e.address,
           confidenceScore: 98,
-          sourcesCount: 4
+          sourcesCount: 4,
         })),
         relationships: [
-          { id: "rel-1", sourceId: "ent-1", targetId: "ent-2", targetName: "ФОП Кізима Дмитро Миколайович", type: "BENEFICIARY", risk: "LOW", confidence: 95, evidenceIds: ["ev-1"] }
-        ]
+          {
+            id: "rel-1",
+            sourceId: "ent-1",
+            targetId: "ent-2",
+            targetName: "ФОП Кізима Дмитро Миколайович",
+            type: "BENEFICIARY",
+            risk: "LOW",
+            confidence: 95,
+            evidenceIds: ["ev-1"],
+          },
+        ],
       };
 
       await exportInvestigationGeoJSON(invToExport);
@@ -291,9 +391,9 @@ export default function InvestigationWorkspaceTab() {
       id: `n-${Date.now()}`,
       author: "Користувач",
       text: newNote,
-      date: new Date().toLocaleTimeString()
+      date: new Date().toLocaleTimeString(),
     };
-    setInvestigation(prev => ({ ...prev, notes: [...prev.notes, note] }));
+    setInvestigation((prev) => ({ ...prev, notes: [...prev.notes, note] }));
     setNewNote("");
     setCloudSynced(false);
     showToast("Примітку додано до розслідування", "success");
@@ -304,12 +404,12 @@ export default function InvestigationWorkspaceTab() {
       type: "bundle",
       id: `bundle--${investigation.id}`,
       spec_version: "2.1",
-      objects: investigation.entities.map(e => ({
+      objects: investigation.entities.map((e) => ({
         type: "identity",
         id: `identity--${e.id}`,
         name: e.name,
-        identity_class: e.type.toLowerCase()
-      }))
+        identity_class: e.type.toLowerCase(),
+      })),
     };
     const blob = new Blob([JSON.stringify(stixData, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -321,11 +421,11 @@ export default function InvestigationWorkspaceTab() {
   };
 
   const handleClearInvestigationAll = () => {
-    setInvestigation(prev => ({
+    setInvestigation((prev) => ({
       ...prev,
       entities: [],
       notes: [],
-      riskScore: 0
+      riskScore: 0,
     }));
     setCloudSynced(false);
     showToast("Повністю очищено всі залучені об'єкти та примітки справи!", "success");
@@ -346,15 +446,21 @@ export default function InvestigationWorkspaceTab() {
                   РОБОЧИЙ ПРОСТІР РОЗСЛІДУВАННЯ
                 </span>
                 <span className="text-xs font-mono text-slate-500">ID: {investigation.id}</span>
-                <span className={`px-2 py-0.5 rounded-full text-[11px] font-mono font-bold flex items-center gap-1 border ${
-                  !isOnline 
-                    ? "bg-rose-500/10 text-rose-400 border-rose-500/30"
-                    : cloudSynced && isDbSynced
-                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" 
-                    : "bg-amber-500/10 text-amber-400 border-amber-500/30"
-                }`}>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[11px] font-mono font-bold flex items-center gap-1 border ${
+                    !isOnline
+                      ? "bg-rose-500/10 text-rose-400 border-rose-500/30"
+                      : cloudSynced && isDbSynced
+                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                        : "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                  }`}
+                >
                   <Cloud className="w-3 h-3" />
-                  {!isOnline ? "Firestore: Офлайн" : cloudSynced && isDbSynced ? `Firebase Firestore: Синхронізовано ${latencyMs ? `(${latencyMs}ms)` : ''}` : "Є неохоплені зміни"}
+                  {!isOnline
+                    ? "Firestore: Офлайн"
+                    : cloudSynced && isDbSynced
+                      ? `Firebase Firestore: Синхронізовано ${latencyMs ? `(${latencyMs}ms)` : ""}`
+                      : "Є неохоплені зміни"}
                 </span>
               </div>
               <h2 className="text-xl font-bold text-white mt-1">{investigation.title}</h2>
@@ -363,7 +469,7 @@ export default function InvestigationWorkspaceTab() {
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Firebase Cloud Controls */}
-            <button 
+            <button
               onClick={handleCloudSyncSave}
               disabled={isCloudSyncing}
               className="px-3 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 rounded-xl text-xs font-mono font-bold transition-all border border-emerald-500/30 flex items-center gap-1.5"
@@ -373,7 +479,7 @@ export default function InvestigationWorkspaceTab() {
               Зберегти в Firebase
             </button>
 
-            <button 
+            <button
               onClick={handleCloudSyncFetch}
               disabled={isCloudSyncing}
               className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-mono font-bold transition-all border border-slate-700 flex items-center gap-1.5"
@@ -383,10 +489,9 @@ export default function InvestigationWorkspaceTab() {
               Завантажити з Хмари
             </button>
 
-
             {/* Import / Export Custom CSV */}
             <input type="file" ref={fileInputRef} className="hidden" accept=".csv,.json" onChange={handleImportData} />
-            <button 
+            <button
               onClick={() => fileInputRef.current?.click()}
               className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-mono font-bold transition-all border border-slate-700 flex items-center gap-1.5"
               title="Імпорт об'єктів з CSV або JSON"
@@ -394,7 +499,7 @@ export default function InvestigationWorkspaceTab() {
               <CloudUpload className="w-4 h-4 text-emerald-400" />
               Імпорт Даних
             </button>
-            <button 
+            <button
               onClick={handleDownloadCSVReport}
               disabled={isExporting}
               className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-900/30"
@@ -405,7 +510,7 @@ export default function InvestigationWorkspaceTab() {
             </button>
 
             {/* Export PDF Report & GeoJSON */}
-            <button 
+            <button
               onClick={handleDownloadPDFReport}
               disabled={isExporting}
               className="px-3.5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-lg shadow-purple-900/30"
@@ -415,7 +520,7 @@ export default function InvestigationWorkspaceTab() {
               Звіт PDF (SHA-256)
             </button>
 
-            <button 
+            <button
               onClick={handleDownloadGeoJSON}
               className="px-3 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded-xl text-xs font-mono font-bold transition-all border border-blue-500/30 flex items-center gap-1.5"
               title="Експорт об'єктів та зв'язків у GeoJSON"
@@ -424,7 +529,7 @@ export default function InvestigationWorkspaceTab() {
               GeoJSON
             </button>
 
-            <button 
+            <button
               onClick={handleExportStix}
               className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-mono font-bold transition-all border border-slate-700 flex items-center gap-1.5"
             >
@@ -432,7 +537,7 @@ export default function InvestigationWorkspaceTab() {
               STIX 2.1
             </button>
 
-            <button 
+            <button
               onClick={handleClearInvestigationAll}
               className="px-3 py-2 bg-rose-600/20 hover:bg-rose-600 border border-rose-500/40 text-rose-300 hover:text-white rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
               title="Очистити всі знайдені об'єкти та примітки даної справи"
@@ -460,7 +565,7 @@ export default function InvestigationWorkspaceTab() {
             { id: "entities", label: "🏢 Фігуранти (" + investigation.entities.length + ")" },
             { id: "evidence", label: "🛡️ Ланцюжок Доказової Бази" },
             { id: "notes", label: "📝 Нотатки Аналітика" },
-            { id: "timeline", label: "⏱️ Таймлайн Заходів" }
+            { id: "timeline", label: "⏱️ Таймлайн Заходів" },
           ].map((t) => (
             <button
               key={t.id}
@@ -487,7 +592,9 @@ export default function InvestigationWorkspaceTab() {
                 Аналітичне Резюме Розслідування
               </h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                За результатами перевірки в PREDATOR Analytics Matrix фігуранти розслідування проходять перевірку за державними реєстрами України (ЄДР, Опендатабот, YouControl). Не виявлено фактів перебування під санкціями РНБО, OFAC або в списках PEP з підвищеним ризиком.
+                За результатами перевірки в PREDATOR Analytics Matrix фігуранти розслідування проходять перевірку за
+                державними реєстрами України (ЄДР, Опендатабот, YouControl). Не виявлено фактів перебування під
+                санкціями РНБО, OFAC або в списках PEP з підвищеним ризиком.
               </p>
             </div>
 
@@ -500,13 +607,37 @@ export default function InvestigationWorkspaceTab() {
                     <p className="text-slate-300 font-bold text-sm">Усі залучені суб'єкти очищено</p>
                     <button
                       onClick={() => {
-                        setInvestigation(prev => ({
+                        setInvestigation((prev) => ({
                           ...prev,
                           entities: [
-                            { id: "ent-1", name: "ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'", type: "COMPANY", code: "42345678", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Київ, вул. Хрещатик, 20" },
-                            { id: "ent-2", name: "Кізима Дмитро Миколайович (Верифікований ФОП, Чистий Профіль)", type: "PERSON", code: "3111724753", status: "ДІЮЧИЙ", risk: "LOW", address: "с. Угерсько, вул. Жидачівська, 12" },
-                            { id: "ent-3", name: "ТОВ 'ЛЬВІВБУДІНВЕСТ-ПЛЮС'", type: "COMPANY", code: "41234500", status: "ДІЮЧИЙ", risk: "LOW", address: "м. Львів, вул. Героїв УПА, 73" }
-                          ]
+                            {
+                              id: "ent-1",
+                              name: "ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'",
+                              type: "COMPANY",
+                              code: "42345678",
+                              status: "ДІЮЧИЙ",
+                              risk: "LOW",
+                              address: "м. Київ, вул. Хрещатик, 20",
+                            },
+                            {
+                              id: "ent-2",
+                              name: "Кізима Дмитро Миколайович (Верифікований ФОП, Чистий Профіль)",
+                              type: "PERSON",
+                              code: "3111724753",
+                              status: "ДІЮЧИЙ",
+                              risk: "LOW",
+                              address: "с. Угерсько, вул. Жидачівська, 12",
+                            },
+                            {
+                              id: "ent-3",
+                              name: "ТОВ 'ЛЬВІВБУДІНВЕСТ-ПЛЮС'",
+                              type: "COMPANY",
+                              code: "41234500",
+                              status: "ДІЮЧИЙ",
+                              risk: "LOW",
+                              address: "м. Львів, вул. Героїв УПА, 73",
+                            },
+                          ],
                         }));
                         showToast("Демо-список суб'єктів справи відновлено", "info");
                       }}
@@ -518,10 +649,15 @@ export default function InvestigationWorkspaceTab() {
                   </div>
                 ) : (
                   investigation.entities.map((ent) => (
-                    <div key={ent.id} className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between">
+                    <div
+                      key={ent.id}
+                      className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-between"
+                    >
                       <div>
                         <h4 className="text-white font-bold text-sm">{ent.name}</h4>
-                        <p className="text-xs font-mono text-slate-400 mt-0.5">Код: {ent.code} | {ent.type}</p>
+                        <p className="text-xs font-mono text-slate-400 mt-0.5">
+                          Код: {ent.code} | {ent.type}
+                        </p>
                       </div>
                       <button
                         onClick={() => setSelectedEntityForModal({ id: ent.id, name: ent.name })}
@@ -625,7 +761,10 @@ export default function InvestigationWorkspaceTab() {
           <h3 className="text-lg font-bold text-white">Аудит-Таймлайн Розслідування</h3>
           <div className="space-y-3">
             {investigation.timeline.map((item) => (
-              <div key={item.id} className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl flex items-center justify-between text-xs font-mono">
+              <div
+                key={item.id}
+                className="p-3 bg-slate-950 border border-slate-800/80 rounded-xl flex items-center justify-between text-xs font-mono"
+              >
                 <div className="flex items-center gap-3">
                   <Clock className="w-4 h-4 text-purple-400 shrink-0" />
                   <span className="text-slate-400">{item.date}</span>

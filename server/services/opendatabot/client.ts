@@ -19,11 +19,7 @@ export class OpendatabotClient {
   /**
    * Executes a direct HTTPS request to Opendatabot API with structured logging & latency metrics.
    */
-  public async executeRequest<T = any>(
-    path: string,
-    method: "GET" | "POST" = "GET",
-    body?: any
-  ): Promise<T> {
+  public async executeRequest<T = any>(path: string, method: "GET" | "POST" = "GET", body?: any): Promise<T> {
     const apiKey = config.OPENDATABOT_API_KEY;
     if (!apiKey) {
       throw new OpendatabotError("AUTHENTICATION_ERROR", "Opendatabot API key is not configured");
@@ -32,7 +28,7 @@ export class OpendatabotClient {
     const url = `${config.OPENDATABOT_BASE_URL}/${path}`;
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
+      Authorization: `Bearer ${apiKey}`,
     };
 
     return executeWithConnectorLogging<T>(
@@ -43,7 +39,7 @@ export class OpendatabotClient {
         method,
         headers,
         body,
-        isEmulated: false
+        isEmulated: false,
       },
       async () => {
         const controller = new AbortController();
@@ -54,7 +50,7 @@ export class OpendatabotClient {
             method,
             headers,
             body: body ? JSON.stringify(body) : undefined,
-            signal: controller.signal
+            signal: controller.signal,
           });
 
           clearTimeout(timeoutId);
@@ -66,7 +62,11 @@ export class OpendatabotClient {
             } catch {
               errBody = await response.text();
             }
-            throw OpendatabotError.fromHttpStatus(response.status, `Opendatabot HTTP error: ${response.statusText}`, errBody);
+            throw OpendatabotError.fromHttpStatus(
+              response.status,
+              `Opendatabot HTTP error: ${response.statusText}`,
+              errBody,
+            );
           }
 
           const resData = await response.json();
@@ -77,11 +77,19 @@ export class OpendatabotClient {
             throw err;
           }
           if (err.name === "AbortError") {
-            throw new OpendatabotError("TIMEOUT", `Opendatabot request timed out after ${config.OPENDATABOT_TIMEOUT_MS}ms`);
+            throw new OpendatabotError(
+              "TIMEOUT",
+              `Opendatabot request timed out after ${config.OPENDATABOT_TIMEOUT_MS}ms`,
+            );
           }
-          throw new OpendatabotError("PROVIDER_UNAVAILABLE", `Opendatabot network connection failed: ${err.message}`, undefined, err);
+          throw new OpendatabotError(
+            "PROVIDER_UNAVAILABLE",
+            `Opendatabot network connection failed: ${err.message}`,
+            undefined,
+            err,
+          );
         }
-      }
+      },
     );
   }
 
@@ -91,7 +99,7 @@ export class OpendatabotClient {
   public async query<T = any>(
     endpoint: string,
     contractorCode: string,
-    apiPath: string
+    apiPath: string,
   ): Promise<OpendatabotResponse<T>> {
     if (!config.OPENDATABOT_API_KEY) {
       throw new OpendatabotError("AUTHENTICATION_ERROR", "credentials_missing: OPENDATABOT_API_KEY is not configured");
@@ -115,8 +123,8 @@ export class OpendatabotClient {
         evidence: {
           evidenceId: `ev_odb_live_${Math.random().toString(36).substring(2, 11)}`,
           contentHash: `sha256-odb-live-${Math.random().toString(36).substring(2, 11)}`,
-          schemaVersion: "v3.1"
-        }
+          schemaVersion: "v3.1",
+        },
       };
     } catch (err: any) {
       console.error(`[OpendatabotClient] Error querying ${apiPath}:`, err);
@@ -124,6 +132,5 @@ export class OpendatabotClient {
     }
   }
 }
-
 
 export const opendatabotClient = OpendatabotClient.getInstance();

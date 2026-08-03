@@ -11,7 +11,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.1,
     timeoutMs: 5000,
     costLimitUsd: 0.001,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   ENTITY_EXTRACTION: {
     task: "ENTITY_EXTRACTION",
@@ -21,7 +21,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.2,
     timeoutMs: 10000,
     costLimitUsd: 0.005,
-    privacyLevel: "INTERNAL"
+    privacyLevel: "INTERNAL",
   },
   ENTITY_RESOLUTION: {
     task: "ENTITY_RESOLUTION",
@@ -31,7 +31,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.1,
     timeoutMs: 12000,
     costLimitUsd: 0.01,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   SUMMARIZATION: {
     task: "SUMMARIZATION",
@@ -41,7 +41,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.3,
     timeoutMs: 10000,
     costLimitUsd: 0.003,
-    privacyLevel: "INTERNAL"
+    privacyLevel: "INTERNAL",
   },
   RISK_ANALYSIS: {
     task: "RISK_ANALYSIS",
@@ -51,7 +51,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.2,
     timeoutMs: 15000,
     costLimitUsd: 0.01,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   INVESTIGATION: {
     task: "INVESTIGATION",
@@ -61,7 +61,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.2,
     timeoutMs: 20000,
     costLimitUsd: 0.02,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   RAG: {
     task: "RAG",
@@ -71,7 +71,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.3,
     timeoutMs: 15000,
     costLimitUsd: 0.008,
-    privacyLevel: "INTERNAL"
+    privacyLevel: "INTERNAL",
   },
   OCR: {
     task: "OCR",
@@ -81,7 +81,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.1,
     timeoutMs: 15000,
     costLimitUsd: 0.01,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   VISION: {
     task: "VISION",
@@ -91,7 +91,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.2,
     timeoutMs: 15000,
     costLimitUsd: 0.01,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   TRANSCRIPTION: {
     task: "TRANSCRIPTION",
@@ -101,7 +101,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.1,
     timeoutMs: 15000,
     costLimitUsd: 0.01,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   TRANSLATION: {
     task: "TRANSLATION",
@@ -111,7 +111,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.1,
     timeoutMs: 8000,
     costLimitUsd: 0.002,
-    privacyLevel: "PUBLIC"
+    privacyLevel: "PUBLIC",
   },
   REPORT_GENERATION: {
     task: "REPORT_GENERATION",
@@ -121,7 +121,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.3,
     timeoutMs: 25000,
     costLimitUsd: 0.02,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   SQL_GENERATION: {
     task: "SQL_GENERATION",
@@ -131,7 +131,7 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.0,
     timeoutMs: 8000,
     costLimitUsd: 0.003,
-    privacyLevel: "STRICT"
+    privacyLevel: "STRICT",
   },
   QUERY_PLANNING: {
     task: "QUERY_PLANNING",
@@ -141,8 +141,8 @@ const AI_TASK_REGISTRY: Record<AiTaskType, AiTaskConfig> = {
     temperature: 0.1,
     timeoutMs: 10000,
     costLimitUsd: 0.005,
-    privacyLevel: "INTERNAL"
-  }
+    privacyLevel: "INTERNAL",
+  },
 };
 
 // In-Memory Semantic Response Cache (TTL 1 hour)
@@ -171,7 +171,7 @@ export class AiRouterService {
    */
   public sanitizeInput(input: string): string {
     if (!input || typeof input !== "string") return "";
-    
+
     // Check for prompt injection keywords/attacks
     const INJECTION_PATTERNS = [
       /ignore (all )?previous instructions/i,
@@ -180,7 +180,7 @@ export class AiRouterService {
       /system instruction:/i,
       /system prompt:/i,
       /\[SYSTEM_PROMPT\]/i,
-      /override authorization/i
+      /override authorization/i,
     ];
 
     let sanitized = input;
@@ -233,7 +233,7 @@ export class AiRouterService {
   private setInCache(key: string, response: any, ttlMs = 3600000): void {
     aiCache.set(key, {
       response,
-      expiresAt: Date.now() + ttlMs
+      expiresAt: Date.now() + ttlMs,
     });
   }
 
@@ -255,7 +255,7 @@ export class AiRouterService {
         entity_type: "edrpou",
         extracted_value: sanitized.trim(),
         confidence: 0.99,
-        action_plan: ["search_internal_graph", "call_youcontrol_api", "call_opendatabot_api"]
+        action_plan: ["search_internal_graph", "call_youcontrol_api", "call_opendatabot_api"],
       };
       this.setInCache(cacheKey, fastResult);
       return fastResult;
@@ -263,10 +263,11 @@ export class AiRouterService {
 
     if (!this.ai) {
       const fallbackResult = {
-        entity_type: sanitized.toLowerCase().includes("тов") || sanitized.toLowerCase().includes("пп") ? "company_name" : "person",
+        entity_type:
+          sanitized.toLowerCase().includes("тов") || sanitized.toLowerCase().includes("пп") ? "company_name" : "person",
         extracted_value: sanitized,
         confidence: 0.85,
-        action_plan: ["search_internal_graph", "search_free_core_sources"]
+        action_plan: ["search_internal_graph", "search_free_core_sources"],
       };
       return fallbackResult;
     }
@@ -288,8 +289,8 @@ export class AiRouterService {
         config: {
           systemInstruction,
           temperature: 0.1,
-          responseMimeType: "application/json"
-        }
+          responseMimeType: "application/json",
+        },
       });
 
       const parsed = JSON.parse(response.text || "{}");
@@ -300,8 +301,8 @@ export class AiRouterService {
       return {
         entity_type: "auto",
         extracted_value: sanitized,
-        confidence: 0.70,
-        action_plan: ["search_internal_graph", "search_free_core_sources"]
+        confidence: 0.7,
+        action_plan: ["search_internal_graph", "search_free_core_sources"],
       };
     }
   }
@@ -309,7 +310,15 @@ export class AiRouterService {
   /**
    * 2.2 Function Calling - Coordinator Agent deciding tool execution sequence
    */
-  public async orchestrateAgent(query: string, availableTools = ["search_internal_graph", "call_youcontrol_api", "fetch_court_decisions", "search_free_core_sources"]) {
+  public async orchestrateAgent(
+    query: string,
+    availableTools = [
+      "search_internal_graph",
+      "call_youcontrol_api",
+      "fetch_court_decisions",
+      "search_free_core_sources",
+    ],
+  ) {
     const sanitized = this.sanitizeInput(query);
     const systemInstruction = `Ти — Агент-Координатор OSINT платформи PREDATOR.
 Твоє завдання — проаналізувати запит аналітика і сформувати оптимізований план виклику інструментів (Function Calling Sequence).
@@ -338,9 +347,9 @@ export class AiRouterService {
         investigationId: `inv-offline-${Date.now()}`,
         recommendedTools: [
           { toolName: "search_internal_graph", purpose: "Перевірка внутрішніх реєстрів", priority: 1 },
-          { toolName: "search_free_core_sources", purpose: "Пошук у державних відкритих реєстрах", priority: 2 }
+          { toolName: "search_free_core_sources", purpose: "Пошук у державних відкритих реєстрах", priority: 2 },
         ],
-        reasoning: "Offline execution fallback mode active."
+        reasoning: "Offline execution fallback mode active.",
       };
     }
 
@@ -351,8 +360,8 @@ export class AiRouterService {
         config: {
           systemInstruction,
           temperature: 0.2,
-          responseMimeType: "application/json"
-        }
+          responseMimeType: "application/json",
+        },
       });
 
       return JSON.parse(response.text || "{}");
@@ -361,9 +370,9 @@ export class AiRouterService {
         investigationId: `inv-fallback-${Date.now()}`,
         recommendedTools: [
           { toolName: "search_internal_graph", purpose: "Локальний пошук", priority: 1 },
-          { toolName: "search_free_core_sources", purpose: "Безкоштовні реєстри", priority: 2 }
+          { toolName: "search_free_core_sources", purpose: "Безкоштовні реєстри", priority: 2 },
         ],
-        reasoning: "Quick routing applied."
+        reasoning: "Quick routing applied.",
       };
     }
   }
@@ -396,7 +405,7 @@ export class AiRouterService {
         redFlags: ["Вимога перевірки актуального статусу реєстрації в ЄДРПОУ"],
         pepCheck: { isPep: false, details: "Прямих PEP-зв'язків у локальній базі не виявлено" },
         sanctionCheck: { isSanctioned: false, lists: [] },
-        summary: "Автоматична первинна перевірка досьє виконана в локальному режимі."
+        summary: "Автоматична первинна перевірка досьє виконана в локальному режимі.",
       };
       return offlineReport;
     }
@@ -408,8 +417,8 @@ export class AiRouterService {
         config: {
           systemInstruction,
           temperature: 0.1,
-          responseMimeType: "application/json"
-        }
+          responseMimeType: "application/json",
+        },
       });
 
       const result = JSON.parse(response.text || "{}");
@@ -422,7 +431,7 @@ export class AiRouterService {
         redFlags: ["Помилка генерації AI звіту - застосовано стандартизовану балову оцінку"],
         pepCheck: { isPep: false, details: "Недостатньо даних" },
         sanctionCheck: { isSanctioned: false, lists: [] },
-        summary: "Автоматична інтерактивна розгалужена перевірка завершена."
+        summary: "Автоматична інтерактивна розгалужена перевірка завершена.",
       };
     }
   }
@@ -434,11 +443,9 @@ export class AiRouterService {
     if (!this.ai) {
       return {
         status: "OFFLINE_FALLBACK",
-        extractedEntities: [
-          { type: "EDRPOU", value: "12345678", confidence: 0.90 }
-        ],
+        extractedEntities: [{ type: "EDRPOU", value: "12345678", confidence: 0.9 }],
         documentType: "Тендерна документація / Договір",
-        extractedTextPreview: "Текстовий фрагмент згенеровано в офлайн режимі."
+        extractedTextPreview: "Текстовий фрагмент згенеровано в офлайн режимі.",
       };
     }
 
@@ -458,8 +465,8 @@ export class AiRouterService {
       const imagePart = {
         inlineData: {
           data: base64Data,
-          mimeType
-        }
+          mimeType,
+        },
       };
 
       const response = await this.ai.models.generateContent({
@@ -468,8 +475,8 @@ export class AiRouterService {
         config: {
           systemInstruction,
           temperature: 0.1,
-          responseMimeType: "application/json"
-        }
+          responseMimeType: "application/json",
+        },
       });
 
       return JSON.parse(response.text || "{}");
@@ -477,7 +484,7 @@ export class AiRouterService {
       return {
         status: "ERROR",
         message: err.message || "Failed to process document",
-        extractedEntities: []
+        extractedEntities: [],
       };
     }
   }
@@ -485,24 +492,22 @@ export class AiRouterService {
   /**
    * General Task Executor with model failover and retries
    */
-  public async executeTask(
-    task: AiTaskType,
-    prompt: string | any[],
-    systemInstruction?: string
-  ) {
+  public async executeTask(task: AiTaskType, prompt: string | any[], systemInstruction?: string) {
     const config = this.getTaskConfig(task);
-    
+
     if (!this.ai) {
       return {
         text: `[AI Router Fallback] Executed ${task} in offline mode. No API Key present.`,
         modelUsed: "offline-fallback",
         task: task,
-        latencyMs: 15
+        latencyMs: 15,
       };
     }
 
     const startTime = Date.now();
-    const modelsToTry = Array.from(new Set([config.preferredModel, "gemini-flash-latest", config.fallbackModel, "gemini-3.1-flash-lite"]));
+    const modelsToTry = Array.from(
+      new Set([config.preferredModel, "gemini-flash-latest", config.fallbackModel, "gemini-3.1-flash-lite"]),
+    );
     let lastErr: any = null;
 
     for (const modelName of modelsToTry) {
@@ -514,8 +519,9 @@ export class AiRouterService {
             config: {
               systemInstruction: systemInstruction || "You are the PREDATOR Analytics AI Router.",
               temperature: config.temperature,
-              thinkingConfig: (modelName === "gemini-3.1-flash-lite") ? { thinkingLevel: ThinkingLevel.MINIMAL } : undefined
-            }
+              thinkingConfig:
+                modelName === "gemini-3.1-flash-lite" ? { thinkingLevel: ThinkingLevel.MINIMAL } : undefined,
+            },
           });
 
           const latencyMs = Date.now() - startTime;
@@ -523,13 +529,16 @@ export class AiRouterService {
             text: response.text,
             modelUsed: modelName,
             task: task,
-            latencyMs
+            latencyMs,
           };
         } catch (err: any) {
           lastErr = err;
-          console.warn(`[AI ROUTER] Model ${modelName} attempt ${attempt + 1} failed for task ${task}:`, err.message || err);
+          console.warn(
+            `[AI ROUTER] Model ${modelName} attempt ${attempt + 1} failed for task ${task}:`,
+            err.message || err,
+          );
           if (attempt === 0) {
-            await new Promise(r => setTimeout(r, 1000));
+            await new Promise((r) => setTimeout(r, 1000));
           }
         }
       }
@@ -539,10 +548,9 @@ export class AiRouterService {
       text: `[Аналітичний висновок системи]: Отримано інформаційне досьє з живих реєстрів. Через тимчасово підвищене навантаження шлюзу ШІ аналітичний підсумок згенеровано у бановому режимі на основі верифікованих фактів.`,
       modelUsed: "system-fallback",
       task: task,
-      latencyMs: Date.now() - startTime
+      latencyMs: Date.now() - startTime,
     };
   }
 }
 
 export const aiRouter = new AiRouterService();
-

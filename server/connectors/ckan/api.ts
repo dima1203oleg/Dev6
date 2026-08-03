@@ -30,7 +30,12 @@ export const setupCkanRoutes = (app: any) => {
       if (sql) {
         // Simple security check
         const upperSql = sql.toUpperCase();
-        if (upperSql.includes("INSERT") || upperSql.includes("UPDATE") || upperSql.includes("DELETE") || upperSql.includes("DROP")) {
+        if (
+          upperSql.includes("INSERT") ||
+          upperSql.includes("UPDATE") ||
+          upperSql.includes("DELETE") ||
+          upperSql.includes("DROP")
+        ) {
           return res.status(403).json({ error: "Only SELECT queries are allowed" });
         }
         const data = await connector.querySql(sql);

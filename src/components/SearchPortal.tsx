@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Search, Globe, User, Briefcase, Truck, Shield, Sparkles, Landmark, Database } from "lucide-react";
 import { motion } from "motion/react";
@@ -25,7 +24,7 @@ export default function SearchPortal({ onDossierGenerated }: SearchPortalProps) 
       const searchRes = await fetch("/api/v2/intelligence/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, type: searchType })
+        body: JSON.stringify({ query, type: searchType }),
       });
 
       if (!searchRes.ok) throw new Error("Search failed");
@@ -56,11 +55,7 @@ export default function SearchPortal({ onDossierGenerated }: SearchPortalProps) 
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-3xl space-y-8"
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-3xl space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold tracking-tighter text-slate-100 sm:text-6xl">
             DEV6 <span className="text-blue-500">INTELLIGENCE</span> OS

@@ -4,7 +4,7 @@ export const CKAN_LIMITS = {
   MAX_ROWS: 500,
   MAX_RESPONSE_SIZE_BYTES: 25 * 1024 * 1024, // 25MB
   QUERY_TIMEOUT_MS: 15000, // 15s
-  MAX_CONCURRENT_QUERIES: 10
+  MAX_CONCURRENT_QUERIES: 10,
 };
 
 export interface QueryPlanResult {
@@ -72,12 +72,14 @@ export function buildSafeQueryPlan(dsl: QueryDslRequest): QueryPlanResult {
 
   let orderClause = "";
   if (dsl.sort && Array.isArray(dsl.sort) && dsl.sort.length > 0) {
-    const sortItems = dsl.sort.map((s) => {
-      const safeField = s.field.replace(/[^a-zA-Z0-9_]/g, "");
-      const dir = s.direction?.toUpperCase() === "DESC" ? "DESC" : "ASC";
-      return `"${safeField}" ${dir}`;
-    }).filter(Boolean);
-    
+    const sortItems = dsl.sort
+      .map((s) => {
+        const safeField = s.field.replace(/[^a-zA-Z0-9_]/g, "");
+        const dir = s.direction?.toUpperCase() === "DESC" ? "DESC" : "ASC";
+        return `"${safeField}" ${dir}`;
+      })
+      .filter(Boolean);
+
     if (sortItems.length > 0) {
       orderClause = ` ORDER BY ${sortItems.join(", ")}`;
     }
@@ -91,6 +93,6 @@ export function buildSafeQueryPlan(dsl: QueryDslRequest): QueryPlanResult {
     sql,
     params,
     limitEnforced: safeLimit,
-    circuitBreakerStatus: "CLOSED"
+    circuitBreakerStatus: "CLOSED",
   };
 }

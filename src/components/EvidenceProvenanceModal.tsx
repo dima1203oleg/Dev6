@@ -25,7 +25,9 @@ export default function EvidenceProvenanceModal({ entityId, entityName, onClose 
       .finally(() => {
         if (active) setLoading(false);
       });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [entityId]);
 
   return (
@@ -44,9 +46,7 @@ export default function EvidenceProvenanceModal({ entityId, entityName, onClose 
                 </span>
                 <span className="text-xs font-mono text-slate-500">ID: {entityId}</span>
               </div>
-              <h2 className="text-xl font-bold text-white mt-1">
-                Ланцюжок Доказової Бази: {entityName}
-              </h2>
+              <h2 className="text-xl font-bold text-white mt-1">Ланцюжок Доказової Бази: {entityName}</h2>
             </div>
           </div>
           <button
@@ -108,7 +108,10 @@ export default function EvidenceProvenanceModal({ entityId, entityName, onClose 
 
                 <div className="space-y-3">
                   {chain?.claims.map((claim: EvidenceClaim) => (
-                    <div key={claim.id} className="p-4 bg-slate-950/80 border border-slate-800/80 rounded-2xl space-y-3">
+                    <div
+                      key={claim.id}
+                      className="p-4 bg-slate-950/80 border border-slate-800/80 rounded-2xl space-y-3"
+                    >
                       <div className="flex items-start justify-between gap-4">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -150,7 +153,10 @@ export default function EvidenceProvenanceModal({ entityId, entityName, onClose 
 
                 <div className="space-y-2 font-mono text-xs">
                   {chain?.verificationSteps.map((step, i) => (
-                    <div key={i} className="p-3 bg-slate-950 border border-slate-800/60 rounded-xl flex items-center justify-between">
+                    <div
+                      key={i}
+                      className="p-3 bg-slate-950 border border-slate-800/60 rounded-xl flex items-center justify-between"
+                    >
                       <div className="flex items-center gap-3">
                         <span className="w-2 h-2 rounded-full bg-emerald-500" />
                         <span className="text-slate-400">{step.timestamp.split("T")[1].substring(0, 8)}</span>

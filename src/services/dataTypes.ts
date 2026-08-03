@@ -1,4 +1,5 @@
 export type {
+  CkanDatastoreResponse,
   CryptoSpot,
   DataSourceDependency,
   DataSourceError,

@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useFirebaseSync() {
   return {
@@ -11,6 +10,6 @@ export function useFirebaseSync() {
     syncError: null,
     isChecking: false,
     latencyMs: 42,
-    reconnect: () => console.log('Reconnecting...'),
+    reconnect: () => console.log("Reconnecting..."),
   };
 }

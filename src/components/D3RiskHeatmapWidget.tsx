@@ -1,11 +1,19 @@
-import React, { useMemo, useState } from 'react';
-import { scaleLinear } from 'd3-scale';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Activity, ShieldAlert, Award, TrendingUp, HelpCircle, 
-  ChevronRight, Users, Eye, Zap, AlertTriangle
-} from 'lucide-react';
-import { OsintEntity } from '../osintData';
+import React, { useMemo, useState } from "react";
+import { scaleLinear } from "d3-scale";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  Activity,
+  ShieldAlert,
+  Award,
+  TrendingUp,
+  HelpCircle,
+  ChevronRight,
+  Users,
+  Eye,
+  Zap,
+  AlertTriangle,
+} from "lucide-react";
+import { OsintEntity } from "../types/osint";
 
 interface D3RiskHeatmapWidgetProps {
   entities: OsintEntity[];
@@ -14,7 +22,7 @@ interface D3RiskHeatmapWidgetProps {
 }
 
 export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelectTab }: D3RiskHeatmapWidgetProps) {
-  const [selectedType, setSelectedType] = useState<'all' | 'company' | 'person' | 'cryptowallet'>('all');
+  const [selectedType, setSelectedType] = useState<"all" | "company" | "person" | "cryptowallet">("all");
   const [hoveredCell, setHoveredCell] = useState<{
     xRange: [number, number];
     yRange: [number, number];
@@ -27,8 +35,8 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
 
   // Filter entities
   const filteredList = useMemo(() => {
-    return entities.filter(e => {
-      if (selectedType === 'all') return true;
+    return entities.filter((e) => {
+      if (selectedType === "all") return true;
       return e.type === selectedType;
     });
   }, [entities, selectedType]);
@@ -41,20 +49,16 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
 
   // D3 Scales for positioning/mapping
   const xScale = useMemo(() => {
-    return scaleLinear()
-      .domain([0, gridCols])
-      .range([0, 100]); // percentage width
+    return scaleLinear().domain([0, gridCols]).range([0, 100]); // percentage width
   }, [gridCols]);
 
   const yScale = useMemo(() => {
-    return scaleLinear()
-      .domain([0, gridRows])
-      .range([100, 0]); // percentage height (inverted)
+    return scaleLinear().domain([0, gridRows]).range([100, 0]); // percentage height (inverted)
   }, [gridRows]);
 
   // Calculate grid cell values
   const cells = useMemo(() => {
-    const matrix = Array.from({ length: gridRows }, (_, r) => 
+    const matrix = Array.from({ length: gridRows }, (_, r) =>
       Array.from({ length: gridCols }, (_, c) => {
         const yMin = r * 20;
         const yMax = (r + 1) * 20;
@@ -62,13 +66,13 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
         const xMax = c + 1;
 
         // Find entities that belong in this row/col cell
-        const cellEntities = filteredList.filter(e => {
+        const cellEntities = filteredList.filter((e) => {
           const risk = e.riskScore;
           const conns = e.relationships?.length || 0;
-          
+
           const matchesRisk = risk >= yMin && (r === gridRows - 1 ? risk <= yMax : risk < yMax);
           const matchesConns = c === gridCols - 1 ? conns >= c : conns === c;
-          
+
           return matchesRisk && matchesConns;
         });
 
@@ -82,22 +86,25 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
           xRange: [xMin, c === gridCols - 1 ? 10 : xMax] as [number, number],
           entities: cellEntities,
           density: cellEntities.length,
-          avgRisk
+          avgRisk,
         };
-      })
+      }),
     );
     return matrix.flat();
   }, [filteredList, gridRows, gridCols]);
 
   // Maximum density for scaling color opacity
   const maxDensity = useMemo(() => {
-    return Math.max(...cells.map(c => c.density), 1);
+    return Math.max(...cells.map((c) => c.density), 1);
   }, [cells]);
 
   return (
-    <div className="bg-slate-900/40 border border-slate-800 rounded-2xl shadow-[0_4px_40px_rgba(30,58,138,0.15)] backdrop-blur-md p-2 relative overflow-hidden" id="d3-risk-heatmap-widget">
+    <div
+      className="bg-slate-900/40 border border-slate-800 rounded-2xl shadow-[0_4px_40px_rgba(30,58,138,0.15)] backdrop-blur-md p-2 relative overflow-hidden"
+      id="d3-risk-heatmap-widget"
+    >
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent pointer-events-none" />
-      
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-4 gap-2 relative z-10">
         <div className="flex items-center gap-2">
@@ -114,17 +121,17 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
 
         {/* Filter controls */}
         <div className="flex items-center gap-1 bg-slate-950/80 p-1 rounded-2xl border border-slate-800/60">
-          {(['all', 'company', 'person', 'cryptowallet'] as const).map((type) => (
+          {(["all", "company", "person", "cryptowallet"] as const).map((type) => (
             <button
               key={type}
               onClick={() => setSelectedType(type)}
               className={`px-2.5 py-1 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                selectedType === type 
-                  ? 'bg-blue-600/20 text-blue-400 border border-slate-800 shadow-sm' 
-                  : 'text-slate-400 hover:text-slate-300'
+                selectedType === type
+                  ? "bg-blue-600/20 text-blue-400 border border-slate-800 shadow-sm"
+                  : "text-slate-400 hover:text-slate-300"
               }`}
             >
-              {type === 'all' ? 'Всі' : type === 'company' ? 'Юрособи' : type === 'person' ? 'Особи' : 'Крипто'}
+              {type === "all" ? "Всі" : type === "company" ? "Юрособи" : type === "person" ? "Особи" : "Крипто"}
             </button>
           ))}
         </div>
@@ -135,7 +142,6 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
         {/* The Matrix Canvas */}
         <div className="lg:col-span-8 flex flex-col">
           <div className="relative flex-1 bg-slate-950/40 border border-slate-800 rounded-2xl p-2 min-h-[300px] flex">
-            
             {/* Y Axis Labels (Risk score) */}
             <div className="flex flex-col justify-between text-xs font-mono text-slate-500 select-none pr-3 w-16 border-r border-slate-800">
               <span className="text-rose-500/90 font-bold">80-100% КРИТ</span>
@@ -151,21 +157,21 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
               {cells.map((cell, idx) => {
                 const isHovered = hoveredCell?.xIndex === cell.cIndex && hoveredCell?.yIndex === cell.rIndex;
                 const densityPercent = cell.density / maxDensity;
-                
+
                 // Color determined by risk category and density
-                let cellColor = 'bg-slate-900/10 border-slate-800';
-                let activeBorder = 'hover:border-slate-800';
+                let cellColor = "bg-slate-900/10 border-slate-800";
+                let activeBorder = "hover:border-slate-800";
 
                 if (cell.density > 0) {
                   if (cell.yRange[0] >= 80) {
-                    cellColor = 'bg-rose-500/30 text-rose-400 border-slate-800';
-                    activeBorder = 'hover:border-rose-400';
+                    cellColor = "bg-rose-500/30 text-rose-400 border-slate-800";
+                    activeBorder = "hover:border-rose-400";
                   } else if (cell.yRange[0] >= 40) {
-                    cellColor = 'bg-amber-500/20 text-amber-400 border-slate-800';
-                    activeBorder = 'hover:border-amber-400';
+                    cellColor = "bg-amber-500/20 text-amber-400 border-slate-800";
+                    activeBorder = "hover:border-amber-400";
                   } else {
-                    cellColor = 'bg-emerald-500/20 text-emerald-400 border-slate-800';
-                    activeBorder = 'hover:border-emerald-400';
+                    cellColor = "bg-emerald-500/20 text-emerald-400 border-slate-800";
+                    activeBorder = "hover:border-emerald-400";
                   }
                 }
 
@@ -173,29 +179,31 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
                   <motion.div
                     key={`cell-${cell.rIndex}-${cell.cIndex}`}
                     className={`relative rounded-2xl p-2 border flex flex-col justify-between transition-all duration-300 cursor-crosshair min-h-[50px] ${cellColor} ${activeBorder} ${
-                      isHovered ? 'scale-102 ring-1 ring-blue-400/50 z-10' : ''
+                      isHovered ? "scale-102 ring-1 ring-blue-400/50 z-10" : ""
                     }`}
-                    onMouseEnter={() => setHoveredCell({
-                      xRange: cell.xRange,
-                      yRange: cell.yRange,
-                      entities: cell.entities,
-                      density: cell.density,
-                      avgRisk: cell.avgRisk,
-                      xIndex: cell.cIndex,
-                      yIndex: cell.rIndex
-                    })}
+                    onMouseEnter={() =>
+                      setHoveredCell({
+                        xRange: cell.xRange,
+                        yRange: cell.yRange,
+                        entities: cell.entities,
+                        density: cell.density,
+                        avgRisk: cell.avgRisk,
+                        xIndex: cell.cIndex,
+                        yIndex: cell.rIndex,
+                      })
+                    }
                     onMouseLeave={() => setHoveredCell(null)}
                     layoutId={`cell-${cell.rIndex}-${cell.cIndex}`}
                   >
                     {/* Background density overlay */}
                     {cell.density > 0 && (
-                      <div 
+                      <div
                         className="absolute inset-0 rounded-2xl opacity-40 mix-blend-color-dodge transition-opacity duration-300 pointer-events-none"
                         style={{
                           background: `radial-gradient(circle, ${
-                            cell.yRange[0] >= 80 ? '#ef4444' : cell.yRange[0] >= 40 ? '#f59e0b' : '#10b981'
+                            cell.yRange[0] >= 80 ? "#ef4444" : cell.yRange[0] >= 40 ? "#f59e0b" : "#10b981"
                           } 0%, transparent 80%)`,
-                          opacity: 0.2 + densityPercent * 0.5
+                          opacity: 0.2 + densityPercent * 0.5,
                         }}
                       />
                     )}
@@ -215,10 +223,14 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
                     {/* Miniature dots representing entities */}
                     <div className="flex flex-wrap gap-1 mt-1 z-10 max-h-[16px] overflow-hidden">
                       {cell.entities.slice(0, 4).map((ent) => (
-                        <span 
-                          key={ent.id} 
+                        <span
+                          key={ent.id}
                           className={`w-1.5 h-1.5 rounded-full ${
-                            ent.riskScore >= 80 ? 'bg-rose-500' : ent.riskScore >= 50 ? 'bg-amber-400' : 'bg-emerald-400'
+                            ent.riskScore >= 80
+                              ? "bg-rose-500"
+                              : ent.riskScore >= 50
+                                ? "bg-amber-400"
+                                : "bg-emerald-400"
                           }`}
                           title={ent.name}
                         />
@@ -253,7 +265,7 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
 
             <AnimatePresence mode="wait">
               {hoveredCell && hoveredCell.density > 0 ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
@@ -263,36 +275,57 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
                   <div className="bg-slate-900/60 border border-slate-800 p-2 rounded-2xl space-y-2">
                     <div className="flex justify-between items-center text-xs font-mono">
                       <span className="text-slate-400">Ранг загрози:</span>
-                      <span className="text-slate-200 font-bold">{hoveredCell.yRange[0]} - {hoveredCell.yRange[1]}%</span>
+                      <span className="text-slate-200 font-bold">
+                        {hoveredCell.yRange[0]} - {hoveredCell.yRange[1]}%
+                      </span>
                     </div>
                     <div className="flex justify-between items-center text-xs font-mono">
                       <span className="text-slate-400">Ступінь зв'язків:</span>
-                      <span className="text-slate-200 font-bold">{hoveredCell.xRange[0]} {hoveredCell.xRange[1] === 10 ? 'або більше' : `до ${hoveredCell.xRange[1]}`}</span>
+                      <span className="text-slate-200 font-bold">
+                        {hoveredCell.xRange[0]}{" "}
+                        {hoveredCell.xRange[1] === 10 ? "або більше" : `до ${hoveredCell.xRange[1]}`}
+                      </span>
                     </div>
                     <div className="border-t border-slate-800/60 my-1"></div>
                     <div className="flex justify-between items-center text-xs font-mono">
                       <span className="text-slate-400">Середній ризик:</span>
-                      <span className={`font-bold ${
-                        hoveredCell.avgRisk >= 80 ? 'text-rose-400' : hoveredCell.avgRisk >= 50 ? 'text-amber-400' : 'text-emerald-400'
-                      }`}>{hoveredCell.avgRisk}%</span>
+                      <span
+                        className={`font-bold ${
+                          hoveredCell.avgRisk >= 80
+                            ? "text-rose-400"
+                            : hoveredCell.avgRisk >= 50
+                              ? "text-amber-400"
+                              : "text-emerald-400"
+                        }`}
+                      >
+                        {hoveredCell.avgRisk}%
+                      </span>
                     </div>
                   </div>
 
                   <div className="space-y-1.5 max-h-[140px] overflow-y-auto pr-1 custom-scrollbar">
-                    <p className="text-xs text-slate-500 font-mono uppercase tracking-widest px-1">Об'єкти у кластері:</p>
+                    <p className="text-xs text-slate-500 font-mono uppercase tracking-widest px-1">
+                      Об'єкти у кластері:
+                    </p>
                     {hoveredCell.entities.map((ent) => (
                       <div
                         key={ent.id}
                         onClick={() => {
                           onSelectEntity(ent.id);
-                          onSelectTab('volumes');
+                          onSelectTab("volumes");
                         }}
                         className="bg-slate-950/80 hover:bg-slate-900/80 border border-slate-800 rounded-2xl p-2 flex items-center justify-between text-xs cursor-pointer transition-colors"
                       >
                         <div className="flex items-center gap-1.5 truncate">
-                          <span className={`w-1.5 h-1.5 rounded-full ${
-                            ent.riskScore >= 80 ? 'bg-rose-500' : ent.riskScore >= 50 ? 'bg-amber-400' : 'bg-emerald-400'
-                          }`} />
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              ent.riskScore >= 80
+                                ? "bg-rose-500"
+                                : ent.riskScore >= 50
+                                  ? "bg-amber-400"
+                                  : "bg-emerald-400"
+                            }`}
+                          />
                           <span className="text-slate-300 font-mono truncate">{ent.name}</span>
                         </div>
                         <ChevronRight className="w-3 h-3 text-slate-600" />
@@ -301,20 +334,27 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
                   </div>
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="text-center py-12 text-slate-500 font-mono text-xs space-y-2"
                 >
                   <Activity className="w-8 h-8 text-slate-700 mx-auto animate-pulse" />
-                  <p>Наведіть курсор на заповнені зони теплокарти, щоб переглянути детальний розріз та склад ризиків.</p>
+                  <p>
+                    Наведіть курсор на заповнені зони теплокарти, щоб переглянути детальний розріз та склад ризиків.
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
           <div className="text-xs text-slate-500 font-mono border-t border-slate-800 pt-2 mt-2">
-            Загальна загроза: <span className="text-slate-300 font-bold">{filteredList.length} об'єктів</span> з середнім показником <span className="text-slate-300 font-bold">{Math.round(filteredList.reduce((acc, x) => acc + x.riskScore, 0) / (filteredList.length || 1))}%</span>.
+            Загальна загроза: <span className="text-slate-300 font-bold">{filteredList.length} об'єктів</span> з
+            середнім показником{" "}
+            <span className="text-slate-300 font-bold">
+              {Math.round(filteredList.reduce((acc, x) => acc + x.riskScore, 0) / (filteredList.length || 1))}%
+            </span>
+            .
           </div>
         </div>
       </div>

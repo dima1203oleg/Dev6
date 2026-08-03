@@ -3,19 +3,31 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
-import { ROADMAP_PHASES } from '../data';
-import { Calendar, AlertTriangle, CheckSquare, Square, Zap, Server, Cpu, Layers, DollarSign, ArrowRight, TrendingUp } from 'lucide-react';
-import { motion } from 'motion/react';
+import { useState } from "react";
+import { ROADMAP_PHASES } from "../data";
+import {
+  Calendar,
+  AlertTriangle,
+  CheckSquare,
+  Square,
+  Zap,
+  Server,
+  Cpu,
+  Layers,
+  DollarSign,
+  ArrowRight,
+  TrendingUp,
+} from "lucide-react";
+import { motion } from "motion/react";
 
 export default function RoadmapTab() {
-  const [activePhaseId, setActivePhaseId] = useState('phase1');
-  
+  const [activePhaseId, setActivePhaseId] = useState("phase1");
+
   // Interactive Milestones State (loaded from static data but modifiable by user)
   const [milestonesState, setMilestonesState] = useState(() => {
     const initial: Record<string, { text: string; done: boolean }[]> = {};
-    ROADMAP_PHASES.forEach(p => {
-      initial[p.id] = p.milestones.map(m => ({ ...m }));
+    ROADMAP_PHASES.forEach((p) => {
+      initial[p.id] = p.milestones.map((m) => ({ ...m }));
     });
     return initial;
   });
@@ -26,19 +38,20 @@ export default function RoadmapTab() {
   const [runDocTR, setRunDocTR] = useState(false);
   const [userConcurrency, setUserConcurrency] = useState(5); // concurrent analysts
 
-  const activePhase = ROADMAP_PHASES.find(p => p.id === activePhaseId) || ROADMAP_PHASES[0] || {
-    id: 'phase1',
-    title: 'Етап 1',
-    timeframe: 'Місяці 1 - 3',
-    focus: '',
-    components: [],
-    milestones: [],
-    risks: [],
-    gpuRequirements: ''
-  };
+  const activePhase = ROADMAP_PHASES.find((p) => p.id === activePhaseId) ||
+    ROADMAP_PHASES[0] || {
+      id: "phase1",
+      title: "Етап 1",
+      timeframe: "Місяці 1 - 3",
+      focus: "",
+      components: [],
+      milestones: [],
+      risks: [],
+      gpuRequirements: "",
+    };
 
   const handleToggleMilestone = (phaseId: string, idx: number) => {
-    setMilestonesState(prev => {
+    setMilestonesState((prev) => {
       const copy = { ...prev };
       const list = [...copy[phaseId]];
       list[idx] = { ...list[idx], done: !list[idx].done };
@@ -50,7 +63,7 @@ export default function RoadmapTab() {
   const getPhaseProgress = (phaseId: string) => {
     const list = milestonesState[phaseId] || [];
     if (list.length === 0) return 0;
-    const completed = list.filter(m => m.done).length;
+    const completed = list.filter((m) => m.done).length;
     return Math.round((completed / list.length) * 100);
   };
 
@@ -65,34 +78,34 @@ export default function RoadmapTab() {
       const contextVram = userConcurrency * 1.5; // 1.5GB per concurrent user context
       vramNeeded += 16 + contextVram;
       baseGpuCost += 350; // basic cloud GPU instance (e.g. A10 or A6000)
-      modelsToRun.push('Llama 3 8B Instruct');
+      modelsToRun.push("Llama 3 8B Instruct");
     }
     if (runWhisper) {
       // Whisper Large V3 needs ~10GB VRAM
-      vramNeeded += 10 + (userConcurrency * 0.5);
+      vramNeeded += 10 + userConcurrency * 0.5;
       baseGpuCost += 200;
-      modelsToRun.push('Whisper Large V3 (STT)');
+      modelsToRun.push("Whisper Large V3 (STT)");
     }
     if (runDocTR) {
       // docTR layout/OCR models need ~6GB VRAM
-      vramNeeded += 6 + (userConcurrency * 0.4);
+      vramNeeded += 6 + userConcurrency * 0.4;
       baseGpuCost += 150;
-      modelsToRun.push('docTR layout/OCR');
+      modelsToRun.push("docTR layout/OCR");
     }
 
     // Determine hardware recommendations
-    let recommendedGpu = 'Немає активних ШІ компонентів';
+    let recommendedGpu = "Немає активних ШІ компонентів";
     let gpuQuantity = 1;
 
     if (vramNeeded > 0) {
       if (vramNeeded <= 24) {
-        recommendedGpu = '1x NVIDIA RTX 4090 або 1x RTX A5000 (24GB VRAM)';
+        recommendedGpu = "1x NVIDIA RTX 4090 або 1x RTX A5000 (24GB VRAM)";
         baseGpuCost = Math.max(baseGpuCost, 120);
       } else if (vramNeeded <= 48) {
-        recommendedGpu = '1x NVIDIA RTX A6000 або 2x RTX 4090 (48GB VRAM)';
+        recommendedGpu = "1x NVIDIA RTX A6000 або 2x RTX 4090 (48GB VRAM)";
         baseGpuCost = Math.max(baseGpuCost, 250);
       } else if (vramNeeded <= 80) {
-        recommendedGpu = '1x NVIDIA A100 (80GB SXM) або 2x A6000 (80GB VRAM)';
+        recommendedGpu = "1x NVIDIA A100 (80GB SXM) або 2x A6000 (80GB VRAM)";
         baseGpuCost = Math.max(baseGpuCost, 850);
       } else {
         gpuQuantity = Math.ceil(vramNeeded / 80);
@@ -106,14 +119,17 @@ export default function RoadmapTab() {
       gpu: recommendedGpu,
       cost: vramNeeded > 0 ? baseGpuCost : 0,
       models: modelsToRun,
-      gpuQuantity
+      gpuQuantity,
     };
   };
 
   const gpuCalculations = getGpuInfrastructureRequirements();
 
   return (
-    <div className="flex-1 p-2 sm:p-3 md:p-4 flex flex-col gap-3 sm:gap-4 bg-slate-950 h-full w-full" id="roadmap-tab-root">
+    <div
+      className="flex-1 p-2 sm:p-3 md:p-4 flex flex-col gap-3 sm:gap-4 bg-slate-950 h-full w-full"
+      id="roadmap-tab-root"
+    >
       {/* Top Header */}
       <div className="bg-slate-900 border border-slate-800 rounded-lg p-2 backdrop-blur-md">
         <h2 className="text-lg font-semibold text-slate-200 flex items-center gap-2 mb-2">
@@ -121,17 +137,17 @@ export default function RoadmapTab() {
           Дорожня карта розгортання платформи (Enterprise Roadmap)
         </h2>
         <p className="text-slate-300 text-xs leading-relaxed">
-          Покроковий 12-місячний план розгортання та розвитку NEXUS Analytics. Відстежуйте завершення віх у реальному часі та скористайтеся калькулятором інфраструктурних вимог до ШІ-підсистеми для планування бюджетів.
+          Покроковий 12-місячний план розгортання та розвитку NEXUS Analytics. Відстежуйте завершення віх у реальному
+          часі та скористайтеся калькулятором інфраструктурних вимог до ШІ-підсистеми для планування бюджетів.
         </p>
       </div>
 
       {/* Main Roadmap Timeline Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
-        
         {/* Left Side: Timeline Navigation Nodes */}
         <div className="lg:col-span-1 space-y-4">
           <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest pl-1">Етапи дорожньої карти</h3>
-          
+
           <div className="space-y-2" id="roadmap-steps-list">
             {ROADMAP_PHASES.map((phase, idx) => {
               const isActive = phase.id === activePhaseId;
@@ -142,25 +158,29 @@ export default function RoadmapTab() {
                   key={phase.id}
                   id={`roadmap-phase-btn-${phase.id}`}
                   onClick={() => setActivePhaseId(phase.id)}
-                  className={`w-full text-left p-2 rounded-lg border transition-all relative overflow-hidden flex flex-col justify-between ${isActive ? 'bg-blue-500/10 border-slate-800 shadow-[0_0_15px_rgba(99,102,241,0.05)]' : 'bg-slate-900/40 border-slate-800 hover:border-slate-800'}`}
+                  className={`w-full text-left p-2 rounded-lg border transition-all relative overflow-hidden flex flex-col justify-between ${isActive ? "bg-blue-500/10 border-slate-800 shadow-[0_0_15px_rgba(99,102,241,0.05)]" : "bg-slate-900/40 border-slate-800 hover:border-slate-800"}`}
                 >
                   {/* Phase top tag */}
                   <div className="flex items-center justify-between text-xs uppercase font-bold tracking-wider text-slate-500">
                     <span>{phase.timeframe}</span>
-                    <span className={progress === 100 ? 'text-emerald-400' : progress > 0 ? 'text-blue-400' : 'text-slate-600'}>
+                    <span
+                      className={
+                        progress === 100 ? "text-emerald-400" : progress > 0 ? "text-blue-400" : "text-slate-600"
+                      }
+                    >
                       {progress}%
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h4 className={`text-xs font-bold mt-1.5 ${isActive ? 'text-white' : 'text-slate-300'}`}>
+                  <h4 className={`text-xs font-bold mt-1.5 ${isActive ? "text-white" : "text-slate-300"}`}>
                     {phase.title}
                   </h4>
 
                   {/* Tiny progress bar */}
                   <div className="w-full bg-slate-950/40 backdrop-blur-md shadow-[0_4px_40px_rgba(30,58,138,0.15)] h-1 rounded-full mt-3 overflow-hidden">
                     <div
-                      className={`h-full transition-all duration-500 ${progress === 100 ? 'bg-emerald-500' : 'bg-blue-500'}`}
+                      className={`h-full transition-all duration-500 ${progress === 100 ? "bg-emerald-500" : "bg-blue-500"}`}
                       style={{ width: `${progress}%` }}
                     />
                   </div>
@@ -180,15 +200,15 @@ export default function RoadmapTab() {
               </div>
               <div className="text-right">
                 <span className="text-xs text-slate-500 uppercase block font-mono">Прогрес етапу</span>
-                <span className="text-2xl font-mono font-bold text-blue-400">
-                  {getPhaseProgress(activePhase.id)}%
-                </span>
+                <span className="text-2xl font-mono font-bold text-blue-400">{getPhaseProgress(activePhase.id)}%</span>
               </div>
             </div>
 
             {/* Main Focus */}
             <div className="flex-1 p-2 sm:p-3 md:p-4 flex flex-col gap-3 sm:gap-4 bg-slate-950 h-full w-full">
-              <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">Основний фокус етапу:</span>
+              <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">
+                Основний фокус етапу:
+              </span>
               <p className="text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800 leading-relaxed font-medium">
                 {activePhase.focus}
               </p>
@@ -198,10 +218,15 @@ export default function RoadmapTab() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-2">
               {/* Core components introduced */}
               <div className="space-y-2">
-                <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">Архітектурні компоненти:</span>
+                <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">
+                  Архітектурні компоненти:
+                </span>
                 <div className="space-y-1.5">
                   {activePhase.components.map((comp, idx) => (
-                    <div key={idx} className="bg-slate-950/80 border border-slate-800 p-2 rounded-lg flex items-center gap-2">
+                    <div
+                      key={idx}
+                      className="bg-slate-950/80 border border-slate-800 p-2 rounded-lg flex items-center gap-2"
+                    >
                       <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
                       <span className="text-xs text-slate-300 font-medium">{comp}</span>
                     </div>
@@ -211,7 +236,9 @@ export default function RoadmapTab() {
 
               {/* Checkable Milestones */}
               <div className="space-y-2">
-                <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">Віхи та Завдання (можна клацати):</span>
+                <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">
+                  Віхи та Завдання (можна клацати):
+                </span>
                 <div className="space-y-2" id="milestones-checkboxes">
                   {(milestonesState[activePhase.id] || []).map((m, idx) => (
                     <button
@@ -226,7 +253,9 @@ export default function RoadmapTab() {
                       ) : (
                         <Square className="w-4 h-4 text-slate-600 flex-shrink-0 mt-0.5" />
                       )}
-                      <span className={`text-xs leading-normal ${m.done ? 'text-slate-500 line-through' : 'text-slate-300 font-medium'}`}>
+                      <span
+                        className={`text-xs leading-normal ${m.done ? "text-slate-500 line-through" : "text-slate-300 font-medium"}`}
+                      >
                         {m.text}
                       </span>
                     </button>
@@ -243,7 +272,10 @@ export default function RoadmapTab() {
               </span>
               <div className="grid grid-cols-1 gap-2">
                 {activePhase.risks.map((risk, idx) => (
-                  <div key={idx} className="bg-rose-950/10 border border-rose-950/20 rounded-lg p-2.5 text-xs text-rose-300">
+                  <div
+                    key={idx}
+                    className="bg-rose-950/10 border border-rose-950/20 rounded-lg p-2.5 text-xs text-rose-300"
+                  >
                     <span className="font-bold mr-1">•</span> {risk}
                   </div>
                 ))}
@@ -254,7 +286,7 @@ export default function RoadmapTab() {
             <div className="bg-slate-950/40 backdrop-blur-md shadow-[0_4px_40px_rgba(30,58,138,0.15)] rounded-lg p-2 border border-slate-800 flex items-center gap-2 text-xs text-slate-300">
               <Cpu className="w-4 h-4 text-blue-400 flex-shrink-0" />
               <span>
-                <strong>Вимоги до GPU:</strong> {activePhase.gpuRequirements || 'Немає вимог.'}
+                <strong>Вимоги до GPU:</strong> {activePhase.gpuRequirements || "Немає вимог."}
               </span>
             </div>
           </div>
@@ -269,15 +301,18 @@ export default function RoadmapTab() {
                 Планувальник ШІ-кластера
               </h3>
             </div>
-            
+
             <p className="text-xs text-slate-300 leading-normal">
-              Моделюйте необхідну апаратну інфраструктуру для Phase 3 та 5. Оцінюйте потребу у відеопам’яті VRAM та орієнтовні хмарні витрати.
+              Моделюйте необхідну апаратну інфраструктуру для Phase 3 та 5. Оцінюйте потребу у відеопам’яті VRAM та
+              орієнтовні хмарні витрати.
             </p>
 
             {/* Checkbox Models to host locally */}
             <div className="space-y-2.5 text-xs">
-              <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">Моделі для локального запуску:</span>
-              
+              <span className="text-xs uppercase text-slate-500 font-bold tracking-wider block">
+                Моделі для локального запуску:
+              </span>
+
               <label className="flex items-center gap-2 p-2 bg-slate-950/60 rounded-lg border border-slate-800 cursor-pointer hover:border-slate-800">
                 <input
                   type="checkbox"
@@ -339,9 +374,14 @@ export default function RoadmapTab() {
             </div>
 
             {/* CALCULATOR OUTPUTS */}
-            <div className="bg-slate-950/40 backdrop-blur-md shadow-[0_4px_40px_rgba(30,58,138,0.15)] rounded-lg p-2 border border-slate-800 space-y-3" id="cluster-planner-results">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Конфігурація GPU ноди</h4>
-              
+            <div
+              className="bg-slate-950/40 backdrop-blur-md shadow-[0_4px_40px_rgba(30,58,138,0.15)] rounded-lg p-2 border border-slate-800 space-y-3"
+              id="cluster-planner-results"
+            >
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest text-center">
+                Конфігурація GPU ноди
+              </h4>
+
               <div className="space-y-1.5 text-xs text-slate-300">
                 <div className="flex justify-between">
                   <span>Об’єм VRAM:</span>
@@ -368,7 +408,6 @@ export default function RoadmapTab() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

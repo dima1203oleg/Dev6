@@ -14,10 +14,15 @@ export interface OpenDataOverview {
   searchResults: CkanPackage[];
 }
 
-const facetCounts = (facet: Record<string, number> | Array<{ name: string; count: number }> | undefined): RankedCount[] => {
+const facetCounts = (
+  facet: Record<string, number> | Array<{ name: string; count: number }> | undefined,
+): RankedCount[] => {
   if (!facet) return [];
-  if (Array.isArray(facet)) return facet.map((item) => ({ name: item.name, count: item.count })).sort((a, b) => b.count - a.count);
-  return Object.entries(facet).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
+  if (Array.isArray(facet))
+    return facet.map((item) => ({ name: item.name, count: item.count })).sort((a, b) => b.count - a.count);
+  return Object.entries(facet)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
 };
 
 export const calculateOpenDataOverview = (response: CkanSearchResponse, now = new Date()): OpenDataOverview => {
