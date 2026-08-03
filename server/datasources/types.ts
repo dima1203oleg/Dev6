@@ -6,6 +6,11 @@ export interface Provenance {
   cached: boolean;
   stale: boolean;
   license?: string;
+  request?: {
+    method: "GET" | "POST";
+    query?: string;
+    body?: Record<string, unknown>;
+  };
 }
 
 export interface DataSourceError {
@@ -16,8 +21,10 @@ export interface DataSourceError {
 }
 
 export type DataSourceResult<T> =
-  | { ok: true; data: T; provenance: Provenance }
+  | { ok: true; data: T; provenance: Provenance; dependencies?: DataSourceDependency[] }
   | { ok: false; error: DataSourceError };
+
+export type DataSourceDependency = Provenance | { source: string; error: DataSourceError };
 
 export interface FetchOptions {
   timeoutMs?: number;
@@ -91,6 +98,26 @@ export interface ProzorroSearchResponse {
   per_page: number;
   total: number;
   data: ProzorroTenderSummary[];
+}
+
+export interface ProzorroRecentResponse {
+  records: ProzorroTenderSummary[];
+  unavailableRecords: number;
+}
+
+export interface OpenDataSearchDataset {
+  id: string;
+  title: string;
+  organizationTitle?: string;
+  metadataModified?: string;
+  resourceFormats: string[];
+  url: string;
+}
+
+export interface OpenDataSearchData {
+  query: string;
+  total: number;
+  datasets: OpenDataSearchDataset[];
 }
 
 export interface ProzorroTenderDetail {

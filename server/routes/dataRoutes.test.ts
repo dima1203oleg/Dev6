@@ -28,7 +28,7 @@ vi.mock("../datasources/ckan", () => ({
 }));
 vi.mock("../datasources/prozorro", () => ({
   search: vi.fn(async () => ok({ page: 0, per_page: 1, total: 1, data: [] }, "prozorro")),
-  recent: vi.fn(async () => ok([], "prozorro")),
+  recent: vi.fn(async () => ok({ records: [], unavailableRecords: 0 }, "prozorro")),
   detail: vi.fn(async () => ok({ tenderID: "UA-1" }, "prozorro")),
 }));
 vi.mock("../datasources/wikipedia", () => ({
@@ -63,5 +63,15 @@ describe("data routes", () => {
     expect(response.status).toBe(503);
     expect(response.body.ok).toBe(false);
     expect(response.body.error.code).toBe("timeout");
+  });
+
+  it("normalizes CKAN search and exposes hydrated recent metadata", async () => {
+    const { app } = await import("../../server");
+    const openData = await request(app).get("/api/v1/data/opendata/search?q=ua&rows=1");
+    expect(openData.status).toBe(200);
+    expect(openData.body.data).toMatchObject({ query: "ua", total: 1, datasets: [] });
+    const recent = await request(app).get("/api/v1/data/procurement/recent?rows=1");
+    expect(recent.status).toBe(200);
+    expect(recent.body.data).toEqual({ records: [], unavailableRecords: 0 });
   });
 });

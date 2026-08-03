@@ -71,7 +71,11 @@ export const fetchJson = async <T>(
 };
 
 export const toDataSourceError = (error: unknown, sourceUrl: string): DataSourceError => ({
-  code: error instanceof UpstreamError ? error.code : "upstream_error",
+  code: error instanceof UpstreamError
+    ? error.code
+    : error instanceof Error && /invalid|missing|not an object/i.test(error.message)
+      ? "parse_error"
+      : "upstream_error",
   message: error instanceof Error ? error.message : "Upstream request failed",
   sourceUrl,
   attemptedAt: new Date().toISOString(),

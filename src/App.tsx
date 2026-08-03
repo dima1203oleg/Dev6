@@ -19,6 +19,8 @@ import AdminBackOffice from "./components/AdminBackOffice";
 import AutonomousFactory from "./components/AutonomousFactory";
 import AdverseIntelligenceTab from "./components/AdverseIntelligenceTab";
 import AuditLogViewer from "./components/AuditLogViewer";
+import ProcurementAnalyticsTab from "./components/ProcurementAnalyticsTab";
+import OpenDataAnalyticsTab from "./components/OpenDataAnalyticsTab";
 
 // Dynamic Code Splitting via React.lazy() for Client Performance
 const OsintWorkbench = React.lazy(() => import("./components/OsintWorkbench"));
@@ -109,7 +111,9 @@ type TabId =
   | "youscore"
   | "opendatabot"
   | "predator-intel"
-  | "ckan-explorer";
+  | "ckan-explorer"
+  | "procurement"
+  | "open-data";
 
 export default function App() {
   const [ecosystem, setEcosystem] = useState<"user" | "admin">("user");
@@ -1116,6 +1120,8 @@ export default function App() {
             case "media-forensics": return <MediaForensicsTab />;
             case "data-ingestion": return <DataIngestionTab />;
             case "ckan-explorer": return <CKANExplorerTab />;
+            case "procurement": return <ProcurementAnalyticsTab />;
+            case "open-data": return <OpenDataAnalyticsTab />;
             case "youscore": return <YouScoreTab />;
             case "opendatabot": return <OpendatabotTab />;
             case "predator-intel":
@@ -1864,6 +1870,8 @@ const renderDesktopLayout = () => {
                       title: "Головне",
                       items: [
                         { id: "dashboard", label: "Дашборд", icon: LayoutDashboard, color: "text-blue-400" },
+                        { id: "procurement", label: "Публічні закупівлі", icon: Landmark, color: "text-emerald-400" },
+                        { id: "open-data", label: "Відкриті дані", icon: Database, color: "text-emerald-400" },
                         { id: "investigation-workspace", label: "Мої Розслідування", icon: Briefcase, color: "text-blue-400" },
                         { id: "live-analytical-center", label: "ШІ Аналітика", icon: Bot, color: "text-blue-400" },
                       ]

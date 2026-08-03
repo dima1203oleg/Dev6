@@ -44,6 +44,8 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@firebase/eslint-plugin-security-rules": "^0.0.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/d3": "^7.4.3",
     "@types/d3-geo": "^3.1.0",
     "@types/d3-scale": "^4.0.9",
@@ -53,7 +55,7 @@
     "@types/three": "^0.185.1",
     "@types/ws": "^8.18.1",
     "eslint": "^10.7.0",
-    "jsdom": "^29.1.1",
+    "jsdom": "^26.1.0",
     "supertest": "^7.2.2",
     "vite": "^6.2.3",
     "vitest": "^4.1.10"

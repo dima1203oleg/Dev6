@@ -1,6 +1,6 @@
 import { cachedFetch } from "../helpers";
 import { TtlCache } from "../cache";
-import { DataSourceResult, WikipediaSearchItem, WikipediaSearchResponse } from "../types";
+import { DataSourceResult, WikipediaSearchItem } from "../types";
 
 const cache = new TtlCache<WikipediaSearchItem[]>(300000);
 

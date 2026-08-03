@@ -5,6 +5,8 @@ export const SIDEBAR_GROUPS = [
     items: [
       { id: 'live-analytical-center', label: 'Живе ШІ-Ядро (Live)', badge: 'НАЖИВО', badgeColor: 'emerald' },
       { id: 'dashboard', label: 'Аналітичний Дашборд', badge: 'НАЖИВО', badgeColor: 'emerald' },
+      { id: 'procurement', label: 'Публічні закупівлі', badge: 'НАЖИВО', badgeColor: 'emerald' },
+      { id: 'open-data', label: 'Відкриті дані', badge: 'НАЖИВО', badgeColor: 'emerald' },
       { id: 'osint', label: 'OSINT Пошук', badge: 'РИЗИК', badgeColor: 'rose' },
       { id: 'person-profiler', label: 'Досьє & Портрет Особи', badge: 'НОМІНАЛИ', badgeColor: 'rose' }
     ]

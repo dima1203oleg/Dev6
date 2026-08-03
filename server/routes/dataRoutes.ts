@@ -6,8 +6,18 @@ import * as ckan from "../datasources/ckan";
 import * as prozorro from "../datasources/prozorro";
 import * as wikipedia from "../datasources/wikipedia";
 import { DataSourceResult } from "../datasources/types";
+import { DataSourceError, OpenDataSearchData } from "../datasources/types";
+import { TtlCache } from "../datasources/cache";
 
 const router = Router();
+const sourceStatusCache = new TtlCache<Array<{
+  source: string;
+  status: "online" | "unavailable";
+  checkedAt: string;
+  sourceUrl: string;
+  stale: boolean;
+  error?: DataSourceError;
+}>>(60000);
 
 const sendResult = <T>(res: Response, result: DataSourceResult<T>): void => {
   if (result.ok) {
@@ -30,31 +40,49 @@ const parseInteger = (value: unknown, fallback: number, min: number, max: number
 };
 
 router.get("/sources", async (_req: Request, res: Response) => {
+  const cached = sourceStatusCache.read("reachability");
+  if (cached && !cached.stale) {
+    res.json({
+      ok: true,
+      data: cached.value,
+      provenance: {
+        source: "aggregator",
+        sourceName: "Predator Analytics data source reachability",
+        sourceUrl: "multiple upstream sources",
+        fetchedAt: cached.fetchedAt,
+        cached: true,
+        stale: false,
+      },
+    });
+    return;
+  }
   const checks = await Promise.all([
     getRates(),
     getCryptoSpot(),
     ckan.search("", 1),
-    prozorro.recent(1),
+    prozorro.probe(),
     wikipedia.search("Україна", 1),
   ]);
   const names = ["nbu", "coingecko", "ckan", "prozorro", "wikipedia"];
+  const data = checks.map((check, index) => ({
+    source: names[index],
+    status: check.ok ? "online" as const : "unavailable" as const,
+    checkedAt: check.ok ? check.provenance.fetchedAt : resultError(check).error.attemptedAt,
+    sourceUrl: check.ok ? check.provenance.sourceUrl : resultError(check).error.sourceUrl,
+    stale: check.ok ? check.provenance.stale : false,
+    error: check.ok ? undefined : resultError(check).error,
+  }));
+  const stored = sourceStatusCache.write("reachability", data);
   res.json({
     ok: true,
-    data: checks.map((check, index) => ({
-      source: names[index],
-      status: check.ok ? "online" : "unavailable",
-      checkedAt: check.ok ? check.provenance.fetchedAt : resultError(check).error.attemptedAt,
-      sourceUrl: check.ok ? check.provenance.sourceUrl : resultError(check).error.sourceUrl,
-      stale: check.ok ? check.provenance.stale : false,
-      error: check.ok ? undefined : resultError(check).error,
-    })),
+    data: stored.value,
     provenance: {
       source: "aggregator",
       sourceName: "Predator Analytics data source reachability",
       sourceUrl: "multiple upstream sources",
       fetchedAt: new Date().toISOString(),
-      cached: checks.some((check) => check.ok && check.provenance.cached),
-      stale: checks.some((check) => check.ok && check.provenance.stale),
+      cached: false,
+      stale: false,
     },
   });
 });
@@ -102,7 +130,26 @@ router.get("/opendata/search", async (req: Request, res: Response) => {
     res.status(400).json({ ok: false, error: { code: "invalid_rows", message: "rows must be an integer from 1 to 100", sourceUrl: "", attemptedAt: new Date().toISOString() } });
     return;
   }
-  sendResult(res, await ckan.search(query, rows));
+  const result = await ckan.search(query, rows);
+  if (!result.ok) {
+    sendResult(res, result);
+    return;
+  }
+  const data: OpenDataSearchData = {
+    query,
+    total: result.data.result.count,
+    datasets: result.data.result.results.map((dataset) => ({
+      id: dataset.id,
+      title: dataset.title,
+      organizationTitle: dataset.organization?.title,
+      metadataModified: dataset.metadata_modified,
+      resourceFormats: (dataset.resources ?? [])
+        .map((resource) => resource.format)
+        .filter((format): format is string => Boolean(format)),
+      url: `https://data.gov.ua/dataset/${encodeURIComponent(dataset.name)}`,
+    })),
+  };
+  res.json({ ok: true, data, provenance: result.provenance });
 });
 
 router.get("/procurement/search", async (req: Request, res: Response) => {
@@ -145,7 +192,12 @@ router.get("/procurement/recent", async (req: Request, res: Response) => {
     res.status(400).json({ ok: false, error: { code: "invalid_rows", message: "rows must be an integer from 1 to 100", sourceUrl: "", attemptedAt: new Date().toISOString() } });
     return;
   }
-  sendResult(res, await prozorro.recent(rows));
+  const result = await prozorro.recent(rows);
+  if (!result.ok) {
+    sendResult(res, result);
+    return;
+  }
+  res.json(result);
 });
 
 export default router;
