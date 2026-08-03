@@ -21,7 +21,6 @@ export interface YouScoreResponse<T = any> {
   evidence?: {
     evidenceId: string;
     contentHash: string;
-    schemaVersion: string;
   };
 }
 

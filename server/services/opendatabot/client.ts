@@ -3,6 +3,7 @@ import { OpendatabotError } from "./errors";
 import { withRetry } from "./retry";
 import { OpendatabotResponse } from "./types";
 import { executeWithConnectorLogging } from "../../connectors/connectorLogger";
+import { buildEvidence } from "../evidence";
 
 export class OpendatabotClient {
   private static instance: OpendatabotClient;
@@ -120,11 +121,7 @@ export class OpendatabotClient {
         retrievedAt: new Date().toISOString(),
         data: responseData,
         freshness: "FRESH",
-        evidence: {
-          evidenceId: `ev_odb_live_${Math.random().toString(36).substring(2, 11)}`,
-          contentHash: `sha256-odb-live-${Math.random().toString(36).substring(2, 11)}`,
-          schemaVersion: "v3.1",
-        },
+        evidence: buildEvidence(responseData),
       };
     } catch (err: any) {
       console.error(`[OpendatabotClient] Error querying ${apiPath}:`, err);

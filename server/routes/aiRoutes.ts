@@ -106,27 +106,4 @@ router.post("/extract-document", checkPermission("ai.use"), async (req: Authenti
   }
 });
 
-/**
- * 2.5 PREDATOR Voice Profile & Google TTS Config Endpoint
- */
-router.get("/voice-profile", checkPermission("ai.use"), async (req: AuthenticatedRequest, res) => {
-  try {
-    const { SERVER_PREDATOR_VOICE_PROFILE, buildSystemVoiceInstruction } =
-      await import("../services/predatorVoiceProfile");
-    res.json({
-      status: "SUCCESS",
-      profile: SERVER_PREDATOR_VOICE_PROFILE,
-      systemInstruction: buildSystemVoiceInstruction(),
-      recommendedVoices: [
-        { model: "gemini-2.5-flash-live", voice: "Charon", language: "uk-UA / en-US", compatibilityScore: 96 },
-        { model: "google-cloud-tts", voice: "uk-UA-Wavenet-A", language: "uk-UA", compatibilityScore: 92 },
-        { model: "google-cloud-tts", voice: "en-US-Neural2-D", language: "en-US", compatibilityScore: 90 },
-        { model: "google-cloud-tts", voice: "uk-UA-Standard-A", language: "uk-UA", compatibilityScore: 85 },
-      ],
-    });
-  } catch (err: any) {
-    res.status(500).json({ error: { code: "VOICE_PROFILE_ERROR", message: err.message } });
-  }
-});
-
 export default router;

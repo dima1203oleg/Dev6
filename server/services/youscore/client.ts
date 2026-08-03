@@ -2,6 +2,7 @@ import { config } from "./config";
 import { YouScoreError } from "./errors";
 import { withRetry } from "./retry";
 import { YouScoreResponse } from "./types";
+import { buildEvidence } from "../evidence";
 import { executeWithConnectorLogging } from "../../connectors/connectorLogger";
 
 export class YouScoreClient {
@@ -113,11 +114,7 @@ export class YouScoreClient {
         retrievedAt: new Date().toISOString(),
         data: responseData,
         freshness: "FRESH",
-        evidence: {
-          evidenceId: `ev_live_${Math.random().toString(36).substring(2, 11)}`,
-          contentHash: `sha256-live-${Math.random().toString(36).substring(2, 11)}`,
-          schemaVersion: "v1.2.4",
-        },
+        evidence: buildEvidence(responseData),
       };
     } catch (err: any) {
       console.error(`[YouScoreClient] Error querying ${apiPath}:`, err);

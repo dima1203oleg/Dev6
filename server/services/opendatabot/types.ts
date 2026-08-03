@@ -21,7 +21,6 @@ export interface OpendatabotResponse<T = any> {
   evidence?: {
     evidenceId: string;
     contentHash: string;
-    schemaVersion: string;
   };
 }
 
