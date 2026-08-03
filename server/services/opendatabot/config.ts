@@ -1,5 +1,5 @@
 export const config = {
-  OPENDATABOT_API_KEY: process.env.OPENDATABOT_API_KEY || "RnvaDsdfcdV2",
+  OPENDATABOT_API_KEY: process.env.OPENDATABOT_API_KEY || "",
   OPENDATABOT_BASE_URL: process.env.OPENDATABOT_API_BASE_URL || "https://api.opendatabot.ua",
   OPENDATABOT_TIMEOUT_MS: parseInt(process.env.OPENDATABOT_TIMEOUT_MS || "30000", 10),
   OPENDATABOT_CONNECT_TIMEOUT_MS: parseInt(process.env.OPENDATABOT_CONNECT_TIMEOUT_MS || "10000", 10),

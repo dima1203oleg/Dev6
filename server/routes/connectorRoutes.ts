@@ -59,18 +59,18 @@ router.get("/health", checkPermission("source.read"), (req, res) => {
   const failedQueries = connectorMetrics.reduce((acc, m) => acc + m.failedRequests, 0);
   const avgLatency = connectorMetrics.length > 0
     ? Math.round(connectorMetrics.reduce((acc, m) => acc + m.averageLatencyMs, 0) / connectorMetrics.length)
-    : 42;
+    : 0;
 
   res.json({
     timestamp: new Date().toISOString(),
-    overallHealth: "HEALTHY",
-    activeConnectors: 3,
+    overallHealth: connectorMetrics.length > 0 ? "HEALTHY" : "NO_DATA",
+    activeConnectors: connectorMetrics.length,
     degradedConnectors: 0,
     metrics: {
       averageLatencyMs: avgLatency,
       circuitBreakerState: "CLOSED",
-      totalQueries24h: 14205 + totalQueries,
-      failedQueries24h: 12 + failedQueries,
+      totalQueries24h: totalQueries,
+      failedQueries24h: failedQueries,
       connectorBreakdown: connectorMetrics
     }
   });
@@ -105,4 +105,3 @@ router.get("/metrics", checkPermission("source.read"), (req, res) => {
 });
 
 export default router;
-

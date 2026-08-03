@@ -10,7 +10,7 @@ export interface OpendatabotRequest {
 }
 
 export interface OpendatabotResponse<T = any> {
-  source: "Opendatabot Live API" | "Opendatabot Sandbox Emulator";
+  source: "Opendatabot Live API";
   status: "SUCCESS" | "RATE_LIMITED" | "ERROR";
   connected: boolean;
   endpoint: string;

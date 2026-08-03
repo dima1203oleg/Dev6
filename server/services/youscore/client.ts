@@ -2,7 +2,7 @@ import { config } from "./config";
 import { YouScoreError } from "./errors";
 import { withRetry } from "./retry";
 import { YouScoreResponse } from "./types";
-import { executeWithConnectorLogging, logConnectorEvent } from "../../connectors/connectorLogger";
+import { executeWithConnectorLogging } from "../../connectors/connectorLogger";
 
 export class YouScoreClient {
   private static instance: YouScoreClient;
@@ -91,52 +91,10 @@ export class YouScoreClient {
   public async query<T = any>(
     endpoint: string,
     contractorCode: string,
-    apiPath: string,
-    emulatorFallbackFn?: () => T
+    apiPath: string
   ): Promise<YouScoreResponse<T>> {
-    const hasKey = !!config.YOUSCORE_API_KEY;
-
-    if (!hasKey) {
-      if (emulatorFallbackFn) {
-        const start = Date.now();
-        const fallbackData = emulatorFallbackFn();
-        const latencyMs = Date.now() - start;
-
-        // Structured logging for emulated sandbox calls
-        logConnectorEvent({
-          requestId: `req-youscore-emulated-${Date.now()}`,
-          connectorId: "youcontrol-api",
-          connectorName: "YouControl Delta Ingestion API (Sandbox)",
-          durationMs: latencyMs,
-          endpoint: `/youcontrol/sandbox/${apiPath}`,
-          method: "GET",
-          request: { queryParams: { contractorCode, endpoint } },
-          response: {
-            statusCode: 200,
-            success: true,
-            dataPreview: fallbackData
-          },
-          isEmulated: true
-        });
-
-        return {
-          source: "YouScore Sandbox Emulator",
-          status: "SUCCESS",
-          connected: false,
-          endpoint,
-          contractorCode,
-          retrievedAt: new Date().toISOString(),
-          data: fallbackData,
-          freshness: "FRESH",
-          evidence: {
-            evidenceId: `ev_${Math.random().toString(36).substring(2, 11)}`,
-            contentHash: "sha256-emulated-mock-data-hash",
-            schemaVersion: "v1.2.4"
-          }
-        };
-      } else {
-        throw new YouScoreError("AUTHENTICATION_ERROR", "YouScore API Key missing and no emulator fallback provided.");
-      }
+    if (!config.YOUSCORE_API_KEY) {
+      throw new YouScoreError("AUTHENTICATION_ERROR", "credentials_missing: YOUSCORE_API_KEY or YOUCONTROL_API_KEY is not configured");
     }
 
     // Call real API using retry policy

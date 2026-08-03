@@ -2,7 +2,7 @@ import { config } from "./config";
 import { OpendatabotError } from "./errors";
 import { withRetry } from "./retry";
 import { OpendatabotResponse } from "./types";
-import { executeWithConnectorLogging, logConnectorEvent } from "../../connectors/connectorLogger";
+import { executeWithConnectorLogging } from "../../connectors/connectorLogger";
 
 export class OpendatabotClient {
   private static instance: OpendatabotClient;
@@ -91,53 +91,10 @@ export class OpendatabotClient {
   public async query<T = any>(
     endpoint: string,
     contractorCode: string,
-    apiPath: string,
-    emulatorFallbackFn?: () => T
+    apiPath: string
   ): Promise<OpendatabotResponse<T>> {
-    // If the key is not configured or is the default, and we have an emulator fallback, we use the fallback
-    const hasRealKey = !!process.env.OPENDATABOT_API_KEY && process.env.OPENDATABOT_API_KEY !== "RnvaDsdfcdV2";
-
-    if (!hasRealKey) {
-      if (emulatorFallbackFn) {
-        const start = Date.now();
-        const fallbackData = emulatorFallbackFn();
-        const latencyMs = Date.now() - start;
-
-        // Structured logging for emulated sandbox calls
-        logConnectorEvent({
-          requestId: `req-odb-emulated-${Date.now()}`,
-          connectorId: "opendatabot-api",
-          connectorName: "OpenDataBot Enterprise API (Sandbox)",
-          durationMs: latencyMs,
-          endpoint: `/opendatabot/sandbox/${apiPath}`,
-          method: "GET",
-          request: { queryParams: { contractorCode, endpoint } },
-          response: {
-            statusCode: 200,
-            success: true,
-            dataPreview: fallbackData
-          },
-          isEmulated: true
-        });
-
-        return {
-          source: "Opendatabot Sandbox Emulator",
-          status: "SUCCESS",
-          connected: false,
-          endpoint,
-          contractorCode,
-          retrievedAt: new Date().toISOString(),
-          data: fallbackData,
-          freshness: "FRESH",
-          evidence: {
-            evidenceId: `ev_odb_emulated_${Math.random().toString(36).substring(2, 11)}`,
-            contentHash: "sha256-emulated-opendatabot-data-hash",
-            schemaVersion: "v3.1"
-          }
-        };
-      } else {
-        throw new OpendatabotError("AUTHENTICATION_ERROR", "Opendatabot API Key missing and no emulator fallback provided.");
-      }
+    if (!config.OPENDATABOT_API_KEY) {
+      throw new OpendatabotError("AUTHENTICATION_ERROR", "credentials_missing: OPENDATABOT_API_KEY is not configured");
     }
 
     const retryRef = { count: 0 };

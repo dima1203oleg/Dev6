@@ -24,13 +24,12 @@ export * from "./audit";
 export async function queryOpendatabot<T = any>(
   endpoint: string,
   contractorCode: string,
-  priority: "P0" | "P1" | "P2" | "P3" | "P4" = "P0",
-  emulatorFallbackFn?: () => T
+  priority: "P0" | "P1" | "P2" | "P3" | "P4" = "P0"
 ): Promise<OpendatabotResponse<T>> {
   const code = (contractorCode || "").trim();
   const reqHash = deduplicator.generateHash(endpoint, code);
   const startTime = Date.now();
-  const requestId = `req_odb_${Math.random().toString(36).substring(2, 11)}`;
+  const requestId = `req_odb_${crypto.randomUUID()}`;
 
   // List of endpoint mappings inside Opendatabot REST specification
   const endpointMappings: Record<string, string> = {
@@ -49,7 +48,7 @@ export async function queryOpendatabot<T = any>(
   try {
     const result = await deduplicator.executeCoalesced(reqHash, async () => {
       return await governor.submit(endpoint, code, priority, async () => {
-        return await opendatabotClient.query<T>(endpoint, code, apiPath, emulatorFallbackFn);
+        return await opendatabotClient.query<T>(endpoint, code, apiPath);
       });
     });
 

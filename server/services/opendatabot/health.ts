@@ -31,7 +31,7 @@ export class OpendatabotHealthService {
 
     if (!hasKey) {
       status = "NOT_CONFIGURED";
-      message = "API key not configured in environment. PREDATOR is running in Sandbox Emulator Mode.";
+      message = "API key not configured in environment.";
     }
 
     return {
@@ -42,15 +42,15 @@ export class OpendatabotHealthService {
       timestamp: new Date().toISOString(),
       circuitBreaker: "CLOSED",
       rateLimitingLevel: "OK",
-      datasets: {
-        edr: "AVAILABLE",
-        court_decisions: "AVAILABLE",
-        debtors: "AVAILABLE",
-        enforcements: "AVAILABLE",
-        real_estate: "AVAILABLE",
-        sanctions: "AVAILABLE",
-        pep: "AVAILABLE"
-      }
+      datasets: hasKey ? {
+        edr: "UNKNOWN",
+        court_decisions: "UNKNOWN",
+        debtors: "UNKNOWN",
+        enforcements: "UNKNOWN",
+        real_estate: "UNKNOWN",
+        sanctions: "UNKNOWN",
+        pep: "UNKNOWN"
+      } : {}
     };
   }
 }

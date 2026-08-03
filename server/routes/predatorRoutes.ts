@@ -93,17 +93,15 @@ router.post(
     try {
       const dsl = req.body;
       const plan = buildSafeQueryPlan(dsl);
-      
-      res.json({
-        status: "SUCCESS",
-        queryPlan: plan,
-        records: [
-          { id: "rec-1", edrpou: "42345678", name: "ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ'", status: "ДІЮЧИЙ", date: "2026-07-20" },
-          { id: "rec-2", edrpou: "3111724753", name: "ФОП Кізима Дмитро Миколайович", status: "ДІЮЧИЙ", date: "2026-07-22" }
-        ],
-        totalRecords: 2,
-        maxLimitEnforced: plan.limitEnforced,
-        executionTimeMs: 14
+      res.status(503).json({
+        ok: false,
+        error: {
+          code: "source_unavailable",
+          message: "Query DSL execution requires a configured live CKAN resource",
+          sourceUrl: "/api/v1/predator/query-dsl",
+          attemptedAt: new Date().toISOString()
+        },
+        queryPlan: plan
       });
     } catch (err: any) {
       res.status(500).json({ error: { code: "QUERY_PLAN_FAILED", message: err.message } });

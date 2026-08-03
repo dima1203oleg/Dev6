@@ -24,13 +24,12 @@ export * from "./audit";
 export async function queryYouScore<T = any>(
   endpoint: string,
   contractorCode: string,
-  priority: "P0" | "P1" | "P2" | "P3" | "P4" = "P0",
-  emulatorFallbackFn?: () => T
+  priority: "P0" | "P1" | "P2" | "P3" | "P4" = "P0"
 ): Promise<YouScoreResponse<T>> {
   const code = (contractorCode || "").trim();
   const reqHash = deduplicator.generateHash(endpoint, code);
   const startTime = Date.now();
-  const requestId = `req_${Math.random().toString(36).substring(2, 11)}`;
+  const requestId = `req_${crypto.randomUUID()}`;
 
   // List of endpoint mappings inside YouScore OpenAPI specification
   const endpointMappings: Record<string, string> = {
@@ -60,7 +59,7 @@ export async function queryYouScore<T = any>(
     const result = await deduplicator.executeCoalesced(reqHash, async () => {
       // 2. Submit task into the Request Governor Queue to enforce concurrency limits and rate limits (Section 8, 9, 12, 13)
       return await governor.submit(endpoint, code, priority, async () => {
-        return await youScoreClient.query<T>(endpoint, code, apiPath, emulatorFallbackFn);
+        return await youScoreClient.query<T>(endpoint, code, apiPath);
       });
     });
 

@@ -31,7 +31,7 @@ export class YouScoreHealthService {
 
     if (!hasKey) {
       status = "NOT_CONFIGURED";
-      message = "API key not configured in environment. PREDATOR is running in Sandbox Emulator Mode.";
+      message = "API key not configured in environment.";
     }
 
     return {
@@ -42,15 +42,15 @@ export class YouScoreHealthService {
       timestamp: new Date().toISOString(),
       circuitBreaker: "CLOSED",
       rateLimitingLevel: "OK",
-      datasets: {
-        usr: "AVAILABLE",
-        tax: "AVAILABLE",
-        court: "AVAILABLE",
-        sanctions: "AVAILABLE",
-        pep: "AVAILABLE",
-        property: "RESTRICTED",
-        vehicles: "AVAILABLE"
-      }
+      datasets: hasKey ? {
+        usr: "UNKNOWN",
+        tax: "UNKNOWN",
+        court: "UNKNOWN",
+        sanctions: "UNKNOWN",
+        pep: "UNKNOWN",
+        property: "UNKNOWN",
+        vehicles: "UNKNOWN"
+      } : {}
     };
   }
 }

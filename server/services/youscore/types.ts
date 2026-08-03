@@ -10,7 +10,7 @@ export interface YouScoreRequest {
 }
 
 export interface YouScoreResponse<T = any> {
-  source: "YouScore Live OpenAPI" | "YouScore Sandbox Emulator";
+  source: "YouScore Live OpenAPI";
   status: "SUCCESS" | "RATE_LIMITED" | "ERROR";
   connected: boolean;
   endpoint: string;

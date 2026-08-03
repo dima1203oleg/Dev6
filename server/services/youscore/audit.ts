@@ -18,7 +18,7 @@ export class YouScoreAuditHub {
   public logTransaction(tx: Omit<YouScoreTransaction, "id" | "timestamp">): void {
     const transaction: YouScoreTransaction = {
       ...tx,
-      id: `tx_${Math.random().toString(36).substring(2, 11)}`,
+      id: `tx_${crypto.randomUUID()}`,
       timestamp: new Date().toISOString()
     };
     
@@ -31,7 +31,7 @@ export class YouScoreAuditHub {
   public logAudit(audit: Omit<YouScoreAuditLog, "auditId" | "timestamp">): void {
     const log: YouScoreAuditLog = {
       ...audit,
-      auditId: `audit_${Math.random().toString(36).substring(2, 11)}`,
+      auditId: `audit_${crypto.randomUUID()}`,
       timestamp: new Date().toISOString()
     };
 
@@ -50,20 +50,20 @@ export class YouScoreAuditHub {
     const successes = this.transactions.filter(t => t.status >= 200 && t.status < 300).length;
     const failures = total - successes;
     const latencySum = this.transactions.reduce((sum, t) => sum + t.latencyMs, 0);
-    const avgLatency = total > 0 ? Math.round(latencySum / total) : 125;
+    const avgLatency = total > 0 ? Math.round(latencySum / total) : 0;
     const cacheHits = this.transactions.filter(t => t.cache === "HIT").length;
-    const cacheHitRatio = total > 0 ? `${Math.round((cacheHits / total) * 100)}%` : "74.2%";
+    const cacheHitRatio = total > 0 ? `${Math.round((cacheHits / total) * 100)}%` : "0%";
 
     return {
-      requests_total: total + 1248, // offset for mock baseline
-      requests_success_total: successes + 1244,
-      requests_failed_total: failures + 4,
+      requests_total: total,
+      requests_success_total: successes,
+      requests_failed_total: failures,
       rate_limit_429_total: this.transactions.filter(t => t.status === 429).length,
       average_latency_ms: avgLatency,
       circuit_breaker_state: "CLOSED",
       cache_hit_ratio: cacheHitRatio,
-      cache_hits: cacheHits + 926,
-      cache_misses: (total - cacheHits) + 322
+      cache_hits: cacheHits,
+      cache_misses: total - cacheHits
     };
   }
 }

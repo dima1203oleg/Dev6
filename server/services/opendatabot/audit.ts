@@ -18,7 +18,7 @@ export class OpendatabotAuditHub {
   public logTransaction(tx: Omit<OpendatabotTransaction, "id" | "timestamp">): void {
     const transaction: OpendatabotTransaction = {
       ...tx,
-      id: `tx_odb_${Math.random().toString(36).substring(2, 11)}`,
+      id: `tx_odb_${crypto.randomUUID()}`,
       timestamp: new Date().toISOString()
     };
     
@@ -31,7 +31,7 @@ export class OpendatabotAuditHub {
   public logAudit(audit: Omit<OpendatabotAuditLog, "auditId" | "timestamp">): void {
     const log: OpendatabotAuditLog = {
       ...audit,
-      auditId: `audit_odb_${Math.random().toString(36).substring(2, 11)}`,
+      auditId: `audit_odb_${crypto.randomUUID()}`,
       timestamp: new Date().toISOString()
     };
 
@@ -50,20 +50,20 @@ export class OpendatabotAuditHub {
     const successes = this.transactions.filter(t => t.status >= 200 && t.status < 300).length;
     const failures = total - successes;
     const latencySum = this.transactions.reduce((sum, t) => sum + t.latencyMs, 0);
-    const avgLatency = total > 0 ? Math.round(latencySum / total) : 110;
+    const avgLatency = total > 0 ? Math.round(latencySum / total) : 0;
     const cacheHits = this.transactions.filter(t => t.cache === "HIT").length;
-    const cacheHitRatio = total > 0 ? `${Math.round((cacheHits / total) * 100)}%` : "81.5%";
+    const cacheHitRatio = total > 0 ? `${Math.round((cacheHits / total) * 100)}%` : "0%";
 
     return {
-      requests_total: total + 3512, // offset baseline for opendatabot
-      requests_success_total: successes + 3505,
-      requests_failed_total: failures + 7,
+      requests_total: total,
+      requests_success_total: successes,
+      requests_failed_total: failures,
       rate_limit_429_total: this.transactions.filter(t => t.status === 429).length,
       average_latency_ms: avgLatency,
       circuit_breaker_state: "CLOSED",
       cache_hit_ratio: cacheHitRatio,
-      cache_hits: cacheHits + 2860,
-      cache_misses: (total - cacheHits) + 652
+      cache_hits: cacheHits,
+      cache_misses: total - cacheHits
     };
   }
 }

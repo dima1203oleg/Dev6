@@ -25,7 +25,7 @@ export class GlobalHealthService {
     try {
       // Small dummy request to check connectivity if needed, 
       // but usually we just check the client configuration and last error
-      const status = process.env.OPENDATABOT_API_KEY ? "LIVE" : "DEGRADED";
+      const status = process.env.OPENDATABOT_API_KEY ? "LIVE" : "OFFLINE";
       return {
         name: "Opendatabot API",
         status,
@@ -40,7 +40,7 @@ export class GlobalHealthService {
   private async checkYouScore(): Promise<ServiceHealth> {
     const start = Date.now();
     try {
-      const status = process.env.YOUSCORE_API_KEY ? "LIVE" : "DEGRADED";
+      const status = process.env.YOUSCORE_API_KEY ? "LIVE" : "OFFLINE";
       return {
         name: "YouScore API",
         status,
@@ -56,7 +56,7 @@ export class GlobalHealthService {
     const start = Date.now();
     return {
       name: "Primary Database",
-      status: "LIVE",
+      status: "OFFLINE",
       latency: Date.now() - start,
       lastCheck: new Date().toISOString()
     };

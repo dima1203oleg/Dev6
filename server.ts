@@ -13,6 +13,7 @@ import aiRoutes from "./server/routes/aiRoutes";
 import connectorRoutes from "./server/routes/connectorRoutes";
 import auditRoutes from "./server/routes/auditRoutes";
 import mediaRoutes from "./server/routes/mediaRoutes";
+import dataRoutes from "./server/routes/dataRoutes";
 import { createRateLimiter } from "./server/middleware/rateLimiter";
 
 import { GoogleGenAI, Type, ThinkingLevel, GenerateVideosOperation } from "@google/genai";
@@ -34,6 +35,7 @@ app.use("/api/v1/ai", aiRoutes);
 app.use("/api/v1/connectors", connectorRoutes);
 app.use("/api/v1/audit", auditRoutes);
 app.use("/api/v1/media", mediaRoutes);
+app.use("/api/v1/data", dataRoutes);
 
 // Initialize CKAN Routes
 setupCkanRoutes(app);
@@ -562,6 +564,9 @@ app.post("/api/opendatabot/search", async (req, res) => {
     if (!query && !code) {
       return res.status(400).json({ error: "Потрібно вказати код ЄДРПОУ/ІПН або пошуковий запит" });
     }
+    if (!effectiveKey) {
+      return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "OPENDATABOT_API_KEY is not configured", sourceUrl: "/api/opendatabot/search", attemptedAt: new Date().toISOString() } });
+    }
 
     const searchTerm = (code || query || "").trim();
 
@@ -655,6 +660,9 @@ app.post("/api/youcontrol/search", async (req, res) => {
     if (!query && !code) {
       return res.status(400).json({ error: "Потрібно вказати код ЄДРПОУ або ПІБ для YouControl" });
     }
+    if (!effectiveKey) {
+      return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "YOUCONTROL_API_KEY is not configured", sourceUrl: "/api/youcontrol/search", attemptedAt: new Date().toISOString() } });
+    }
 
     const searchTerm = (code || query || "").trim();
 
@@ -742,6 +750,9 @@ app.post("/api/youscore/query", async (req, res) => {
     }
     if (!code) {
       return res.status(400).json({ error: "Необхідно вказати код контрагента (ЄДРПОУ або ІПН)" });
+    }
+    if (!process.env.YOUSCORE_API_KEY && !process.env.YOUCONTROL_API_KEY) {
+      return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "YOUSCORE_API_KEY or YOUCONTROL_API_KEY is not configured", sourceUrl: "/api/youscore/query", attemptedAt: new Date().toISOString() } });
     }
 
     const isDmitro = code === "3111724753" || code.toLowerCase().includes("кізима") || code.toLowerCase().includes("dmitro");
@@ -991,7 +1002,7 @@ app.post("/api/youscore/query", async (req, res) => {
       return responseData;
     };
 
-    const response = await queryYouScore(endpoint, code, "P0", emulatorFallbackFn);
+    const response = await queryYouScore(endpoint, code, "P0");
     res.json(response);
 
   } catch (err: any) {
@@ -1011,12 +1022,15 @@ app.get("/health/youscore", async (req, res) => {
 
 // YouScore Admin & Telemetry Status (Section 42 & 60)
 app.get("/api/youscore/status", (req, res) => {
+  if (!process.env.YOUSCORE_API_KEY && !process.env.YOUCONTROL_API_KEY) {
+    return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "YOUSCORE_API_KEY or YOUCONTROL_API_KEY is not configured", sourceUrl: "/api/youscore/status", attemptedAt: new Date().toISOString() } });
+  }
   const metrics = auditHub.getMetrics();
   const recentTransactions = auditHub.getRecentTransactions();
   res.json({
     status: "OK",
-    apiAvailability: "99.98%",
-    lastSuccessfulSync: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
+    apiAvailability: null,
+    lastSuccessfulSync: recentTransactions[0]?.timestamp ?? null,
     rateLimit: {
       limitPerMinute: 200,
       remainingPerMinute: 198,
@@ -1025,26 +1039,8 @@ app.get("/api/youscore/status", (req, res) => {
       status: "GREEN"
     },
     metrics,
-    schemaDrift: {
-      schemaVersion: "v1.2.4",
-      lastChecked: new Date().toISOString().split("T")[0],
-      driftDetected: false,
-      compatibility: "100% (All local mappings matched YouScore Swagger schema definition)"
-    },
-    recentTransactions: recentTransactions.length > 0 ? recentTransactions : [
-      { id: "tx_01", endpoint: "v1/usr/3111724753", status: 200, latency: 124, cache: "HIT" },
-      { id: "tx_02", endpoint: "v1/expressAnalysis/3111724753", status: 200, latency: 115, cache: "HIT" },
-      { id: "tx_03", endpoint: "v1/court/322521", status: 200, latency: 245, cache: "MISS" },
-      { id: "tx_04", endpoint: "v1/expressAnalysis/aggressors/322521", status: 200, latency: 188, cache: "MISS" },
-      { id: "tx_05", endpoint: "v1/singleTax/42345678", status: 200, latency: 84, cache: "HIT" }
-    ],
-    billing: {
-      accountBalance: "14,820 UAH",
-      monthlyUsageLimit: 50000,
-      monthlyUsageSpent: 3820,
-      remainingCredits: 46180,
-      planName: "PREDATOR Enterprise Tier"
-    }
+    schemaDrift: null,
+    recentTransactions
   });
 });
 
@@ -1059,6 +1055,9 @@ app.post("/api/opendatabot/query", async (req, res) => {
     }
     if (!code) {
       return res.status(400).json({ error: "Необхідно вказати код контрагента (ЄДРПОУ або ІПН)" });
+    }
+    if (!process.env.OPENDATABOT_API_KEY) {
+      return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "OPENDATABOT_API_KEY is not configured", sourceUrl: "/api/opendatabot/query", attemptedAt: new Date().toISOString() } });
     }
 
     const isDmitro = code === "3111724753" || code.toLowerCase().includes("кізима") || code.toLowerCase().includes("dmitro");
@@ -1216,7 +1215,7 @@ app.post("/api/opendatabot/query", async (req, res) => {
       return responseData;
     };
 
-    const response = await queryOpendatabot(endpoint, code, "P0", emulatorFallbackFn);
+    const response = await queryOpendatabot(endpoint, code, "P0");
     res.json(response);
 
   } catch (err: any) {
@@ -1267,12 +1266,15 @@ app.get("/liveness", (req, res) => {
 
 // Opendatabot Admin & Telemetry Status
 app.get("/api/opendatabot/status", (req, res) => {
+  if (!process.env.OPENDATABOT_API_KEY) {
+    return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "OPENDATABOT_API_KEY is not configured", sourceUrl: "/api/opendatabot/status", attemptedAt: new Date().toISOString() } });
+  }
   const metrics = odbAuditHub.getMetrics();
   const recentTransactions = odbAuditHub.getRecentTransactions();
   res.json({
     status: "OK",
-    apiAvailability: "99.96%",
-    lastSuccessfulSync: new Date(Date.now() - 1000 * 60 * 8).toISOString(),
+    apiAvailability: null,
+    lastSuccessfulSync: recentTransactions[0]?.timestamp ?? null,
     rateLimit: {
       limitPerMinute: 100,
       remainingPerMinute: 99,
@@ -1281,25 +1283,8 @@ app.get("/api/opendatabot/status", (req, res) => {
       status: "GREEN"
     },
     metrics,
-    schemaDrift: {
-      schemaVersion: "v3.1",
-      lastChecked: new Date().toISOString().split("T")[0],
-      driftDetected: false,
-      compatibility: "100% (All local mappings matched Opendatabot OpenAPI schema definition)"
-    },
-    recentTransactions: recentTransactions.length > 0 ? recentTransactions : [
-      { id: "tx_odb_01", endpoint: "v3/company/3111724753", status: 200, latency: 98, cache: "HIT" },
-      { id: "tx_odb_02", endpoint: "v3/company/3111724753/history", status: 200, latency: 104, cache: "HIT" },
-      { id: "tx_odb_03", endpoint: "v3/court?query=322521", status: 200, latency: 190, cache: "MISS" },
-      { id: "tx_odb_04", endpoint: "v3/enforcements?query=322521", status: 200, latency: 175, cache: "MISS" }
-    ],
-    billing: {
-      accountBalance: "24,500 UAH",
-      monthlyUsageLimit: 100000,
-      monthlyUsageSpent: 1250,
-      remainingCredits: 98750,
-      planName: "PREDATOR Enterprise Tier"
-    }
+    schemaDrift: null,
+    recentTransactions
   });
 });
 
@@ -1311,6 +1296,16 @@ app.post("/api/osint/search", async (req, res) => {
   if (!query || typeof query !== "string") {
     return res.status(400).json({ error: "Query parameter is required" });
   }
+
+  return res.status(503).json({
+    ok: false,
+    error: {
+      code: "source_unavailable",
+      message: "OSINT dossier synthesis requires configured live providers and is unavailable in this deployment",
+      sourceUrl: "/api/osint/search",
+      attemptedAt: new Date().toISOString()
+    }
+  });
 
   // INTERCEPT SPECIFIC USER QUERY TO SIMULATE YOUCONTROL / OPENDATABOT REVERSE LOOKUP
   const searchTermLower = query.toLowerCase();
@@ -1582,6 +1577,9 @@ ${strictInstruction}${realContext ? `\nCRITICAL: Incorporate the following REAL 
 
 // Autonomous Data Discovery & Connector Evolution Engine APIs
 app.post("/api/autonomous/discover-sources", async (req, res) => {
+  if (!ai) {
+    return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "GEMINI_API_KEY is not configured", sourceUrl: "/api/autonomous/discover-sources", attemptedAt: new Date().toISOString() } });
+  }
   try {
     const { targetDomain, queryKeywords, protocolFilter } = req.body;
     
@@ -1651,6 +1649,9 @@ Return a JSON array of 3 highly realistic discovered data sources.`;
 });
 
 app.post("/api/autonomous/generate-connector", async (req, res) => {
+  if (!ai) {
+    return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "GEMINI_API_KEY is not configured", sourceUrl: "/api/autonomous/generate-connector", attemptedAt: new Date().toISOString() } });
+  }
   try {
     const { sourceName, protocol, sampleUrl, authType } = req.body;
 
@@ -1698,6 +1699,9 @@ app.post("/api/autonomous/generate-connector", async (req, res) => {
 });
 
 app.post("/api/autonomous/self-heal", async (req, res) => {
+  if (!ai) {
+    return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "GEMINI_API_KEY is not configured", sourceUrl: "/api/autonomous/self-heal", attemptedAt: new Date().toISOString() } });
+  }
   try {
     const { sourceName, driftDetails, severity } = req.body;
 
@@ -1741,6 +1745,9 @@ Generate a TypeScript patch function to fix the parser and make it zero-downtime
 });
 
 app.post("/api/autonomous/swarm-execute", async (req, res) => {
+  if (!ai) {
+    return res.status(503).json({ ok: false, error: { code: "credentials_missing", message: "GEMINI_API_KEY is not configured", sourceUrl: "/api/autonomous/swarm-execute", attemptedAt: new Date().toISOString() } });
+  }
   try {
     const { command, activeAgentsCount } = req.body;
     
@@ -1965,6 +1972,15 @@ DO NOT:
 
 // Intelligence OS v2.0 Orchestrator
 app.post("/api/v2/intelligence/search", async (req, res) => {
+  return res.status(503).json({
+    ok: false,
+    error: {
+      code: "source_unavailable",
+      message: "Intelligence dossier generation is disabled until a live provider implementation is configured",
+      sourceUrl: "/api/v2/intelligence/search",
+      attemptedAt: new Date().toISOString()
+    }
+  });
   try {
     const { query, type, filters } = req.body;
     if (!query) return res.status(400).json({ error: "Query is required" });
@@ -2140,11 +2156,13 @@ async function generateIntelligenceDossier(query: string, type: string) {
   return dossier;
 }
 
+export { app };
+
 // Vite middleware for development
 const server = createServer(app);
 setupWss(server);
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "production") {
   createViteServer({
     server: { middlewareMode: true },
     appType: "spa",
@@ -2154,7 +2172,7 @@ if (process.env.NODE_ENV !== "production") {
       console.log(`Server running on http://localhost:${PORT}`);
     });
   });
-} else {
+} else if (process.env.NODE_ENV === "production") {
   const distPath = path.join(process.cwd(), 'dist');
   app.use(express.static(distPath));
   app.get('*', (req, res) => {
