@@ -69,6 +69,13 @@ export async function fetchTaxStatus(edrpou: string): Promise<DataSourceResult<T
         }
       }
 
+      if (!dpsRes.ok && !vatRes.ok) {
+        throw {
+          code: 'UPSTREAM_FAILURE',
+          message: `Податкові реєстри недоступні: HTTP ${dpsRes.status} і HTTP ${vatRes.status}.`,
+        };
+      }
+
       return {
         edrpou: cleanCode,
         isVatPayer: isVat,

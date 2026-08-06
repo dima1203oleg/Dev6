@@ -77,7 +77,7 @@ async function runTest(rnokpp: string) {
     
     sourceDetails.push({
       id: source.source_id,
-      name: source.name,
+      name: source.source_name,
       free: source.free,
       relevant: true,
       live: source.live_endpoint,
@@ -101,7 +101,7 @@ async function runTest(rnokpp: string) {
     sourcesConfigured: allSources.length,
     sourcesEvaluated: allSources.length,
     relevant: relevantSources.length,
-    queried: relevantSources.filter(s => s.id === 'edr_fop').length,
+    queried: relevantSources.filter(s => s.source_id === 'UA-001').length,
     skipped: allSources.length - relevantSources.length,
     noMatch: sourceDetails.filter(s => s.status === 'NO_MATCH').length,
     matched: matchedSources,

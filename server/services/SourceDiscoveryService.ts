@@ -5,11 +5,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import * as yaml from 'js-yaml';
-import { IdentifierType } from '../validation/RnokppValidator';
+import { IdentifierType } from '../src/validation/RnokppValidator';
 
 export interface SourceDefinition {
-  id: string;
-  name: string;
+  source_id: string;
+  source_name: string;
   supports_person: boolean;
   supports_fop: boolean;
   supports_rnokpp: boolean;

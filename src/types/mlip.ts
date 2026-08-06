@@ -380,6 +380,7 @@ export interface PassiveDNSRecord {
 
 export interface IPIntelResult {
   ip: string;
+  version?: 'v4' | 'v6';
   country?: string;
   countryCode?: string;
   region?: string;
@@ -484,6 +485,20 @@ export interface ImageIntelResult {
   }>;
 }
 
+export interface DeepfakeIndicator {
+  type: 'SOFTWARE_SIGNATURE' | 'AI_GENERATED' | 'MISSING_EXIF' | 'METADATA_ANOMALY';
+  description: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+}
+
+export interface MedintResult {
+  sourceUrl: string;
+  analyzedAt: string;
+  metadata: Record<string, string | null>;
+  deepfakeIndicators: DeepfakeIndicator[];
+  pHash?: string;
+}
+
 // ─── SOCINT Types ─────────────────────────────────────────────────────────
 
 export interface TelegramChannelInfo {
@@ -540,6 +555,14 @@ export interface SocialProfile {
   confidence: number;
 }
 
+export interface SocintResult {
+  platform: 'GITHUB' | 'TELEGRAM' | 'OTHER';
+  username: string;
+  profileUrl: string;
+  metadata: Record<string, unknown>;
+  activityScore: number;
+}
+
 // ─── DARKINT Types ────────────────────────────────────────────────────────
 
 export interface BreachSearchResult {
@@ -559,6 +582,15 @@ export interface BreachSearchResult {
   }>;
   stealerLogHits?: number;
   totalExposures: number;
+}
+
+export interface DarkintResult {
+  source: string;
+  url?: string;
+  title?: string;
+  date?: string;
+  contentSnippet?: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 }
 
 // ─── ENTITY RESOLUTION ENGINE (§3.2) ─────────────────────────────────────

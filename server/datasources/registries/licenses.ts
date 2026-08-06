@@ -69,6 +69,13 @@ export async function fetchLicensesAndRegistries(edrpou: string): Promise<DataSo
         }
       }
 
+      if (!diiaRes.ok && !amcuRes.ok) {
+        throw {
+          code: 'UPSTREAM_FAILURE',
+          message: `Реєстри ліцензій недоступні: HTTP ${diiaRes.status} і HTTP ${amcuRes.status}.`,
+        };
+      }
+
       return {
         edrpou: cleanCode,
         licenses: [],

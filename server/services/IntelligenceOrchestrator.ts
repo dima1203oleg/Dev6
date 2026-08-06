@@ -176,12 +176,16 @@ export class IntelligenceOrchestrator {
       source: src,
       claim: {
         id: `${predicate}-${code}-${Date.now()}`,
+        claim: predicate,
         subjectId: code,
         predicate,
         object: data,
         confidence: 1.0,
+        sourceId: src,
+        sourceType: 'REGISTRY',
         sourceName: src,
         retrievedAt: new Date().toISOString(),
+        contentHash: crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex'),
         status: 'CONFIRMED'
       }
     });

@@ -1,9 +1,12 @@
-import { AbstractConnector, ConnectorResponse } from './AbstractConnector';
+import { AbstractConnector, ConnectorResponse, ConnectorStatus, ProductionValidation } from './AbstractConnector';
 import crypto from 'crypto';
 
 export class CourtConnector extends AbstractConnector {
   public readonly id = 'UA-002';
   public readonly name = 'Єдиний державний реєстр судових рішень';
+  public readonly api_documentation_url = 'https://court.gov.ua/api'; // Placeholder - needs official API URL
+  public readonly supported_api_version = 'v1.0';
+  public readonly authorization_mechanism: 'API_KEY' | 'OAUTH2' | 'BASIC_AUTH' | 'CERTIFICATE' | 'NONE' = 'NONE';
 
   public async fetch(identifier: string): Promise<ConnectorResponse> {
     try {
@@ -79,5 +82,25 @@ export class CourtConnector extends AbstractConnector {
     } catch (e: any) {
       return { status: 'FAILED', error: e.message };
     }
+  }
+
+  async health_check(): Promise<ConnectorStatus> {
+    // TODO: Implement real health check against official EDRSR API
+    // Currently using Clarity Project which is not an official API
+    return 'API_CONTRACT_UNKNOWN';
+  }
+
+  get_production_validation(): ProductionValidation {
+    return {
+      has_official_api: false, // Using Clarity Project, not official EDRSR API
+      documentation_url: 'https://court.gov.ua/api',
+      documentation_current: false,
+      api_version_supported: 'UNKNOWN',
+      authorization_mechanism: 'NONE',
+      rate_limits_confirmed: false,
+      tested_with_real_responses: true, // Clarity Project works but is not official
+      last_validation_date: new Date().toISOString(),
+      notes: 'Currently using Clarity Project unofficial API. Official EDRSR API needs verification and implementation.'
+    };
   }
 }

@@ -82,6 +82,13 @@ export async function fetchSanctionsAndCompliance(edrpou: string): Promise<DataS
         }
       }
 
+      if (!rnboRes.ok && !massAddressRes.ok) {
+        throw {
+          code: 'UPSTREAM_FAILURE',
+          message: `Реєстри санкцій недоступні: HTTP ${rnboRes.status} і HTTP ${massAddressRes.status}.`,
+        };
+      }
+
       return {
         edrpou: cleanCode,
         isSanctionedRnbo: isSanctioned,

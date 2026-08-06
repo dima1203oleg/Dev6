@@ -108,6 +108,13 @@ export async function fetchCourtAndLegalProfile(edrpou: string): Promise<DataSou
         }
       }
 
+      if (!courtRes.ok && !bankrRes.ok && !erbRes.ok) {
+        throw {
+          code: 'UPSTREAM_FAILURE',
+          message: `Судові реєстри недоступні: HTTP ${courtRes.status}, ${bankrRes.status}, ${erbRes.status}.`,
+        };
+      }
+
       return {
         edrpou: cleanCode,
         courtCasesCount: courtCases.length,

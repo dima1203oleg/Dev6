@@ -478,17 +478,20 @@ export async function queryAllRegistries(
               queriedAt: new Date().toISOString(),
               durationMs: duration,
             };
-          } else {
+          } else if (result.ok === false) {
+            const error = result.error;
             return {
               registryId: registry.id,
               registryName: registry.name,
               category: registry.category,
               status: 'NO_DATA' as const,
-              error: result.error.message,
+              error: error.message,
               queriedAt: new Date().toISOString(),
               durationMs: duration,
             };
           }
+
+          throw new Error('Unexpected data source response');
         } catch (err: any) {
           return {
             registryId: registry.id,

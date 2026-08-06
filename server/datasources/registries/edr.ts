@@ -63,22 +63,11 @@ export async function fetchEdrFull(edrpou: string): Promise<DataSourceResult<Edr
         }
       }
 
-      // Fallback: Return sample data for testing when API is unavailable
-      // This allows the system to function for development/testing
-      console.warn(`[EDR] API unavailable for ${cleanCode}, using sample data`);
-      return {
-        edrpou: cleanCode,
-        fullName: cleanCode === '3111724753' ? 'Кізима Дмитро Миколайович' : 'Тестова Компанія',
-        shortName: cleanCode === '3111724753' ? 'ФОП Кізима Д.М.' : 'Тестова Компанія',
-        status: 'ACTIVE',
-        registrationDate: '2015-01-15',
-        director: cleanCode === '3111724753' ? 'Кізима Дмитро Миколайович' : 'Директор Тестовий',
-        address: 'м. Київ, вул. Тестова, 1',
-        kved: '62.01',
-        kvedDescription: 'Комп\'ютерне програмування',
-        founders: [],
-        beneficiaries: [],
-        history: [],
+      throw {
+        code: ckanRes.ok ? 'NO_RECORDS' : 'UPSTREAM_FAILURE',
+        message: ckanRes.ok
+          ? `Запис для ${cleanCode} не знайдено у ЄДР.`
+          : `ЄДР недоступний: HTTP ${ckanRes.status}.`,
       };
     }
   );
