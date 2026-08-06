@@ -1,0 +1,478 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "A user of the application",
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "email",
+        "createdAt"
+      ]
+    },
+    "riskMetric": {
+      "title": "Risk Metric",
+      "description": "Risk metrics data point for charts",
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "operations": {
+          "type": "number"
+        },
+        "critical": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "date",
+        "operations",
+        "critical"
+      ]
+    },
+    "dashboardData": {
+      "title": "Dashboard Data",
+      "description": "Container for dashboard metrics",
+      "type": "object",
+      "properties": {
+        "metrics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/riskMetric"
+          },
+          "maxLength": 30
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "metrics",
+        "updatedAt"
+      ]
+    },
+    "customRegistry": {
+      "title": "Custom Registry",
+      "description": "Custom data source / registry integrated by user",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "flag": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "UA_STATE",
+            "INT_REGISTRY",
+            "OSINT_CYBER"
+          ]
+        },
+        "owner": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "authMethod": {
+          "type": "string",
+          "enum": [
+            "OAuth2",
+            "API Key",
+            "Bearer Token",
+            "None"
+          ]
+        },
+        "rateLimit": {
+          "type": "string"
+        },
+        "schedule": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number"
+        },
+        "qualityScore": {
+          "type": "number"
+        },
+        "rowsLoaded": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "SYNCING",
+            "SELF_HEALING",
+            "ERROR"
+          ]
+        },
+        "latency": {
+          "type": "number"
+        },
+        "hasOpenAPI": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "category",
+        "endpoint",
+        "authMethod",
+        "status"
+      ]
+    },
+    "agentTask": {
+      "title": "Agent Task",
+      "description": "An asynchronous autonomous agent task",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "QUEUED",
+            "RUNNING",
+            "COMPLETED",
+            "FAILED"
+          ]
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ]
+        },
+        "agent": {
+          "type": "string"
+        },
+        "progress": {
+          "type": "number"
+        },
+        "logs": {
+          "type": "array"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "status",
+        "priority",
+        "agent",
+        "progress",
+        "logs"
+      ]
+    },
+    "councilVoteModel": {
+      "title": "Council Vote Model",
+      "description": "Single LLM vote detail",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "vote": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT",
+            "ABSTAIN"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "vote",
+        "reason",
+        "confidence"
+      ]
+    },
+    "councilVote": {
+      "title": "Council Vote",
+      "description": "LLM council voting consensus record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "scenario": {
+          "type": "string"
+        },
+        "verdict": {
+          "type": "string"
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/councilVoteModel"
+          }
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "scenario",
+        "verdict",
+        "models"
+      ]
+    },
+    "telegramLog": {
+      "title": "Telegram Log",
+      "description": "Simulated or actual telegram communication logs",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string",
+          "enum": [
+            "user",
+            "bot",
+            "system"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "sender",
+        "message",
+        "timestamp"
+      ]
+    },
+    "investigation": {
+      "title": "Investigation Workspace",
+      "description": "Investigator case stored in Firestore",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "leadInvestigator": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ARCHIVED",
+            "CLOSED",
+            "UNDER_REVIEW"
+          ]
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "entities": {
+          "type": "array"
+        },
+        "relationships": {
+          "type": "array"
+        },
+        "evidenceBoard": {
+          "type": "array"
+        },
+        "notes": {
+          "type": "array"
+        },
+        "queriesHistory": {
+          "type": "array"
+        },
+        "riskSummary": {
+          "type": "object"
+        },
+        "syncedToCloud": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "leadInvestigator",
+        "status"
+      ]
+    },
+    "entityGraph": {
+      "title": "Entity Graph",
+      "description": "Calculated relationship graph stored in Firestore",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "entityId": {
+          "type": "string"
+        },
+        "canonicalName": {
+          "type": "string"
+        },
+        "nodes": {
+          "type": "array"
+        },
+        "links": {
+          "type": "array"
+        },
+        "sha256Hash": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "entityId",
+        "canonicalName"
+      ]
+    },
+    "auditLog": {
+      "title": "Audit Log",
+      "description": "Log of user actions in the system",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "LOGIN",
+            "SEARCH",
+            "AI_REQUEST",
+            "EXPORT",
+            "REPORT",
+            "SYSTEM"
+          ]
+        },
+        "user": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "details": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "action",
+        "user",
+        "timestamp"
+      ]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/user"
+      },
+      "description": "User profiles"
+    },
+    "dashboard/{docId}": {
+      "schema": {
+        "$ref": "#/entities/dashboardData"
+      },
+      "description": "Dashboard data singleton"
+    },
+    "custom_registries/{docId}": {
+      "schema": {
+        "$ref": "#/entities/customRegistry"
+      },
+      "description": "Custom registries sources uploaded by operator"
+    },
+    "agent_tasks/{docId}": {
+      "schema": {
+        "$ref": "#/entities/agentTask"
+      },
+      "description": "List of autonomous tasks in OODA orchestra"
+    },
+    "council_votes/{docId}": {
+      "schema": {
+        "$ref": "#/entities/councilVote"
+      },
+      "description": "Consensus voting records of LLM Council"
+    },
+    "telegram_logs/{docId}": {
+      "schema": {
+        "$ref": "#/entities/telegramLog"
+      },
+      "description": "Telegram log trace"
+    },
+    "investigations/{investigationId}": {
+      "schema": {
+        "$ref": "#/entities/investigation"
+      },
+      "description": "Investigator cases persistent in cloud"
+    },
+    "entity_graphs/{graphId}": {
+      "schema": {
+        "$ref": "#/entities/entityGraph"
+      },
+      "description": "Saved entity relationship graphs in cloud"
+    },
+    "audit_logs/{logId}": {
+      "schema": {
+        "$ref": "#/entities/auditLog"
+      },
+      "description": "System audit logs"
+    }
+  }
+}

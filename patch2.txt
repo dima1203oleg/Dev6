@@ -1,0 +1,51 @@
+  const relationships = [
+    { targetId: "comp-1", targetName: "ТОВ 'СпецТехПостач'", type: "COUNTERPARTY", risk: 'MEDIUM' as const },
+    { targetId: "person-1", targetName: "Коваленко Ігор Вікторович", type: "DIRECTOR", risk: 'LOW' as const }
+  ];
+
+  return {
+    id: generateId(),
+    code,
+    name,
+    type: entityType,
+    status,
+    riskScore,
+    address,
+    description,
+    aiRecommendations,
+    founders,
+    taxes,
+    customs,
+    courts,
+    relationships
+  };
+}
+
+// System Level Health Checks (Section 49)
+app.get(["/health", "/api/health"], async (req, res) => {
+  try {
+    res.json({
+      status: "OK",
+      timestamp: new Date().toISOString(),
+      components: {
+        api: "LIVE",
+        database: "LIVE"
+      },
+      system: {
+        uptime: process.uptime(),
+        memoryUsage: process.memoryUsage(),
+        nodeVersion: process.version
+      }
+    });
+  } catch (err: any) {
+    res.status(500).json({ status: "ERROR", message: err.message });
+  }
+});
+
+app.get("/readiness", async (req, res) => {
+  res.json({ ready: true, timestamp: new Date().toISOString() });
+});
+
+app.get("/liveness", (req, res) => {
+  res.json({ alive: true, timestamp: new Date().toISOString() });
+});

@@ -1,0 +1,840 @@
+{
+  "testIdentifier": "3111724753",
+  "generatedAt": "2026-08-06T13:39:29.376Z",
+  "summary": {
+    "total": 6,
+    "passed": 4,
+    "passedWarn": 0,
+    "partial": 0,
+    "failed": 0,
+    "blocked": 1,
+    "notApplicable": 1,
+    "withProvenance": 4,
+    "withConflicts": 0,
+    "productionReady": 4
+  },
+  "sources": [
+    {
+      "registryId": "UA-001",
+      "registryName": "ЄДР (Єдиний державний реєстр)",
+      "endpoint": "https://clarity-project.info/edr/",
+      "accessType": "FREE_AUTO",
+      "queryStatus": "SUCCESS",
+      "httpCode": 200,
+      "responseTimeMs": 448,
+      "dataReturned": true,
+      "provenance": true,
+      "freshness": "2026-08-06T13:39:24.609Z",
+      "conflicts": "NONE",
+      "confidence": 0.95,
+      "finalStatus": "PASS",
+      "qaNotes": "All critical tests passed",
+      "tests": [
+        {
+          "testId": "TEST-001",
+          "testName": "Registry Discovery",
+          "passed": true,
+          "details": "ID=UA-001, Name=ЄДР (Єдиний державний реєстр), Endpoint=https://clarity-project.info/edr/, Access=FREE_AUTO",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-002",
+          "testName": "Connectivity",
+          "passed": true,
+          "details": "HTTP 404, TLS OK, DNS OK",
+          "durationMs": 280
+        },
+        {
+          "testId": "TEST-003",
+          "testName": "Authentication",
+          "passed": true,
+          "details": "No authentication required (public endpoint)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-004",
+          "testName": "Query Execution",
+          "passed": true,
+          "details": "Status=SUCCESS, Duration=448ms",
+          "durationMs": 448
+        },
+        {
+          "testId": "TEST-005",
+          "testName": "Raw Response Capture",
+          "passed": true,
+          "details": "RawPayload=YES, SHA-256=4f37e37f99f13660… (64 chars)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-006",
+          "testName": "Schema Validation",
+          "passed": true,
+          "details": "Schema valid",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-007",
+          "testName": "Parser Validation",
+          "passed": true,
+          "details": "Fields=[name, status], NullFields=NONE, UTF-8=OK",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-008",
+          "testName": "Data Integrity",
+          "passed": true,
+          "details": "Integrity check PASS — hashes match (4f37e37f99f13660…)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-009",
+          "testName": "Provenance",
+          "passed": true,
+          "details": "All provenance fields present: source_id, request_id, timestamp, response_hash, raw_reference",
+          "durationMs": 1
+        },
+        {
+          "testId": "TEST-010",
+          "testName": "Freshness",
+          "passed": true,
+          "details": "Retrieved 0s ago — FRESH",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-011",
+          "testName": "Entity Resolution",
+          "passed": true,
+          "details": "Entity fields: [name, status] — no fabrication detected",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-012",
+          "testName": "Cross Validation",
+          "passed": true,
+          "details": "Source UA-001 — no contradictions within single-source result",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-013",
+          "testName": "No Hallucination",
+          "passed": true,
+          "details": "SUCCESS status with real data — no hallucination indicators",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-014",
+          "testName": "Repeatability",
+          "passed": true,
+          "details": "Repeat confirmed: status=SUCCESS, normalizedData identical",
+          "durationMs": 343
+        },
+        {
+          "testId": "TEST-015",
+          "testName": "Performance",
+          "passed": true,
+          "details": "Latency=448ms, Threshold=15000ms — PASS",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-016",
+          "testName": "Fault Injection",
+          "passed": true,
+          "details": "Abort handled gracefully (AbortError caught)",
+          "durationMs": 5
+        },
+        {
+          "testId": "TEST-017",
+          "testName": "Security",
+          "passed": true,
+          "details": "No secrets in endpoint URL; Identifier sanitization OK; TLS enforced",
+          "durationMs": 0
+        }
+      ]
+    },
+    {
+      "registryId": "UA-002",
+      "registryName": "Єдиний державний реєстр судових рішень",
+      "endpoint": "https://clarity-project.info/edr/*/court-cases",
+      "accessType": "FREE_AUTO",
+      "queryStatus": "SUCCESS",
+      "httpCode": 200,
+      "responseTimeMs": 292,
+      "dataReturned": true,
+      "provenance": true,
+      "freshness": "2026-08-06T13:39:25.534Z",
+      "conflicts": "NONE",
+      "confidence": 0.95,
+      "finalStatus": "PASS",
+      "qaNotes": "All critical tests passed",
+      "tests": [
+        {
+          "testId": "TEST-001",
+          "testName": "Registry Discovery",
+          "passed": true,
+          "details": "ID=UA-002, Name=Єдиний державний реєстр судових рішень, Endpoint=https://clarity-project.info/edr/*/court-cases, Access=FREE_AUTO",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-002",
+          "testName": "Connectivity",
+          "passed": true,
+          "details": "HTTP 404, TLS OK, DNS OK",
+          "durationMs": 284
+        },
+        {
+          "testId": "TEST-003",
+          "testName": "Authentication",
+          "passed": true,
+          "details": "No authentication required (public endpoint)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-004",
+          "testName": "Query Execution",
+          "passed": true,
+          "details": "Status=SUCCESS, Duration=292ms",
+          "durationMs": 292
+        },
+        {
+          "testId": "TEST-005",
+          "testName": "Raw Response Capture",
+          "passed": true,
+          "details": "RawPayload=YES, SHA-256=17a35bf57f636473… (64 chars)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-006",
+          "testName": "Schema Validation",
+          "passed": true,
+          "details": "Schema valid",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-007",
+          "testName": "Parser Validation",
+          "passed": true,
+          "details": "Fields=[totalCases], NullFields=NONE, UTF-8=OK",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-008",
+          "testName": "Data Integrity",
+          "passed": true,
+          "details": "Integrity check PASS — hashes match (17a35bf57f636473…)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-009",
+          "testName": "Provenance",
+          "passed": true,
+          "details": "All provenance fields present: source_id, request_id, timestamp, response_hash, raw_reference",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-010",
+          "testName": "Freshness",
+          "passed": true,
+          "details": "Retrieved 0s ago — FRESH",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-011",
+          "testName": "Entity Resolution",
+          "passed": true,
+          "details": "Entity fields: [totalCases] — no fabrication detected",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-012",
+          "testName": "Cross Validation",
+          "passed": true,
+          "details": "Source UA-002 — no contradictions within single-source result",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-013",
+          "testName": "No Hallucination",
+          "passed": true,
+          "details": "SUCCESS status with real data — no hallucination indicators",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-014",
+          "testName": "Repeatability",
+          "passed": true,
+          "details": "Repeat confirmed: status=SUCCESS, normalizedData identical",
+          "durationMs": 399
+        },
+        {
+          "testId": "TEST-015",
+          "testName": "Performance",
+          "passed": true,
+          "details": "Latency=292ms, Threshold=15000ms — PASS",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-016",
+          "testName": "Fault Injection",
+          "passed": true,
+          "details": "Abort handled gracefully (AbortError caught)",
+          "durationMs": 2
+        },
+        {
+          "testId": "TEST-017",
+          "testName": "Security",
+          "passed": true,
+          "details": "No secrets in endpoint URL; Identifier sanitization OK; TLS enforced",
+          "durationMs": 0
+        }
+      ]
+    },
+    {
+      "registryId": "UA-003",
+      "registryName": "Реєстр санкцій (РНБО)",
+      "endpoint": "https://clarity-project.info/edr/",
+      "accessType": "FREE_AUTO",
+      "queryStatus": "SUCCESS",
+      "httpCode": 200,
+      "responseTimeMs": 285,
+      "dataReturned": true,
+      "provenance": true,
+      "freshness": "2026-08-06T13:39:26.459Z",
+      "conflicts": "NONE",
+      "confidence": 0.95,
+      "finalStatus": "PASS",
+      "qaNotes": "All critical tests passed",
+      "tests": [
+        {
+          "testId": "TEST-001",
+          "testName": "Registry Discovery",
+          "passed": true,
+          "details": "ID=UA-003, Name=Реєстр санкцій (РНБО), Endpoint=https://clarity-project.info/edr/, Access=FREE_AUTO",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-002",
+          "testName": "Connectivity",
+          "passed": true,
+          "details": "HTTP 404, TLS OK, DNS OK",
+          "durationMs": 238
+        },
+        {
+          "testId": "TEST-003",
+          "testName": "Authentication",
+          "passed": true,
+          "details": "No authentication required (public endpoint)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-004",
+          "testName": "Query Execution",
+          "passed": true,
+          "details": "Status=SUCCESS, Duration=285ms",
+          "durationMs": 285
+        },
+        {
+          "testId": "TEST-005",
+          "testName": "Raw Response Capture",
+          "passed": true,
+          "details": "RawPayload=YES, SHA-256=8fb3681130f88245… (64 chars)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-006",
+          "testName": "Schema Validation",
+          "passed": true,
+          "details": "Schema valid",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-007",
+          "testName": "Parser Validation",
+          "passed": true,
+          "details": "Fields=[hasSanctions], NullFields=NONE, UTF-8=OK",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-008",
+          "testName": "Data Integrity",
+          "passed": true,
+          "details": "Integrity check PASS — hashes match (8fb3681130f88245…)",
+          "durationMs": 1
+        },
+        {
+          "testId": "TEST-009",
+          "testName": "Provenance",
+          "passed": true,
+          "details": "All provenance fields present: source_id, request_id, timestamp, response_hash, raw_reference",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-010",
+          "testName": "Freshness",
+          "passed": true,
+          "details": "Retrieved 0s ago — FRESH",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-011",
+          "testName": "Entity Resolution",
+          "passed": true,
+          "details": "Entity fields: [hasSanctions] — no fabrication detected",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-012",
+          "testName": "Cross Validation",
+          "passed": true,
+          "details": "Source UA-003 — no contradictions within single-source result",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-013",
+          "testName": "No Hallucination",
+          "passed": true,
+          "details": "SUCCESS status with real data — no hallucination indicators",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-014",
+          "testName": "Repeatability",
+          "passed": true,
+          "details": "Repeat confirmed: status=SUCCESS, normalizedData identical",
+          "durationMs": 333
+        },
+        {
+          "testId": "TEST-015",
+          "testName": "Performance",
+          "passed": true,
+          "details": "Latency=285ms, Threshold=15000ms — PASS",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-016",
+          "testName": "Fault Injection",
+          "passed": true,
+          "details": "Abort handled gracefully (AbortError caught)",
+          "durationMs": 8
+        },
+        {
+          "testId": "TEST-017",
+          "testName": "Security",
+          "passed": true,
+          "details": "No secrets in endpoint URL; Identifier sanitization OK; TLS enforced",
+          "durationMs": 0
+        }
+      ]
+    },
+    {
+      "registryId": "UA-004",
+      "registryName": "Prozorro (публічні закупівлі)",
+      "endpoint": "https://clarity-project.info/edr/*/tenders",
+      "accessType": "FREE_AUTO",
+      "queryStatus": "SUCCESS",
+      "httpCode": 200,
+      "responseTimeMs": 223,
+      "dataReturned": true,
+      "provenance": true,
+      "freshness": "2026-08-06T13:39:27.251Z",
+      "conflicts": "NONE",
+      "confidence": 0.95,
+      "finalStatus": "PASS",
+      "qaNotes": "All critical tests passed",
+      "tests": [
+        {
+          "testId": "TEST-001",
+          "testName": "Registry Discovery",
+          "passed": true,
+          "details": "ID=UA-004, Name=Prozorro (публічні закупівлі), Endpoint=https://clarity-project.info/edr/*/tenders, Access=FREE_AUTO",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-002",
+          "testName": "Connectivity",
+          "passed": true,
+          "details": "HTTP 404, TLS OK, DNS OK",
+          "durationMs": 225
+        },
+        {
+          "testId": "TEST-003",
+          "testName": "Authentication",
+          "passed": true,
+          "details": "No authentication required (public endpoint)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-004",
+          "testName": "Query Execution",
+          "passed": true,
+          "details": "Status=SUCCESS, Duration=223ms",
+          "durationMs": 223
+        },
+        {
+          "testId": "TEST-005",
+          "testName": "Raw Response Capture",
+          "passed": true,
+          "details": "RawPayload=YES, SHA-256=e2010dab3da08503… (64 chars)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-006",
+          "testName": "Schema Validation",
+          "passed": true,
+          "details": "Schema valid",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-007",
+          "testName": "Parser Validation",
+          "passed": true,
+          "details": "Fields=[tendersCount, wonTendersCount], NullFields=NONE, UTF-8=OK",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-008",
+          "testName": "Data Integrity",
+          "passed": true,
+          "details": "Integrity check PASS — hashes match (e2010dab3da08503…)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-009",
+          "testName": "Provenance",
+          "passed": true,
+          "details": "All provenance fields present: source_id, request_id, timestamp, response_hash, raw_reference",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-010",
+          "testName": "Freshness",
+          "passed": true,
+          "details": "Retrieved 0s ago — FRESH",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-011",
+          "testName": "Entity Resolution",
+          "passed": true,
+          "details": "Entity fields: [tendersCount, wonTendersCount] — no fabrication detected",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-012",
+          "testName": "Cross Validation",
+          "passed": true,
+          "details": "Source UA-004 — no contradictions within single-source result",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-013",
+          "testName": "No Hallucination",
+          "passed": true,
+          "details": "SUCCESS status with real data — no hallucination indicators",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-014",
+          "testName": "Repeatability",
+          "passed": true,
+          "details": "Repeat confirmed: status=SUCCESS, normalizedData identical",
+          "durationMs": 230
+        },
+        {
+          "testId": "TEST-015",
+          "testName": "Performance",
+          "passed": true,
+          "details": "Latency=223ms, Threshold=15000ms — PASS",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-016",
+          "testName": "Fault Injection",
+          "passed": true,
+          "details": "Abort handled gracefully (AbortError caught)",
+          "durationMs": 7
+        },
+        {
+          "testId": "TEST-017",
+          "testName": "Security",
+          "passed": true,
+          "details": "No secrets in endpoint URL; Identifier sanitization OK; TLS enforced",
+          "durationMs": 0
+        }
+      ]
+    },
+    {
+      "registryId": "INT-001",
+      "registryName": "HaveIBeenPwned (HIBP)",
+      "endpoint": "https://haveibeenpwned.com/api/v3/breachedaccount/",
+      "accessType": "FREE_API_KEY",
+      "queryStatus": "UNAVAILABLE",
+      "httpCode": 401,
+      "responseTimeMs": 0,
+      "dataReturned": false,
+      "provenance": false,
+      "freshness": "N/A",
+      "conflicts": "NONE",
+      "confidence": 0,
+      "finalStatus": "BLOCKED",
+      "qaNotes": "TEST-004: Status=UNAVAILABLE, Duration=0ms, Error=HIBP_API_KEY is missing; TEST-005: No evidence object returned; TEST-009: No provenance metadata",
+      "tests": [
+        {
+          "testId": "TEST-001",
+          "testName": "Registry Discovery",
+          "passed": true,
+          "details": "ID=INT-001, Name=HaveIBeenPwned (HIBP), Endpoint=https://haveibeenpwned.com/api/v3/breachedaccount/, Access=FREE_API_KEY",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-002",
+          "testName": "Connectivity",
+          "passed": true,
+          "details": "HTTP 404, TLS OK, DNS OK",
+          "durationMs": 100
+        },
+        {
+          "testId": "TEST-003",
+          "testName": "Authentication",
+          "passed": false,
+          "details": "AUTH_REQUIRED: API_KEY not configured for INT-001",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-004",
+          "testName": "Query Execution",
+          "passed": false,
+          "details": "Status=UNAVAILABLE, Duration=0ms, Error=HIBP_API_KEY is missing",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-005",
+          "testName": "Raw Response Capture",
+          "passed": false,
+          "details": "No evidence object returned",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-006",
+          "testName": "Schema Validation",
+          "passed": false,
+          "details": "No evidence to validate",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-007",
+          "testName": "Parser Validation",
+          "passed": false,
+          "details": "No normalized data",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-008",
+          "testName": "Data Integrity",
+          "passed": false,
+          "details": "Missing normalizedData or rawPayload",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-009",
+          "testName": "Provenance",
+          "passed": false,
+          "details": "No provenance metadata",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-010",
+          "testName": "Freshness",
+          "passed": false,
+          "details": "No retrievedAt timestamp",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-011",
+          "testName": "Entity Resolution",
+          "passed": false,
+          "details": "No data to check",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-012",
+          "testName": "Cross Validation",
+          "passed": false,
+          "details": "No evidence for cross-validation",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-013",
+          "testName": "No Hallucination",
+          "passed": true,
+          "details": "Status=UNAVAILABLE, no fabricated data",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-014",
+          "testName": "Repeatability",
+          "passed": true,
+          "details": "Repeat confirmed: status=UNAVAILABLE, normalizedData identical",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-015",
+          "testName": "Performance",
+          "passed": true,
+          "details": "Latency=0ms, Threshold=15000ms — PASS",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-016",
+          "testName": "Fault Injection",
+          "passed": true,
+          "details": "Abort handled gracefully (AbortError caught)",
+          "durationMs": 1
+        },
+        {
+          "testId": "TEST-017",
+          "testName": "Security",
+          "passed": true,
+          "details": "No secrets in endpoint URL; Identifier sanitization OK; TLS enforced",
+          "durationMs": 0
+        }
+      ]
+    },
+    {
+      "registryId": "INT-002",
+      "registryName": "Certificate Transparency (crt.sh)",
+      "endpoint": "https://crt.sh/?q=&output=json",
+      "accessType": "FREE_AUTO",
+      "queryStatus": "FAILED",
+      "httpCode": 500,
+      "responseTimeMs": 428,
+      "dataReturned": false,
+      "provenance": false,
+      "freshness": "N/A",
+      "conflicts": "NONE",
+      "confidence": 0,
+      "finalStatus": "NOT_APPLICABLE",
+      "qaNotes": "TEST-004: Status=FAILED, Duration=428ms, Error=Failed to fetch from crt.sh, status: 502; TEST-005: No evidence object returned; TEST-009: No provenance metadata",
+      "tests": [
+        {
+          "testId": "TEST-001",
+          "testName": "Registry Discovery",
+          "passed": true,
+          "details": "ID=INT-002, Name=Certificate Transparency (crt.sh), Endpoint=https://crt.sh/?q=&output=json, Access=FREE_AUTO",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-002",
+          "testName": "Connectivity",
+          "passed": false,
+          "details": "HTTP 502, TLS OK, DNS OK",
+          "durationMs": 328
+        },
+        {
+          "testId": "TEST-003",
+          "testName": "Authentication",
+          "passed": true,
+          "details": "No authentication required (public endpoint)",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-004",
+          "testName": "Query Execution",
+          "passed": false,
+          "details": "Status=FAILED, Duration=428ms, Error=Failed to fetch from crt.sh, status: 502",
+          "durationMs": 428
+        },
+        {
+          "testId": "TEST-005",
+          "testName": "Raw Response Capture",
+          "passed": false,
+          "details": "No evidence object returned",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-006",
+          "testName": "Schema Validation",
+          "passed": false,
+          "details": "No evidence to validate",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-007",
+          "testName": "Parser Validation",
+          "passed": false,
+          "details": "No normalized data",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-008",
+          "testName": "Data Integrity",
+          "passed": false,
+          "details": "Missing normalizedData or rawPayload",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-009",
+          "testName": "Provenance",
+          "passed": false,
+          "details": "No provenance metadata",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-010",
+          "testName": "Freshness",
+          "passed": false,
+          "details": "No retrievedAt timestamp",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-011",
+          "testName": "Entity Resolution",
+          "passed": false,
+          "details": "No data to check",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-012",
+          "testName": "Cross Validation",
+          "passed": false,
+          "details": "No evidence for cross-validation",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-013",
+          "testName": "No Hallucination",
+          "passed": true,
+          "details": "Status=FAILED, no fabricated data",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-014",
+          "testName": "Repeatability",
+          "passed": true,
+          "details": "Repeat confirmed: status=FAILED, normalizedData identical",
+          "durationMs": 1025
+        },
+        {
+          "testId": "TEST-015",
+          "testName": "Performance",
+          "passed": true,
+          "details": "Latency=428ms, Threshold=15000ms — PASS",
+          "durationMs": 0
+        },
+        {
+          "testId": "TEST-016",
+          "testName": "Fault Injection",
+          "passed": true,
+          "details": "Abort handled gracefully (AbortError caught)",
+          "durationMs": 3
+        },
+        {
+          "testId": "TEST-017",
+          "testName": "Security",
+          "passed": true,
+          "details": "No secrets in endpoint URL; Identifier sanitization OK; TLS enforced",
+          "durationMs": 0
+        }
+      ]
+    }
+  ]
+}

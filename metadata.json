@@ -1,0 +1,10 @@
+{
+  "name": "PREDATOR Analytics",
+  "description": "Автоматизована система комплаєнс-перевірки юридичних і фізичних осіб України за державними реєстрами та відкритими джерелами.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

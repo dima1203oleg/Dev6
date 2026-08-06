@@ -1,0 +1,211 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net - Default Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Reusable global helper functions
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['email', 'createdAt']) && 
+             data.keys().size() <= 3 &&
+             data.email is string && data.email.size() <= 100 &&
+             (
+               !('displayName' in data) || 
+               (data.displayName is string && data.displayName.size() <= 100)
+             );
+    }
+    
+    function isValidRiskMetric(data) {
+      return data.keys().hasAll(['date', 'operations', 'critical']) &&
+             data.keys().size() == 3 &&
+             data.date is string &&
+             data.date.size() <= 20 &&
+             data.operations is number &&
+             data.critical is number;
+    }
+
+    function isValidDashboardData(data) {
+      return data.keys().hasAll(['metrics', 'updatedAt']) &&
+             data.keys().size() == 2 &&
+             data.metrics is list &&
+             data.metrics.size() <= 30 &&
+             (data.metrics.size() == 0 || isValidRiskMetric(data.metrics[0])) &&
+             data.updatedAt is timestamp;
+    }
+
+    function isValidCustomRegistry(data) {
+      return data.keys().hasAll(['id', 'name', 'category', 'endpoint', 'authMethod', 'status']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() <= 200 &&
+             data.category is string && data.category in ['UA_STATE', 'INT_REGISTRY', 'OSINT_CYBER'] &&
+             data.endpoint is string && data.endpoint.size() <= 500 &&
+             data.authMethod is string && data.authMethod in ['OAuth2', 'API Key', 'Bearer Token', 'None'] &&
+             data.status is string && data.status in ['ACTIVE', 'SYNCING', 'SELF_HEALING', 'ERROR'] &&
+             (!('flag' in data) || (data.flag is string && data.flag.size() <= 10)) &&
+             (!('owner' in data) || (data.owner is string && data.owner.size() <= 200)) &&
+             (!('rateLimit' in data) || (data.rateLimit is string && data.rateLimit.size() <= 100)) &&
+             (!('schedule' in data) || (data.schedule is string && data.schedule.size() <= 200)) &&
+             (!('confidence' in data) || data.confidence is number) &&
+             (!('qualityScore' in data) || data.qualityScore is number) &&
+             (!('rowsLoaded' in data) || data.rowsLoaded is number) &&
+             (!('latency' in data) || data.latency is number) &&
+             (!('hasOpenAPI' in data) || data.hasOpenAPI is bool);
+    }
+
+    function isValidAgentTask(data) {
+      return data.keys().hasAll(['id', 'name', 'status', 'priority', 'agent', 'progress', 'logs']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() <= 500 &&
+             data.status is string && data.status in ['QUEUED', 'RUNNING', 'COMPLETED', 'FAILED'] &&
+             data.priority is string && data.priority in ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'] &&
+             data.agent is string && data.agent.size() <= 100 &&
+             data.progress is number && data.progress >= 0 && data.progress <= 100 &&
+             data.logs is list && data.logs.size() <= 100 &&
+             (data.logs.size() == 0 || data.logs[0] is string) &&
+             (!('timestamp' in data) || data.timestamp is timestamp);
+    }
+
+    function isValidCouncilVoteModel(data) {
+      return data.keys().hasAll(['name', 'vote', 'reason', 'confidence']) &&
+             data.name is string && data.name.size() <= 100 &&
+             data.vote is string && data.vote in ['APPROVE', 'REJECT', 'ABSTAIN'] &&
+             data.reason is string && data.reason.size() <= 1000 &&
+             data.confidence is number;
+    }
+
+    function isValidCouncilVote(data) {
+      return data.keys().hasAll(['id', 'scenario', 'verdict', 'models']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.scenario is string && data.scenario.size() <= 1000 &&
+             data.verdict is string && data.verdict.size() <= 200 &&
+             data.models is list && data.models.size() <= 10 &&
+             (data.models.size() == 0 || isValidCouncilVoteModel(data.models[0])) &&
+             (!('timestamp' in data) || data.timestamp is timestamp);
+    }
+
+    function isValidTelegramLog(data) {
+      return data.keys().hasAll(['id', 'sender', 'message', 'timestamp']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.sender is string && data.sender in ['user', 'bot', 'system'] &&
+             data.message is string && data.message.size() <= 5000 &&
+             data.timestamp is string && data.timestamp.size() <= 50;
+    }
+
+    
+    function isValidAuditLog(data) {
+      return data.keys().hasAll(['action', 'user', 'timestamp']) &&
+             data.action is string && data.action in ['LOGIN', 'SEARCH', 'AI_REQUEST', 'EXPORT', 'REPORT', 'SYSTEM'] &&
+             data.user is string && data.user.size() <= 100 &&
+             (!('details' in data) || (data.details is string && data.details.size() <= 1000)) &&
+             data.timestamp is string && data.timestamp.size() <= 50;
+    }
+
+    // 3. Match rules for collections
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUser(incoming()) &&
+                       incoming().createdAt == request.time;
+      allow update: if isOwner(userId) &&
+                       isValidUser(incoming()) &&
+                       incoming().createdAt == existing().createdAt &&
+                       (
+                         incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'email'])
+                       );
+      allow delete: if isOwner(userId);
+    }
+
+    match /dashboard/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId) &&
+                       isValidDashboardData(incoming()) &&
+                       incoming().updatedAt == request.time;
+      allow update: if isValidDashboardData(incoming()) &&
+                       incoming().updatedAt == request.time &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['metrics', 'updatedAt']);
+    }
+
+    match /custom_registries/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId) &&
+                       isValidCustomRegistry(incoming());
+      allow update: if isValidCustomRegistry(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'id', 'name', 'flag', 'category', 'owner', 'endpoint',
+                         'authMethod', 'rateLimit', 'schedule', 'confidence',
+                         'qualityScore', 'rowsLoaded', 'status', 'latency', 'hasOpenAPI'
+                       ]);
+      allow delete: if isSignedIn();
+    }
+
+    match /agent_tasks/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId) &&
+                       isValidAgentTask(incoming());
+      allow update: if isValidAgentTask(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'id', 'name', 'status', 'priority', 'agent', 'progress', 'logs', 'timestamp'
+                       ]);
+      allow delete: if isSignedIn();
+    }
+
+    match /council_votes/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId) &&
+                       isValidCouncilVote(incoming());
+      allow update: if isValidCouncilVote(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'id', 'scenario', 'verdict', 'models', 'timestamp'
+                       ]);
+      allow delete: if isSignedIn();
+    }
+
+    match /telegram_logs/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId) &&
+                       isValidTelegramLog(incoming());
+      allow update: if isValidTelegramLog(incoming()) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'id', 'sender', 'message', 'timestamp'
+                       ]);
+      allow delete: if isSignedIn();
+    }
+
+    match /investigations/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId);
+      allow update: if true;
+      allow delete: if true;
+    }
+
+    match /entity_graphs/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId);
+      allow update: if true;
+      allow delete: if true;
+    }
+
+    match /audit_logs/{docId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() &&
+                      isValidId(docId) &&
+                      isValidAuditLog(incoming());
+      allow update: if false;
+      allow delete: if false;
+    }
+
+  }
+}
