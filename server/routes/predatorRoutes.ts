@@ -194,6 +194,94 @@ router.post(
       // Sort timeline by date
       timeline.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+      // Build network from backend relationships
+      const nodes: any[] = [];
+      const links: any[] = [];
+      const nodeMap = new Map<string, any>();
+
+      // Add main entity as central node
+      const mainNodeId = backendDossier.entity.id || 'main';
+      nodeMap.set(mainNodeId, {
+        id: mainNodeId,
+        label: backendDossier.entity.canonicalName,
+        type: backendDossier.entity.type,
+        isMain: true
+      });
+      nodes.push(nodeMap.get(mainNodeId));
+
+      // Add relationship nodes and links
+      if (backendDossier.relationships && Array.isArray(backendDossier.relationships)) {
+        backendDossier.relationships.forEach((rel: any) => {
+          const relatedNodeId = rel.relatedEntity?.id || rel.targetId || `rel-${Math.random()}`;
+          
+          // Add related entity node if not exists
+          if (!nodeMap.has(relatedNodeId)) {
+            const relatedNode = {
+              id: relatedNodeId,
+              label: rel.relatedEntity?.canonicalName || rel.relatedEntity?.name || rel.name || 'Unknown',
+              type: rel.relatedEntity?.type || rel.type || 'UNKNOWN',
+              isMain: false
+            };
+            nodeMap.set(relatedNodeId, relatedNode);
+            nodes.push(relatedNode);
+          }
+
+          // Add link
+          links.push({
+            source: mainNodeId,
+            target: relatedNodeId,
+            label: rel.type || rel.relationshipType || 'RELATED',
+            strength: rel.strength || rel.confidence || 1
+          });
+        });
+      }
+
+      // Add founders/beneficiaries from EDR data as relationships
+      if (edrData?.founders && Array.isArray(edrData.founders)) {
+        edrData.founders.forEach((founder: any, idx: number) => {
+          const founderId = `founder-${idx}`;
+          if (!nodeMap.has(founderId)) {
+            const founderNode = {
+              id: founderId,
+              label: founder.name || founder.fullName || 'Founder',
+              type: 'PERSON',
+              isMain: false
+            };
+            nodeMap.set(founderId, founderNode);
+            nodes.push(founderNode);
+          }
+          links.push({
+            source: founderId,
+            target: mainNodeId,
+            label: 'FOUNDER',
+            strength: 1
+          });
+        });
+      }
+
+      // Add beneficiaries from EDR data as relationships
+      if (edrData?.beneficiaries && Array.isArray(edrData.beneficiaries)) {
+        edrData.beneficiaries.forEach((beneficiary: any, idx: number) => {
+          const beneficiaryId = `beneficiary-${idx}`;
+          if (!nodeMap.has(beneficiaryId)) {
+            const beneficiaryNode = {
+              id: beneficiaryId,
+              label: beneficiary.name || beneficiary.fullName || 'Beneficiary',
+              type: 'PERSON',
+              isMain: false
+            };
+            nodeMap.set(beneficiaryId, beneficiaryNode);
+            nodes.push(beneficiaryNode);
+          }
+          links.push({
+            source: beneficiaryId,
+            target: mainNodeId,
+            label: 'BENEFICIARY',
+            strength: 1
+          });
+        });
+      }
+
       // Transform backend IntelligenceDossier to frontend Dossier format
       const frontendDossier = {
         entity: {
@@ -201,7 +289,7 @@ router.post(
           fullName: backendDossier.entity.canonicalName,
           name: backendDossier.entity.canonicalName
         },
-        network: { nodes: [], links: [] },
+        network: { nodes, links },
         timeline: timeline,
         sources: backendDossier.claims.map(c => ({ id: c.id, name: c.sourceName, status: c.status, reliability: c.confidence })),
         evidence: backendDossier.claims.map(c => ({ id: c.id, sourceName: c.sourceName, confidence: c.confidence, retrievedAt: c.retrievedAt, data: c.object })),

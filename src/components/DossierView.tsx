@@ -96,13 +96,13 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <p className="text-gray-400">No dossier data available</p>
+          <p className="text-gray-400">Дані досьє відсутні</p>
           {onBack && (
             <button
               onClick={onBack}
               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
-              Go Back
+              Повернутися
             </button>
           )}
         </div>
@@ -254,6 +254,11 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
             {(() => {
               const fops = dossier.modules?.fop || [];
               if (!fops || fops.length === 0) return null;
+              const edrEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('ЄДР'));
+              const sourceName = edrEvidence?.sourceName || 'ЄДР (data.gov.ua)';
+              const confidence = edrEvidence?.confidence ? Math.round(edrEvidence.confidence * 100) : 100;
+              const retrievedAt = edrEvidence?.retrievedAt ? new Date(edrEvidence.retrievedAt).toLocaleDateString('uk-UA') : '-';
+              
               return (
                 <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                   <div className="p-4 border-b border-slate-800">
@@ -302,8 +307,10 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                         <div className="flex flex-col justify-center items-center bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
                           <div className="text-xs font-bold text-emerald-400 border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 rounded-md uppercase tracking-wider">ПІДТВЕРДЖЕНО</div>
                           <div className="text-[9px] text-slate-500 uppercase tracking-widest font-mono mt-2 text-center">Збіг РНОКПП за державним реєстром</div>
-                          <div className="mt-3 pt-3 border-t border-slate-700/50 text-center">
-                            <div className="text-[8px] text-slate-500 font-mono">Джерело: ЄДР (data.gov.ua)</div>
+                          <div className="mt-3 pt-3 border-t border-slate-700/50 text-center space-y-1">
+                            <div className="text-[8px] text-slate-500 font-mono">Джерело: {sourceName}</div>
+                            <div className="text-[8px] text-slate-500 font-mono">Надійність: {confidence}%</div>
+                            <div className="text-[8px] text-slate-500 font-mono">Оновлено: {retrievedAt}</div>
                           </div>
                         </div>
                       </div>
@@ -329,6 +336,14 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         const sanctionsData = sanctionsModule || (dossier as any).claims?.find((c: any) => c.predicate === 'has_sanctions_data')?.object;
         const taxData = taxModule || (dossier as any).claims?.find((c: any) => c.predicate === 'has_tax_data')?.object;
         
+        const sanctionsEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('РНБО'));
+        const taxEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('ДПС'));
+        
+        const sanctionsSource = sanctionsEvidence?.sourceName || 'РНБО (sanctions-t.rnbo.gov.ua)';
+        const taxSource = taxEvidence?.sourceName || 'ДПС (tax.gov.ua)';
+        const sanctionsConfidence = sanctionsEvidence?.confidence ? Math.round(sanctionsEvidence.confidence * 100) : 100;
+        const taxConfidence = taxEvidence?.confidence ? Math.round(taxEvidence.confidence * 100) : 100;
+        
         const activeRiskResult: RiskScoringResult = liveDossierData?.risk || {
           totalScore: dossier.risk?.score || 0,
           level: dossier.risk?.level === 'HIGH' ? 'CRITICAL' : dossier.risk?.level === 'MEDIUM' ? 'MEDIUM' : 'LOW',
@@ -345,8 +360,8 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         return (
           <div className="space-y-6">
             <RiskEngineCard riskResult={activeRiskResult} />
-            <SanctionsCard entity={entity} sanctionsData={sanctionsData} />
-            <TaxSignalsCard entity={entity} taxData={taxData} />
+            <SanctionsCard entity={entity} sanctionsData={sanctionsData} sourceName={sanctionsSource} confidence={sanctionsConfidence} />
+            <TaxSignalsCard entity={entity} taxData={taxData} sourceName={taxSource} confidence={taxConfidence} />
             <AIAnalyticsCard entity={entity} />
           </div>
         );
@@ -357,6 +372,10 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         const licensesModule = (dossier.modules as any)?.licenses?.[0];
         const licensesData = licensesModule || (dossier as any).claims?.find((c: any) => c.predicate === 'has_licenses_data')?.object;
         
+        const licensesEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('Ліцензійний'));
+        const licensesSource = licensesEvidence?.sourceName || 'Ліцензійний реєстр (data.gov.ua)';
+        const licensesConfidence = licensesEvidence?.confidence ? Math.round(licensesEvidence.confidence * 100) : 100;
+        
         return (
           <div className="space-y-6">
             {vehicles && vehicles.length > 0 && (
@@ -364,18 +383,11 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                 <div className="p-4 border-b border-slate-800">
                   <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
                     <Truck size={16} className="text-amber-400" />
-                    Транспортні засоби ({vehicles.length})
+                    Транспортні засоби
                   </h3>
                 </div>
                 <DataTable
                   columns={[
-                    {
-                      key: 'brand',
-                      label: 'Марка / Модель',
-                      render: (_val: any, row: any) => (
-                        <span className="text-white font-medium">{row.brand} {row.model}</span>
-                      ),
-                    },
                     {
                       key: 'plate',
                       label: 'Номерний знак',
@@ -392,17 +404,10 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                     },
                   ]}
                   data={vehicles}
-                  pageSize={10}
-                  emptyMessage="Транспортних засобів не знайдено"
                 />
               </div>
             )}
-            
-            {licensesData && (
-              <LicensesCard entity={entity} licensesData={licensesData} />
-            )}
-            
-            <LandCard entity={entity} landData={(dossier as any).claims?.find((c: any) => c.predicate === 'has_land_data')?.object} />
+            <LicensesCard entity={entity} licensesData={licensesData} sourceName={licensesSource} confidence={licensesConfidence} />
           </div>
         );
       }
@@ -413,6 +418,11 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         const hasCourtCases = courtData?.courtCasesCount > 0 || (courtData?.courtCases?.length > 0);
         const isBankrupt = courtData?.isBankrupt;
         const activeEnforcements = courtData?.activeEnforcementsCount || 0;
+        
+        const courtEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('ЄДРСР'));
+        const courtSource = courtEvidence?.sourceName || 'ЄДРСР (court.gov.ua)';
+        const courtConfidence = courtEvidence?.confidence ? Math.round(courtEvidence.confidence * 100) : 100;
+        const courtRetrievedAt = courtEvidence?.retrievedAt ? new Date(courtEvidence.retrievedAt).toLocaleDateString('uk-UA') : '-';
 
         return (
           <div className="space-y-6">
@@ -421,6 +431,13 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                 <Landmark size={16} className="text-cyan-400" />
                 Єдиний державний реєстр судових рішень (ЄДРСР)
               </h3>
+              <div className="flex items-center gap-4 text-[10px] text-slate-500 font-mono">
+                <span>Джерело: {courtSource}</span>
+                <span>•</span>
+                <span>Надійність: {courtConfidence}%</span>
+                <span>•</span>
+                <span>Оновлено: {courtRetrievedAt}</span>
+              </div>
               
               {hasCourtCases || isBankrupt || activeEnforcements > 0 ? (
                 <div className="flex items-center gap-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
@@ -709,7 +726,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         <div className="space-y-4">
           
           {/* 1. Блок Оцінка ризиків & Санкції */}
-          {hasRisk && (
+          {hasRisk && risk.drivers?.length > 0 && (
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shadow-sm">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <div className="flex items-center gap-2">
@@ -739,7 +756,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
           )}
 
           {/* 2. Блок Санкції */}
-          {hasSanctions && (
+          {hasSanctions && mods.sanctions?.length > 0 && (
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shadow-sm">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <div className="flex items-center gap-2">
@@ -764,7 +781,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
           )}
 
           {/* 3. Блок Пов'язані особи / Асоційовані компанії */}
-          {hasCompanies && (
+          {hasCompanies && mods.companies?.length > 0 && (
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shadow-sm">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <div className="flex items-center gap-2">
@@ -789,7 +806,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                       <div className="text-[10px] text-slate-500 font-mono flex items-center gap-1.5">
                         <span>Код: {comp.code}</span>
                         <span>•</span>
-                        <span>Частка: {comp.share || 'N/A'}%</span>
+                        <span>Частка: {comp.share || '-'}%</span>
                       </div>
                     </div>
                     <ChevronRight size={14} className="text-slate-500 shrink-0" />
@@ -800,7 +817,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
           )}
 
           {/* 4. Блок Судові справи */}
-          {hasCourts && (
+          {hasCourts && (mods.courts?.length > 0 || (mods.courts?.[0]?.courtCasesCount > 0) || (mods.courts?.[0]?.activeEnforcementsCount > 0)) && (
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shadow-sm">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <div className="flex items-center gap-2">
@@ -836,7 +853,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
           )}
 
           {/* 5. Блок Активи та майно */}
-          {hasAssets && (
+          {hasAssets && (mods.vehicles?.length > 0 || mods.assets?.length > 0) && (
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 shadow-sm">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                 <div className="flex items-center gap-2">
@@ -853,7 +870,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                       <span className="text-xs font-bold text-slate-200">{vehicle.brand} ({vehicle.year})</span>
                       <span className="text-[9px] font-mono text-amber-400 border border-amber-500/20 px-1 py-0.2 rounded bg-amber-500/5 uppercase">{vehicle.plate}</span>
                     </div>
-                    <div className="text-[10px] text-slate-400 font-mono">VIN: {vehicle.vin || 'N/A'}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">VIN: {vehicle.vin || '-'}</div>
                   </div>
                 ))}
                 {mods.assets?.map((asset: any, idx: number) => (
@@ -877,27 +894,36 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
             </div>
 
             <div className="p-4 bg-slate-950/60 rounded-xl border border-slate-800/40 text-center space-y-3">
-              <div className="flex justify-center gap-1.5 items-center">
-                <div className="w-12 h-12 rounded-full border border-blue-500/30 flex items-center justify-center bg-blue-600/5 text-blue-400 text-sm font-bold">
-                  {dossier.network?.nodes?.length || 0}
+              {dossier.network?.nodes?.length > 1 ? (
+                <>
+                  <div className="flex justify-center gap-1.5 items-center">
+                    <div className="w-12 h-12 rounded-full border border-blue-500/30 flex items-center justify-center bg-blue-600/5 text-blue-400 text-sm font-bold">
+                      {dossier.network?.nodes?.length || 0}
+                    </div>
+                    <div className="text-slate-600 text-xs font-bold">⇅</div>
+                    <div className="w-12 h-12 rounded-full border border-emerald-500/30 flex items-center justify-center bg-emerald-600/5 text-emerald-400 text-sm font-bold">
+                      {dossier.network?.links?.length || 0}
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-slate-400">Зв'язки розраховано. Виявлено {dossier.network?.nodes?.length || 0} вузлів у схемі бенефіціарів.</p>
+                  
+                  <button 
+                    onClick={() => {
+                      setMobileBottomSheetItem(dossier.network);
+                      setMobileBottomSheetType('graph');
+                    }}
+                    className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg transition-all shadow active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <Network className="w-3.5 h-3.5" />
+                    <span>Дослідити зв'язки</span>
+                  </button>
+                </>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-[11px] text-slate-400">Лише основний суб'єкт знайдений.</p>
+                  <p className="text-[11px] text-slate-500">Пов'язаних осіб не виявлено.</p>
                 </div>
-                <div className="text-slate-600 text-xs font-bold">⇅</div>
-                <div className="w-12 h-12 rounded-full border border-emerald-500/30 flex items-center justify-center bg-emerald-600/5 text-emerald-400 text-sm font-bold">
-                  {dossier.network?.links?.length || 0}
-                </div>
-              </div>
-              <p className="text-[11px] text-slate-400">Зв'язки розраховано. Виявлено {dossier.network?.nodes?.length || 0} вузлів у схемі бенефіціарів.</p>
-              
-              <button 
-                onClick={() => {
-                  setMobileBottomSheetItem(dossier.network);
-                  setMobileBottomSheetType('graph');
-                }}
-                className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg transition-all shadow active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
-              >
-                <Network className="w-3.5 h-3.5" />
-                <span>Дослідити зв'язки</span>
-              </button>
+              )}
             </div>
           </div>
 
@@ -917,11 +943,14 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                   <div key={idx} className="relative space-y-0.5">
                     <span className="absolute -left-[20.5px] top-1 w-2.5 h-2.5 rounded-full bg-slate-950 border-2 border-blue-500" />
                     <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
-                      <span>{item.date}</span>
+                      <span>{new Date(item.date).toLocaleDateString('uk-UA')}</span>
                       <span>•</span>
                       <span className="uppercase text-[8px] text-slate-600">{item.source}</span>
                     </div>
-                    <div className="text-xs font-bold text-slate-200 leading-snug">{item.event}</div>
+                    <div className="text-xs font-bold text-slate-200 leading-snug">{item.description}</div>
+                    {item.type && (
+                      <div className="text-[9px] text-slate-500 font-mono uppercase">{item.type}</div>
+                    )}
                   </div>
                 ))}
               </div>
