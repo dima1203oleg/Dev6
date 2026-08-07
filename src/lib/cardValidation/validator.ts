@@ -4,7 +4,7 @@
  */
 
 import { CardStatus, CardCategory, FieldAudit, CardValidationResult, RootCauseAnalysis } from './types';
-import { CanonicalEntity, EvidenceClaim } from '../types/predator';
+import { CanonicalEntity, EvidenceClaim } from '../../types/predator';
 
 export class CardValidator {
   /**

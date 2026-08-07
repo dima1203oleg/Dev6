@@ -13,7 +13,7 @@ import {
   CertificationReport,
   CardStatus,
 } from './types';
-import { CanonicalEntity } from '../types/predator';
+import { CanonicalEntity } from '../../types/predator';
 
 export class CertificationEngine {
   /**
