@@ -4,7 +4,7 @@
  * BLOCK 8
  */
 
-import { RelationshipValidation, RelationshipEdge, EntityRelationship } from './types';
+import { RelationshipValidation, RelationshipEdge } from './types';
 
 export class RelationshipValidator {
   /**
@@ -12,7 +12,7 @@ export class RelationshipValidator {
    */
   static validateRelationships(
     entityId: string,
-    relationships: EntityRelationship[]
+    relationships: any[]
   ): RelationshipValidation {
     const edges = this.buildEdges(relationships);
     const totalEdges = edges.length;

@@ -154,7 +154,7 @@ export class RemediationEngine {
     
     // Extract common characteristics
     const commonComponents = this.findCommonElements(
-      incidents.map(i => i.affectedComponents).flat()
+      incidents.map(i => i.affectedComponents)
     );
     
     const category = incidents[0].category;

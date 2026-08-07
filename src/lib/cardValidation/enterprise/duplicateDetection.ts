@@ -4,7 +4,8 @@
  * BLOCK 9
  */
 
-import { DuplicateDetectionResult, DuplicateGroup, CanonicalEntity } from './types';
+import { DuplicateDetectionResult, DuplicateGroup } from './types';
+import { CanonicalEntity } from '../../../types/predator';
 
 export class DuplicateDetector {
   /**

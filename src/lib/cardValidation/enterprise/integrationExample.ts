@@ -24,7 +24,7 @@ import {
   EnterpriseAcceptanceCriteriaValidator,
   LivePreviewAuditEngine,
 } from './index';
-import { CanonicalEntity } from '../types/predator';
+import { CanonicalEntity } from '../../../types/predator';
 
 /**
  * Complete Enterprise Certification Workflow

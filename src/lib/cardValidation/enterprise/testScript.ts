@@ -24,7 +24,7 @@ import {
   EnterpriseAcceptanceCriteriaValidator,
   LivePreviewAuditEngine,
 } from './index';
-import { CanonicalEntity } from '../types/predator';
+import { CanonicalEntity } from '../../../types/predator';
 
 /**
  * Mock entity for testing with control profile RNOKPP 3111724753

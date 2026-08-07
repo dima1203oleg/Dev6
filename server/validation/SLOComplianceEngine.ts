@@ -114,7 +114,7 @@ export class SLOComplianceEngine {
         target: 60,
         window: '30d',
         measurement: 'MTTR',
-        unit: 'minutes',
+        unit: 'seconds',
         critical: true
       },
       {

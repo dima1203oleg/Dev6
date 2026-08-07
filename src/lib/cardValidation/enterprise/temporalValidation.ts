@@ -4,7 +4,7 @@
  * BLOCK 7
  */
 
-import { TemporalValidation, TemporalRecord } from './types';
+import { TemporalValidation, TemporalRecord, FieldAudit } from './types';
 
 export class TemporalValidator {
   /**

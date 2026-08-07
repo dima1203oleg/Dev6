@@ -4,6 +4,8 @@
  */
 
 export * from '../types';
+import { CardDefinition } from '../cardRegistry';
+
 
 // Dynamic Card Registry Types
 export interface CardCategory {

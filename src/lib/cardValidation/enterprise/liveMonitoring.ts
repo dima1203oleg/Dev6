@@ -80,7 +80,7 @@ export class LiveMonitoringEngine {
       // 5. Alert if below threshold
       if (overallHealth < this.config.alertThreshold) {
         await this.createAlert(
-          'HEALTH_DEGRADATION',
+          'PERFORMANCE',
           'HIGH',
           `Overall health score ${overallHealth}% below threshold ${this.config.alertThreshold}%`,
           []
@@ -94,7 +94,7 @@ export class LiveMonitoringEngine {
       
     } catch (error) {
       await this.createAlert(
-        'MONITORING_FAILURE',
+        'CARD_FAILURE',
         'CRITICAL',
         `Monitoring cycle failed: ${error}`,
         []

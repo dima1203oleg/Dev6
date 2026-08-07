@@ -52,7 +52,7 @@ export class CrossRegistryConsistencyValidator {
 
     if (!hasValueConflict) {
       // All sources agree - calculate combined confidence
-      const avgConfidence = sources.reduce((sum, s) => sum + s.confidence, 0) /_sources.length;
+      const avgConfidence = sources.reduce((sum, s) => sum + s.confidence, 0) / sources.length;
       const highestConfidenceSource = sources.reduce((prev, current) => 
         prev.confidence > current.confidence ? prev : current
       );
