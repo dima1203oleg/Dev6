@@ -1,0 +1,193 @@
+{
+  "run_id": "rdp-exec-20260808-0000",
+  "timestamp": "2026-08-08T00:00:00Z",
+  "control_ipn": "3111724753",
+  "validation_status": "FAILED",
+  "validation_summary": {
+    "total_cards": 96,
+    "cards_with_data": 96,
+    "cards_without_data": 0,
+    "cards_with_provenance": 0,
+    "cards_with_truth_validation": 0,
+    "cards_from_mock_entities": 96,
+    "cards_from_real_entities": 0,
+    "validation_passed": false,
+    "reason": "All cards created from mock entities without actual IPN search in data"
+  },
+  "card_breakdown": {
+    "by_type": {
+      "PERSON": 16,
+      "COMPANY": 16,
+      "LEGAL_ENTITY": 16,
+      "BENEFICIARY": 16,
+      "DIRECTOR": 16,
+      "FOUNDER": 16
+    },
+    "by_source": {
+      "c3c20afc-3bba-4d22-ad3c-90ed640a5dde": 6,
+      "86309117-c7d6-4d07-a5c8-376593b8a390": 6,
+      "4df7ce90-82fd-430b-b192-239d67f9c2d1": 6,
+      "0912c7a7-ccf5-4691-a7bd-f78a7e9cf0aa": 6,
+      "2b604a29-c67d-4eb3-80c1-701f121ad201": 6,
+      "4bec0554-76be-459e-885e-2fa965398fbc": 6,
+      "203f9b34-e304-4a63-aaaf-3f482b91ef22": 6,
+      "fb8b8c21-f113-4c85-bf66-1ba9f9d7857f": 6,
+      "bc6265d0-7ade-47fe-8f71-63891643d479": 6,
+      "eb5e64c6-b31b-439c-b4be-00c404c40367": 6,
+      "17a0a29b-188e-416f-8967-53c2111a0666": 6,
+      "bf2919fd-2c1d-40e5-9303-faaf5c5e5900": 6,
+      "2dd619bb-9b71-462b-94a8-a92393ad22c2": 6,
+      "0d726083-7423-4508-8267-f3b13c28d535": 6,
+      "918c5fe1-81eb-4a5a-8b5a-003092c80b21": 6,
+      "a44afad3-fd25-4d83-a92d-7639c11a9441": 6
+    }
+  },
+  "validation_failures": [
+    {
+      "failure_type": "MOCK_ENTITY_RESOLUTION",
+      "severity": "CRITICAL",
+      "description": "All cards created from mock entities without actual IPN search in downloaded data",
+      "affected_cards": 96,
+      "evidence": "Entity resolution method set to MOCK in execution log",
+      "required_action": "Implement real entity resolution with IPN search in downloaded data"
+    },
+    {
+      "failure_type": "NO_PROVENANCE_TRACKING",
+      "severity": "CRITICAL",
+      "description": "No field-level provenance tracking implemented",
+      "affected_cards": 96,
+      "evidence": "No lineage data available for any card fields",
+      "required_action": "Implement field-level provenance tracking from UI to source"
+    },
+    {
+      "failure_type": "NO_TRUTH_VALIDATION",
+      "severity": "CRITICAL",
+      "description": "Card values not validated against source data",
+      "affected_cards": 96,
+      "evidence": "No truth validation performed for any card",
+      "required_action": "Implement truth validation comparing card values to source data"
+    },
+    {
+      "failure_type": "CONTROL_IPN_NOT_VERIFIED",
+      "severity": "CRITICAL",
+      "description": "Control IPN 3111724753 not actually found in any source",
+      "affected_cards": 96,
+      "evidence": "Execution log shows mock entity resolution without IPN search",
+      "required_action": "Implement actual IPN search in downloaded data before entity creation"
+    }
+  ],
+  "sample_card_validation": [
+    {
+      "card_id": "card-PERSON-3111724753",
+      "card_type": "PERSON",
+      "source_dataset": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+      "status": "DATA_FOUND",
+      "validation_status": "FAILED",
+      "validation_failures": [
+        "Entity created from mock resolution",
+        "No provenance data available",
+        "No truth validation performed",
+        "Control IPN not verified in source"
+      ],
+      "fields": [
+        {
+          "field_name": "ipn",
+          "ui_value": "3111724753",
+          "provenance": "NOT_TRACKED",
+          "truth_validation": "NOT_PERFORMED",
+          "source_record_id": "UNKNOWN",
+          "sha256": "UNKNOWN"
+        },
+        {
+          "field_name": "full_name",
+          "ui_value": "UNKNOWN",
+          "provenance": "NOT_TRACKED",
+          "truth_validation": "NOT_PERFORMED",
+          "source_record_id": "UNKNOWN",
+          "sha256": "UNKNOWN"
+        }
+      ]
+    },
+    {
+      "card_id": "card-COMPANY-3111724753",
+      "card_type": "COMPANY",
+      "source_dataset": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+      "status": "DATA_FOUND",
+      "validation_status": "FAILED",
+      "validation_failures": [
+        "Entity created from mock resolution",
+        "No provenance data available",
+        "No truth validation performed",
+        "Control IPN not verified in source"
+      ],
+      "fields": [
+        {
+          "field_name": "company_name",
+          "ui_value": "UNKNOWN",
+          "provenance": "NOT_TRACKED",
+          "truth_validation": "NOT_PERFORMED",
+          "source_record_id": "UNKNOWN",
+          "sha256": "UNKNOWN"
+        },
+        {
+          "field_name": "edrpou",
+          "ui_value": "UNKNOWN",
+          "provenance": "NOT_TRACKED",
+          "truth_validation": "NOT_PERFORMED",
+          "source_record_id": "UNKNOWN",
+          "sha256": "UNKNOWN"
+        }
+      ]
+    }
+  ],
+  "required_validations": [
+    {
+      "validation": "ENTITY_RESOLUTION_REAL",
+      "status": "NOT_IMPLEMENTED",
+      "description": "Entity resolution must search for actual IPN in downloaded data",
+      "priority": "CRITICAL"
+    },
+    {
+      "validation": "FIELD_PROVENANCE_TRACKING",
+      "status": "NOT_IMPLEMENTED",
+      "description": "Each field must have complete lineage from UI to source",
+      "priority": "CRITICAL"
+    },
+    {
+      "validation": "TRUTH_VALIDATION",
+      "status": "NOT_IMPLEMENTED",
+      "description": "Card values must be validated against source data",
+      "priority": "CRITICAL"
+    },
+    {
+      "validation": "CONTROL_IPN_VERIFICATION",
+      "status": "NOT_IMPLEMENTED",
+      "description": "Control IPN must be actually found in source data",
+      "priority": "CRITICAL"
+    },
+    {
+      "validation": "SHA256_HASHING",
+      "status": "NOT_IMPLEMENTED",
+      "description": "Each transformation stage must have SHA256 hash",
+      "priority": "HIGH"
+    },
+    {
+      "validation": "FIELD_MAPPING",
+      "status": "NOT_IMPLEMENTED",
+      "description": "Field mappings must be tracked and validated",
+      "priority": "HIGH"
+    }
+  ],
+  "conclusion": {
+    "overall_status": "FAILED",
+    "production_ready": false,
+    "reason": "Cards created from mock entities without real data, provenance tracking, or truth validation",
+    "next_steps": [
+      "Implement real entity resolution with IPN search",
+      "Implement field-level provenance tracking",
+      "Implement truth validation",
+      "Verify control IPN in actual source data",
+      "Add SHA256 hashing at each transformation stage"
+    ]
+  }
+}

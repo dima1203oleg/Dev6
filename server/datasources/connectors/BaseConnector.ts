@@ -215,7 +215,21 @@ export class CkanConnector extends BaseConnector {
   }
 
   async search(query: QueryInput): Promise<RawResponse> {
-    const url = `https://data.gov.ua/api/3/action/datastore_search?resource_id=${this.resourceId}&q=${encodeURIComponent(query.identifier)}&limit=${query.limit || 50}`;
+    // If identifierType is specified and not 'any', we can use SQL for exact matching
+    if (query.identifierType && query.identifierType !== 'any' && query.identifierType !== 'NAME') {
+      // Use SQL search for exact match on specific column (assuming column name matches identifierType, e.g., 'edrpou')
+      const sql = `SELECT * from "${this.resourceId}" WHERE "${query.identifierType}" LIKE '%${query.identifier}%' LIMIT ${query.limit || 50}`;
+      const url = `https://data.gov.ua/api/3/action/datastore_search_sql?sql=${encodeURIComponent(sql)}`;
+      return this.doFetch(url);
+    } else {
+      // Fallback to full-text search
+      const url = `https://data.gov.ua/api/3/action/datastore_search?resource_id=${this.resourceId}&q=${encodeURIComponent(query.identifier)}&limit=${query.limit || 50}`;
+      return this.doFetch(url);
+    }
+  }
+
+  async searchSql(sql: string): Promise<RawResponse> {
+    const url = `https://data.gov.ua/api/3/action/datastore_search_sql?sql=${encodeURIComponent(sql)}`;
     return this.doFetch(url);
   }
 

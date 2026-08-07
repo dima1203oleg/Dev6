@@ -1,0 +1,15 @@
+{
+  "test_name": "Mapping Failure",
+  "expected": "MAPPING_ERROR",
+  "actual": "MAPPING_ERROR",
+  "passed": true,
+  "timestamp": "2026-08-07T22:47:08.403Z",
+  "details": {
+    "source_field": "company_name_uk",
+    "target_field": "company_name",
+    "error": "Field mapping not found in schema",
+    "raw_record": {
+      "company_name_uk": "ТОВ \"Приклад\""
+    }
+  }
+}

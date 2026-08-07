@@ -1,0 +1,53 @@
+{
+  "field": "edrpou",
+  "provenance": {
+    "value": "19007752",
+    "source": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+    "dataset_id": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+    "resource_id": "38dc0b3d-d8d3-4b30-95ed-506eeea8d67f",
+    "raw_record_id": "0",
+    "raw_hash": "b32a8366cff98ab96869c59e7590bd4ea1c993768443b49501502d3e6158856e",
+    "timestamp": "2026-08-07T22:46:04.349Z",
+    "confidence": 1,
+    "pipeline_stages": [
+      {
+        "stage": "RAW_RECORD",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.349Z"
+      },
+      {
+        "stage": "NORMALIZED",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.349Z"
+      },
+      {
+        "stage": "CANONICAL_ENTITY",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.349Z"
+      },
+      {
+        "stage": "DATABASE",
+        "value": "PENDING_DB_INTEGRATION",
+        "timestamp": "2026-08-07T22:46:04.351Z"
+      },
+      {
+        "stage": "API",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.351Z"
+      },
+      {
+        "stage": "UI",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.351Z"
+      }
+    ]
+  },
+  "summary": {
+    "source": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+    "dataset": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+    "resource": "38dc0b3d-d8d3-4b30-95ed-506eeea8d67f",
+    "retrieved_at": "8/8/2026, 1:46:04 AM",
+    "confidence": "100.0%",
+    "hash_verified": true
+  }
+}

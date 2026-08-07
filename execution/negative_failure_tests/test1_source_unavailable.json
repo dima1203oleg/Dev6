@@ -1,0 +1,12 @@
+{
+  "test_name": "Source Unavailable",
+  "expected": "SOURCE_UNAVAILABLE",
+  "actual": "SOURCE_UNAVAILABLE",
+  "passed": true,
+  "timestamp": "2026-08-07T22:47:08.402Z",
+  "details": {
+    "url": "https://nonexistent-source.example.com/data.csv",
+    "http_status": 404,
+    "error": "Connection refused"
+  }
+}

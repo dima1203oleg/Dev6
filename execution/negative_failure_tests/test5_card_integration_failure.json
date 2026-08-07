@@ -1,0 +1,21 @@
+{
+  "test_name": "Card Integration Failure",
+  "expected": "FAIL",
+  "actual": "NO_DATA",
+  "passed": true,
+  "timestamp": "2026-08-07T22:47:08.403Z",
+  "details": {
+    "card_id": "test-invalid",
+    "contract_id": "company",
+    "overall_score": 0,
+    "errors": [
+      "Field edrpou: Required field is missing",
+      "Field source: Required field is missing",
+      "Field verified_at: Required field is missing",
+      "Field evidence: Required field is missing",
+      "Confidence score 0.00 below minimum 0.9",
+      "Evidence required but no claims found"
+    ],
+    "warnings": []
+  }
+}

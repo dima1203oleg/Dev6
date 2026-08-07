@@ -1,0 +1,389 @@
+{
+  "run_id": "rdp-exec-20260808-0000",
+  "timestamp": "2026-08-08T00:00:00Z",
+  "control_ipn": "3111724753",
+  "production_status": "NOT_PRODUCTION_READY",
+  "overall_score": 3,
+  "max_score": 10,
+  "detailed_breakdown": {
+    "discovery": {
+      "score": 4,
+      "max_score": 10,
+      "status": "PARTIAL",
+      "criteria": [
+        {
+          "criterion": "Full catalog enumeration",
+          "status": "FAILED",
+          "evidence": "Only 100/36,905 packages retrieved",
+          "weight": 3
+        },
+        {
+          "criterion": "API connectivity",
+          "status": "PASSED",
+          "evidence": "Successfully connected to data.gov.ua API",
+          "weight": 2
+        },
+        {
+          "criterion": "CKAN API support",
+          "status": "PASSED",
+          "evidence": "package_search and package_show working",
+          "weight": 2
+        },
+        {
+          "criterion": "Resource analysis",
+          "status": "PASSED",
+          "evidence": "4,379 resources analyzed and categorized",
+          "weight": 2
+        },
+        {
+          "criterion": "DataStore detection",
+          "status": "PASSED",
+          "evidence": "8 resources marked as datastore_active detected",
+          "weight": 1
+        }
+      ]
+    },
+    "ingestion": {
+      "score": 7,
+      "max_score": 10,
+      "status": "GOOD",
+      "criteria": [
+        {
+          "criterion": "Data retrieval success rate",
+          "status": "GOOD",
+          "evidence": "17/19 registries successfully fetched (89%)",
+          "weight": 3
+        },
+        {
+          "criterion": "Format support",
+          "status": "PASSED",
+          "evidence": "CSV, JSON, XLSX, XLS parsing working",
+          "weight": 2
+        },
+        {
+          "criterion": "DataStore fallback",
+          "status": "PASSED",
+          "evidence": "100% fallback success rate for unavailable DataStore",
+          "weight": 2
+        },
+        {
+          "criterion": "Error handling",
+          "status": "PARTIAL",
+          "evidence": "2 errors occurred but not properly classified in initial report",
+          "weight": 2
+        },
+        {
+          "criterion": "Data volume",
+          "status": "PASSED",
+          "evidence": "106,815 records successfully downloaded",
+          "weight": 1
+        }
+      ]
+    },
+    "entity_resolution": {
+      "score": 0,
+      "max_score": 10,
+      "status": "FAILED",
+      "criteria": [
+        {
+          "criterion": "Real IPN search",
+          "status": "FAILED",
+          "evidence": "Mock entity resolution used, actual IPN not searched",
+          "weight": 5
+        },
+        {
+          "criterion": "Entity deduplication",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 2
+        },
+        {
+          "criterion": "Entity linking",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 2
+        },
+        {
+          "criterion": "Confidence scoring",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 1
+        }
+      ]
+    },
+    "provenance_tracking": {
+      "score": 0,
+      "max_score": 10,
+      "status": "FAILED",
+      "criteria": [
+        {
+          "criterion": "Field-level lineage",
+          "status": "FAILED",
+          "evidence": "No field-level provenance tracking implemented",
+          "weight": 4
+        },
+        {
+          "criterion": "SHA256 hashing",
+          "status": "FAILED",
+          "evidence": "No hashing at transformation stages",
+          "weight": 3
+        },
+        {
+          "criterion": "Record identification",
+          "status": "FAILED",
+          "evidence": "No record-level tracking through pipeline",
+          "weight": 2
+        },
+        {
+          "criterion": "Field mapping registry",
+          "status": "FAILED",
+          "evidence": "No field mapping tracking",
+          "weight": 1
+        }
+      ]
+    },
+    "truth_validation": {
+      "score": 0,
+      "max_score": 10,
+      "status": "FAILED",
+      "criteria": [
+        {
+          "criterion": "Card value verification",
+          "status": "FAILED",
+          "evidence": "No truth validation performed",
+          "weight": 4
+        },
+        {
+          "criterion": "Source data comparison",
+          "status": "FAILED",
+          "evidence": "No comparison of card values to source data",
+          "weight": 3
+        },
+        {
+          "criterion": "Data quality checks",
+          "status": "FAILED",
+          "evidence": "No data quality validation",
+          "weight": 2
+        },
+        {
+          "criterion": "Anomaly detection",
+          "status": "FAILED",
+          "evidence": "No anomaly detection",
+          "weight": 1
+        }
+      ]
+    },
+    "schema_management": {
+      "score": 0,
+      "max_score": 10,
+      "status": "NOT_TESTED",
+      "criteria": [
+        {
+          "criterion": "Schema drift detection",
+          "status": "NOT_TESTED",
+          "evidence": "Requires multiple runs over time",
+          "weight": 4
+        },
+        {
+          "criterion": "Auto-correction",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 3
+        },
+        {
+          "criterion": "Schema history",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 2
+        },
+        {
+          "criterion": "Change alerts",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 1
+        }
+      ]
+    },
+    "regression_testing": {
+      "score": 0,
+      "max_score": 10,
+      "status": "NOT_TESTED",
+      "criteria": [
+        {
+          "criterion": "Automatic regression tests",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 4
+        },
+        {
+          "criterion": "Post-ingestion validation",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 3
+        },
+        {
+          "criterion": "Performance regression",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 2
+        },
+        {
+          "criterion": "Data quality regression",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 1
+        }
+      ]
+    },
+    "monitoring": {
+      "score": 0,
+      "max_score": 10,
+      "status": "NOT_TESTED",
+      "criteria": [
+        {
+          "criterion": "Health checks",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 3
+        },
+        {
+          "criterion": "Performance monitoring",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 3
+        },
+        {
+          "criterion": "Error tracking",
+          "status": "PARTIAL",
+          "evidence": "Basic error logging, no metrics",
+          "weight": 2
+        },
+        {
+          "criterion": "Alerting",
+          "status": "NOT_TESTED",
+          "evidence": "Not implemented",
+          "weight": 2
+        }
+      ]
+    }
+  },
+  "critical_gaps": [
+    {
+      "gap": "Mock Entity Resolution",
+      "severity": "CRITICAL",
+      "impact": "Control IPN not actually searched in data",
+      "blocking_production": true,
+      "estimated_effort": "HIGH"
+    },
+    {
+      "gap": "No Field Provenance Tracking",
+      "severity": "CRITICAL",
+      "impact": "Cannot verify card values originate from source data",
+      "blocking_production": true,
+      "estimated_effort": "HIGH"
+    },
+    {
+      "gap": "No Truth Validation",
+      "severity": "CRITICAL",
+      "impact": "Card values not validated against sources",
+      "blocking_production": true,
+      "estimated_effort": "HIGH"
+    },
+    {
+      "gap": "Partial Catalog Discovery",
+      "severity": "HIGH",
+      "impact": "Only 100/36,905 packages discovered",
+      "blocking_production": false,
+      "estimated_effort": "MEDIUM"
+    },
+    {
+      "gap": "No Schema Drift Detection",
+      "severity": "HIGH",
+      "impact": "Cannot detect or auto-correct schema changes",
+      "blocking_production": false,
+      "estimated_effort": "HIGH"
+    },
+    {
+      "gap": "No Regression Testing",
+      "severity": "HIGH",
+      "impact": "No automatic validation after changes",
+      "blocking_production": false,
+      "estimated_effort": "HIGH"
+    }
+  ],
+  "production_readiness_checklist": {
+    "discovery_complete": false,
+    "catalog_enumerated": false,
+    "full_ingestion": false,
+    "real_entity_resolution": false,
+    "provenance_tracking": false,
+    "truth_validation": false,
+    "schema_drift_detection": false,
+    "automatic_regression": false,
+    "monitoring_setup": false,
+    "alerting_configured": false,
+    "backup_recovery": false,
+    "documentation_complete": false,
+    "security_audit": false,
+    "performance_benchmarked": false,
+    "load_testing": false,
+    "disaster_recovery": false
+  },
+  "next_steps": [
+    {
+      "priority": "CRITICAL",
+      "action": "Implement real entity resolution with IPN search",
+      "estimated_effort": "HIGH",
+      "blocking_production": true
+    },
+    {
+      "priority": "CRITICAL",
+      "action": "Implement field-level provenance tracking",
+      "estimated_effort": "HIGH",
+      "blocking_production": true
+    },
+    {
+      "priority": "CRITICAL",
+      "action": "Implement truth validation",
+      "estimated_effort": "HIGH",
+      "blocking_production": true
+    },
+    {
+      "priority": "HIGH",
+      "action": "Complete full catalog enumeration (36,905 packages)",
+      "estimated_effort": "MEDIUM",
+      "blocking_production": false
+    },
+    {
+      "priority": "HIGH",
+      "action": "Implement schema drift detection",
+      "estimated_effort": "HIGH",
+      "blocking_production": false
+    },
+    {
+      "priority": "HIGH",
+      "action": "Implement automatic regression testing",
+      "estimated_effort": "HIGH",
+      "blocking_production": false
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Set up monitoring and alerting",
+      "estimated_effort": "MEDIUM",
+      "blocking_production": false
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Configure backup and recovery",
+      "estimated_effort": "MEDIUM",
+      "blocking_production": false
+    }
+  ],
+  "conclusion": {
+    "status": "NOT_PRODUCTION_READY",
+    "reason": "Critical gaps in entity resolution, provenance tracking, and truth validation prevent production deployment",
+    "estimated_time_to_production": "4-6 weeks",
+    "recommended_action": "Focus on critical gaps before any production deployment",
+    "reassessment_date": "After critical gaps are addressed"
+  }
+}

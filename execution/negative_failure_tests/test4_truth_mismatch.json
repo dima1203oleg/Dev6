@@ -1,0 +1,21 @@
+{
+  "test_name": "Truth Mismatch",
+  "expected": "DATA_TRUTH_FAILURE",
+  "actual": "DATA_TRUTH_FAILURE",
+  "passed": true,
+  "timestamp": "2026-08-07T22:47:08.403Z",
+  "details": {
+    "raw_value": "ТОВ \"ABC\"",
+    "normalized_value": "ТОВ \"XYZ\"",
+    "canonical_value": "ТОВ \"XYZ\"",
+    "mismatches": [
+      {
+        "stage1": "RAW",
+        "stage2": "NORMALIZED",
+        "expected": "ТОВ \"ABC\"",
+        "actual": "ТОВ \"XYZ\""
+      }
+    ],
+    "consistency_score": 80
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "test_name": "Empty Source",
+  "expected": "NO_DATA",
+  "actual": "NO_DATA",
+  "passed": true,
+  "timestamp": "2026-08-07T22:47:08.403Z",
+  "details": {
+    "url": "https://data.gov.ua/dataset/empty-dataset",
+    "records_downloaded": 0,
+    "file_size": 0
+  }
+}

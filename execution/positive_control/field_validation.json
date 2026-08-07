@@ -1,0 +1,46 @@
+{
+  "entity_type": "company",
+  "field_validations": [
+    {
+      "field": "company_name",
+      "status": "MISSING",
+      "type_validation": "SKIP",
+      "format_validation": "SKIP",
+      "range_validation": "SKIP",
+      "business_validation": "SKIP",
+      "errors": [
+        "Required field is missing"
+      ],
+      "warnings": []
+    },
+    {
+      "field": "edrpou",
+      "value": "19007752",
+      "status": "PASS",
+      "type_validation": "PASS",
+      "format_validation": "PASS",
+      "range_validation": "SKIP",
+      "business_validation": "SKIP",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "field": "legal_form",
+      "status": "PASS",
+      "type_validation": "SKIP",
+      "format_validation": "SKIP",
+      "range_validation": "SKIP",
+      "business_validation": "SKIP",
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "passed": 2,
+    "failed": 0,
+    "missing": 1,
+    "empty": 0,
+    "overall_status": "FAIL"
+  }
+}

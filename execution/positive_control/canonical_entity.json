@@ -1,0 +1,154 @@
+{
+  "id": "company_19007752",
+  "type": "COMPANY",
+  "canonicalName": "Публічне акціонерне товариство",
+  "identifiers": {
+    "edrpou": "19007752"
+  },
+  "attributes": [
+    {
+      "key": "sertificates_nom",
+      "value": "30/26/1/10",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "edrpou",
+      "value": "19007752",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "entity_form",
+      "value": "ПАТ",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "name",
+      "value": "Публічне акціонерне товариство",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "emis_type_name",
+      "value": "акції",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "qty",
+      "value": "4574",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "nominal",
+      "value": "2.10",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "emis_vol",
+      "value": "9605.40",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "stat_cap",
+      "value": "9605.40",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "releases_form_code",
+      "value": "П",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "tp_name",
+      "value": "Товариство з обмеженою відповідальністю",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "reg_date",
+      "value": "-infinity",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "report_reg_dt",
+      "value": "2011-05-25 00:00:00",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "suspend_nom",
+      "value": "",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "suspend_dt",
+      "value": "",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "resume_nom",
+      "value": "",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "resume_dt",
+      "value": "",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "cancel_nom",
+      "value": "",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "cancel_dt",
+      "value": "",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    },
+    {
+      "key": "series",
+      "value": "",
+      "confidence": 100,
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "verified": true
+    }
+  ],
+  "confidenceScore": 100,
+  "sourcesCount": 1,
+  "createdAt": "2026-08-07T22:46:04.349Z",
+  "updatedAt": "2026-08-07T22:46:04.349Z"
+}

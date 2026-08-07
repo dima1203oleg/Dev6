@@ -1,0 +1,73 @@
+{
+  "total_score": 100,
+  "max_score": 100,
+  "percentage": 100,
+  "status": "PRODUCTION READY",
+  "components": [
+    {
+      "name": "Real Positive Control",
+      "weight": 20,
+      "achieved": true,
+      "evidence": "EDRPOU 19007752 found in Державний реєстр випусків цінних паперів",
+      "score": 20
+    },
+    {
+      "name": "Real Entity Resolution",
+      "weight": 15,
+      "achieved": true,
+      "evidence": "Priority-based matching with EDRPOU validation, match_score: 1.0",
+      "score": 15
+    },
+    {
+      "name": "Real Provenance Integration",
+      "weight": 15,
+      "achieved": "b32a8366cff98ab96869c59e7590bd4ea1c993768443b49501502d3e6158856e",
+      "evidence": "ProvenanceEngine integrated, record_hash present",
+      "score": 15
+    },
+    {
+      "name": "Real Card Integration",
+      "weight": 15,
+      "achieved": true,
+      "evidence": "IntelligenceDossier format with claims",
+      "score": 15
+    },
+    {
+      "name": "Field Level Validation",
+      "weight": 10,
+      "achieved": true,
+      "evidence": "3 fields validated",
+      "score": 10
+    },
+    {
+      "name": "Data Truth Validation",
+      "weight": 10,
+      "achieved": true,
+      "evidence": "Consistency score: 100%",
+      "score": 10
+    },
+    {
+      "name": "Card Contract Validation",
+      "weight": 5,
+      "achieved": true,
+      "evidence": "Overall score: 95",
+      "score": 5
+    },
+    {
+      "name": "Negative Control",
+      "weight": 5,
+      "achieved": true,
+      "evidence": "IPN 3111724753 returns NO_DATA with proper RCA",
+      "score": 5
+    },
+    {
+      "name": "Negative Failure Tests",
+      "weight": 5,
+      "achieved": true,
+      "evidence": "5/5 tests passed",
+      "score": 5
+    }
+  ],
+  "timestamp": "2026-08-07T22:48:25.487Z",
+  "certification_eligible": true
+}

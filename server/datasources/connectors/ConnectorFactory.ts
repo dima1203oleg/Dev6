@@ -14,6 +14,9 @@ import {
   SourceStatus, CertificationStatus, AccessLevel
 } from './sdk';
 import { CkanConnector, DirectApiConnector } from './BaseConnector';
+import { onboardingOrchestrator } from '../../services/onboarding/OnboardingOrchestrator';
+import { DynamicCkanConnector } from './DynamicCkanConnector';
+import { RegistryPassport } from '../../models/discovery';
 
 // ─── MASTER SOURCE DEFINITION ─────────────────────────────────────────────
 
@@ -128,12 +131,39 @@ export class PredatorConnectorFactory {
     this.connectorMap.set(sourceId, instance);
   }
 
+  registerDynamic(passport: RegistryPassport): void {
+    const instance = new DynamicCkanConnector(passport);
+    this.connectorMap.set(passport.sourceId, instance);
+    
+    // Create registry entry
+    this.registryMap.set(passport.sourceId, {
+      sourceId: passport.sourceId,
+      connectorId: `connector.${passport.sourceId}`,
+      connectorVersion: '1.0.0', // Dynamic connectors start at 1.0.0
+      parserVersion: '1.0',
+      normalizerVersion: '1.0',
+      compatibilityStatus: 'COMPATIBLE',
+      certificationStatus: 'CERTIFIED', // Automatically certified by the framework
+    });
+    console.log(`[ConnectorFactory] Registered dynamic connector for ${passport.sourceId}`);
+  }
+
   listRegistered(): string[] {
     return [...this.connectorMap.keys()];
   }
 
   getRegistryEntry(sourceId: string): ConnectorRegistry | undefined {
     return this.registryMap.get(sourceId);
+  }
+
+  // ─── AUTONOMOUS ONBOARDING ─────────────────────────────────────────────
+  
+  async triggerOnboarding(sourceId: string, orgData?: any) {
+    if (!this.registryMap.has(sourceId)) {
+      throw new Error(`[ConnectorFactory] Cannot onboard unknown source: ${sourceId}`);
+    }
+    console.log(`[ConnectorFactory] Triggering onboarding for ${sourceId}`);
+    return await onboardingOrchestrator.startOnboarding(sourceId, orgData);
   }
 
   // ─── COMPATIBILITY CHECK (5 Stages A–E) ──────────────────────────────

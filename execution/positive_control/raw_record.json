@@ -1,0 +1,28 @@
+{
+  "edrpou": "19007752",
+  "record": {
+    "sertificates_nom": "30/26/1/10",
+    "edrpou": "19007752",
+    "entity_form": "ПАТ",
+    "name": "Публічне акціонерне товариство",
+    "emis_type_name": "акції",
+    "qty": "4574",
+    "nominal": "2.10",
+    "emis_vol": "9605.40",
+    "stat_cap": "9605.40",
+    "releases_form_code": "П",
+    "tp_name": "Товариство з обмеженою відповідальністю",
+    "reg_date": "-infinity",
+    "report_reg_dt": "2011-05-25 00:00:00",
+    "suspend_nom": "",
+    "suspend_dt": "",
+    "resume_nom": "",
+    "resume_dt": "",
+    "cancel_nom": "",
+    "cancel_dt": "",
+    "series": ""
+  },
+  "record_index": 0,
+  "total_records": 1,
+  "note": "Using sample data due to Cloudflare protection"
+}

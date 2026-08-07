@@ -1,0 +1,204 @@
+{
+  "total_artifacts": 24,
+  "existing": 24,
+  "valid": 24,
+  "missing": 0,
+  "invalid": 0,
+  "errors": [],
+  "artifacts": [
+    {
+      "path": "catalog.json",
+      "exists": true,
+      "size": 3911279,
+      "hash": "50d338a15e108c65df8500843c1898e85f17741718bf2c5c6501f9b04764a8ec",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "DISCOVERY_COUNT_RECONCILIATION.md",
+      "exists": true,
+      "size": 3566,
+      "hash": "a732dda39e549b7558b1c974df2bc45b816cab8057f9117ffe0a23e50f44dd85",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/positive_control_spec.md",
+      "exists": true,
+      "size": 2718,
+      "hash": "5215bab31207a0130f6d4f7b934eaafb708b579f727bf3f7077af30a8cc50fc0",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/source_response.json",
+      "exists": true,
+      "size": 3296,
+      "hash": "d738f6622190ad8cd09870f860d62d0815d44d67e808a25b096d3df707efb10d",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/raw_record.json",
+      "exists": true,
+      "size": 794,
+      "hash": "cb32e3c2226bfc08057fe95ca714b1f2a27f9457aaf14bcfee19c2d6afb4feba",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/normalized_record.json",
+      "exists": true,
+      "size": 729,
+      "hash": "173e178cb5c73ce93c9e51f575b44dc6dcb275d535941878a01914f906861774",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/canonical_entity.json",
+      "exists": true,
+      "size": 3843,
+      "hash": "9c22035ca9255e2973ca9305eb6e047ecd9928f8330e8f9e728cec1b6971fe21",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/entity_resolution.json",
+      "exists": true,
+      "size": 207,
+      "hash": "62c8208a7fe2c1fbe11e185bdd06347540634ae24b915d1cf4b9f2f92efa697e",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/evidence.json",
+      "exists": true,
+      "size": 1885,
+      "hash": "fe5c0fed54661e3947b2736b044c055716152106aaee545a72d3c4da667066dc",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/database_snapshot.json",
+      "exists": true,
+      "size": 120,
+      "hash": "e6e4cdcb116b01dedb8f89c284626c48acef8918154d7f3cc23ba71a120f8820",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/api_response.json",
+      "exists": true,
+      "size": 119,
+      "hash": "91223199b91b48d4c8105272d1a32ecd909927d89480d2264b0486ca687c5485",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/card_snapshot.json",
+      "exists": true,
+      "size": 6198,
+      "hash": "24fe11fcfef7a0bc62f80bc30344deee9497645afedd1b12451b0ef1e85a0369",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/field_validation.json",
+      "exists": true,
+      "size": 1001,
+      "hash": "4d327eef2c1eab1c25002f0bc58d23b97f70617add5a0639b6d09f47fb74dbdf",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/truth_validation.json",
+      "exists": true,
+      "size": 1117,
+      "hash": "bfd2c920dec22e948c22bfc6e432b8465a3a4e91ed2586bb6accf027670c53ca",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/card_validation.json",
+      "exists": true,
+      "size": 1184,
+      "hash": "a46d74a2084af496d8625a3049f4cf36c82040893cf92514125fdf7afb960370",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/field_provenance.json",
+      "exists": true,
+      "size": 1484,
+      "hash": "512bdc463ab262a728ef57d4d309396ab541f0a8c7a728d75e7ce2a27408c6e4",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "positive_control/provenance_chain_verification.json",
+      "exists": true,
+      "size": 84,
+      "hash": "63363afd34c2513c68bdc410d60d1da7bb7fb11ff4940a0888fd9236e7cb22d3",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "negative_control/negative_control_rca.json",
+      "exists": true,
+      "size": 35364,
+      "hash": "1b48e907b97822fa15301e76a3d56512655174d22f0f6785a8b944662e50f003",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "negative_failure_tests/test1_source_unavailable.json",
+      "exists": true,
+      "size": 310,
+      "hash": "670ed38186fc9c4712565dedf4fa082f4127b3aa3b1cd05dc7455ba03cafbfd4",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "negative_failure_tests/test2_empty_source.json",
+      "exists": true,
+      "size": 266,
+      "hash": "9b53e39e25b57cf64da16c9c9e30c87dd60196f4f9eb938ab0473db51921a3cb",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "negative_failure_tests/test3_mapping_failure.json",
+      "exists": true,
+      "size": 381,
+      "hash": "47996cdddca31424d481adcc345e00b36d7db3d63764a8da561da09f6d315a46",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "negative_failure_tests/test4_truth_mismatch.json",
+      "exists": true,
+      "size": 505,
+      "hash": "592ccf1869812226cde18b7a8a2002412b755e7984b0aeb1aaa304a18d150c07",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "negative_failure_tests/test5_card_integration_failure.json",
+      "exists": true,
+      "size": 596,
+      "hash": "b24b83652d457ebef9fc05a6318b7f368debb1dbf54821c16cb62a94c505ed39",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "path": "negative_failure_tests/failure_tests_summary.json",
+      "exists": true,
+      "size": 462,
+      "hash": "4d67719e934b9cfd05272ef06bb7e3c2af0f628abffd933f21029e67270c2cc2",
+      "valid": true,
+      "errors": []
+    }
+  ],
+  "timestamp": "2026-08-07T22:47:40.848Z",
+  "overall_integrity": true
+}

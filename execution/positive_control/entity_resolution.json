@@ -1,0 +1,11 @@
+{
+  "entity_id": "company_19007752",
+  "match_score": 1,
+  "match_reasons": [
+    "exact EDRPOU"
+  ],
+  "confidence": 1,
+  "evidence_ids": [
+    "evidence_8999b39b-257f-4e0b-9f3a-d80341f8c786_19007752"
+  ]
+}

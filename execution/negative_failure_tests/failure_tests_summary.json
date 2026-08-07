@@ -1,0 +1,28 @@
+{
+  "total_tests": 5,
+  "passed": 5,
+  "failed": 0,
+  "test_results": [
+    {
+      "test": "Source Unavailable",
+      "passed": true
+    },
+    {
+      "test": "Empty Source",
+      "passed": true
+    },
+    {
+      "test": "Mapping Failure",
+      "passed": true
+    },
+    {
+      "test": "Truth Mismatch",
+      "passed": true
+    },
+    {
+      "test": "Card Integration Failure",
+      "passed": true
+    }
+  ],
+  "timestamp": "2026-08-07T22:47:08.403Z"
+}

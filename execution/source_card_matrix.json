@@ -1,0 +1,942 @@
+{
+  "run_id": "rdp-exec-20260808-0000",
+  "timestamp": "2026-08-08T00:00:00Z",
+  "control_ipn": "3111724753",
+  "matrix_type": "SOURCE_TO_CARD_MAPPING",
+  "description": "Matrix showing which sources contributed to which cards",
+  "matrix": {
+    "c3c20afc-3bba-4d22-ad3c-90ed640a5dde": {
+      "source_name": "Єдиний державний реєстр юридичних осіб",
+      "source_organization": "Міністерство юстиції",
+      "source_status": "SUCCESS",
+      "raw_records": 38010,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "86309117-c7d6-4d07-a5c8-376593b8a390": {
+      "source_name": "Реєстр платників податків",
+      "source_organization": "Державна податкова служба",
+      "source_status": "SUCCESS",
+      "raw_records": 8078,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "4df7ce90-82fd-430b-b192-239d67f9c2d1": {
+      "source_name": "Реєстр судових рішень",
+      "source_organization": "Державна судова адміністрація",
+      "source_status": "SUCCESS",
+      "raw_records": 1626,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "0912c7a7-ccf5-4691-a7bd-f78a7e9cf0aa": {
+      "source_name": "Реєстр санкцій",
+      "source_organization": "Рада національної безпеки і оборони",
+      "source_status": "SUCCESS",
+      "raw_records": 89,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "2b604a29-c67d-4eb3-80c1-701f121ad201": {
+      "source_name": "Реєстр ліцензій",
+      "source_organization": "Міністерство економіки",
+      "source_status": "SUCCESS",
+      "raw_records": 4621,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "4bec0554-76be-459e-885e-2fa965398fbc": {
+      "source_name": "Реєстр боржників",
+      "source_organization": "Міністерство фінансів",
+      "source_status": "SUCCESS",
+      "raw_records": 4913,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "203f9b34-e304-4a63-aaaf-3f482b91ef22": {
+      "source_name": "Виконавчі провадження",
+      "source_organization": "Державна виконавча служба",
+      "source_status": "SUCCESS",
+      "raw_records": 1914,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "fb8b8c21-f113-4c85-bf66-1ba9f9d7857f": {
+      "source_name": "Prozorro закупівлі",
+      "source_organization": "Державна закупівельна організація",
+      "source_status": "SUCCESS",
+      "raw_records": 435,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "bc6265d0-7ade-47fe-8f71-63891643d479": {
+      "source_name": "Реєстр субсидій",
+      "source_organization": "Міністерство соціальної політики",
+      "source_status": "SUCCESS",
+      "raw_records": 12,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "eb5e64c6-b31b-439c-b4be-00c404c40367": {
+      "source_name": "Реєстр пільг",
+      "source_organization": "Міністерство соціальної політики",
+      "source_status": "SUCCESS",
+      "raw_records": 27,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "17a0a29b-188e-416f-8967-53c2111a0666": {
+      "source_name": "Реєстр благодійних організацій",
+      "source_organization": "Міністерство юстиції",
+      "source_status": "SUCCESS",
+      "raw_records": 37,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "bf2919fd-2c1d-40e5-9303-faaf5c5e5900": {
+      "source_name": "Реєстр ФОП",
+      "source_organization": "Державна податкова служба",
+      "source_status": "SUCCESS",
+      "raw_records": 42117,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "2dd619bb-9b71-462b-94a8-a92393ad22c2": {
+      "source_name": "Реєстр громадських об'єднань",
+      "source_organization": "Міністерство юстиції",
+      "source_status": "SUCCESS",
+      "raw_records": 2410,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "0d726083-7423-4508-8267-f3b13c28d535": {
+      "source_name": "Реєстр політичних партій",
+      "source_organization": "Міністерство юстиції",
+      "source_status": "SUCCESS",
+      "raw_records": 2612,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "918c5fe1-81eb-4a5a-8b5a-003092c80b21": {
+      "source_name": "Реєстр профспілок",
+      "source_organization": "Міністерство соціальної політики",
+      "source_status": "SUCCESS",
+      "raw_records": 72,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "a44afad3-fd25-4d83-a92d-7639c11a9441": {
+      "source_name": "Реєстр нотаріусів",
+      "source_organization": "Міністерство юстиції",
+      "source_status": "SUCCESS",
+      "raw_records": 166,
+      "cards_generated": 6,
+      "card_types": ["PERSON", "COMPANY", "LEGAL_ENTITY", "BENEFICIARY", "DIRECTOR", "FOUNDER"],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "MOCK",
+      "cards": [
+        {
+          "card_id": "card-PERSON-3111724753",
+          "card_type": "PERSON",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-COMPANY-3111724753",
+          "card_type": "COMPANY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-LEGAL_ENTITY-3111724753",
+          "card_type": "LEGAL_ENTITY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-BENEFICIARY-3111724753",
+          "card_type": "BENEFICIARY",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-DIRECTOR-3111724753",
+          "card_type": "DIRECTOR",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        },
+        {
+          "card_id": "card-FOUNDER-3111724753",
+          "card_type": "FOUNDER",
+          "data_source": "MOCK_ENTITY",
+          "actual_records_for_ipn": 0,
+          "mock_entity": true
+        }
+      ]
+    },
+    "0ad60ea9-b029-456d-abc0-8c77a99b205c": {
+      "source_name": "Реєстр декларацій",
+      "source_organization": "Національне агентство з питань запобігання корупції",
+      "source_status": "FAILED",
+      "error_type": "SOURCE_UNAVAILABLE",
+      "error_code": "HTTP_404",
+      "raw_records": 0,
+      "cards_generated": 0,
+      "card_types": [],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "NONE",
+      "cards": []
+    },
+    "783b9b50-faba-4cc9-a393-60485e395b1d": {
+      "source_name": "Реєстр релігійних організацій",
+      "source_organization": "Міністерство культури",
+      "source_status": "FAILED",
+      "error_type": "SOURCE_UNAVAILABLE",
+      "error_code": "TIMEOUT",
+      "raw_records": 0,
+      "cards_generated": 0,
+      "card_types": [],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "NONE",
+      "cards": []
+    },
+    "e655b5f7-2c65-459b-97cb-f74ca1a3ac14": {
+      "source_name": "Перелік об'єктів будівництва",
+      "source_organization": "Міністерство регіонального розвитку",
+      "source_status": "NO_DATA",
+      "error_type": "NO_RESOURCES",
+      "raw_records": 0,
+      "cards_generated": 0,
+      "card_types": [],
+      "ipn_found": false,
+      "ipn_search_performed": false,
+      "entity_resolution_method": "NONE",
+      "cards": []
+    }
+  },
+  "summary": {
+    "total_sources": 19,
+    "successful_sources": 17,
+    "failed_sources": 2,
+    "no_data_sources": 1,
+    "total_cards": 96,
+    "cards_from_mock_entities": 96,
+    "cards_from_real_entities": 0,
+    "ipn_found_in_any_source": false,
+    "ipn_search_performed_in_any_source": false,
+    "critical_issue": "All cards created from mock entities without actual IPN search in data"
+  }
+}

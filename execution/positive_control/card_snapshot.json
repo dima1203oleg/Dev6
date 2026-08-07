@@ -1,0 +1,219 @@
+{
+  "id": "card-company-19007752",
+  "entity": {
+    "id": "company_19007752",
+    "type": "COMPANY",
+    "canonicalName": "Публічне акціонерне товариство",
+    "identifiers": {
+      "edrpou": "19007752"
+    },
+    "attributes": [
+      {
+        "key": "sertificates_nom",
+        "value": "30/26/1/10",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "edrpou",
+        "value": "19007752",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "entity_form",
+        "value": "ПАТ",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "name",
+        "value": "Публічне акціонерне товариство",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "emis_type_name",
+        "value": "акції",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "qty",
+        "value": "4574",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "nominal",
+        "value": "2.10",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "emis_vol",
+        "value": "9605.40",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "stat_cap",
+        "value": "9605.40",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "releases_form_code",
+        "value": "П",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "tp_name",
+        "value": "Товариство з обмеженою відповідальністю",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "reg_date",
+        "value": "-infinity",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "report_reg_dt",
+        "value": "2011-05-25 00:00:00",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "suspend_nom",
+        "value": "",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "suspend_dt",
+        "value": "",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "resume_nom",
+        "value": "",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "resume_dt",
+        "value": "",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "cancel_nom",
+        "value": "",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "cancel_dt",
+        "value": "",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      },
+      {
+        "key": "series",
+        "value": "",
+        "confidence": 100,
+        "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+        "verified": true
+      }
+    ],
+    "confidenceScore": 100,
+    "sourcesCount": 1,
+    "createdAt": "2026-08-07T22:46:04.349Z",
+    "updatedAt": "2026-08-07T22:46:04.349Z"
+  },
+  "status": "CONFIRMED",
+  "identityMatchScore": 1,
+  "sourcesCount": 1,
+  "lastCheckedAt": "2026-08-07T22:46:04.349Z",
+  "keyMetrics": {
+    "fopCount": 0,
+    "companyCount": 1,
+    "directorshipCount": 0,
+    "beneficiaryCount": 0,
+    "relatedPersonsCount": 0,
+    "vehicleCount": 0,
+    "fineCount": 0,
+    "courtCount": 0,
+    "enforcementCount": 0,
+    "sanctionMatch": "NO",
+    "riskFactorsCount": 0
+  },
+  "claims": [
+    {
+      "id": "evidence-8999b39b-257f-4e0b-9f3a-d80341f8c786-company_19007752",
+      "claim": "Entity company_19007752 found in 8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "subjectId": "company_19007752",
+      "predicate": "has_identifier",
+      "object": "19007752",
+      "sourceId": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+      "sourceType": "CKAN",
+      "sourceName": "Інформація що міститься у Державному реєстрі випусків цінних паперів (акції та облігації)",
+      "sourceUrl": "https://data.gov.ua/dataset/8999b39b-257f-4e0b-9f3a-d80341f8c786/resource/38dc0b3d-d8d3-4b30-95ed-506eeea8d67f/download/openri_220221.csv",
+      "retrievedAt": "2026-08-07T22:46:04.349Z",
+      "contentHash": "b32a8366cff98ab96869c59e7590bd4ea1c993768443b49501502d3e6158856e",
+      "rawHash": "b32a8366cff98ab96869c59e7590bd4ea1c993768443b49501502d3e6158856e",
+      "parserName": "RDP-CSV-Parser",
+      "confidence": 1,
+      "status": "CONFIRMED",
+      "verifiedStatus": "VERIFIED"
+    }
+  ],
+  "relationships": [],
+  "assets": [],
+  "vehicles": [],
+  "fines": [],
+  "courts": [],
+  "enforcements": [],
+  "sanctions": [],
+  "timeline": [],
+  "riskProfile": {
+    "score": 0,
+    "level": "CLEAN",
+    "drivers": []
+  },
+  "dataQuality": {
+    "completeness": 100,
+    "freshness": 100,
+    "confirmedClaims": 1,
+    "unverifiedClaims": 0,
+    "contradictions": 0
+  },
+  "metadata": {
+    "mode": "PRODUCTION",
+    "generatedAt": "2026-08-07T22:46:04.349Z",
+    "orchestratorVersion": "1.0"
+  }
+}

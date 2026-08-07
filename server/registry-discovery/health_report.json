@@ -1,0 +1,610 @@
+{
+  "timestamp": "2026-08-07T21:08:30.193Z",
+  "totalRegistries": 100,
+  "healthyRegistries": 100,
+  "degradedRegistries": 0,
+  "unhealthyRegistries": 0,
+  "overallHealth": 100,
+  "registries": [
+    {
+      "registryId": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "e655b5f7-2c65-459b-97cb-f74ca1a3ac14",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "29822a9a-4217-444d-bbe8-5bfe54126d78",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "7bf715e8-b355-4db5-8f6b-c8c5e4087d3b",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "3b6ddee3-9bfc-4a59-a275-57ea0bccb92b",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "4eabbe54-b7a5-4f06-b216-a82a491545b5",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "86309117-c7d6-4d07-a5c8-376593b8a390",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "dbfff194-ca0c-47e8-9434-6670236894a1",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "ff70d28a-ebe6-49eb-aa8b-1bb784e96e4b",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "4df7ce90-82fd-430b-b192-239d67f9c2d1",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "0912c7a7-ccf5-4691-a7bd-f78a7e9cf0aa",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "2b604a29-c67d-4eb3-80c1-701f121ad201",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "6a53bd1c-a56a-4085-9fb2-b2804612ca13",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "25c4f07c-196d-4def-8025-f4d3fd6bf907",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "4bec0554-76be-459e-885e-2fa965398fbc",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "6c8159b5-bace-4aad-93c4-81fd0961210c",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "448ece92-7eb1-4dd9-82a7-401fd87bad04",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "203f9b34-e304-4a63-aaaf-3f482b91ef22",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "0e339247-df47-4600-a0e3-1ed0d7e8d084",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "95f53642-796e-48b2-8970-8e787ff4af46",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "33252109-b430-4141-bdb7-1352b4e6b8a0",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "2c49e0fb-6536-4384-9267-88671727a278",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "5f3dbea6-9c56-4c69-ae62-e2eba13f01f8",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "083f5d5d-7cf8-46ed-b5d3-cd2d53f9f8c2",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "514b27ce-cae1-4e38-8a81-23872b4f07f4",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "3cd9f232-dae4-45d1-acc9-2ec7d2ea232a",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "b46f57fd-61a6-4663-9473-8676960271d8",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "64af11b1-8b8e-4710-b703-cf9927f3f5c2",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "fb8b8c21-f113-4c85-bf66-1ba9f9d7857f",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "758f612a-67ea-4179-86ee-637659308528",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "bc6265d0-7ade-47fe-8f71-63891643d479",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "f65d58c2-beef-4fe1-b038-7465b6e11a3c",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "444a2ba8-f9eb-4d86-96ed-590efc5f3730",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "94cd7d31-5306-4d7e-8a25-b280c830fe14",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "f6c6af16-06ca-4a2e-ae64-72adf0dd9609",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "fa819242-f500-4752-928c-36c609e487f0",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "aaaaccb4-b107-4d87-bd17-0a9e27c4773c",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "e3cfe1e0-dc9c-4287-8dd8-5a49483e71d3",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "eb5e64c6-b31b-439c-b4be-00c404c40367",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "17a0a29b-188e-416f-8967-53c2111a0666",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "26e6aa04-893e-4074-8491-500b5992f980",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "2a6b3151-90e3-4187-9667-8bf6f4d856b2",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "a3c6bc20-ac4c-4e30-9cb6-3cd26579231b",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "601f8a67-6599-4c95-9a68-58ad1c8bb874",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "8142200a-045c-449c-a2e0-fbe3857a3cab",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "1103bab4-ee66-4634-86b4-ffab6e5f0551",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "03140964-a684-4fa7-84d3-b0cbdddd99f0",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "763a1e3d-aa5a-4636-8131-c4d9b10c97e6",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "b1b6a351-0a39-4890-8196-d1cc0dd5e875",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "4014c258-a405-482b-9b1c-f23bb15838c0",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "114306ea-1f98-4f54-a08f-b0f2c9530988",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "ac45a5a7-4ad0-4a00-9c27-baf96c519825",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "4957b36d-b0b9-417c-9964-8457047e5f5f",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "4d0f4da9-c904-44c0-9fd3-3bf89fa9acc5",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "bf2919fd-2c1d-40e5-9303-faaf5c5e5900",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "0f0974e8-4566-4887-845d-b0df20b6560a",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "2dd619bb-9b71-462b-94a8-a92393ad22c2",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "b80e556b-08c1-4ba9-a63d-cd6fb827a058",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "e8e47cd2-9e37-4f45-aac7-4278c52b2c59",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "911d8c00-5cfb-476d-b0f0-38acd24c12ca",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "58e2c477-9e6b-4060-b711-d07325cb0969",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "fa2d0c65-57e0-485e-8bca-7e572f4a886c",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "a0560b66-7329-4493-b91c-b5ed9c25d4fc",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "25ff1766-14fe-4bf5-8148-45fe8d96ef7c",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "1e9a2faa-84e5-47f9-903a-f2e594cf5ec2",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "f1ce92f4-e6b8-44c5-9934-7c28feb65d48",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "12f04aa0-42e9-4c23-b072-fe61ef21400b",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "963377f2-287b-457c-80f8-82c739542d49",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "822458e7-0faf-4f6c-af7b-bcd3c909f22f",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "ca74ef48-23e4-4b4e-8784-1dcf2ebe6867",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "439c2cd8-2e1a-4617-93a9-f23d0754a98d",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "435e0208-eefa-4bc8-be07-2da1ca860f22",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "aae13a18-0317-48f8-ae59-e95ecb12e828",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "f20c1ca7-09ae-4dc9-82ae-2a9416b6b593",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "e63056e4-9315-4edd-9991-6b5133522f11",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "8955d9c8-902b-42dd-a6e9-3df9e7013f48",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "f3c9e990-1f68-4cc9-b670-c121bc6b538c",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "f7164c26-ec81-458a-b04c-6181195cc03b",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "117de51c-6ae6-4961-86ec-ca77c44c4624",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "e7cf68c1-42c1-4c30-a874-a2135bf1b9c7",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "38f90f67-405b-40dc-b63b-89c915072558",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "e8971b59-e6b4-4575-9496-8193139d9cf2",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "4f04cde7-cade-43be-a6c8-1653fd06ae15",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "bd800ff5-c6eb-4738-8f70-f24d2464c2f1",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "30fbe570-1060-4e74-a773-053107ec0124",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "b4f62c4d-ece0-49d8-8377-3c74f715b67f",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "c89a8203-8f3a-486c-8117-9ca0dcd962a2",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "a95174b2-ff4b-43f8-bee2-a89d3a258215",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "22aef563-3e87-4ed9-92e8-d764dc02f426",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "2880f174-54a7-4d6c-a652-f4c3009cf4b3",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "e362abc1-18a5-453a-baf1-a691326bfe4f",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "0d726083-7423-4508-8267-f3b13c28d535",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "6b752c1f-0702-41b8-b9f0-3250458d9b3f",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "918c5fe1-81eb-4a5a-8b5a-003092c80b21",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "783b9b50-faba-4cc9-a393-60485e395b1d",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "a44afad3-fd25-4d83-a92d-7639c11a9441",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    },
+    {
+      "registryId": "8a60b658-ad2e-45e8-b531-4e61a95a42e1",
+      "health": 80,
+      "status": "ACTIVE",
+      "lastCheck": "2026-08-07T21:08:30.165Z"
+    }
+  ]
+}

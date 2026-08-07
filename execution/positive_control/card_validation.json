@@ -1,0 +1,50 @@
+{
+  "contract_id": "company",
+  "validation": {
+    "card_id": "company_19007752",
+    "contract_id": "company",
+    "status": "WARNING",
+    "field_validations": [
+      {
+        "field": "company_name",
+        "status": "PASS",
+        "value": "Публічне акціонерне товариство",
+        "required": true,
+        "message": "Field is valid"
+      },
+      {
+        "field": "edrpou",
+        "status": "PASS",
+        "value": "19007752",
+        "required": true,
+        "message": "Field is valid"
+      },
+      {
+        "field": "source",
+        "status": "PASS",
+        "value": 1,
+        "required": true,
+        "message": "Field is valid"
+      },
+      {
+        "field": "verified_at",
+        "status": "PASS",
+        "value": "2026-08-07T22:46:04.349Z",
+        "required": true,
+        "message": "Field is valid"
+      },
+      {
+        "field": "evidence",
+        "status": "PASS",
+        "value": 1,
+        "required": true,
+        "message": "Field is valid"
+      }
+    ],
+    "overall_score": 95,
+    "errors": [],
+    "warnings": [
+      "Sources not in accepted list: 8999b39b-257f-4e0b-9f3a-d80341f8c786"
+    ]
+  }
+}

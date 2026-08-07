@@ -1,0 +1,264 @@
+{
+  "run_id": "rdp-exec-20260808-0000",
+  "timestamp": "2026-08-08T00:00:00Z",
+  "control_ipn": "3111724753",
+  "report_type": "FIELD_PROVENANCE_TRACKING",
+  "status": "NOT_IMPLEMENTED",
+  "summary": {
+    "total_fields_tracked": 0,
+    "fields_with_complete_provenance": 0,
+    "fields_with_partial_provenance": 0,
+    "fields_with_no_provenance": 0,
+    "reason": "Field-level provenance tracking not implemented in current system"
+  },
+  "required_provenance_chain": [
+    {
+      "stage": "UI_VALUE",
+      "description": "Value displayed in PREDATOR UI",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "API_RESPONSE",
+      "description": "Value returned by PREDATOR API",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "DATABASE_RECORD",
+      "description": "Value stored in PostgreSQL",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "CANONICAL_ENTITY",
+      "description": "Value in resolved canonical entity",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "NORMALIZER_OUTPUT",
+      "description": "Value after normalization",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "MAPPER_OUTPUT",
+      "description": "Value after field mapping",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "RAW_RECORD",
+      "description": "Value in downloaded raw data",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "DATASET",
+      "description": "Source dataset identifier",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "RESOURCE",
+      "description": "Source resource identifier",
+      "required": true,
+      "implemented": false
+    },
+    {
+      "stage": "ORIGINAL_SOURCE",
+      "description": "Original government system",
+      "required": true,
+      "implemented": false
+    }
+  ],
+  "missing_implementation_details": {
+    "lineage_tracking": {
+      "status": "NOT_IMPLEMENTED",
+      "description": "No tracking of data lineage through pipeline stages",
+      "required_components": [
+        "Stage-to-stage mapping records",
+        "Transformation logs",
+        "Data flow tracking"
+      ]
+    },
+    "sha256_hashing": {
+      "status": "NOT_IMPLEMENTED",
+      "description": "No SHA256 hashing at transformation stages",
+      "required_components": [
+        "Hash calculation for each stage",
+        "Hash storage in metadata",
+        "Hash verification chain"
+      ]
+    },
+    "field_mapping": {
+      "status": "NOT_IMPLEMENTED",
+      "description": "No field mapping tracking",
+      "required_components": [
+        "Source field to target field mapping",
+        "Transformation rules",
+        "Mapping validation"
+      ]
+    },
+    "record_identification": {
+      "status": "NOT_IMPLEMENTED",
+      "description": "No record-level identification through pipeline",
+      "required_components": [
+        "Unique record IDs at each stage",
+        "Record lineage tracking",
+        "Record change history"
+      ]
+    }
+  },
+  "example_required_output": {
+    "field": "company_name",
+    "card": "COMPANY-3111724753",
+    "provenance_chain": {
+      "ui_value": "ТОВ \"ПРИВАТ\"",
+      "api_value": "ТОВ \"ПРИВАТ\"",
+      "database_value": "ТОВ \"ПРИВАТ\"",
+      "canonical_entity_value": "ТОВ \"ПРИВАТ\"",
+      "normalized_value": "ТОВ \"ПРИВАТ\"",
+      "mapped_value": "ТОВ \"ПРИВАТ\"",
+      "raw_value": "ТОВ \"ПРИВАТ\"",
+      "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+      "resource_id": "abc123-def456",
+      "raw_record_id": "12345",
+      "sha256_ui": "a1b2c3d4e5f6...",
+      "sha256_api": "a1b2c3d4e5f6...",
+      "sha256_db": "a1b2c3d4e5f6...",
+      "sha256_canonical": "a1b2c3d4e5f6...",
+      "sha256_normalized": "a1b2c3d4e5f6...",
+      "sha256_mapped": "a1b2c3d4e5f6...",
+      "sha256_raw": "a1b2c3d4e5f6...",
+      "evidence_id": "evidence-c3c20afc-3bba-4d22-ad3c-90ed640a5dde-COMPANY-3111724753",
+      "confidence": 0.95,
+      "validation": "PASSED"
+    }
+  },
+  "current_implementation_status": {
+    "ui_value": "UNKNOWN - No UI integration",
+    "api_value": "UNKNOWN - No API integration",
+    "database_value": "UNKNOWN - No database storage",
+    "canonical_entity_value": "UNKNOWN - Mock entities only",
+    "normalized_value": "UNKNOWN - No field-level normalization",
+    "mapped_value": "UNKNOWN - No field mapping",
+    "raw_value": "UNKNOWN - No field extraction",
+    "dataset_id": "UNKNOWN - No field-level source tracking",
+    "resource_id": "UNKNOWN - No field-level resource tracking",
+    "raw_record_id": "UNKNOWN - No record identification",
+    "sha256": "UNKNOWN - No hashing implemented",
+    "evidence_id": "UNKNOWN - No evidence linking",
+    "confidence": "UNKNOWN - No confidence calculation",
+    "validation": "UNKNOWN - No validation performed"
+  },
+  "required_fields_for_control_ipn": [
+    {
+      "field": "ipn",
+      "card_type": "PERSON",
+      "source_datasets": ["c3c20afc-3bba-4d22-ad3c-90ed640a5dde", "bf2919fd-2c1d-40e5-9303-faaf5c5e5900"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "full_name",
+      "card_type": "PERSON",
+      "source_datasets": ["c3c20afc-3bba-4d22-ad3c-90ed640a5dde"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "company_name",
+      "card_type": "COMPANY",
+      "source_datasets": ["c3c20afc-3bba-4d22-ad3c-90ed640a5dde"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "edrpou",
+      "card_type": "COMPANY",
+      "source_datasets": ["c3c20afc-3bba-4d22-ad3c-90ed640a5dde", "86309117-c7d6-4d07-a5c8-376593b8a390"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "address",
+      "card_type": "LEGAL_ENTITY",
+      "source_datasets": ["c3c20afc-3bba-4d22-ad3c-90ed640a5dde"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "director_name",
+      "card_type": "DIRECTOR",
+      "source_datasets": ["c3c20afc-3bba-4d22-ad3c-90ed640a5dde"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "founder_name",
+      "card_type": "FOUNDER",
+      "source_datasets": ["c3c20afc-3bba-4d22-ad3c-90ed640a5dde"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "sanction_status",
+      "card_type": "BENEFICIARY",
+      "source_datasets": ["0912c7a7-ccf5-4691-a7bd-f78a7e9cf0aa"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "tax_debt",
+      "card_type": "COMPANY",
+      "source_datasets": ["86309117-c7d6-4d07-a5c8-376593b8a390", "4bec0554-76be-459e-885e-2fa965398fbc"],
+      "provenance_status": "NOT_AVAILABLE"
+    },
+    {
+      "field": "court_cases",
+      "card_type": "PERSON",
+      "source_datasets": ["4df7ce90-82fd-430b-b192-239d67f9c2d1"],
+      "provenance_status": "NOT_AVAILABLE"
+    }
+  ],
+  "implementation_requirements": [
+    {
+      "component": "Lineage Tracking System",
+      "priority": "CRITICAL",
+      "description": "Track data lineage through all pipeline stages",
+      "dependencies": []
+    },
+    {
+      "component": "SHA256 Hashing",
+      "priority": "CRITICAL",
+      "description": "Calculate and store SHA256 hashes at each transformation stage",
+      "dependencies": ["Lineage Tracking System"]
+    },
+    {
+      "component": "Field Mapping Registry",
+      "priority": "CRITICAL",
+      "description": "Track source-to-target field mappings",
+      "dependencies": ["Lineage Tracking System"]
+    },
+    {
+      "component": "Record Identification",
+      "priority": "HIGH",
+      "description": "Assign and track unique record IDs through pipeline",
+      "dependencies": ["Lineage Tracking System"]
+    },
+    {
+      "component": "Provenance Query API",
+      "priority": "HIGH",
+      "description": "API to query provenance for any field",
+      "dependencies": ["Lineage Tracking System", "SHA256 Hashing", "Field Mapping Registry"]
+    },
+    {
+      "component": "Provenance Validation",
+      "priority": "HIGH",
+      "description": "Validate provenance chain integrity",
+      "dependencies": ["Provenance Query API"]
+    }
+  ],
+  "conclusion": {
+    "status": "FIELD_PROVENANCE_NOT_IMPLEMENTED",
+    "impact": "CRITICAL",
+    "reason": "Without field-level provenance tracking, it is impossible to verify that card values originate from actual source data",
+    "blocking_production": true,
+    "estimated_effort": "HIGH",
+    "required_before_production": true
+  }
+}

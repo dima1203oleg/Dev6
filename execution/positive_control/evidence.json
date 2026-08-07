@@ -1,0 +1,50 @@
+{
+  "id": "evidence-8999b39b-257f-4e0b-9f3a-d80341f8c786-company_19007752",
+  "entity_id": "company_19007752",
+  "field": "edrpou",
+  "value": "19007752",
+  "source": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+  "source_url": "https://data.gov.ua/dataset/8999b39b-257f-4e0b-9f3a-d80341f8c786/resource/38dc0b3d-d8d3-4b30-95ed-506eeea8d67f/download/openri_220221.csv",
+  "dataset_id": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+  "resource_id": "38dc0b3d-d8d3-4b30-95ed-506eeea8d67f",
+  "raw_record_id": 0,
+  "raw_hash": "b32a8366cff98ab96869c59e7590bd4ea1c993768443b49501502d3e6158856e",
+  "raw_data": {
+    "sertificates_nom": "30/26/1/10",
+    "edrpou": "19007752",
+    "entity_form": "ПАТ",
+    "name": "Публічне акціонерне товариство",
+    "emis_type_name": "акції",
+    "qty": "4574",
+    "nominal": "2.10",
+    "emis_vol": "9605.40",
+    "stat_cap": "9605.40",
+    "releases_form_code": "П",
+    "tp_name": "Товариство з обмеженою відповідальністю",
+    "reg_date": "-infinity",
+    "report_reg_dt": "2011-05-25 00:00:00",
+    "suspend_nom": "",
+    "suspend_dt": "",
+    "resume_nom": "",
+    "resume_dt": "",
+    "cancel_nom": "",
+    "cancel_dt": "",
+    "series": ""
+  },
+  "confidence": 1,
+  "match_score": 1,
+  "match_reasons": [
+    "exact EDRPOU"
+  ],
+  "timestamp": "2026-08-07T22:46:04.349Z",
+  "provenance": {
+    "source_id": "8999b39b-257f-4e0b-9f3a-d80341f8c786",
+    "source_url": "https://data.gov.ua/dataset/8999b39b-257f-4e0b-9f3a-d80341f8c786/resource/38dc0b3d-d8d3-4b30-95ed-506eeea8d67f/download/openri_220221.csv",
+    "resource_id": "38dc0b3d-d8d3-4b30-95ed-506eeea8d67f",
+    "retrieved_at": "2026-08-07T22:46:04.349Z",
+    "record_id": "0",
+    "record_hash": "b32a8366cff98ab96869c59e7590bd4ea1c993768443b49501502d3e6158856e",
+    "verification_status": "FACT",
+    "confidence": 1
+  }
+}

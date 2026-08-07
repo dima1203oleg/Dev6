@@ -1,0 +1,50 @@
+{
+  "field": "edrpou",
+  "validation": {
+    "field": "edrpou",
+    "pipeline_stages": [
+      {
+        "name": "RAW",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.350Z"
+      },
+      {
+        "name": "NORMALIZED",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.350Z"
+      },
+      {
+        "name": "CANONICAL",
+        "value": "19007752",
+        "timestamp": "2026-08-07T22:46:04.350Z"
+      },
+      {
+        "name": "DATABASE",
+        "value": "PENDING_DB_INTEGRATION",
+        "timestamp": "2026-08-07T22:46:04.350Z"
+      },
+      {
+        "name": "API",
+        "value": "PENDING_API_INTEGRATION",
+        "timestamp": "2026-08-07T22:46:04.350Z"
+      },
+      {
+        "name": "UI",
+        "value": "PENDING_UI_INTEGRATION",
+        "timestamp": "2026-08-07T22:46:04.350Z"
+      }
+    ],
+    "status": "INCOMPLETE",
+    "consistency_score": 100,
+    "mismatches": [],
+    "errors": []
+  },
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 0,
+    "incomplete": 1,
+    "overall_status": "INCOMPLETE",
+    "average_consistency": 100
+  }
+}
