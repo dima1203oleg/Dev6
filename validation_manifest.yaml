@@ -1,0 +1,305 @@
+# MASTER PRODUCTION BATTLEFIELD SPECIFICATION v5.0
+# PREDATOR Analytics - Autonomous Production Certification & Continuous Validation Framework
+# Validation Manifest - Registry Sources & Certification Configuration
+
+version: "5.0"
+system: "PREDATOR Analytics"
+certification_target: "CERTIFIED PRODUCTION READY"
+generated_at: "2026-08-07T02:45:00Z"
+
+# Production State Machine Configuration
+production_state_machine:
+  current_state: "UNKNOWN"
+  states:
+    - UNKNOWN
+    - DISCOVERING
+    - VALIDATING
+    - TESTING
+    - REMEDIATING
+    - REGRESSION
+    - STABILIZING
+    - CERTIFIED
+    - MONITORING
+    - REVALIDATION
+  transition_criteria:
+    UNKNOWN_TO_DISCOVERING: "Manifest loaded"
+    DISCOVERING_TO_VALIDATING: "All components discovered"
+    VALIDATING_TO_TESTING: "Validation complete"
+    TESTING_TO_REMEDIATING: "Issues detected"
+    TESTING_TO_STABILIZING: "No issues detected"
+    REMEDIATING_TO_REGRESSION: "Fixes implemented"
+    REGRESSION_TO_STABILIZING: "Regression tests passed"
+    STABILIZING_TO_CERTIFIED: "All SLOs met, Health Index >= 95"
+    CERTIFIED_TO_MONITORING: "Certification complete"
+    MONITORING_TO_REVALIDATION: "Change detected or SLO violation"
+    REVALIDATION_TO_CERTIFIED: "Revalidation passed"
+    REVALIDATION_TO_REMEDIATING: "Revalidation failed"
+
+# Registry Intelligence Registry - Digital Passports
+registry_intelligence:
+  total_sources: 170
+  audited_sources: 6
+  coverage_percentage: 3.5%
+  
+  # Registry Passport Template
+  passport_template:
+    id: string
+    category: string
+    provider: string
+    official_source: boolean
+    connector: string
+    connector_version: string
+    api_version: string
+    auth_method: string
+    rate_limit: string
+    retry_policy: string
+    timeout: number
+    schema_hash: string
+    last_success: string
+    average_latency: number
+    availability: number
+    sla: string
+    confidence: number
+    data_quality_score: number
+    health_score: number
+
+# Ukrainian Official Registries
+ua_registries:
+  - id: "edr_fop"
+    name: "ЄДР (FOP dataset)"
+    type: "BUSINESS_REGISTRY"
+    provider: "data.gov.ua"
+    api:
+      base_url: "https://data.gov.ua/api/3/action/datastore_search"
+      resource_id: "edr_full_registry"
+      version: "v1.0"
+      authentication: "NONE"
+      rate_limit: "1000/hour"
+    schema_version: "1.0"
+    last_check: "2026-08-07"
+    status: "VERIFIED"
+    confidence: 0.95
+    fields:
+      - edrpou
+      - fullName
+      - shortName
+      - status
+      - registrationDate
+      - director
+      - address
+      - kved
+      - kvedDescription
+      - founders
+      - beneficiaries
+    connector: "FOPConnector"
+    health_check: "HEALTHY"
+
+  - id: "UA-002"
+    name: "Єдиний державний реєстр судових рішень"
+    type: "LEGAL_REGISTRY"
+    provider: "data.gov.ua"
+    api:
+      base_url: "https://data.gov.ua/api/3/action/datastore_search"
+      resource_id: "court_decisions_opendata"
+      version: "v1.0"
+      authentication: "NONE"
+      rate_limit: "1000/hour"
+    schema_version: "1.0"
+    last_check: "2026-08-07"
+    status: "VERIFIED"
+    confidence: 0.95
+    fields:
+      - courtCasesCount
+      - courtCases
+      - isBankrupt
+      - bankruptcyStage
+      - activeEnforcementsCount
+      - enforcementProceedings
+    connector: "CourtConnector"
+    health_check: "HEALTHY"
+
+  - id: "UA-003"
+    name: "Реєстр санкцій (РНБО)"
+    type: "SANCTIONS_REGISTRY"
+    provider: "data.gov.ua"
+    api:
+      base_url: "https://data.gov.ua/api/3/action/datastore_search"
+      resource_id: "rnbo_sanctions_registry"
+      version: "v1.0"
+      authentication: "NONE"
+      rate_limit: "1000/hour"
+    schema_version: "1.0"
+    last_check: "2026-08-07"
+    status: "VERIFIED"
+    confidence: 0.95
+    fields:
+      - isSanctionedRnbo
+      - rnboSanctions
+      - hasRuByIranConnection
+      - ruConnectionDetails
+      - isMassAddress
+      - massAddressCount
+      - isMassPhone
+      - isMassBeneficiary
+      - isOffshoreOwner
+      - offshoreJurisdictions
+    connector: "SanctionsConnector"
+    health_check: "HEALTHY"
+
+  - id: "UA-004"
+    name: "Система публічних закупівель Prozorro"
+    type: "PROCUREMENT_REGISTRY"
+    provider: "public-api.prozorro.gov.ua"
+    api:
+      base_url: "https://public-api.prozorro.gov.ua/api/2.5"
+      version: "v2.5"
+      authentication: "NONE"
+      rate_limit: "1000/hour"
+    schema_version: "1.0"
+    last_check: "2026-08-07"
+    status: "VERIFIED"
+    confidence: 0.95
+    fields:
+      - totalTenders
+      - wonTenders
+      - participatedTenders
+      - recentTenders
+    connector: "ProzorroConnector"
+    health_check: "HEALTHY"
+
+# International Registries
+int_registries:
+  - id: "INT-001"
+    name: "HaveIBeenPwned (HIBP)"
+    type: "SECURITY_REGISTRY"
+    provider: "haveibeenpwned.com"
+    api:
+      base_url: "https://haveibeenpwned.com/api/v3"
+      version: "v3"
+      authentication: "API_KEY"
+      rate_limit: "1500/day"
+    schema_version: "1.0"
+    last_check: "2026-08-07"
+    status: "VERIFIED"
+    confidence: 0.90
+    fields:
+      - totalBreaches
+    connector: "HibpConnector"
+    health_check: "CONNECTED"
+    api_key_required: true
+    api_key_env: "HIBP_API_KEY"
+
+  - id: "INT-002"
+    name: "Certificate Transparency Logs (crt.sh)"
+    type: "SECURITY_REGISTRY"
+    provider: "crt.sh"
+    api:
+      base_url: "https://crt.sh/"
+      version: "v1.0"
+      authentication: "NONE"
+      rate_limit: "unlimited"
+    schema_version: "1.0"
+    last_check: "2026-08-07"
+    status: "VERIFIED"
+    confidence: 0.90
+    fields:
+      - totalCertificates
+    connector: "CrtshConnector"
+    health_check: "HEALTHY"
+
+# Pending Registries (to be audited)
+pending_registries:
+  - id: "UA-005"
+    name: "Державний реєстр фізичних осіб - платників податків"
+    type: "TAX_REGISTRY"
+    provider: "tax.gov.ua"
+    status: "PENDING_AUDIT"
+    
+  - id: "UA-006"
+    name: "Реєстр боржників"
+    type: "DEBT_REGISTRY"
+    provider: "minjust.gov.ua"
+    status: "PENDING_AUDIT"
+    
+  - id: "UA-007"
+    name: "Реєстр банкрутів"
+    type: "BANKRUPTCY_REGISTRY"
+    provider: "minjust.gov.ua"
+    status: "PENDING_AUDIT"
+
+  - id: "UA-008"
+    name: "Єдиний реєстр декларацій"
+    type: "DECLARATIONS_REGISTRY"
+    provider: "nazk.gov.ua"
+    status: "PENDING_AUDIT"
+
+  - id: "UA-009"
+    name: "Реєстр ліцензій"
+    type: "LICENSE_REGISTRY"
+    provider: "business.gov.ua"
+    status: "PENDING_AUDIT"
+
+# Additional 160+ registries to be added...
+# Total target: 170+ registry sources
+
+# Validation Configuration
+validation_config:
+  slos:
+    availability: 99.95
+    latency_p95_ms: 500
+    error_rate: 1.0
+  
+  data_quality:
+    completeness: 95
+    accuracy: 95
+    freshness_sla: "24h"
+  
+  entity_resolution:
+    f1_score: 0.92
+    false_positive_critical: 0
+  
+  ai_trust:
+    zero_hallucination: true
+    evidence_required: true
+    source_attribution: true
+
+# Campaign Configuration
+campaigns:
+  foundation_warfare:
+    status: "PENDING"
+    components:
+      - kubernetes
+      - docker
+      - helm
+      - argocd
+      - gitops
+      - cicd
+      - secrets
+      - networking
+  
+  data_trust_warfare:
+    status: "IN_PROGRESS"
+    coverage: "6/170 (3.5%)"
+  
+  intelligence_core:
+    status: "PENDING"
+    components:
+      - zero_hallucination_protocol
+      - evidence_vault
+      - risk_engine_validation
+  
+  ux_warfare:
+    status: "PENDING"
+    components:
+      - full_interface_validation
+      - cognitive_load_testing
+      - end_to_end_tracking
+
+# Certification Criteria
+certification_criteria:
+  minimum_health_score: 95
+  critical_vulnerabilities: 0
+  data_integrity_errors: 0
+  ai_hallucinations: 0
+  broken_workflows: 0
+  registry_coverage_minimum: 100

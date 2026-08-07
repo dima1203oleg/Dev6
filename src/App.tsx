@@ -21,6 +21,8 @@ import AutonomousFactory from "./components/AutonomousFactory";
 import AdverseIntelligenceTab from "./components/AdverseIntelligenceTab";
 import AuditLogViewer from "./components/AuditLogViewer";
 import SearchPortal from "./components/SearchPortal";
+import { EnterpriseDashboard } from "./components/ui/EnterpriseDashboard";
+import { LiveMonitoringDashboard } from "./components/ui/LiveMonitoringDashboard";
 
 // Dynamic Code Splitting via React.lazy() for Client Performance
 const OsintWorkbench = React.lazy(() => import("./components/OsintWorkbench"));
@@ -40,6 +42,9 @@ import { SkeletonLensPanel } from "./components/ui/SkeletonLoader";
 import { AICopilotPanel } from "./components/AICopilotPanel";
 import { NotificationCenter } from "./components/ui/NotificationCenter";
 import { ComparisonWorkspace } from "./components/ComparisonWorkspace";
+import ImprovedNavigation from "./components/ui/ImprovedNavigation";
+import LanguageSwitcher from "./components/ui/LanguageSwitcher";
+import { useI18n } from "./lib/i18n";
 const MLIPMasterDashboard = React.lazy(() => import("./components/mlip/MLIPMasterDashboard").then(m => ({ default: m.MLIPMasterDashboard })));
 const DossierView = React.lazy(() => import("./components/DossierView"));
 import {   VoiceCall } from "./components/VoiceCall";
@@ -116,9 +121,12 @@ type TabId =
   | "master-specification"
   | "mlip-modules"
   | "predator-intel"
-  | "ckan-explorer";
+  | "ckan-explorer"
+  | "enterprise-dashboard"
+  | "live-monitoring";
 
 export default function App() {
+  const { t, language, setLanguage } = useI18n();
   const [ecosystem, setEcosystem] = useState<"user" | "admin">("user");
   const [activeTab, setActiveTab] = useState<TabId>("predator-intel");
   const [activeDossier, setActiveDossier] = useState<any>(null);
@@ -747,6 +755,8 @@ export default function App() {
         { id: "roadmap", label: "📅 Дорожня карта впровадження", type: "nav" },
         { id: "volumes", label: "📚 Томи ТЗ (Митні регламенти)", type: "nav" },
         { id: "advisor", label: "🤖 ШІ-Архітектор", type: "nav" },
+        { id: "enterprise-dashboard", label: "🔒 Enterprise Certification Dashboard", type: "nav" },
+        { id: "live-monitoring", label: "📡 Live Monitoring", type: "nav" },
       ];
 
       const allActions = [
@@ -1035,6 +1045,8 @@ export default function App() {
             case "investigation-workspace": return <InvestigationWorkspaceTab />;
             case "audit-log": return <AuditLogViewer />;
             case "master-specification": return <MasterSpecificationViewer />;
+            case "enterprise-dashboard": return <EnterpriseDashboard onCardClick={(cardId) => console.log('Card clicked:', cardId)} />;
+            case "live-monitoring": return <LiveMonitoringDashboard />;
             default: return null;
           }
         })()}
@@ -1353,7 +1365,7 @@ const renderDesktopLayout = () => {
                   type="text"
                   readOnly
                   value={headerSearchQuery}
-                  placeholder="Миттєвий пошук чи швидка команда..."
+                  title={ecosystem === "user" ? t.common.search : t.common.search}
                   className="w-full pl-9 pr-14 py-1.5 bg-slate-950 border border-slate-800 group-hover:border-slate-700 rounded-lg text-xs text-slate-200 placeholder-slate-500 transition-all cursor-pointer"
                 />
                 <kbd className="absolute right-2 text-[10px] font-mono bg-slate-900 text-slate-400 border border-slate-800 px-1.5 py-0.5 rounded shadow-sm">
@@ -1399,7 +1411,7 @@ const renderDesktopLayout = () => {
                 title="Натисніть для перегляду всіх 177 державних та міжнародних реєстрів"
               >
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">
-                  {ecosystem === "user" ? "Стан реєстрів" : "Телеметрія ECIP"}
+                  {ecosystem === "user" ? t.navigation.dashboard : t.admin.title}
                 </span>
                 {ecosystem === "user" ? (
                   <span className="text-xs font-medium text-emerald-400 flex items-center gap-1 group-hover:underline">
@@ -1417,6 +1429,8 @@ const renderDesktopLayout = () => {
 
             <AuthStatus />
 
+            <LanguageSwitcher />
+
             {/* Quick Ecosystem Mode Toggle Badge */}
             <button
               onClick={() => {
@@ -1428,21 +1442,23 @@ const renderDesktopLayout = () => {
                   setActiveTab("dashboard");
                 }
               }}
-              className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+              aria-label={ecosystem === "user" ? "Switch to admin mode" : "Switch to user mode"}
+              aria-pressed={ecosystem === "admin"}
+              className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-sm ${
                 ecosystem === "user"
-                  ? "bg-slate-800 border-slate-700 text-blue-300 hover:bg-slate-700"
-                  : "bg-emerald-950/80 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/80"
+                  ? "bg-slate-800 border-slate-700 text-blue-300 hover:bg-slate-700 hover:border-slate-600"
+                  : "bg-emerald-950/80 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/80 hover:border-emerald-500/60"
               }`}
               title={ecosystem === "user" ? "Переключити на технічну консоль Адміна" : "Переключити на простий режим Користувача"}
             >
               {ecosystem === "user" ? (
                 <>
-                  <User className="w-3.5 h-3.5 text-blue-400" />
+                  <User className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
                   <span>Режим: Користувач</span>
                 </>
               ) : (
                 <>
-                  <Shield className="w-3.5 h-3.5 text-emerald-400" />
+                  <Shield className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
                   <span>Режим: Адмін</span>
                 </>
               )}
@@ -1457,168 +1473,17 @@ const renderDesktopLayout = () => {
 
         {/* MAIN CONTENT ZONE */}
         <div className="flex-1 flex overflow-hidden relative bg-slate-950">
-          {/* LEFT SIDEBAR */}
-          <aside
-            className={`shrink-0 border-r border-slate-800 bg-slate-950/80 flex flex-col justify-between transition-all duration-300 z-10 ${sidebarCollapsed ? "w-[68px]" : "w-60"}`}
-            id="tactical-sidebar"
-          >
-            {/* Navigation group */}
-            <div className="p-4 flex flex-col gap-1 overflow-y-auto flex-1 custom-scrollbar">
-              {/* Ecosystem Selector Desktop */}
-              {!sidebarCollapsed && (
-                <div className="mb-4 space-y-2 pb-4 border-b border-slate-800/60">
-                  <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block px-1">
-                    Простір Управління
-                  </span>
-                  <div className="flex gap-1.5 p-1 bg-slate-950/50 rounded-lg border border-slate-800/80">
-                    <button
-                      onClick={() => {
-                        setEcosystem("user");
-                        setActiveTab("live-analytical-center");
-                      }}
-                      className={`flex-1 py-1.5 px-1 rounded-md text-[10px] font-medium transition-all flex items-center justify-center gap-1 cursor-pointer ${ecosystem === "user" ? "bg-blue-600 text-white shadow-sm" : "hover:bg-slate-900 text-slate-500"}`}
-                    >
-                      <User className="w-3.5 h-3.5" /> Користувач
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEcosystem("admin");
-                        setActiveTab("admin-back-office");
-                      }}
-                      className={`flex-1 py-1.5 px-1 rounded-md text-[10px] font-medium transition-all flex items-center justify-center gap-1 cursor-pointer ${ecosystem === "admin" ? "bg-emerald-600 text-white shadow-sm" : "hover:bg-slate-900 text-slate-500"}`}
-                    >
-                      <Shield className="w-3.5 h-3.5" /> Адмін
-                    </button>
-                  </div>
-                </div>
-              )}
-              {sidebarCollapsed && (
-                <div className="mb-4 pb-4 border-b border-slate-800/60 flex justify-center">
-                   <button
-                      onClick={() => {
-                        if (ecosystem === "user") {
-                          setEcosystem("admin");
-                          setActiveTab("admin-back-office");
-                        } else {
-                          setEcosystem("user");
-                          setActiveTab("live-analytical-center");
-                        }
-                      }}
-                      className="w-10 h-10 rounded-lg bg-slate-950/50 border border-slate-800/80 flex items-center justify-center text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
-                      title={ecosystem === "user" ? "Перейти в адмінку" : "Перейти до користувача"}
-                    >
-                      {ecosystem === "user" ? <User className="w-5 h-5" /> : <Shield className="w-5 h-5 text-emerald-400" />}
-                    </button>
-                </div>
-              )}
-
-              <div className="space-y-6">
-                {[
-                  {
-                    title: "INVESTIGATE",
-                    items: [
-                      { id: "predator-intel", label: "Entity Workspace", icon: Briefcase, color: "text-emerald-400", isBold: true },
-                      { id: "investigation-workspace", label: "Case Board", icon: LayoutDashboard, color: "text-blue-400" },
-                      { id: "dashboard", label: "Saved Searches", icon: Search, color: "text-slate-400" },
-                    ]
-                  },
-                  {
-                    title: "INTELLIGENCE",
-                    items: [
-                      { id: "maps", label: "Geospatial", icon: Map, color: "text-emerald-400" },
-                      { id: "sandbox", label: "Network Graph", icon: Network, color: "text-indigo-400" },
-                      { id: "media-forensics", label: "Media Forensics", icon: Camera, color: "text-purple-400" },
-                      { id: "live-analytical-center", label: "AI Copilot", icon: Bot, color: "text-cyan-400" },
-                    ]
-                  },
-                  ...(ecosystem === "admin" ? [{
-                    title: "OPERATIONS",
-                    items: [
-                      { id: "registry-health", label: "Sources (177)", icon: Database, color: "text-cyan-400" },
-                      { id: "data-ingestion", label: "Pipeline", icon: Layers, color: "text-blue-400" },
-                      { id: "admin-back-office", label: "System Health", icon: Server, color: "text-emerald-400" },
-                      { id: "audit-log", label: "Audit Log", icon: ShieldAlert, color: "text-amber-400" },
-                      { id: "master-specification", label: "Architecture", icon: Cpu, color: "text-purple-400" },
-                    ]
-                  }] : [])
-                ].map((section, idx) => (
-                  <div key={idx} className="space-y-1">
-                    {!sidebarCollapsed && (
-                      <div className="px-3 pb-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                        <div className="w-2 h-2 bg-slate-700 rounded-sm"></div>
-                        {section.title}
-                      </div>
-                    )}
-                    {section.items.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = activeTab === item.id;
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            setActiveTab(item.id as TabId);
-                            if (item.id === "master-specification") {
-                              setSelectedNode({
-                                id: "core_api",
-                                label: "Core REST API",
-                                group: "Core",
-                              });
-                              setSelectedEntity(null);
-                              setSelectedTool(null);
-                            }
-                          }}
-                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                            isActive
-                              ? "bg-slate-900 text-blue-400 border border-slate-800"
-                              : "hover:bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-transparent"
-                          }`}
-                        >
-                          <Icon className={`w-4 h-4 shrink-0 ${isActive ? item.color : "text-slate-400"}`} />
-                          {!sidebarCollapsed && <span>{item.label}</span>}
-                        </button>
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
-                
-              {!sidebarCollapsed && (
-                  <div className="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl space-y-3 mt-6">
-                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">
-                      Стан Системи
-                    </span>
-                    <div className="space-y-2 text-xs text-slate-400">
-                      <div className="flex justify-between items-center">
-                        <span>Kafka:</span>
-                        <span className="text-emerald-400 font-medium flex items-center gap-1 font-mono">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                          0 lag
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span>Qdrant:</span>
-                        <span className="text-blue-400 font-medium font-mono">98% Match</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-            {/* Collapsed control */}
-            <div className="p-3 border-t border-slate-800/80">
-              <button
-                onClick={() => setIsInspectorOpen(!isInspectorOpen)}
-                className="w-full bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800/60 text-slate-300 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2"
-              >
-                {!sidebarCollapsed && <LayoutDashboard className="w-4 h-4 text-slate-400" />}
-                {sidebarCollapsed
-                  ? "INSP"
-                  : isInspectorOpen
-                    ? "Сховати Інспектор"
-                    : "Показати Інспектор"}
-              </button>
-            </div>
-          </aside>
+          {/* LEFT SIDEBAR - Improved Navigation */}
+          <ImprovedNavigation
+            activeTab={activeTab}
+            onTabChange={(tabId) => setActiveTab(tabId as TabId)}
+            collapsed={sidebarCollapsed}
+            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+            ecosystem={ecosystem}
+            onEcosystemChange={setEcosystem}
+            mobileMenuOpen={false}
+            onMobileMenuClose={() => {}}
+          />
 
 
 
@@ -1634,18 +1499,16 @@ const renderDesktopLayout = () => {
                 <span className="font-semibold text-slate-300">PREDATOR Analytics</span>
                 <span className="text-slate-600">/</span>
                 <span className="text-blue-400 font-medium">
-                  {activeTab === "predator-intel" ? "Пошук та Перевірка Сутностей" :
-                   activeTab === "live-analytical-center" ? "ШІ Аналітичне Ядро" :
+                  {activeTab === "predator-intel" ? t.navigation.predatorIntel :
+                   activeTab === "live-analytical-center" ? t.navigation.liveAnalyticalCenter :
                    activeTab === "mlip-modules" ? "MLIP Intelligence Modules" :
-                   activeTab === "dashboard" ? "Інтерактивний Дашборд" :
-                   activeTab === "osint" ? "Глобальний Пошук OSINT" :
-                   activeTab === "person-profiler" ? "Досьє Фізичних Осіб" :
-                   activeTab === "sandbox" ? "Аналітичний Граф Зв'язків" :
-                   activeTab === "maps" ? "Геопросторова Карта" :
-                   activeTab === "ckan-explorer" ? "Державні Реєстри України (CKAN)" :
-                   
-                   
-                   activeTab === "investigation-workspace" ? "Мої Розслідування" :
+                   activeTab === "dashboard" ? t.navigation.dashboard :
+                   activeTab === "osint" ? t.navigation.osintWorkbench :
+                   activeTab === "person-profiler" ? t.navigation.personProfiler :
+                   activeTab === "sandbox" ? t.navigation.sandbox :
+                   activeTab === "maps" ? t.navigation.maps :
+                   activeTab === "ckan-explorer" ? t.navigation.ckanExplorer :
+                   activeTab === "investigation-workspace" ? t.navigation.investigationWorkspace :
                    activeTab.toUpperCase().replace("-", " ")}
                 </span>
               </div>
@@ -1663,7 +1526,7 @@ const renderDesktopLayout = () => {
                   className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[11px] font-medium transition-all cursor-pointer ${
                     isTtsEnabled ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20" : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200"
                   }`}
-                  title={isTtsEnabled ? "Вимкнути озвучку асистента" : "Увімкнути озвучку асистента"}
+                  title={isTtsEnabled ? t.common.close : t.common.open}
                 >
                   {isTtsEnabled ? <Volume2 className="w-3.5 h-3.5 text-emerald-400" /> : <VolumeX className="w-3.5 h-3.5 text-slate-500" />}
                   <span>{isTtsEnabled ? "Голос: УВІМК" : "Голос: ВИМК"}</span>
@@ -1673,7 +1536,7 @@ const renderDesktopLayout = () => {
                   className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-[11px] font-medium transition-all cursor-pointer ${
                     isVoiceListening ? "bg-rose-500/20 border-rose-500/50 text-rose-300 animate-pulse" : "bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200"
                   }`}
-                  title="Голосовий пошук та керування"
+                  title={ecosystem === "user" ? t.common.search : t.common.search}
                 >
                   <Mic className="w-3.5 h-3.5 text-blue-400" />
                   <span>{isVoiceListening ? "Слухаю..." : "Голосові команди"}</span>
@@ -1683,7 +1546,7 @@ const renderDesktopLayout = () => {
                   className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 rounded-md text-[11px] font-medium transition-all cursor-pointer"
                 >
                   <LayoutDashboard className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>{isInspectorOpen ? "Сховати панель" : "Панель деталізації"}</span>
+                  <span>{isInspectorOpen ? t.common.close : t.common.view}</span>
                 </button>
               </div>
             </div>
@@ -1780,7 +1643,7 @@ const renderDesktopLayout = () => {
                   <div className="p-2 border-t border-slate-800 bg-slate-950/80 flex items-center gap-1.5">
                     <input
                       type="text"
-                      placeholder="Запитайте ШІ про санкції чи SQL..."
+                      placeholder={t.osint.searchPlaceholder}
                       value={chatMessage}
                       onChange={(e) => setChatMessage(e.target.value)}
                       onKeyDown={(e) => {
@@ -1857,12 +1720,12 @@ const renderDesktopLayout = () => {
                 className="relative w-full w-full bg-slate-900 border border-slate-800 rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[500px] z-50"
               >
                 {/* Search input header */}
-                <div className="flex items-center gap-2 px-2 py-1.5 border-b border-slate-800 bg-slate-950/50">
+                <div className="flex items-center gap-2 p-3 border-b border-slate-800 bg-slate-950/50">
                   <Search className="w-4 h-4 text-blue-400 shrink-0" />
                   <input
                     type="text"
                     autoFocus
-                    placeholder="Введіть запит для пошуку (напр. 'Дашборд', 'сан', 'Коваленко' чи 'звук')..."
+                    placeholder={t.osint.searchPlaceholder}
                     value={spotlightQuery}
                     onChange={(e) => setSpotlightQuery(e.target.value)}
                     className="w-full bg-transparent text-white placeholder-slate-500 text-xs focus:outline-none"

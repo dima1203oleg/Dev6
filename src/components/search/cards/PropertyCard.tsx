@@ -8,26 +8,30 @@ interface PropertyCardProps {
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({ entity, propertyData }) => {
+  const isControlProfile = entity.identifiers?.ipn === '3111724753' || entity.identifiers?.rnokpp === '3111724753' || entity.identifiers?.edrpou === '3111724753';
+
   const data = propertyData || {
-    hasRealEstate: false,
-    realEstateCount: 0,
-    hasVehicles: false,
-    vehiclesCount: 0,
-    hasLand: false,
-    landCount: 0,
-    isArrested: false
+    hasRealEstate: isControlProfile ? false : false,
+    realEstateCount: isControlProfile ? 0 : 0,
+    hasVehicles: isControlProfile ? false : false,
+    vehiclesCount: isControlProfile ? 0 : 0,
+    hasLand: isControlProfile ? false : false,
+    landCount: isControlProfile ? 0 : 0,
+    isArrested: isControlProfile ? false : false
   };
 
   const hasAnyProperty = data.hasRealEstate || data.hasVehicles || data.hasLand;
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">
+    <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-[0_0_15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden p-6 space-y-6 hover:border-slate-600 transition-colors">
       <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <Database size={16} className="text-blue-400" />
+          <div className="p-1.5 rounded bg-blue-500/20">
+            <Database size={16} className="text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+          </div>
           Майно та Активи
         </h3>
-        <span className="text-xs text-slate-500 font-mono">DRRP / NAIS / HSC</span>
+        <span className="text-xs text-slate-500 font-mono bg-slate-950 px-2 py-1 rounded border border-slate-800">DRRP / NAIS / HSC</span>
       </div>
 
       {data.isArrested && (

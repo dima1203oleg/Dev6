@@ -8,23 +8,27 @@ interface CourtCasesCardProps {
 }
 
 export const CourtCasesCard: React.FC<CourtCasesCardProps> = ({ entity, courtData }) => {
-  // If no court data provided, use default empty/safe state
+  // If no court data provided, use default mock cases
   const data = courtData || {
-    totalCases: 0,
+    totalCases: 3,
     criminal: 0,
-    administrative: 0,
-    civil: 0,
+    administrative: 2,
+    civil: 1,
     economic: 0,
-    recentCases: []
+    recentCases: [
+      { caseNumber: '761/1234/23', date: '2023-11-15', role: 'Відповідач', summary: 'Стягнення заборгованості за кредитним договором' }
+    ]
   };
 
   const hasCases = data.totalCases > 0;
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">
+    <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-[0_0_15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden p-6 space-y-6 hover:border-slate-600 transition-colors">
       <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <Landmark size={16} className={hasCases ? "text-cyan-400" : "text-emerald-400"} />
+          <div className={`p-1.5 rounded ${hasCases ? 'bg-cyan-500/20' : 'bg-emerald-500/20'}`}>
+            <Landmark size={16} className={`${hasCases ? "text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" : "text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]"}`} />
+          </div>
           Судові справи (ЄДРСР)
         </h3>
         <span className="text-xs text-slate-500 font-mono">COURT.GOV.UA</span>

@@ -97,7 +97,7 @@ export interface Evidence {
 export interface Dossier {
   entity: PersonProfile | Company | FOP | Vehicle;
   network: { nodes: any[]; links: any[] };
-  timeline: { date: string; event: string; source: string }[];
+  timeline: { date: string; event: string; description?: string; type?: string; source: string }[];
   sources: { id: string; name: string; status: string; reliability: number }[];
   evidence: Evidence[];
   risk: { score: number; level: string; drivers: { type: string; severity: string; description: string }[] };

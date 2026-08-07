@@ -33,13 +33,15 @@ export const ExecutionsCard: React.FC<ExecutionsCardProps> = ({ entity, legalDat
   const isBankrupt = legalData?.isBankrupt ?? false;
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">
+    <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-[0_0_15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden p-6 space-y-6 hover:border-slate-600 transition-colors">
       <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <Scale size={16} className="text-amber-400" />
+          <div className={`p-1.5 rounded ${activeCount > 0 ? 'bg-amber-500/20' : 'bg-emerald-500/20'}`}>
+            <Scale size={16} className={`${activeCount > 0 ? "text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" : "text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]"}`} />
+          </div>
           Виконавчі провадження
         </h3>
-        <span className="text-xs text-slate-500 font-mono">АСВП / ЄРБ / МІН'ЮСТ</span>
+        <span className="text-xs text-slate-500 font-mono bg-slate-950 px-2 py-1 rounded border border-slate-800">АСВП / ЄРБ / МІН'ЮСТ</span>
       </div>
 
       {/* Bankruptcy Alert */}

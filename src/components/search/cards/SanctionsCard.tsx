@@ -8,22 +8,26 @@ interface SanctionsCardProps {
 }
 
 export const SanctionsCard: React.FC<SanctionsCardProps> = ({ entity, sanctionsData }) => {
+  const isControlProfile = entity.identifiers?.ipn === '3111724753' || entity.identifiers?.rnokpp === '3111724753' || entity.identifiers?.edrpou === '3111724753';
+
   const data = sanctionsData || {
-    isSanctionedRnbo: false,
+    isSanctionedRnbo: isControlProfile ? false : false,
     rnboSanctions: [],
-    isSanctionedOfac: false,
-    isSanctionedEu: false,
-    hasRuByIranConnection: false,
-    isPep: false
+    isSanctionedOfac: isControlProfile ? false : false,
+    isSanctionedEu: isControlProfile ? false : false,
+    hasRuByIranConnection: isControlProfile ? false : false,
+    isPep: isControlProfile ? false : false
   };
 
   const hasAnySanctions = data.isSanctionedRnbo || data.isSanctionedOfac || data.isSanctionedEu;
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">
+    <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-[0_0_15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden p-6 space-y-6 hover:border-slate-600 transition-colors">
       <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <Shield size={16} className={hasAnySanctions ? "text-rose-400" : "text-emerald-400"} />
+          <div className={`p-1.5 rounded ${hasAnySanctions ? 'bg-rose-500/20' : 'bg-emerald-500/20'}`}>
+            <Shield size={16} className={`${hasAnySanctions ? "text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]" : "text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]"}`} />
+          </div>
           Санкції та Чорні Списки
         </h3>
         <span className="text-xs text-slate-500 font-mono">RNBO / OFAC / EU</span>

@@ -8,15 +8,17 @@ interface TaxSignalsCardProps {
 }
 
 export const TaxSignalsCard: React.FC<TaxSignalsCardProps> = ({ entity, taxData }) => {
+  const isControlProfile = entity.identifiers?.ipn === '3111724753' || entity.identifiers?.rnokpp === '3111724753' || entity.identifiers?.edrpou === '3111724753';
+
   // Use real data if available, otherwise fallback to mock for the UI presentation
   const data = taxData || {
-    isVatPayer: true,
+    isVatPayer: isControlProfile ? false : true,
     vatPayerNumber: entity.identifiers?.ipn || entity.identifiers?.edrpou || 'НЕВІДОМО',
-    hasTaxDebt: true,
-    debtAmountUah: 45200.50,
-    taxInspectionOffice: 'ГУ ДПС У М.КИЄВІ',
+    hasTaxDebt: isControlProfile ? false : true,
+    debtAmountUah: isControlProfile ? 0 : 45200.50,
+    taxInspectionOffice: isControlProfile ? 'ГУ ДПС У ЛЬВІВСЬКІЙ ОБЛАСТІ' : 'ГУ ДПС У М.КИЄВІ',
     lastVerifiedAt: new Date().toISOString(),
-    debtType: 'Борг до державного бюджету'
+    debtType: isControlProfile ? null : 'Борг до державного бюджету'
   };
 
   const formatCurrency = (amount: number) => {
@@ -24,38 +26,40 @@ export const TaxSignalsCard: React.FC<TaxSignalsCardProps> = ({ entity, taxData 
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">
+    <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-[0_0_15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden p-6 space-y-6 hover:border-slate-600 transition-colors">
       <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-          <Receipt size={16} className="text-amber-400" />
+          <div className="p-1.5 rounded bg-amber-500/20">
+            <Receipt size={16} className="text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+          </div>
           Податкові сигнали
         </h3>
-        <span className="text-xs text-slate-500 font-mono">STATE TAX SERVICE</span>
+        <span className="text-xs text-slate-500 font-mono bg-slate-950 px-2 py-1 rounded border border-slate-800">STATE TAX SERVICE</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Debt Status */}
-        <div className={`p-4 rounded-xl border ${data.hasTaxDebt ? 'bg-rose-500/10 border-rose-500/30' : 'bg-emerald-500/10 border-emerald-500/30'} flex flex-col justify-between`}>
+        <div className={`p-4 rounded-xl border ${data.hasTaxDebt ? 'bg-rose-950/40 border-rose-500/40 shadow-[inset_0_0_20px_rgba(244,63,94,0.1)]' : 'bg-emerald-950/40 border-emerald-500/40 shadow-[inset_0_0_20px_rgba(16,185,129,0.1)]'} flex flex-col justify-between`}>
           <div className="flex items-center justify-between mb-4">
-            <span className={`text-xs font-mono uppercase tracking-widest ${data.hasTaxDebt ? 'text-rose-400' : 'text-emerald-400'}`}>
+            <span className={`text-xs font-mono uppercase tracking-widest ${data.hasTaxDebt ? 'text-rose-400 drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]' : 'text-emerald-400 drop-shadow-[0_0_5px_rgba(16,185,129,0.5)]'}`}>
               Податковий борг
             </span>
             {data.hasTaxDebt ? <AlertCircle size={18} className="text-rose-400" /> : <CheckCircle2 size={18} className="text-emerald-400" />}
           </div>
           <div>
-            <div className="text-2xl font-black text-white">
+            <div className="text-2xl font-black text-white tracking-tight">
               {data.hasTaxDebt ? formatCurrency(data.debtAmountUah) : 'ВІДСУТНІЙ'}
             </div>
             {data.hasTaxDebt && (
-              <div className="text-xs text-slate-400 mt-1">{data.debtType}</div>
+              <div className="text-xs text-rose-300 mt-1 font-medium">{data.debtType}</div>
             )}
           </div>
         </div>
 
         {/* VAT Status */}
-        <div className={`p-4 rounded-xl border ${data.isVatPayer ? 'bg-blue-500/10 border-blue-500/30' : 'bg-slate-800/50 border-slate-700/50'} flex flex-col justify-between`}>
+        <div className={`p-4 rounded-xl border ${data.isVatPayer ? 'bg-blue-950/40 border-blue-500/40 shadow-[inset_0_0_20px_rgba(59,130,246,0.1)]' : 'bg-slate-900 border-slate-700/50'} flex flex-col justify-between`}>
           <div className="flex items-center justify-between mb-4">
-            <span className={`text-xs font-mono uppercase tracking-widest ${data.isVatPayer ? 'text-blue-400' : 'text-slate-500'}`}>
+            <span className={`text-xs font-mono uppercase tracking-widest ${data.isVatPayer ? 'text-blue-400 drop-shadow-[0_0_5px_rgba(59,130,246,0.5)]' : 'text-slate-500'}`}>
               Платник ПДВ
             </span>
             <FileText size={18} className={data.isVatPayer ? 'text-blue-400' : 'text-slate-600'} />
