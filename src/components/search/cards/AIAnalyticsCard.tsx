@@ -4,15 +4,14 @@ import { CanonicalEntity } from '../../../types/predator';
 
 interface AIAnalyticsCardProps {
   entity: CanonicalEntity;
+  riskData?: any;
 }
 
-export const AIAnalyticsCard: React.FC<AIAnalyticsCardProps> = ({ entity }) => {
+export const AIAnalyticsCard: React.FC<AIAnalyticsCardProps> = ({ entity, riskData }) => {
   const [typingIndex, setTypingIndex] = useState(0);
   
-  const aiSummaryText = `Аналіз PREDATOR AI: Суб'єкт має статус "${entity.status || 'ACTIVE'}". 
-  Наявні ризики пов'язані з податковою дисципліною та можливими зв'язками з офшорними юрисдикціями.
-  Поведінковий патерн вказує на часту зміну керівництва (3 зміни за останні 2 роки). 
-  Загальний рівень благонадійності оцінюється як "СЕРЕДНІЙ". Рекомендується додатковий комплаєнс-контроль.`;
+  const riskScore = riskData?.score || 0;
+  const aiSummaryText = riskData?.summary || `Аналіз PREDATOR AI: Аналіз проведено успішно. Інформації для розрахунку високого ризику недостатньо.`;
 
   useEffect(() => {
     if (typingIndex < aiSummaryText.length) {
@@ -22,8 +21,6 @@ export const AIAnalyticsCard: React.FC<AIAnalyticsCardProps> = ({ entity }) => {
       return () => clearTimeout(timer);
     }
   }, [typingIndex, aiSummaryText]);
-
-  const riskScore = 68; // Mock score
 
   return (
     <div className="bg-slate-900 border border-indigo-500/30 rounded-xl overflow-hidden relative group">

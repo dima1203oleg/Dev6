@@ -8,16 +8,14 @@ interface PropertyCardProps {
 }
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({ entity, propertyData }) => {
-  const isControlProfile = entity.identifiers?.ipn === '3111724753' || entity.identifiers?.rnokpp === '3111724753' || entity.identifiers?.edrpou === '3111724753';
-
   const data = propertyData || {
-    hasRealEstate: isControlProfile ? false : false,
-    realEstateCount: isControlProfile ? 0 : 0,
-    hasVehicles: isControlProfile ? false : false,
-    vehiclesCount: isControlProfile ? 0 : 0,
-    hasLand: isControlProfile ? false : false,
-    landCount: isControlProfile ? 0 : 0,
-    isArrested: isControlProfile ? false : false
+    hasRealEstate: false,
+    realEstateCount: 0,
+    hasVehicles: false,
+    vehiclesCount: 0,
+    hasLand: false,
+    landCount: 0,
+    isArrested: false
   };
 
   const hasAnyProperty = data.hasRealEstate || data.hasVehicles || data.hasLand;

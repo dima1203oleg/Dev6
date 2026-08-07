@@ -8,17 +8,15 @@ interface TaxSignalsCardProps {
 }
 
 export const TaxSignalsCard: React.FC<TaxSignalsCardProps> = ({ entity, taxData }) => {
-  const isControlProfile = entity.identifiers?.ipn === '3111724753' || entity.identifiers?.rnokpp === '3111724753' || entity.identifiers?.edrpou === '3111724753';
-
-  // Use real data if available, otherwise fallback to mock for the UI presentation
+  // Use real data if available, otherwise fallback to safe empty defaults
   const data = taxData || {
-    isVatPayer: isControlProfile ? false : true,
+    isVatPayer: false,
     vatPayerNumber: entity.identifiers?.ipn || entity.identifiers?.edrpou || 'НЕВІДОМО',
-    hasTaxDebt: isControlProfile ? false : true,
-    debtAmountUah: isControlProfile ? 0 : 45200.50,
-    taxInspectionOffice: isControlProfile ? 'ГУ ДПС У ЛЬВІВСЬКІЙ ОБЛАСТІ' : 'ГУ ДПС У М.КИЄВІ',
+    hasTaxDebt: false,
+    debtAmountUah: 0,
+    taxInspectionOffice: 'Дані відсутні',
     lastVerifiedAt: new Date().toISOString(),
-    debtType: isControlProfile ? null : 'Борг до державного бюджету'
+    debtType: null
   };
 
   const formatCurrency = (amount: number) => {

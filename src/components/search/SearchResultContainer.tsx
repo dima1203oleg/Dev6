@@ -7,6 +7,12 @@ import { EvidenceModal } from '../EvidenceModal';
 import { Fact } from '../../types/search';
 import { EntityType, VerificationStatus } from '../../types';
 
+import { TaxSignalsCard } from './cards/TaxSignalsCard';
+import { PropertyCard } from './cards/PropertyCard';
+import { SanctionsCard } from './cards/SanctionsCard';
+import { CourtCasesCard } from './cards/CourtCasesCard';
+import { AIAnalyticsCard } from './cards/AIAnalyticsCard';
+
 // Mock data builder for demonstration, in real usage this will be passed down from props
 export const SearchResultContainer: React.FC<any> = ({ dossier }) => {
   const [selectedEvidence, setSelectedEvidence] = useState<Fact | null>(null);
@@ -58,10 +64,17 @@ export const SearchResultContainer: React.FC<any> = ({ dossier }) => {
 
       <TimelineBlock events={timelineData} />
 
-      {/* 
-        Here we would dynamically render RegistryCard, LegalLinksCard, FamilyLinksCard, etc.
-        based on the entity type and available data.
-      */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          <TaxSignalsCard entity={dossier.entity} taxData={dossier.modules?.tax?.[0]} />
+          <PropertyCard entity={dossier.entity} propertyData={dossier.modules?.property?.[0]} />
+          <CourtCasesCard entity={dossier.entity} courtData={dossier.modules?.courts?.[0]} />
+        </div>
+        <div className="space-y-6">
+          <SanctionsCard entity={dossier.entity} sanctionsData={dossier.modules?.sanctions?.[0]} />
+          <AIAnalyticsCard entity={dossier.entity} riskData={dossier.risk} />
+        </div>
+      </div>
 
       {selectedEvidence && (
         <EvidenceModal fact={selectedEvidence} onClose={() => setSelectedEvidence(null)} />

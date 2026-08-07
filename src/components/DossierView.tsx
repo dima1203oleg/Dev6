@@ -26,6 +26,7 @@ import { TaxSignalsCard } from "./search/cards/TaxSignalsCard";
 import { AIAnalyticsCard } from "./search/cards/AIAnalyticsCard";
 import { EmptyTabState } from "./ui/EmptyTabState";
 import { RegistryCard } from "./search/cards/RegistryCard";
+import { PropertyCard } from "./search/cards/PropertyCard";
 import { FamilyLinksCard } from "./search/cards/FamilyLinksCard";
 import { LegalLinksCard } from "./search/cards/LegalLinksCard";
 import { CourtAndDebtCard } from "./search/cards/CourtAndDebtCard";
@@ -378,6 +379,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         
         return (
           <div className="space-y-6">
+            <PropertyCard entity={entity} propertyData={(dossier.modules as any)?.property?.[0]} />
             {vehicles && vehicles.length > 0 && (
               <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                 <div className="p-4 border-b border-slate-800">

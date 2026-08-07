@@ -8,16 +8,14 @@ interface CourtCasesCardProps {
 }
 
 export const CourtCasesCard: React.FC<CourtCasesCardProps> = ({ entity, courtData }) => {
-  // If no court data provided, use default mock cases
+  // If no court data provided, fallback to empty state
   const data = courtData || {
-    totalCases: 3,
+    totalCases: 0,
     criminal: 0,
-    administrative: 2,
-    civil: 1,
+    administrative: 0,
+    civil: 0,
     economic: 0,
-    recentCases: [
-      { caseNumber: '761/1234/23', date: '2023-11-15', role: 'Відповідач', summary: 'Стягнення заборгованості за кредитним договором' }
-    ]
+    recentCases: []
   };
 
   const hasCases = data.totalCases > 0;

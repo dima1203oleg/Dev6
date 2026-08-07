@@ -8,15 +8,13 @@ interface SanctionsCardProps {
 }
 
 export const SanctionsCard: React.FC<SanctionsCardProps> = ({ entity, sanctionsData }) => {
-  const isControlProfile = entity.identifiers?.ipn === '3111724753' || entity.identifiers?.rnokpp === '3111724753' || entity.identifiers?.edrpou === '3111724753';
-
   const data = sanctionsData || {
-    isSanctionedRnbo: isControlProfile ? false : false,
+    isSanctionedRnbo: false,
     rnboSanctions: [],
-    isSanctionedOfac: isControlProfile ? false : false,
-    isSanctionedEu: isControlProfile ? false : false,
-    hasRuByIranConnection: isControlProfile ? false : false,
-    isPep: isControlProfile ? false : false
+    isSanctionedOfac: false,
+    isSanctionedEu: false,
+    hasRuByIranConnection: false,
+    isPep: false
   };
 
   const hasAnySanctions = data.isSanctionedRnbo || data.isSanctionedOfac || data.isSanctionedEu;
