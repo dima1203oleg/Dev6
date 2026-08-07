@@ -238,10 +238,10 @@ export async function runRegressionTesting(
   entity: CanonicalEntity,
   cardDataMap: Map<string, any>
 ) {
-  console.log(`=== Regression Testing for ${changedComponentid} ===`);
+  console.log(`=== Regression Testing for ${changedComponentId} ===`);
 
   // Build dependency graph
-  const components = [
+  const components: DependencyNode[] = [
     { id: 'passport-card', type: 'CARD', name: 'Passport Card', dependsOn: ['connector-edr', 'normalizer-passport'], affectedBy: [] },
     { id: 'connector-edr', type: 'CONNECTOR', name: 'EDR Connector', dependsOn: ['registry-edr'], affectedBy: ['passport-card'] },
     { id: 'registry-edr', type: 'REGISTRY', name: 'EDR Registry', dependsOn: [], affectedBy: ['connector-edr'] },
