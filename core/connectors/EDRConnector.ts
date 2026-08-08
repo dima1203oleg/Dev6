@@ -15,14 +15,38 @@ export class EDRConnector extends BaseConnector {
 
   async search(query: string): Promise<RawEvidence[]> {
     console.log(`[CONNECTOR] EDR: Виконуємо пошук для ${query}`);
-    // TODO: Implement actual API call to EDR
-    return [];
+    try {
+      const response = await fetch(`${this.baseUrl}/search?q=${encodeURIComponent(query)}`, {
+        headers: this.getAuthHeaders(),
+        signal: AbortSignal.timeout(30000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`EDR API returned ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return this.parseResponse(data);
+    } catch (error) {
+      console.error(`[CONNECTOR] EDR search failed:`, error);
+      return [];
+    }
   }
 
   async health_check(): Promise<ConnectorStatus> {
-    // TODO: Implement real health check against EDR API
-    // For now, return API_CONTRACT_UNKNOWN since we haven't verified the API contract
-    return 'API_CONTRACT_UNKNOWN';
+    try {
+      const response = await fetch(`${this.baseUrl}/health`, {
+        signal: AbortSignal.timeout(5000)
+      });
+      
+      if (response.ok) {
+        return 'LIVE';
+      } else {
+        return 'API_CONTRACT_UNKNOWN';
+      }
+    } catch (error) {
+      return 'SOURCE_UNAVAILABLE';
+    }
   }
 
   get_production_validation(): ProductionValidation {

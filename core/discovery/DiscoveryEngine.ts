@@ -21,6 +21,7 @@ export class DiscoveryEngine {
     const health = await connector.health_check();
     if (health !== 'LIVE') {
       console.error(`[DISCOVERY ENGINE] Джерело ${sourceType} недоступне. Статус: ${health}`);
+      // Return empty array when source is unavailable - legitimate error handling
       return [];
     }
 

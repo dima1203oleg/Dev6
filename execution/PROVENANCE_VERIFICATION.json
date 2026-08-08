@@ -1,0 +1,139 @@
+{
+  "results": [
+    {
+      "component": "fact_id",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Unique fact identifier. Not production-tested."
+    },
+    {
+      "component": "entity_id",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Entity identifier. Not production-tested."
+    },
+    {
+      "component": "source",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Source identifier (data.gov.ua). Not production-tested."
+    },
+    {
+      "component": "dataset_id",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Dataset identifier. Not production-tested."
+    },
+    {
+      "component": "resource_id",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Resource identifier. Not production-tested."
+    },
+    {
+      "component": "timestamp",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Timestamp of fact creation. Not production-tested."
+    },
+    {
+      "component": "raw_record_id",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Raw record identifier. Not production-tested."
+    },
+    {
+      "component": "raw_hash (SHA-256)",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "SHA-256 hash of raw data. Not production-tested."
+    },
+    {
+      "component": "parser_version",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT explicitly implemented. Missing."
+    },
+    {
+      "component": "mapping_version",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT explicitly implemented. Missing."
+    },
+    {
+      "component": "normalizer_version",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT explicitly implemented. Missing."
+    },
+    {
+      "component": "confidence",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Confidence score (0-1). Not production-tested."
+    },
+    {
+      "component": "Evidence References Raw Record",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Evidence correctly references raw record. Not production-tested."
+    },
+    {
+      "component": "No Fabricated Evidence",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "No mock/fabricated evidence found in codebase. Not production-tested."
+    }
+  ],
+  "summary": {
+    "total_components": 14,
+    "implemented": 11,
+    "not_implemented": 3,
+    "production_verified": 0,
+    "percentage": 79
+  },
+  "missing_fields": [
+    "parser_version",
+    "mapping_version",
+    "normalizer_version"
+  ],
+  "present_fields": [
+    "fact_id",
+    "entity_id",
+    "source",
+    "dataset_id",
+    "resource_id",
+    "timestamp",
+    "raw_record_id",
+    "raw_hash",
+    "confidence"
+  ],
+  "notes": [
+    "ProvenanceEngine implements most required fields",
+    "SHA-256 hashing implemented for raw_hash",
+    "Evidence correctly references raw record",
+    "No fabricated evidence found",
+    "Missing version tracking (parser, mapping, normalizer)",
+    "Not production-tested due to API blocking"
+  ],
+  "blocking_issues": [
+    "Missing version tracking (parser_version, mapping_version, normalizer_version)",
+    "CKAN API blocked by Cloudflare protection",
+    "Cannot execute production verification without API access"
+  ],
+  "timestamp": "2026-08-07T23:02:58.625Z"
+}

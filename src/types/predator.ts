@@ -8,14 +8,24 @@ export type EntityType =
   | "PERSON"
   | "COMPANY"
   | "FOP"
-  | "VEHICLE"
-  | "UNKNOWN"
   | "ADDRESS"
   | "PHONE"
   | "EMAIL"
   | "DOCUMENT"
-  | "CASE"
-  | "EVENT";
+  | "DIRECTOR"
+  | "FOUNDER"
+  | "BENEFICIARY"
+  | "RELATIVE"
+  | "COURT_CASE"
+  | "SANCTION"
+  | "LICENSE"
+  | "DECLARATION"
+  | "TAX_STATUS"
+  | "DEBT"
+  | "ASSET"
+  | "TENDER"
+  | "EXECUTIVE_CASE"
+  | "UNKNOWN";
 
 export type VerificationStatus = 
   | "CONFIRMED"

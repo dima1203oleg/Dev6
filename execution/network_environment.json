@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-08-08T03:05:00Z",
+  "public_ip": "178.214.200.25",
+  "country": "Ukraine",
+  "countryCode": "UA",
+  "region": "Kyiv City",
+  "city": "Kyiv",
+  "isp": "Stargroup LLC",
+  "asn": "AS41985 Stargroup LLC",
+  "proxy_detected": false,
+  "vpn_detected": false,
+  "ipv4": "178.214.200.25",
+  "ipv6": "N/A",
+  "dns_resolution": {
+    "data_gov_ua": "PASS",
+    "status": "DNS resolution successful"
+  },
+  "tls_connectivity": {
+    "data_gov_ua": "PASS",
+    "status": "TLS connection successful"
+  },
+  "http_connectivity": {
+    "data_gov_ua": "PASS",
+    "status": "HTTP connection successful"
+  },
+  "ckan_api_connectivity": {
+    "package_list": {
+      "url": "https://data.gov.ua/api/3/action/package_list",
+      "http_status": 200,
+      "latency_ms": 621,
+      "cloudflare_detected": false,
+      "timestamp": "2026-08-08T03:05:00Z"
+    },
+    "package_search": {
+      "url": "https://data.gov.ua/api/3/action/package_search",
+      "http_status": 200,
+      "latency_ms": 801,
+      "cloudflare_detected": false,
+      "timestamp": "2026-08-08T03:05:00Z",
+      "datasets_count": 36887
+    },
+    "resource_show": {
+      "url": "https://data.gov.ua/api/3/action/resource_show",
+      "http_status": 403,
+      "latency_ms": 520,
+      "cloudflare_detected": false,
+      "timestamp": "2026-08-08T03:05:00Z",
+      "note": "403 expected for invalid resource ID"
+    }
+  },
+  "conclusion": "CKAN API is ACCESSIBLE from Ukrainian network environment. Previous Cloudflare blocking was likely due to foreign IP (Netherlands) in previous test environment."
+}

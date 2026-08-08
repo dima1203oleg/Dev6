@@ -1,0 +1,100 @@
+{
+  "results": [
+    {
+      "component": "Field Provenance Retrieval",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "getFieldProvenance() method exists. Not production-tested."
+    },
+    {
+      "component": "All Fields Provenance",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "getProvenanceForAllFields() method exists. Not production-tested."
+    },
+    {
+      "component": "Provenance Chain Verification",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "verifyProvenanceChain() method exists. Not production-tested."
+    },
+    {
+      "component": "Hash Verification",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Verifies hash matches raw record. Not production-tested."
+    },
+    {
+      "component": "Record ID Verification",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Verifies record ID matches. Not production-tested."
+    },
+    {
+      "component": "Provenance Summary Generation",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "generateProvenanceSummary() method exists. Not production-tested."
+    },
+    {
+      "component": "FieldProvenanceData Structure",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "FieldProvenanceData interface with value, source, dataset, resource, raw_record, hash, timestamp, pipeline_stages. Not production-tested."
+    },
+    {
+      "component": "Pipeline Stages Tracking",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "pipeline_stages array tracks values across stages. Not production-tested."
+    },
+    {
+      "component": "UI Integration",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NO UI components found. FieldProvenanceAPI exists but no UI to display lineage. Missing."
+    },
+    {
+      "component": "API Endpoint",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NO API endpoints found. FieldProvenanceAPI exists but no REST endpoint. Missing."
+    }
+  ],
+  "summary": {
+    "total_components": 10,
+    "implemented": 8,
+    "not_implemented": 2,
+    "production_verified": 0,
+    "percentage": 80
+  },
+  "critical_blockers": [
+    "NO UI integration - cannot display lineage in UI",
+    "NO API endpoint - cannot expose lineage via API"
+  ],
+  "notes": [
+    "FieldProvenanceAPI has framework for field-level provenance",
+    "FieldProvenanceData structure with pipeline stages tracking",
+    "Hash and record ID verification methods exist",
+    "No UI components to display lineage",
+    "No API endpoint to serve lineage data",
+    "Not production-tested due to API blocking and missing integrations"
+  ],
+  "blocking_issues": [
+    "No UI integration - cannot verify UI lineage tracing",
+    "No API endpoint - cannot expose lineage data",
+    "CKAN API blocked by Cloudflare protection",
+    "Cannot execute production verification without UI/API integration"
+  ],
+  "timestamp": "2026-08-07T23:06:44.110Z"
+}

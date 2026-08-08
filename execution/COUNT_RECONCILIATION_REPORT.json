@@ -1,0 +1,62 @@
+{
+  "reconciliation": {
+    "catalog_datasets": 100,
+    "catalog_resources": 4401,
+    "reported_count_1": 322509,
+    "reported_count_2": 47819,
+    "discrepancy_1": 318108,
+    "discrepancy_2": 43418,
+    "avg_resources_per_dataset": 44.01,
+    "estimated_full_catalog_resources": 1623397,
+    "analysis": "Catalog resources (4401) do not match either reported count. The catalog sample (100 datasets) may not be representative of the full catalog (36887 datasets)."
+  },
+  "resource_formats": {
+    "CSV": 230,
+    "JSON": 33,
+    ".xlsx": 12,
+    "XLSX": 900,
+    "DOCX": 357,
+    "ODT": 15,
+    "XLS": 680,
+    "ZIP": 223,
+    "PDF": 102,
+    "DOC": 202,
+    "ODS": 93,
+    "application/x-7z-compressed": 13,
+    "XML": 1361,
+    "сsv": 5,
+    ".csv": 8,
+    ".xml": 3,
+    "xmlx": 2,
+    ".xls": 2,
+    "excel (.xlsx)": 1,
+    ".doc": 7,
+    "xlxs": 1,
+    "хlsx": 67,
+    "хls": 44,
+    "unknown": 15,
+    ".pdf": 2,
+    "СSV": 1,
+    ".zip": 1,
+    "api": 2,
+    "xlsx, csv": 1,
+    "HTML": 1,
+    "ХML": 1,
+    "xml*": 8,
+    "xlm": 6,
+    "cvs": 1,
+    "scv": 1
+  },
+  "dataset_resource_stats": {
+    "total": 100,
+    "average": 44.01,
+    "max": 1368,
+    "min": 0
+  },
+  "datastore_stats": {
+    "with_datastore": 0,
+    "without_datastore": 4401,
+    "coverage_percent": 0
+  },
+  "timestamp": "2026-08-07T22:58:40.063Z"
+}

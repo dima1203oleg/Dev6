@@ -1,0 +1,193 @@
+{
+  "run_id": "devin-acceptance-test-20260808",
+  "timestamp": "2026-08-08T02:45:00Z",
+  "metrics_type": "PRODUCTION_QUALITY_METRICS",
+  "description": "Quality metrics calculated from independent verification",
+  "status": "BLOCKED",
+  "blocker": "CKAN API blocked by Cloudflare protection - cannot execute real data ingestion",
+  "metrics": {
+    "availability": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "API blocked by Cloudflare protection - 0% availability",
+      "required": ">= 95%",
+      "actual": "0%"
+    },
+    "completeness": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - 0% completeness",
+      "required": ">= 90%",
+      "actual": "0%"
+    },
+    "freshness": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - cannot calculate freshness",
+      "required": "< 24 hours",
+      "actual": "N/A"
+    },
+    "accuracy": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - cannot calculate accuracy",
+      "required": ">= 95%",
+      "actual": "N/A"
+    },
+    "integrity": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - cannot calculate integrity",
+      "required": "100%",
+      "actual": "N/A"
+    },
+    "consistency": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - cannot calculate consistency",
+      "required": ">= 95%",
+      "actual": "N/A"
+    },
+    "api_stability": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "CKAN API blocked by Cloudflare protection - 0% stability",
+      "required": ">= 99%",
+      "actual": "0%"
+    },
+    "latency": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No API calls successful - cannot calculate latency",
+      "required": "< 1s",
+      "actual": "N/A"
+    },
+    "error_rate": {
+      "score": 100,
+      "status": "FAIL",
+      "evidence": "100% error rate due to API blocking",
+      "required": "< 1%",
+      "actual": "100%"
+    },
+    "field_coverage": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - 0% field coverage",
+      "required": ">= 80%",
+      "actual": "0%"
+    },
+    "evidence_coverage": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - 0% evidence coverage",
+      "required": "100%",
+      "actual": "0%"
+    },
+    "card_coverage": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No cards created - 0% card coverage",
+      "required": ">= 90%",
+      "actual": "0%"
+    },
+    "truth_validation": {
+      "score": 0,
+      "status": "FAIL",
+      "evidence": "No data ingested - cannot perform truth validation",
+      "required": "100% PASS",
+      "actual": "N/A"
+    }
+  },
+  "implementation_coverage": {
+    "discovery": {
+      "implemented": 8,
+      "total": 13,
+      "percentage": 62,
+      "status": "PARTIAL"
+    },
+    "safe_ingestion": {
+      "implemented": 9,
+      "total": 24,
+      "percentage": 38,
+      "status": "INCOMPLETE"
+    },
+    "relevance_engine": {
+      "implemented": 9,
+      "total": 9,
+      "percentage": 100,
+      "status": "COMPLETE"
+    },
+    "canonical_model": {
+      "implemented": 9,
+      "total": 19,
+      "percentage": 47,
+      "status": "INCOMPLETE"
+    },
+    "entity_resolution": {
+      "implemented": 14,
+      "total": 14,
+      "percentage": 100,
+      "status": "COMPLETE"
+    },
+    "provenance": {
+      "implemented": 11,
+      "total": 14,
+      "percentage": 79,
+      "status": "PARTIAL"
+    },
+    "card_integration": {
+      "implemented": 12,
+      "total": 27,
+      "percentage": 44,
+      "status": "INCOMPLETE"
+    },
+    "card_contracts": {
+      "implemented": 12,
+      "total": 12,
+      "percentage": 100,
+      "status": "COMPLETE"
+    },
+    "field_validation": {
+      "implemented": 10,
+      "total": 10,
+      "percentage": 100,
+      "status": "COMPLETE"
+    },
+    "truth_validation": {
+      "implemented": 9,
+      "total": 12,
+      "percentage": 75,
+      "status": "PARTIAL"
+    },
+    "field_provenance": {
+      "implemented": 8,
+      "total": 10,
+      "percentage": 80,
+      "status": "PARTIAL"
+    }
+  },
+  "production_verification": {
+    "total_components": 135,
+    "implemented": 111,
+    "not_implemented": 24,
+    "implementation_percentage": 82,
+    "production_verified": 0,
+    "production_verification_percentage": 0
+  },
+  "critical_blockers": [
+    "CKAN API blocked by Cloudflare protection",
+    "No database integration",
+    "No API endpoints",
+    "No UI components",
+    "13/19 entity types missing",
+    "Missing version tracking in provenance",
+    "Incomplete safe ingestion (15/24 missing)"
+  ],
+  "summary": {
+    "overall_quality_score": 0,
+    "status": "FAIL",
+    "required_score": 95,
+    "actual_score": 0,
+    "reason": "CKAN API blocked by Cloudflare protection - cannot execute real data ingestion or calculate quality metrics"
+  }
+}

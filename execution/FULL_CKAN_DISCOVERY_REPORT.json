@@ -1,0 +1,15 @@
+{
+  "stats": {
+    "datasets_discovered": 0,
+    "resources_discovered": 0,
+    "pages_processed": 0,
+    "api_errors": 1,
+    "retries": 0,
+    "duplicates": 0,
+    "rate_limits": 0,
+    "start_time": "2026-08-07T22:57:58.168Z",
+    "end_time": "2026-08-07T22:57:58.820Z",
+    "duration_ms": 652
+  },
+  "error": "Cloudflare protection detected - API blocked"
+}

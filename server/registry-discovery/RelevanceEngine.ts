@@ -26,18 +26,52 @@ export class RelevanceEngine {
     formats?: string[];
   } = {}) {
     this.keywords = config.keywords || [
+      // Registry and legal entities
       'registry', 'register', 'реєстр', 'registry',
       'legal', 'entity', 'company', 'person', 'юридична', 'особа',
-      'tax', 'court', 'sanction', 'license', 'податок', 'суд', 'санкція',
-      'edr', 'edrpou', 'rnokpp', 'ipn', 'inn',
+      
+      // Identifiers
+      'edr', 'edrpou', 'rnokpp', 'ipn', 'inn', 'passport', 'код',
+      
+      // Government and legal
+      'tax', 'court', 'sanction', 'license', 'податок', 'суд', 'санкція', 'ліцензія',
+      
+      // Financial and business
+      'debt', 'tender', 'procurement', 'борг', 'тендер', 'закупівля',
+      
+      // Property and assets
+      'property', 'asset', 'real estate', 'майно', 'нерухомість',
+      
+      // Declarations
+      'declaration', 'декларація',
+      
+      // Executive proceedings
+      'executive', 'enforcement', 'виконавче',
+      
+      // Court cases
+      'case', 'proceeding', 'справа', 'провадження',
+      
+      // Business identifiers
+      'director', 'founder', 'beneficiary', 'директор', 'засновник', 'бенефіціар'
     ];
     
     this.organizations = config.organizations || [
-      'justice', 'tax', 'court', 'nabu', 'nazk', 'procurement',
-      'юстиція', 'податкова', 'суд', 'закупівлі',
+      // Ukrainian government agencies
+      'justice', 'юстиція',
+      'tax', 'податкова',
+      'court', 'суд',
+      'nabu', 'набу',
+      'nazk', 'назк',
+      'procurement', 'prozorro', 'закупівлі', 'прозоро',
+      'ministry', 'міністерство',
+      'state', 'державний',
+      'service', 'служба',
+      'fund', 'фонд',
+      'commission', 'комісія',
+      'cabinet', 'кабінет'
     ];
     
-    this.formats = config.formats || ['CSV', 'JSON', 'XLSX'];
+    this.formats = config.formats || ['CSV', 'JSON', 'XLSX', 'XML', 'JSONL'];
   }
 
   /**
@@ -95,6 +129,27 @@ export class RelevanceEngine {
         if (tagLower.includes(keyword.toLowerCase())) {
           score += 8;
           reasons.push(`Tag match: ${tagValue}`);
+        }
+      }
+    }
+
+    // Check for identifier fields in resources
+    if (dataset.resources && dataset.resources.length > 0) {
+      for (const resource of dataset.resources) {
+        const resourceLower = (resource.name + ' ' + resource.description).toLowerCase();
+        
+        // Check for EDRPOU/IPN indicators
+        if (resourceLower.includes('edrpou') || resourceLower.includes('ipn') || 
+            resourceLower.includes('inn') || resourceLower.includes('код')) {
+          score += 12;
+          reasons.push('Contains identifier fields (EDRPOU/IPN)');
+        }
+        
+        // Check for person/company indicators
+        if (resourceLower.includes('person') || resourceLower.includes('company') ||
+            resourceLower.includes('особа') || resourceLower.includes('компанія')) {
+          score += 10;
+          reasons.push('Contains entity data (person/company)');
         }
       }
     }

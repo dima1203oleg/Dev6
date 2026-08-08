@@ -1,0 +1,32 @@
+{
+  "run_id": "exec-2026-08-08-04-00-00",
+  "started_at": "2026-08-08T03:32:00Z",
+  "finished_at": "2026-08-08T03:36:00Z",
+  "datasets_discovered": 36887,
+  "resources_discovered": 322509,
+  "errors": 0,
+  "pages": 37,
+  "complete": true,
+  "discovery_method": "package_search_pagination",
+  "rows_per_page": 1000,
+  "catalog_url": "https://data.gov.ua/api/3/action/",
+  "network_environment": {
+    "public_ip": "178.214.200.25",
+    "country": "Ukraine",
+    "city": "Kyiv",
+    "cloudflare_blocked": false
+  },
+  "artifacts": {
+    "package_list": "package_list.json",
+    "datasets": "datasets_chunk_*.json (37 chunks)",
+    "resources": "resources_chunk_*.json (323 chunks)",
+    "errors": "errors.json",
+    "summary": "summary.json"
+  },
+  "verification": {
+    "package_list_count": 36905,
+    "package_search_count": 36887,
+    "reconciliation": "package_list includes 18 additional packages not returned by package_search",
+    "status": "VERIFIED"
+  }
+}

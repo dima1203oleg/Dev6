@@ -1,0 +1,112 @@
+{
+  "results": [
+    {
+      "component": "DataStore Probe",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "probeDataStoreAvailability() implemented in CKANAdapter.ts. Returns available/error/probeTime. Not production-tested due to API blocking."
+    },
+    {
+      "component": "Error Classification",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Classifies DATASTORE_RESOURCE_NOT_FOUND vs other errors. Not production-tested."
+    },
+    {
+      "component": "Fallback to Direct Download",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "ResourceDownloader has downloadFromURL() method. Fallback logic exists but not production-tested."
+    },
+    {
+      "component": "Retry Logic",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Exponential backoff retry in searchDataStore(). Not production-tested."
+    },
+    {
+      "component": "Rate Limiting",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "applyRateLimit() with configurable delay. Not production-tested."
+    },
+    {
+      "component": "Duplicate Detection",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "SHA-256 hash-based duplicate detection. Not production-tested."
+    },
+    {
+      "component": "Checkpoint/Resume",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "saveCheckpoint() and loadCheckpoint() methods. Not production-tested."
+    },
+    {
+      "component": "HTTP 429 Handling",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Not explicitly implemented. Rate limiting exists but no specific 429 handling."
+    },
+    {
+      "component": "Timeout Handling",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Not explicitly implemented. No timeout configuration found."
+    },
+    {
+      "component": "Checksum Verification",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Not explicitly implemented. SHA-256 used for duplicate detection but not for checksum verification."
+    },
+    {
+      "component": "ETag/Last-Modified Support",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Not explicitly implemented. No incremental update detection."
+    },
+    {
+      "component": "Pagination for Large Downloads",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "DataStore pagination with offset/limit. Not production-tested."
+    },
+    {
+      "component": "Streaming for Large Files",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Not explicitly implemented. Downloads likely load full content into memory."
+    }
+  ],
+  "summary": {
+    "total_components": 13,
+    "implemented": 8,
+    "not_implemented": 5,
+    "production_verified": 0,
+    "percentage": 62
+  },
+  "blocking_issues": [
+    "CKAN API blocked by Cloudflare protection",
+    "No production verification possible without API access",
+    "Streaming not implemented for large files",
+    "HTTP 429 handling not explicitly implemented",
+    "Timeout handling not explicitly implemented",
+    "Checksum verification not implemented",
+    "ETag/Last-Modified support not implemented"
+  ],
+  "timestamp": "2026-08-07T22:59:23.749Z"
+}

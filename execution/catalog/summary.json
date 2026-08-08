@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-08-07T23:36:14.058Z",
+  "duration_seconds": 217.872,
+  "packages_total": 36905,
+  "datasets_total": 36887,
+  "datasets_from_search": 36887,
+  "resources_total": 322509,
+  "organizations": 3034,
+  "active_datasets": 36887,
+  "datastore_resources": 719,
+  "errors": 0,
+  "discovery_method": "package_search_pagination",
+  "rows_per_page": 1000
+}

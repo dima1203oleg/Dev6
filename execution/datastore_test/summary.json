@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-08-07T23:44:21.951Z",
+  "resources_tested": 100,
+  "datastore_active": 0,
+  "datastore_success": 0,
+  "direct_download_success": 100,
+  "fallback_used": 0,
+  "datastore_success_rate": "N/A",
+  "direct_download_success_rate": "100.00%",
+  "fallback_success_rate": "N/A"
+}

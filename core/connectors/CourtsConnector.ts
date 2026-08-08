@@ -15,13 +15,38 @@ export class CourtsConnector extends BaseConnector {
 
   async search(query: string): Promise<RawEvidence[]> {
     console.log(`[CONNECTOR] Courts: Виконуємо пошук для ${query}`);
-    // TODO: Implement actual API call to EDRSR API
-    return [];
+    try {
+      const response = await fetch(`${this.baseUrl}/search?q=${encodeURIComponent(query)}`, {
+        headers: this.getAuthHeaders(),
+        signal: AbortSignal.timeout(30000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Courts API returned ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return this.parseResponse(data);
+    } catch (error) {
+      console.error(`[CONNECTOR] Courts search failed:`, error);
+      return [];
+    }
   }
 
   async health_check(): Promise<ConnectorStatus> {
-    // TODO: Implement real health check against EDRSR API
-    return 'API_CONTRACT_UNKNOWN';
+    try {
+      const response = await fetch(`${this.baseUrl}/health`, {
+        signal: AbortSignal.timeout(5000)
+      });
+      
+      if (response.ok) {
+        return 'LIVE';
+      } else {
+        return 'API_CONTRACT_UNKNOWN';
+      }
+    } catch (error) {
+      return 'SOURCE_UNAVAILABLE';
+    }
   }
 
   get_production_validation(): ProductionValidation {

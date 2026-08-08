@@ -1,0 +1,178 @@
+{
+  "results": [
+    {
+      "component": "PERSON entity type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined in EntityType enum. Not production-tested."
+    },
+    {
+      "component": "COMPANY entity type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined in EntityType enum. Not production-tested."
+    },
+    {
+      "component": "FOP entity type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined in EntityType enum. Not production-tested."
+    },
+    {
+      "component": "ADDRESS entity type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined in EntityType enum. Not production-tested."
+    },
+    {
+      "component": "PHONE entity type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined in EntityType enum. Not production-tested."
+    },
+    {
+      "component": "EMAIL entity type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined in EntityType enum. Not production-tested."
+    },
+    {
+      "component": "DIRECTOR relationship type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined as relationship type in EntityRelationship. Not production-tested."
+    },
+    {
+      "component": "FOUNDER relationship type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined as relationship type in EntityRelationship. Not production-tested."
+    },
+    {
+      "component": "BENEFICIARY relationship type",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Defined as relationship type in EntityRelationship. Not production-tested."
+    },
+    {
+      "component": "RELATIVE entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "COURT_CASE entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "CASE exists in EntityType enum but COURT_CASE not explicitly defined."
+    },
+    {
+      "component": "SANCTION entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "LICENSE entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "DECLARATION entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "TAX_STATUS entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "DEBT entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "ASSET entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "TENDER entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    },
+    {
+      "component": "EXECUTIVE_CASE entity type",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT defined in EntityType enum. Missing."
+    }
+  ],
+  "summary": {
+    "total_components": 19,
+    "implemented": 9,
+    "not_implemented": 10,
+    "production_verified": 0,
+    "percentage": 47
+  },
+  "missing_types": [
+    "DIRECTOR",
+    "FOUNDER",
+    "BENEFICIARY",
+    "RELATIVE",
+    "COURT_CASE",
+    "SANCTION",
+    "LICENSE",
+    "DECLARATION",
+    "TAX_STATUS",
+    "DEBT",
+    "ASSET",
+    "TENDER",
+    "EXECUTIVE_CASE"
+  ],
+  "present_types": [
+    "PERSON",
+    "COMPANY",
+    "FOP",
+    "ADDRESS",
+    "PHONE",
+    "EMAIL"
+  ],
+  "notes": [
+    "Core entity types (PERSON, COMPANY, FOP) are defined",
+    "Relationship types (DIRECTOR, FOUNDER, BENEFICIARY) are defined",
+    "Many required entity types are missing from EntityType enum",
+    "Not production-tested due to API blocking"
+  ],
+  "blocking_issues": [
+    "Missing entity types: RELATIVE, SANCTION, LICENSE, DECLARATION, TAX_STATUS, DEBT, ASSET, TENDER, EXECUTIVE_CASE",
+    "Cannot create entities without real evidence due to API blocking"
+  ],
+  "timestamp": "2026-08-07T23:01:32.358Z"
+}

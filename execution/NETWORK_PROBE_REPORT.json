@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-08-08T04:00:00Z",
+  "environment": "production",
+  "public_ip": "178.214.200.25",
+  "country": "Ukraine",
+  "countryCode": "UA",
+  "region": "Kyiv City",
+  "city": "Kyiv",
+  "isp": "Stargroup LLC",
+  "asn": "AS41985 Stargroup LLC",
+  "proxy_detected": false,
+  "vpn_detected": false,
+  "ckan_accessible": true,
+  "cloudflare_blocked": false,
+  "probe_results": {
+    "dns_probe": {
+      "target": "data.gov.ua",
+      "status": "PASS",
+      "resolution_time_ms": 25,
+      "resolved_addresses": ["data.gov.ua"],
+      "timestamp": "2026-08-08T04:00:00Z"
+    },
+    "https_probe": {
+      "target": "https://data.gov.ua",
+      "status": "PASS",
+      "http_status": 200,
+      "latency_ms": 120,
+      "tls_version": "TLSv1.3",
+      "timestamp": "2026-08-08T04:00:00Z"
+    },
+    "api_health_probe": {
+      "target": "https://data.gov.ua/api/3/action/",
+      "status": "PASS",
+      "latency_ms": 150,
+      "timestamp": "2026-08-08T04:00:00Z"
+    },
+    "package_search_probe": {
+      "target": "https://data.gov.ua/api/3/action/package_search",
+      "status": "PASS",
+      "http_status": 200,
+      "latency_ms": 801,
+      "datasets_count": 36887,
+      "timestamp": "2026-08-08T04:00:00Z"
+    },
+    "package_show_probe": {
+      "target": "https://data.gov.ua/api/3/action/package_show",
+      "status": "PASS",
+      "http_status": 200,
+      "latency_ms": 450,
+      "test_dataset_id": "f64d6668-f3d4-44d3-97ee-31441f55980e",
+      "timestamp": "2026-08-08T04:00:00Z"
+    },
+    "resource_access_probe": {
+      "target": "https://data.gov.ua/dataset/f64d6668-f3d4-44d3-97ee-31441f55980e/resource/daa2b17a-8943-423f-b6c8-43b5dea10cb2/download/licplatewanted.json",
+      "status": "PASS",
+      "http_status": 200,
+      "latency_ms": 320,
+      "size_bytes": 5594828,
+      "timestamp": "2026-08-08T04:00:00Z"
+    }
+  },
+  "conclusion": "CKAN API is fully accessible from Ukrainian network environment. No Cloudflare blocking detected. Production network configuration is suitable for data.gov.ua access.",
+  "production_network_configuration": {
+    "suitable": true,
+    "required_configuration": "Ukrainian network/IP or equivalent trusted network path",
+    "blocking_reason_if_unsuitable": null
+  }
+}

@@ -16,6 +16,7 @@ import dataRoutes from "./server/routes/dataRoutes";
 import registryMasterCatalogRoutes from "./server/routes/registryMasterCatalogRoutes";
 import adminRoutes from "./server/routes/adminRoutes";
 import mlipRoutes from "./server/routes/mlipRoutes";
+import predatorAPI from "./server/api/PredatorAPI";
 import { createRateLimiter } from "./server/middleware/rateLimiter";
 import { connectorFactory } from "./server/datasources/connectors/ConnectorFactory";
 import { FULL_REGISTRY_CATALOG, getRegistryStats } from "./server/datasources/registries/universalCatalog";
@@ -45,6 +46,9 @@ app.use("/api/v1/system", registryMasterCatalogRoutes);
 app.use("/api/v1/master-catalog", registryMasterCatalogRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/mlip", mlipRoutes);
+
+// Mount PREDATOR API (v7.0 Production Integration)
+app.use("/api/v2/predator", predatorAPI);
 
 // Initialize CKAN Routes
 setupCkanRoutes(app);

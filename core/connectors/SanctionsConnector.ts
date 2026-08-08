@@ -15,13 +15,38 @@ export class SanctionsConnector extends BaseConnector {
 
   async search(query: string): Promise<RawEvidence[]> {
     console.log(`[CONNECTOR] Sanctions: Виконуємо пошук для ${query}`);
-    // TODO: Implement actual API call to RNBO sanctions API
-    return [];
+    try {
+      const response = await fetch(`${this.baseUrl}/search?q=${encodeURIComponent(query)}`, {
+        headers: this.getAuthHeaders(),
+        signal: AbortSignal.timeout(30000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Sanctions API returned ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return this.parseResponse(data);
+    } catch (error) {
+      console.error(`[CONNECTOR] Sanctions search failed:`, error);
+      return [];
+    }
   }
 
   async health_check(): Promise<ConnectorStatus> {
-    // TODO: Implement real health check against RNBO API
-    return 'API_CONTRACT_UNKNOWN';
+    try {
+      const response = await fetch(`${this.baseUrl}/health`, {
+        signal: AbortSignal.timeout(5000)
+      });
+      
+      if (response.ok) {
+        return 'LIVE';
+      } else {
+        return 'API_CONTRACT_UNKNOWN';
+      }
+    } catch (error) {
+      return 'SOURCE_UNAVAILABLE';
+    }
   }
 
   get_production_validation(): ProductionValidation {

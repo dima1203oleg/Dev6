@@ -1,0 +1,1802 @@
+[
+  {
+    "resource_id": "e407ec2e-fe7a-46c9-9949-62a9a2f674a6",
+    "resource_name": "LicplateWanted_schema.json",
+    "dataset_id": "f64d6668-f3d4-44d3-97ee-31441f55980e",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 719
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "daa2b17a-8943-423f-b6c8-43b5dea10cb2",
+    "resource_name": "LicplateWanted.json",
+    "dataset_id": "f64d6668-f3d4-44d3-97ee-31441f55980e",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 388
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "e99e1eac-db11-44b3-b252-9e7cbdcb149d",
+    "resource_name": "auctions-11.2019",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 33
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "8506cb8e-4b53-4006-83c3-1ed7f58ffefc",
+    "resource_name": "auctions-04.2020",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 41
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "17304552-1803-4370-b44a-015f578ab2d2",
+    "resource_name": "auctions-05.2020",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 110
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "eb66359a-65fd-4bee-83d9-7276cfecac1a",
+    "resource_name": "auctions-06.2020",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 40
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "3fa47298-2b08-4d45-9877-bf3694f28901",
+    "resource_name": "auctions-07.2020",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 42
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "7a4432bd-c939-4115-a5de-3aebe981a441",
+    "resource_name": "auctions-09.2020",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 363
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "05d59434-ab47-49ac-861f-900cde8f71a2",
+    "resource_name": "auctions-10.2020",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 403
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "047cc944-99e0-457c-b66e-2358e6f5bcde",
+    "resource_name": "auctions-11.2020",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 392
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "c111deb4-381e-4116-b997-b175717adff7",
+    "resource_name": "auctions-02.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 245
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "002fae7a-a145-490e-b7e0-f3962d13f07b",
+    "resource_name": "auctions-03.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 384
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "a19b769f-8f74-4bab-af00-2d1d10d3935b",
+    "resource_name": "auctions-04.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 228
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "862daa81-7116-40a6-baad-5a757e73fb29",
+    "resource_name": "auctions-06.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 371
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "55fb0886-1fbb-4fa2-bfa6-616aab8c0d7c",
+    "resource_name": "auctions-07.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 426
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "a7c916c7-1be4-4d95-a12a-43e4eb20b55b",
+    "resource_name": "auctions-09.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 446
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "702439b8-4891-481d-9165-e4fc013580cb",
+    "resource_name": "auctions-10.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 133
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "948b7b0a-0180-470c-8ad8-8954bbd772be",
+    "resource_name": "auctions-12.2021",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 263
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "6396c5f6-5ef7-4330-b98c-dc79a0f624a7",
+    "resource_name": "auctions-02.2023",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 420
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "6bb13b50-e9a0-46d3-bd1a-b038a8a08cf5",
+    "resource_name": "auctions-03.2023",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 351
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "6e4ddc13-d125-4f16-92bc-c573ccb13b23",
+    "resource_name": "auctions-04.2023",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 398
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "f0a1fcaa-71f0-411e-b323-687053874a48",
+    "resource_name": "auctions-10.2023",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 315
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "eb5ebdf1-e211-4478-951b-e22a0c2f0637",
+    "resource_name": "auctions-11.2023",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 292
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "6a7af100-95ad-4ab9-af3b-f8080c8e71a1",
+    "resource_name": "auctions-12.2023",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 513
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "8e41ff81-c6db-4edb-a870-57815b821aed",
+    "resource_name": "auctions-01.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 289
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "e6ed9926-b5f9-48d3-bd6a-7a3c38eecc17",
+    "resource_name": "auctions-02.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 462
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "7c7afe8f-60fb-45c6-9d46-581a654763cb",
+    "resource_name": "auctions-03.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 105
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "521484c7-e53d-453c-866b-daa5c39d0285",
+    "resource_name": "auctions-04.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 376
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "9258cd10-28bf-4f36-9abf-257fbdf69ff6",
+    "resource_name": "auctions-05.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 235
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "b51c2211-42be-4587-8c7c-d1748ef17934",
+    "resource_name": "auctions-06.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 260
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "e6ab4968-3814-4954-a428-a9a74d0386b0",
+    "resource_name": "auctions-07.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 398
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "4f5dda08-8474-4a90-99d2-3d47d1042d3c",
+    "resource_name": "auctions-08.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 406
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "f1ca8933-bb08-49ed-85fb-1558326070e2",
+    "resource_name": "auctions-09.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 435
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "77ff25ee-ac4c-483e-8bc7-80ced79f1a34",
+    "resource_name": "auctions-10.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 315
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "4bac325b-246f-43e2-bef5-5dc3fe12272e",
+    "resource_name": "auctions-11.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 260
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "94a220b9-aa88-4590-a30c-365a469ac49d",
+    "resource_name": "auctions-12.2024",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 233
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "b9bcee5e-f2d3-4b89-8542-5c30d743aea2",
+    "resource_name": "auctions-01.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 270
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "2c4260c4-1f71-426b-b2fb-9ee380794f80",
+    "resource_name": "auctions-02.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 240
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "5150f463-310e-4ac2-9834-83b45efbb0e2",
+    "resource_name": "auctions-03.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 396
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "213fb0d1-84ef-4f96-88f9-1d9566fd3a1b",
+    "resource_name": "auctions-04.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 242
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "5e303d56-c3ab-4724-b2b1-d24dbbfda520",
+    "resource_name": "auctions-05.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 449
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "d480e1c0-05f7-4b52-a5fd-bc9f261b3ed7",
+    "resource_name": "auctions-06.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 344
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "6f242988-a878-4f77-837f-063765e27e88",
+    "resource_name": "auctions-07.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 388
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "5a541031-1380-42cd-9537-8c96f94154ed",
+    "resource_name": "auctions-08.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 317
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "999202ea-89f9-4cd6-a4cb-d6642391957e",
+    "resource_name": "auctions-09.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 246
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "8c453e08-f402-4e7a-b9b4-7d3d0593a015",
+    "resource_name": "auctions-10.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 266
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "c96741c5-4eb5-4b51-8f68-a97ab140db10",
+    "resource_name": "auctions-11.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 286
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "20428c15-34e9-47f5-a4be-9ba4fb0b0668",
+    "resource_name": "auctions-12.2025",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 248
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "bc74685e-e3f1-4fd8-b180-a99ffd5a634d",
+    "resource_name": "auctions-01.2026",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 349
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "60b585a9-2e1e-48f9-8684-32accfd4e57d",
+    "resource_name": "auctions-02.2026",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 163
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "993deed8-ce13-470c-ba6b-48906a62ef42",
+    "resource_name": "auctions-03.2026",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 308
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "8e2afbb9-7f9e-4387-887b-33fe5dd1b42c",
+    "resource_name": "auctions-04.2026",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 310
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "71ff03dd-b556-4c4d-8836-e5aa55729d43",
+    "resource_name": "auctions-05.2026",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 385
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "5da7bd01-dfb0-4fa3-ac99-a676cd14a6ca",
+    "resource_name": "auctions-06.2026",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 281
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "faf7f4a7-9bbd-428f-a61f-dcbada22b43d",
+    "resource_name": "auctions-07.2026",
+    "dataset_id": "c360d1ef-4eee-4158-812f-ede20c4cc943",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 323
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "e7025405-fc5a-46cc-9399-3987d49444ce",
+    "resource_name": "subjects_2026-08-07.json",
+    "dataset_id": "e655b5f7-2c65-459b-97cb-f74ca1a3ac14",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 438
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "c77e0683-1fe6-4e49-a9af-df0b5269d1fa",
+    "resource_name": "auditors_2026-08-07.json",
+    "dataset_id": "e655b5f7-2c65-459b-97cb-f74ca1a3ac14",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 254
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "83023642-da8f-4b60-b8ef-f02ffb920674",
+    "resource_name": "NBU_mizhnarodni-rezervi-ukrayini-01_08_2026.xlsx",
+    "dataset_id": "29822a9a-4217-444d-bbe8-5bfe54126d78",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 349
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "b7a0ff23-43fb-403a-8893-3ae0d470b5f3",
+    "resource_name": "WeaponsWanted.shema.json",
+    "dataset_id": "7bf715e8-b355-4db5-8f6b-c8c5e4087d3b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 474
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "a68e054b-91a2-486e-9351-7b97408d660f",
+    "resource_name": "WeaponsWanted.json",
+    "dataset_id": "7bf715e8-b355-4db5-8f6b-c8c5e4087d3b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 334
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "b1d5b6b3-d1fa-4c20-887b-6fa357ca17ed",
+    "resource_name": "stan-rozglyadu-sprav-vid-06-08-2026.zip",
+    "dataset_id": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 373
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "326bc997-b5ce-432a-aad5-07a242a7ee54",
+    "resource_name": "stan-rozglyadu-sprav-z-01-04-2022-po-01-05-2022.csv",
+    "dataset_id": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 253
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "e5f57004-c323-4440-92d2-23b689e856ce",
+    "resource_name": "stan-rozglyadu-sprav-z-01-05-2022-po-01-06-2022.csv",
+    "dataset_id": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 595
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "d9b45a8b-fa3c-45cd-829a-ab00436a92c3",
+    "resource_name": "stan-rozglyadu-sprav-z-01-06-2022-po-01-07-2022.csv",
+    "dataset_id": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 444
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "f5497b53-0882-4d13-aa8f-755d37220474",
+    "resource_name": "stan-rozglyadu-sprav-z-01-07-2022-po-09-08-2022.csv",
+    "dataset_id": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 514
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "677a5570-877e-4c69-a7e0-caee4ae632fa",
+    "resource_name": "Перелік регуляторних актів Конотопської районної державної адміністрації",
+    "dataset_id": "3b6ddee3-9bfc-4a59-a275-57ea0bccb92b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 647
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "4d45caa2-5ee0-480a-8895-0b333fea8c0d",
+    "resource_name": "perelik_reg_aktiv.xlsx",
+    "dataset_id": "3b6ddee3-9bfc-4a59-a275-57ea0bccb92b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 657
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "3513b94f-445f-4e78-bd68-6e9eb3f9aefa",
+    "resource_name": "perelik_reg_aktiv.xlsx",
+    "dataset_id": "3b6ddee3-9bfc-4a59-a275-57ea0bccb92b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 481
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "eff0ad25-b71d-4343-b9c1-ffad28a46b97",
+    "resource_name": "регуляторний акт_2023.docx",
+    "dataset_id": "3b6ddee3-9bfc-4a59-a275-57ea0bccb92b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 500
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "3a79ce96-aa33-4324-9a48-4cdbba43149e",
+    "resource_name": "regulatoryList.odt",
+    "dataset_id": "3b6ddee3-9bfc-4a59-a275-57ea0bccb92b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 443
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "72881b9d-f0e0-4729-8b05-2bef8034ab7a",
+    "resource_name": "regulatoryList.xlsx",
+    "dataset_id": "3b6ddee3-9bfc-4a59-a275-57ea0bccb92b",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 586
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "c59a1112-19ff-4061-9630-3542082d83a3",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за січень 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 381
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "50e93084-e0c0-487a-9282-ee22be17216f",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за лютий 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 496
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "f3fa0787-c033-4abc-9346-7aeccc48e40e",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за березень 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 750
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "86b38732-fd8d-4902-88a3-9456e94f693d",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за квітень 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 1088
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "39bf8e03-edce-4d57-8ad5-977ad47ed7d5",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за травень 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 598
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "050d2f90-8e24-4117-9f2f-438bb589394f",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за червень 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 470
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "2dae9393-4ed0-4203-a88a-d1cefb3032a4",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за липень 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 932
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "16aac8c6-22b5-42da-bc2e-cb4a7efb7505",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за серпень 2019.xlsx",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 510
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "7af26186-49a0-40cc-88f8-1c25435a1916",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за вересень 2019.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 836
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "f2a418a2-e147-4f7e-b989-6d2fa3f171fe",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за жовтень 2019 року.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 629
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "49b2a79c-7d8a-478d-9417-ccd8cbee1bf6",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за листопад 2019 року.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 479
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "e55f0cbd-82f7-48b1-ab3f-b9cd70de48a0",
+    "resource_name": "Єдиний звіт про кримінальні правопорушення за грудень 2019 року.xls",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 461
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "6330f7f1-9d89-40fc-b0c3-75b045a4cd89",
+    "resource_name": "2020 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 634
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "4b8ebb3c-1a06-404a-9065-a0fda100c05d",
+    "resource_name": "2021 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 513
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "05bac719-427d-4ecd-8f3e-df87fdef0a4f",
+    "resource_name": "2022 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 446
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "79319e2c-75a4-4fa0-9d68-bfe788bb0aef",
+    "resource_name": "2023 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 490
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "d9325b9c-3513-4447-8b36-2cc71c6ae04c",
+    "resource_name": "2024 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 569
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "7ef6e95d-d894-4ffd-9280-e46d04ff3cc2",
+    "resource_name": "2025 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 1321
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "d2bca767-e9d5-44cc-bba7-c7e4ba24ec06",
+    "resource_name": "2025 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 659
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "29205693-d90b-49f8-bcbf-e9ca21322497",
+    "resource_name": "2026 Єдиний звіт про кримінальні правопорушення",
+    "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 531
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "5355e0c5-7b27-4245-a9cf-f1f800346df1",
+    "resource_name": "План на 2019 30.11.2018.xlsx",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 505
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "46bca81f-e270-4ffe-9137-d2a9db1a0ac0",
+    "resource_name": "План зі змінами на 2019 11.01.2019.xlsx",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 548
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "6e888cef-e382-42bc-80a4-7273f41b9aa6",
+    "resource_name": "План зі змінами на 2019 05.02.2019.xlsx",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 463
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "40cef3d9-5302-4d50-9bd0-e8709e0ede14",
+    "resource_name": "План зі змінами на 2019 13.02.2019.xlsx",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 525
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "3c24b0ee-8b1e-49d5-8fd9-5c834838ed5a",
+    "resource_name": "План зі змінами на 2019  до прот 29 від 27.02.2019.xlsx",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 680
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "5e7e13af-bb40-4c16-a7f6-3a64275b63c7",
+    "resource_name": "Кошторис 2021.pdf",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 609
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "4126a6f4-e74a-41fb-abb9-6b7102a1a77b",
+    "resource_name": "План на 2021.doc",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 790
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "2bca3c45-a730-4399-bbf2-5928ac1ca623",
+    "resource_name": "ЗМІНИ ДО РІЧНОГО ПЛАНУ на 2021.doc",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 541
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  },
+  {
+    "resource_id": "30fa1559-5b2a-40cc-a668-fac00f6f4b4f",
+    "resource_name": "ЗМІНИ ДО РІЧНОГО ПЛАНУ на 2021 22.02.2021.odt",
+    "dataset_id": "6ab3932d-add7-4f9c-b737-2afdf1aeb325",
+    "datastore_active": false,
+    "datastore_test": {
+      "attempted": false,
+      "status": "PENDING"
+    },
+    "direct_download_test": {
+      "attempted": true,
+      "status": "SUCCESS",
+      "http_status": 200,
+      "latency_ms": 539
+    },
+    "fallback_used": false,
+    "final_access_method": "DIRECT_DOWNLOAD"
+  }
+]

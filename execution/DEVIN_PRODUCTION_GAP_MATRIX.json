@@ -1,0 +1,264 @@
+{
+  "timestamp": "2026-08-08T04:00:00Z",
+  "specification": "MASTER PRODUCTION IMPLEMENTATION & ACCEPTANCE SPECIFICATION v6.0",
+  "repository": "https://github.com/dima1203oleg/Dev6",
+  "commit": "00f276bd67b041bc76ab04e8df451d502b3562df",
+  "overall_status": "NOT PRODUCTION READY",
+  "critical_blockers": 3,
+  "critical_gaps": 2,
+  "components": [
+    {
+      "component": "CKANAdapter",
+      "file": "server/registry-discovery/adapters/CKANAdapter.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": true,
+      "real_data_verified": true,
+      "production_verified": false,
+      "blocking_reason": "Missing HTTP 429 handling, timeout, streaming, checksum, ETag/Last-Modified support",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "DiscoveryEngine",
+      "file": "server/registry-discovery/DiscoveryEngine.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "No production execution evidence, only CKAN adapter implemented",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "DatasetScanner",
+      "file": "server/registry-discovery/DatasetScanner.ts",
+      "implemented": true,
+      "integrated": false,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "No real data testing, quality scoring is heuristic-based",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "ResourceDownloader",
+      "file": "server/registry-discovery/ResourceDownloader.ts",
+      "implemented": true,
+      "integrated": false,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "Missing 15/24 safe ingestion components: batch processing, pagination, streaming, duplicate-page protection, infinite-loop protection, timeout, HTTP 429, checksum, ETag, incremental updates, rows/bytes/time tracking, memory limits, concurrency limits, failed-record accounting, skipped-record accounting",
+      "gap_level": "CRITICAL"
+    },
+    {
+      "component": "RelevanceEngine",
+      "file": "server/registry-discovery/RelevanceEngine.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "No real data testing, scoring algorithm is heuristic-based",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "SchemaAnalyzer",
+      "file": "server/registry-discovery/SchemaAnalyzer.ts",
+      "implemented": true,
+      "integrated": false,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "No real schema changes tested, PR creation is stub, auto-fix logic not verified",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "StorageManager",
+      "file": "server/registry-discovery/StorageManager.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "CRITICAL - File-based storage is not production-grade, no database integration, no replication, no backup automation, no storage quotas, no retention policies",
+      "gap_level": "CRITICAL"
+    },
+    {
+      "component": "Orchestrator",
+      "file": "server/registry-discovery/Orchestrator.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "No production pipeline execution evidence, state import is stub",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "Scheduler",
+      "file": "server/registry-discovery/Scheduler.ts",
+      "implemented": true,
+      "integrated": false,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "Not tested in production, schema drift task has TODO, metadata refresh task has TODO, no production schedule history",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "RDP Integration",
+      "file": "src/lib/registryDiscovery/integration.ts",
+      "implemented": true,
+      "integrated": false,
+      "executable": true,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "No positive control test, not connected to PREDATOR API, not connected to PREDATOR UI, not connected to database, truth validation incomplete, no field provenance in UI",
+      "gap_level": "CRITICAL"
+    },
+    {
+      "component": "Canonical Model",
+      "file": "src/types/predator.ts",
+      "implemented": false,
+      "integrated": true,
+      "executable": true,
+      "tested": true,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "CRITICAL GAP - 10/19 entity types missing (RELATIVE, COURT_CASE, SANCTION, LICENSE, DECLARATION, TAX_STATUS, DEBT, ASSET, TENDER, EXECUTIVE_CASE)",
+      "gap_level": "CRITICAL"
+    },
+    {
+      "component": "Entity Resolution Engine",
+      "file": "core/resolution/EntityResolutionEngine.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": true,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "Not tested with real data",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "Provenance Engine",
+      "file": "core/provenance/ProvenanceEngine.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": true,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "CRITICAL GAP - Missing version fields: parser_version, mapping_version, normalizer_version, entity_resolution_version",
+      "gap_level": "CRITICAL"
+    },
+    {
+      "component": "Evidence Engine",
+      "file": "core/evidence/EvidenceEngine.ts",
+      "implemented": true,
+      "integrated": true,
+      "executable": true,
+      "tested": true,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "Not tested with real data",
+      "gap_level": "HIGH"
+    },
+    {
+      "component": "Database Integration",
+      "file": "MISSING",
+      "implemented": false,
+      "integrated": false,
+      "executable": false,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "CRITICAL BLOCKER - Completely missing: PostgreSQL, ORM, schema, migrations, indexes, constraints, transactions, upserts, deduplication, provenance tables, entity tables, evidence tables, card data tables, execution tables",
+      "gap_level": "CRITICAL"
+    },
+    {
+      "component": "PREDATOR API Integration",
+      "file": "server/api/FieldProvenanceAPI.ts (partial)",
+      "implemented": false,
+      "integrated": false,
+      "executable": false,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "CRITICAL BLOCKER - API exists but not connected to RDP, no real card retrieval endpoints, no API response verification, no production API testing",
+      "gap_level": "CRITICAL"
+    },
+    {
+      "component": "PREDATOR UI Integration",
+      "file": "src/components/ (partial)",
+      "implemented": false,
+      "integrated": false,
+      "executable": false,
+      "tested": false,
+      "real_data_verified": false,
+      "production_verified": false,
+      "blocking_reason": "CRITICAL BLOCKER - UI components exist but not connected to real API, no real card display, no field provenance in UI, no UI data verification",
+      "gap_level": "CRITICAL"
+    }
+  ],
+  "summary": {
+    "total_components": 17,
+    "implemented": 13,
+    "integrated": 7,
+    "executable": 13,
+    "tested": 5,
+    "real_data_verified": 1,
+    "production_verified": 0,
+    "critical_blockers": 3,
+    "critical_gaps": 2,
+    "high_gaps": 10
+  },
+  "required_fixes": [
+    {
+      "priority": "CRITICAL",
+      "component": "Database Integration",
+      "action": "Implement PostgreSQL integration with ORM, schema, migrations, and all required tables"
+    },
+    {
+      "priority": "CRITICAL",
+      "component": "PREDATOR API Integration",
+      "action": "Connect RDP to PREDATOR API with real card retrieval and response verification"
+    },
+    {
+      "priority": "CRITICAL",
+      "component": "PREDATOR UI Integration",
+      "action": "Connect UI to real API with real card display and field provenance"
+    },
+    {
+      "priority": "CRITICAL",
+      "component": "Canonical Model",
+      "action": "Add 10 missing entity types: RELATIVE, COURT_CASE, SANCTION, LICENSE, DECLARATION, TAX_STATUS, DEBT, ASSET, TENDER, EXECUTIVE_CASE"
+    },
+    {
+      "priority": "CRITICAL",
+      "component": "Provenance Engine",
+      "action": "Add version fields: parser_version, mapping_version, normalizer_version, entity_resolution_version"
+    },
+    {
+      "priority": "HIGH",
+      "component": "ResourceDownloader",
+      "action": "Implement 15 missing safe ingestion components"
+    },
+    {
+      "priority": "HIGH",
+      "component": "CKANAdapter",
+      "action": "Add HTTP 429 handling, timeout, streaming, checksum, ETag/Last-Modified support"
+    }
+  ]
+}

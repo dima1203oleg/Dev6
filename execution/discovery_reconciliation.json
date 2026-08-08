@@ -1,0 +1,78 @@
+{
+  "run_id": "devin-acceptance-test-20260808",
+  "timestamp": "2026-08-08T02:30:00Z",
+  "source": "data.gov.ua",
+  "api_base": "https://data.gov.ua/api/3/action",
+  "status": "BLOCKED",
+  "blocker": "Cloudflare protection on CKAN API",
+  "reported_counts": {
+    "count_1": 36905,
+    "count_2": 36887,
+    "count_3": 322509,
+    "count_4": 47819
+  },
+  "actual_counts": {
+    "catalog_total_packages": 36887,
+    "catalog_packages_retrieved": 100,
+    "catalog_percentage": 0.27,
+    "total_resources_in_sample": 4401,
+    "estimated_full_catalog_resources": 1623397,
+    "datastore_active_in_sample": 0,
+    "datastore_available": 0
+  },
+  "discrepancies": {
+    "catalog_packages": {
+      "reported": 36887,
+      "actual_retrieved": 100,
+      "discrepancy": 36787,
+      "percentage": 0.27,
+      "explanation": "Catalog enumeration blocked by Cloudflare protection. Only 100/36,887 datasets (0.27%) retrieved from existing catalog.json artifact."
+    },
+    "resources": {
+      "reported_1": 322509,
+      "reported_2": 47819,
+      "estimated": 1623397,
+      "discrepancy_1": 1300888,
+      "discrepancy_2": 1145578,
+      "explanation": "Estimated 1.6M resources based on 100-dataset sample (avg 44.01 resources/dataset). Does not match either reported count (322,509 or 47,819). Sample may not be representative."
+    },
+    "datastore": {
+      "reported_active": 0,
+      "actual_available": 0,
+      "explanation": "DataStore API blocked by Cloudflare protection. Cannot verify actual DataStore availability."
+    }
+  },
+  "reconciliation_attempts": [
+    {
+      "attempt": "Full CKAN Discovery via API",
+      "status": "FAILED",
+      "error": "Cloudflare protection detected - API blocked",
+      "timestamp": "2026-08-08T02:10:00Z"
+    },
+    {
+      "attempt": "Analysis of existing catalog.json artifact",
+      "status": "PARTIAL",
+      "result": "Catalog contains 100/36,887 datasets (0.27%)",
+      "timestamp": "2026-08-08T02:15:00Z"
+    },
+    {
+      "attempt": "Resource count estimation from sample",
+      "status": "ESTIMATED",
+      "result": "Estimated 1.6M resources based on sample",
+      "timestamp": "2026-08-08T02:20:00Z"
+    }
+  ],
+  "conclusion": {
+    "full_discovery_verified": false,
+    "counts_reconciled": false,
+    "reason": "CKAN API blocked by Cloudflare protection. Cannot execute full discovery. Existing catalog artifact incomplete (0.27%). Resource count estimates do not match reported counts.",
+    "required_for_verification": [
+      "Bypass Cloudflare protection on CKAN API",
+      "Execute full package_list enumeration",
+      "Execute full package_search with pagination",
+      "Verify actual resource counts via package_show",
+      "Verify DataStore availability via probe",
+      "Reconcile with reported counts"
+    ]
+  }
+}

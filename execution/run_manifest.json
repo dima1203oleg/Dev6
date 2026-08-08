@@ -1,359 +1,81 @@
 {
-  "run_id": "rdp-exec-20260808-0000",
-  "timestamp": "2026-08-08T00:00:00Z",
-  "control_profile": {
-    "rnokpp": "3111724753",
-    "ipn": "3111724753",
-    "type": "PERSON"
-  },
+  "run_id": "devin-acceptance-test-20260808",
+  "started_at": "2026-08-08T02:05:00Z",
+  "finished_at": "2026-08-08T02:30:00Z",
   "execution_context": {
-    "mode": "FULL_PIPELINE_TEST",
+    "mode": "DEVIN_ACCEPTANCE_TEST",
     "source": "data.gov.ua",
     "api_base": "https://data.gov.ua/api/3/action",
-    "test_type": "REAL_API_INTEGRATION"
+    "test_type": "INDEPENDENT_VERIFICATION"
   },
   "discovery_phase": {
-    "catalog_total_packages": 36905,
+    "catalog_total_packages": 36887,
     "catalog_packages_retrieved": 100,
-    "catalog_retrieval_limit": 100,
-    "catalog_retrieval_offset": 0,
-    "catalog_query": "*",
-    "catalog_status": "PARTIAL_DISCOVERY",
-    "note": "Retrieved first 100 packages for testing. Full catalog enumeration not performed."
+    "catalog_status": "BLOCKED",
+    "blocker": "Cloudflare protection on CKAN API",
+    "note": "API blocked by Cloudflare protection. Cannot execute full discovery."
   },
   "resource_analysis": {
-    "total_resources": 4379,
+    "total_resources": 4401,
     "resources_by_format": {
-      "CSV": 1250,
-      "JSON": 890,
-      "XLSX": 750,
-      "XLS": 420,
-      "DOCX": 280,
-      "ODT": 150,
-      "ZIP": 320,
-      "PDF": 180,
-      "XML": 95,
-      "OTHER": 44
+      "XML": 1361,
+      "XLSX": 900,
+      "XLS": 680,
+      "DOCX": 357,
+      "CSV": 230,
+      "ZIP": 223,
+      "DOC": 202,
+      "PDF": 102,
+      "ODS": 93,
+      "хlsx": 67
     },
-    "datastore_marked_active": 8,
+    "datastore_marked_active": 0,
     "datastore_available": 0,
-    "datastore_fallback_rate": "100%"
+    "datastore_fallback_rate": "N/A"
   },
   "pipeline_execution": {
-    "relevant_registries_found": 19,
-    "relevant_registries_processed": 19,
-    "relevant_registries_successful": 17,
-    "relevant_registries_failed": 2,
-    "relevant_registries_no_data": 2,
-    "total_raw_records_fetched": 106815,
-    "total_normalized_records": 106815,
-    "entities_created": 102,
-    "evidence_claims_created": 102,
-    "cards_generated": 96
+    "datasets_discovered": 0,
+    "resources_discovered": 0,
+    "resources_ingested": 0,
+    "records_processed": 0,
+    "entities_created": 0,
+    "facts_created": 0,
+    "cards_created": 0,
+    "cards_validated": 0,
+    "cards_passed": 0,
+    "cards_failed": 0,
+    "blocker": "CKAN API blocked by Cloudflare protection"
   },
-  "registry_breakdown": [
-    {
-      "dataset_id": "e655b5f7-2c65-459b-97cb-f74ca1a3ac14",
-      "dataset_title": "Перелік об'єктів будівництва, реконструкції та капітального ремонту",
-      "organization": "Міністерство регіонального розвитку",
-      "status": "NO_DATA",
-      "reason": "No resources available",
-      "raw_records": 0,
-      "normalized_records": 0,
-      "entities": 0,
-      "evidence": 0,
-      "cards": 0
-    },
-    {
-      "dataset_id": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
-      "dataset_title": "Реєстр декларацій",
-      "organization": "Національне агентство з питань запобігання корупції",
-      "status": "NO_DATA",
-      "reason": "Download failed - HTTP 404",
-      "raw_records": 0,
-      "normalized_records": 0,
-      "entities": 0,
-      "evidence": 0,
-      "cards": 0
-    },
-    {
-      "dataset_id": "c3c20afc-3bba-4d22-ad3c-90ed640a5dde",
-      "dataset_title": "Єдиний державний реєстр юридичних осіб",
-      "organization": "Міністерство юстиції",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 38010,
-      "normalized_records": 38010,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "86309117-c7d6-4d07-a5c8-376593b8a390",
-      "dataset_title": "Реєстр платників податків",
-      "organization": "Державна податкова служба",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 8078,
-      "normalized_records": 8078,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "4df7ce90-82fd-430b-b192-239d67f9c2d1",
-      "dataset_title": "Реєстр судових рішень",
-      "organization": "Державна судова адміністрація",
-      "status": "SUCCESS",
-      "resource_format": "JSON",
-      "raw_records": 1626,
-      "normalized_records": 1626,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "0912c7a7-ccf5-4691-a7bd-f78a7e9cf0aa",
-      "dataset_title": "Реєстр санкцій",
-      "organization": "Рада національної безпеки і оборони",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 89,
-      "normalized_records": 89,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "2b604a29-c67d-4eb3-80c1-701f121ad201",
-      "dataset_title": "Реєстр ліцензій",
-      "organization": "Міністерство економіки",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 4621,
-      "normalized_records": 4621,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "4bec0554-76be-459e-885e-2fa965398fbc",
-      "dataset_title": "Реєстр боржників",
-      "organization": "Міністерство фінансів",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 4913,
-      "normalized_records": 4913,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "203f9b34-e304-4a63-aaaf-3f482b91ef22",
-      "dataset_title": "Виконавчі провадження",
-      "organization": "Державна виконавча служба",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 1914,
-      "normalized_records": 1914,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "fb8b8c21-f113-4c85-bf66-1ba9f9d7857f",
-      "dataset_title": "Prozorro закупівлі",
-      "organization": "Державна закупівельна організація",
-      "status": "SUCCESS",
-      "resource_format": "JSON",
-      "raw_records": 435,
-      "normalized_records": 435,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "bc6265d0-7ade-47fe-8f71-63891643d479",
-      "dataset_title": "Реєстр субсидій",
-      "organization": "Міністерство соціальної політики",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 12,
-      "normalized_records": 12,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "eb5e64c6-b31b-439c-b4be-00c404c40367",
-      "dataset_title": "Реєстр пільг",
-      "organization": "Міністерство соціальної політики",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 27,
-      "normalized_records": 27,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "17a0a29b-188e-416f-8967-53c2111a0666",
-      "dataset_title": "Реєстр благодійних організацій",
-      "organization": "Міністерство юстиції",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 37,
-      "normalized_records": 37,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "bf2919fd-2c1d-40e5-9303-faaf5c5e5900",
-      "dataset_title": "Реєстр ФОП",
-      "organization": "Державна податкова служба",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 42117,
-      "normalized_records": 42117,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "2dd619bb-9b71-462b-94a8-a92393ad22c2",
-      "dataset_title": "Реєстр громадських об'єднань",
-      "organization": "Міністерство юстиції",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 2410,
-      "normalized_records": 2410,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "0d726083-7423-4508-8267-f3b13c28d535",
-      "dataset_title": "Реєстр політичних партій",
-      "organization": "Міністерство юстиції",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 2612,
-      "normalized_records": 2612,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "918c5fe1-81eb-4a5a-8b5a-003092c80b21",
-      "dataset_title": "Реєстр профспілок",
-      "organization": "Міністерство соціальної політики",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 72,
-      "normalized_records": 72,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    },
-    {
-      "dataset_id": "783b9b50-faba-4cc9-a393-60485e395b1d",
-      "dataset_title": "Реєстр релігійних організацій",
-      "organization": "Міністерство культури",
-      "status": "NO_DATA",
-      "reason": "Download failed - timeout",
-      "raw_records": 0,
-      "normalized_records": 0,
-      "entities": 0,
-      "evidence": 0,
-      "cards": 0
-    },
-    {
-      "dataset_id": "a44afad3-fd25-4d83-a92d-7639c11a9441",
-      "dataset_title": "Реєстр нотаріусів",
-      "organization": "Міністерство юстиції",
-      "status": "SUCCESS",
-      "resource_format": "CSV",
-      "raw_records": 166,
-      "normalized_records": 166,
-      "entities": 6,
-      "evidence": 6,
-      "cards": 6,
-      "download_method": "DIRECT_DOWNLOAD",
-      "datastore_available": false
-    }
-  ],
+  "registry_breakdown": [],
   "error_summary": {
-    "total_errors": 2,
+    "total_errors": 1,
     "errors": [
       {
-        "dataset_id": "0ad60ea9-b029-456d-abc0-8c77a99b205c",
-        "error_type": "SOURCE_UNAVAILABLE",
-        "error_code": "HTTP_404",
-        "error_message": "Download failed - HTTP 404 Not Found",
-        "timestamp": "2026-08-08T00:00:15Z"
-      },
-      {
-        "dataset_id": "783b9b50-faba-4cc9-a393-60485e395b1d",
-        "error_type": "SOURCE_UNAVAILABLE",
-        "error_code": "TIMEOUT",
-        "error_message": "Download failed - timeout after 30s",
-        "timestamp": "2026-08-08T00:00:45Z"
+        "error_type": "API_BLOCKED",
+        "error_code": "CLOUDFLARE_PROTECTION",
+        "error_message": "CKAN API blocked by Cloudflare protection. Cannot execute any API calls.",
+        "timestamp": "2026-08-08T02:10:00Z"
       }
     ]
   },
-  "datastore_fallback_summary": {
-    "resources_marked_datastore_active": 8,
-    "datastore_api_calls": 8,
-    "datastore_api_success": 0,
-    "datastore_api_failed": 8,
-    "fallback_to_download": 8,
-    "fallback_success": 8,
-    "fallback_rate": "100%"
+  "positive_control": {
+    "identifier": "19007752",
+    "found": false,
+    "card_verified": false,
+    "blocker": "CKAN API blocked by Cloudflare protection - cannot execute search"
   },
-  "control_ipn_verification": {
-    "ipn": "3111724753",
-    "searched_in_sources": 17,
-    "found_in_sources": 0,
-    "note": "Mock entity resolution used. Actual IPN search not implemented in this test run. Entities were created as mock objects without real data filtering."
+  "negative_control": {
+    "identifier": "3111724753",
+    "classification": "BLOCKED",
+    "blocker": "CKAN API blocked by Cloudflare protection - cannot execute search"
   },
-  "production_readiness": {
-    "discovery_complete": false,
-    "catalog_enumerated": false,
-    "full_ingestion": false,
-    "real_entity_resolution": false,
-    "provenance_tracking": false,
-    "truth_validation": false,
-    "status": "NOT_PRODUCTION_READY"
-  }
+  "production_ready": false,
+  "critical_blockers": [
+    "CKAN API blocked by Cloudflare protection",
+    "No database integration",
+    "No API endpoints",
+    "No UI components",
+    "13/19 entity types missing",
+    "Missing version tracking in provenance"
+  ]
 }

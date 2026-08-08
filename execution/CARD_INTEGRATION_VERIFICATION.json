@@ -1,0 +1,236 @@
+{
+  "results": [
+    {
+      "component": "PREDATOR API Endpoints",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NO PREDATOR API endpoints found. Missing."
+    },
+    {
+      "component": "PREDATOR UI Components",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NO PREDATOR UI components found. Missing."
+    },
+    {
+      "component": "Database Integration",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NO database integration found. StorageManager uses file-based storage. Missing."
+    },
+    {
+      "component": "IntelligenceDossier Transformation",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "RDP entities transformed to IntelligenceDossier format. Not production-tested."
+    },
+    {
+      "component": "Person Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Person entity type exists. Not production-tested."
+    },
+    {
+      "component": "Companies Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Company entity type exists. Not production-tested."
+    },
+    {
+      "component": "FOP Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "FOP entity type exists. Not production-tested."
+    },
+    {
+      "component": "Directors Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "DIRECTOR relationship type exists. Not production-tested."
+    },
+    {
+      "component": "Founders Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "FOUNDER relationship type exists. Not production-tested."
+    },
+    {
+      "component": "Beneficiaries Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "BENEFICIARY relationship type exists. Not production-tested."
+    },
+    {
+      "component": "Addresses Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "ADDRESS entity type exists. Not production-tested."
+    },
+    {
+      "component": "Phones Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "PHONE entity type exists. Not production-tested."
+    },
+    {
+      "component": "Emails Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "EMAIL entity type exists. Not production-tested."
+    },
+    {
+      "component": "Courts Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Enforcement Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Debts Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Taxes Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Sanctions Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "PEP Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Declarations Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Licenses Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Prozorro Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Assets Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Related Persons Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Related Companies Card",
+      "implemented": false,
+      "tested": false,
+      "production_verified": false,
+      "notes": "NOT found. Missing."
+    },
+    {
+      "component": "Risk Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "Risk metrics exist in IntelligenceDossier. Not production-tested."
+    },
+    {
+      "component": "Graph Card",
+      "implemented": true,
+      "tested": false,
+      "production_verified": false,
+      "notes": "EntityRelationships exist for graph. Not production-tested."
+    }
+  ],
+  "summary": {
+    "total_components": 27,
+    "implemented": 12,
+    "not_implemented": 15,
+    "production_verified": 0,
+    "percentage": 44
+  },
+  "critical_blockers": [
+    "NO PREDATOR API endpoints",
+    "NO PREDATOR UI components",
+    "NO database integration",
+    "Many required card types missing"
+  ],
+  "missing_card_types": [
+    "Courts",
+    "Enforcement",
+    "Debts",
+    "Taxes",
+    "Sanctions",
+    "PEP",
+    "Declarations",
+    "Licenses",
+    "Prozorro",
+    "Assets",
+    "Related Persons",
+    "Related Companies"
+  ],
+  "notes": [
+    "IntelligenceDossier transformation implemented",
+    "Core entity types (Person, Company, FOP) exist",
+    "Relationship types (Director, Founder, Beneficiary) exist",
+    "No API/UI integration",
+    "No database integration",
+    "Not production-tested due to API blocking"
+  ],
+  "blocking_issues": [
+    "NO PREDATOR API endpoints - pipeline stops at cards",
+    "NO PREDATOR UI components - cannot verify UI display",
+    "NO database integration - cannot verify database persistence",
+    "CKAN API blocked by Cloudflare protection",
+    "Cannot execute production verification without API access"
+  ],
+  "timestamp": "2026-08-07T23:03:39.883Z"
+}
