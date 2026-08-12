@@ -7,19 +7,19 @@ import {
 } from "../../src/types/predator";
 // imports removed
 import { hydraEngine } from "./hydraEngine";
+import { fetchClarityEdr } from '../datasources/registries/clarity';
 import { fetchEdrFull } from '../datasources/registries/edr';
 import { fetchCourtAndLegalProfile } from '../datasources/registries/court';
 import { fetchSanctionsAndCompliance } from '../datasources/registries/sanctions';
 import { fetchTaxStatus } from '../datasources/registries/tax';
 import { fetchLicensesAndRegistries } from '../datasources/registries/licenses';
-import { connectorFactory } from '../datasources/connectors/ConnectorFactory';
 import crypto from "crypto";
 
 export class IntelligenceOrchestrator {
   private dossierCache = new Map<string, { dossier: IntelligenceDossier; timestamp: number }>();
   
   public async buildDossier(entityId: string, identifiers: { edrpou?: string; ipn?: string }): Promise<IntelligenceDossier> {
-    const code = identifiers.edrpou || identifiers.ipn;
+    const code = identifiers.edrpou || identifiers.ipn || '';
     if (!code) throw new Error("Identifier (EDRPOU/IPN) required");
 
     const cacheKey = `${entityId}-${code}`;
@@ -29,9 +29,6 @@ export class IntelligenceOrchestrator {
       console.log(`[Cache Hit] Serving cached intelligence dossier for: ${cacheKey}`);
       return cached.dossier;
     }
-
-    // Generate Cascade Search Plan from Hydra Engine
-    const searchPlan = hydraEngine.buildSearchPlan(code);
 
     // Real data acquisition
     const liveData = await this.fetchLiveRegistriesData(code);
@@ -49,7 +46,7 @@ export class IntelligenceOrchestrator {
 
     // Process Opendatabot with Hydra Evidence Ingestion
     if (odbData.status === "fulfilled") {
-      odbData.value.forEach(item => {
+      odbData.value.forEach((item: any) => {
         claims.push(item.claim);
         if (!sources.includes(item.source)) sources.push(item.source);
 
@@ -66,7 +63,7 @@ export class IntelligenceOrchestrator {
             attribute: item.claim.predicate,
             value: item.claim.object,
             source_id: item.source,
-            evidence_id: evRec.evidence_id
+            evidence_id: evRec.evidence_id!
           });
         }
       });
@@ -75,7 +72,7 @@ export class IntelligenceOrchestrator {
     // Note: Since odbData and ysData now share the same live data array in our mock, 
     // we skip processing ysData to avoid duplicating claims.
     if (false && ysData.status === "fulfilled") {
-      ysData.value.forEach(item => {
+      ysData.value.forEach((item: any) => {
         claims.push(item.claim);
         if (!sources.includes(item.source)) sources.push(item.source);
 
@@ -91,7 +88,7 @@ export class IntelligenceOrchestrator {
             attribute: item.claim.predicate,
             value: item.claim.object,
             source_id: item.source,
-            evidence_id: evRec.evidence_id
+            evidence_id: evRec.evidence_id!
           });
         }
       });
@@ -99,7 +96,7 @@ export class IntelligenceOrchestrator {
 
     // Resolve Verified Facts & Contradictions using Hydra Engine
     const isExactCodeMatch = /^\d{8,10}$/.test(code);
-    const { verifiedFacts, contradictions } = hydraEngine.resolveVerifiedFacts(
+    const { verifiedFacts: _verifiedFacts, contradictions } = hydraEngine.resolveVerifiedFacts(
       entityId,
       [],
       factCandidates,
@@ -159,18 +156,33 @@ export class IntelligenceOrchestrator {
     console.log(`[Orchestrator] Starting data fetch for ${code}`);
     
     // ─── PHASE 1: Core typed registry connectors (guaranteed schema) ─────────
-    const [edr, court, sanctions, tax, licenses] = await Promise.allSettled([
-      fetchEdrFull(code),
+    // PRIMARY: Clarity Project API, FALLBACK: data.gov.ua EDR
+    let clarityResult, edrResult;
+    try {
+      clarityResult = await fetchClarityEdr(code);
+      console.log(`[Orchestrator] Clarity result:`, clarityResult.ok ? 'OK' : 'FAILED');
+      if (clarityResult.ok) {
+        console.log(`[Orchestrator] Clarity data:`, clarityResult.data);
+      }
+    } catch (e) {
+      console.log(`[Orchestrator] Clarity failed, trying fallback EDR:`, e);
+    }
+
+    // Use fallback if Clarity fails
+    if (!clarityResult || !clarityResult.ok) {
+      edrResult = await fetchEdrFull(code);
+      console.log(`[Orchestrator] EDR fallback result:`, edrResult.ok ? 'OK' : 'FAILED');
+    }
+
+    const [court, sanctions, tax, licenses] = await Promise.allSettled([
       fetchCourtAndLegalProfile(code),
       fetchSanctionsAndCompliance(code),
       fetchTaxStatus(code),
       fetchLicensesAndRegistries(code)
     ]);
 
-    console.log(`[Orchestrator] EDR result:`, edr.status === 'fulfilled' ? (edr.value.ok ? 'OK' : 'FAILED') : 'REJECTED');
-    if (edr.status === 'fulfilled' && edr.value.ok) {
-      console.log(`[Orchestrator] EDR data:`, edr.value.data);
-    }
+    const edr = clarityResult?.ok ? { status: 'fulfilled', value: clarityResult } : 
+                (edrResult?.ok ? { status: 'fulfilled', value: edrResult } : { status: 'rejected' });
 
     const push = (predicate: string, src: string, data: any) => results.push({
       source: src,
@@ -190,15 +202,17 @@ export class IntelligenceOrchestrator {
       }
     });
 
-    if (edr.status === 'fulfilled' && edr.value.ok && edr.value.data)
-      push('has_edr_data', 'ЄДР (data.gov.ua)', edr.value.data);
-    if (court.status === 'fulfilled' && court.value.ok && court.value.data)
+    if (edr.status === 'fulfilled' && edr.value?.ok && edr.value?.data) {
+      const sourceName = clarityResult?.ok ? 'Clarity Project API' : 'ЄДР (data.gov.ua)';
+      push('has_edr_data', sourceName, edr.value.data);
+    }
+    if (court.status === 'fulfilled' && court.value?.ok && court.value?.data)
       push('has_court_data', 'ЄДРСР (court.gov.ua)', court.value.data);
-    if (sanctions.status === 'fulfilled' && sanctions.value.ok && sanctions.value.data)
+    if (sanctions.status === 'fulfilled' && sanctions.value?.ok && sanctions.value?.data)
       push('has_sanctions_data', 'РНБО (sanctions-t.rnbo.gov.ua)', sanctions.value.data);
-    if (tax.status === 'fulfilled' && tax.value.ok && tax.value.data)
+    if (tax.status === 'fulfilled' && tax.value?.ok && tax.value?.data)
       push('has_tax_data', 'ДПС (tax.gov.ua)', tax.value.data);
-    if (licenses.status === 'fulfilled' && licenses.value.ok && licenses.value.data)
+    if (licenses.status === 'fulfilled' && licenses.value?.ok && licenses.value?.data)
       push('has_licenses_data', 'Ліцензійний реєстр (data.gov.ua)', licenses.value.data);
 
     // ─── PHASE 2: Fan-out to all 170+ registries via ConnectorFactory ────────
@@ -289,9 +303,9 @@ export class IntelligenceOrchestrator {
       relatedPersonsCount: 0,
       vehicleCount: claims.filter(c => c.predicate === "has_vehicles_data").length,
       fineCount: 0,
-      courtCount: claims.filter(c => c.predicate.includes("court")).length,
-      enforcementCount: claims.filter(c => c.predicate.includes("enforcement")).length,
-      sanctionMatch: claims.some(c => c.predicate.includes("sanction") && c.object?.length > 0) ? "YES" : "NO" as any,
+      courtCount: claims.filter(c => c.predicate?.includes("court")).length,
+      enforcementCount: claims.filter(c => c.predicate?.includes("enforcement")).length,
+      sanctionMatch: claims.some(c => c.predicate?.includes("sanction") && c.object?.length > 0) ? "YES" : "NO" as any,
       riskFactorsCount: 0
     };
   }
@@ -301,7 +315,7 @@ export class IntelligenceOrchestrator {
     const drivers: any[] = [];
 
     // 1. Sanctions (Critical Risk)
-    const sanctions = claims.find(c => c.predicate.includes("sanction"));
+    const sanctions = claims.find(c => c.predicate?.includes("sanction"));
     if (sanctions && Array.isArray(sanctions.object) && sanctions.object.length > 0) {
       score += 85;
       drivers.push({ factor: "Sanction List Match (РНБО/OFAC)", risk: "CRITICAL", evidenceId: sanctions.id });
@@ -331,7 +345,7 @@ export class IntelligenceOrchestrator {
     }
 
     // 5. General Court Cases
-    const courts = claims.filter(c => c.predicate.includes("court"));
+    const courts = claims.filter(c => c.predicate?.includes("court"));
     const courtCount = courts.reduce((acc, c) => acc + (Array.isArray(c.object) ? c.object.length : (c.object?.courtCasesCount || 0)), 0);
     if (courtCount > 0) {
       score += Math.min(courtCount * 3, 20);
@@ -339,10 +353,10 @@ export class IntelligenceOrchestrator {
     }
 
     // 6. Dynamic Connector Signals (from 170+ registries)
-    const otherRegistries = claims.filter(c => c.predicate.startsWith("has_registry_data"));
+    const otherRegistries = claims.filter(c => c.predicate?.startsWith("has_registry_data"));
     if (otherRegistries.length > 0) {
       const regCount = otherRegistries.length;
-      drivers.push({ factor: `Знайдено в ${regCount} додаткових реєстрах`, risk: "LOW", evidenceId: otherRegistries[0].id });
+      drivers.push({ factor: `Знайдено в ${regCount} додаткових реєстрах`, risk: "LOW", evidenceId: otherRegistries[0]?.id });
     }
 
     const finalScore = Math.min(score, 100);
