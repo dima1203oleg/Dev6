@@ -54,64 +54,79 @@ export async function fetchCourtAndLegalProfile(edrpou: string): Promise<DataSou
     sourceUrl,
     6 * 60 * 60 * 1000, // 6h cache
     async () => {
-      // Query Court Registry Open Data resource
-      const courtRes = await fetch(`https://data.gov.ua/api/3/action/datastore_search?resource_id=court_decisions_opendata&q=${cleanCode}`);
       const courtCases: CourtCaseItem[] = [];
-
-      if (courtRes.ok) {
-        const courtData = await courtRes.json();
-        if (courtData.success && courtData.result?.records) {
-          courtData.result.records.slice(0, 10).forEach((rec: any) => {
-            courtCases.push({
-              caseNumber: rec.CASE_NUMBER || rec.number || 'НЕМАЄ ДАНИХ',
-              courtName: rec.COURT_NAME || 'НЕМАЄ ДАНИХ',
-              caseType: rec.TYPE || 'ГОСПОДАРСЬКЕ',
-              status: rec.STATUS || 'НЕМАЄ ДАНИХ',
-              date: rec.DATE || 'НЕМАЄ ДАНИХ',
-              summary: rec.SUMMARY || 'НЕМАЄ ДАНИХ',
-            });
-          });
-        }
-      }
-
-      // Query Bankruptcy Register
-      const bankrRes = await fetch(`https://data.gov.ua/api/3/action/datastore_search?resource_id=bankruptcy_register&q=${cleanCode}`);
       let isBankrupt = false;
       let bankruptcyStage = undefined;
-
-      if (bankrRes.ok) {
-        const bankrData = await bankrRes.json();
-        if (bankrData.success && bankrData.result?.records?.length > 0) {
-          isBankrupt = true;
-          bankruptcyStage = bankrData.result.records[0].STAGE || 'Відкрито провадження у справі про банкрутство';
-        }
-      }
-
-      // Query Enforcement Proceedings Register (ЕРБ / АСВП)
-      const erbRes = await fetch(`https://data.gov.ua/api/3/action/datastore_search?resource_id=enforcement_proceedings&q=${cleanCode}`);
       const enforcements: EnforcementItem[] = [];
 
-      if (erbRes.ok) {
-        const erbData = await erbRes.json();
-        if (erbData.success && erbData.result?.records) {
-          erbData.result.records.slice(0, 10).forEach((rec: any) => {
-            enforcements.push({
-              vpNumber: rec.VP_NUM || rec.number || 'НЕМАЄ ДАНИХ',
-              creditor: rec.CREDITOR || 'НЕМАЄ ДАНИХ',
-              debtor: rec.DEBTOR || cleanCode,
-              category: rec.CATEGORY || 'НЕМАЄ ДАНИХ',
-              status: 'ОТКРЫТО',
-              department: rec.DEPT || 'НЕМАЄ ДАНИХ',
-              startDate: rec.DATE || 'НЕМАЄ ДАНИХ',
+      // PRIMARY: Use data.gov.ua court decisions open data
+      // The official court API requires authentication/CAPTCHA, so we use the open data portal
+      try {
+        const courtRes = await fetch(`https://data.gov.ua/api/3/action/datastore_search?resource_id=2a970e33-053a-4e5a-b48f-7de98a275eae&q=${cleanCode}`, {
+          signal: AbortSignal.timeout(30000)
+        });
+
+        if (courtRes.ok) {
+          const courtData = await courtRes.json();
+          if (courtData.success && courtData.result?.records) {
+            courtData.result.records.slice(0, 10).forEach((rec: any) => {
+              courtCases.push({
+                caseNumber: rec.case_number || rec.CASE_NUMBER || 'НЕМАЄ ДАНИХ',
+                courtName: rec.court_name || rec.COURT_NAME || 'НЕМАЄ ДАНИХ',
+                judgeName: rec.judge_name || undefined,
+                caseType: rec.case_type || rec.TYPE || 'ГОСПОДАРСЬКЕ',
+                status: rec.status || rec.STATUS || 'НЕМАЄ ДАНИХ',
+                date: rec.date || rec.DATE || 'НЕМАЄ ДАНИХ',
+                summary: rec.summary || rec.SUMMARY || 'НЕМАЄ ДАНИХ',
+              });
             });
-          });
+          }
         }
+      } catch (e) {
+        console.log(`[Court Connector] Primary data.gov.ua fetch failed:`, e);
       }
 
-      if (!courtRes.ok && !bankrRes.ok && !erbRes.ok) {
+      // Query Bankruptcy Register via data.gov.ua
+      try {
+        const bankrRes = await fetch(`https://data.gov.ua/api/3/action/datastore_search?resource_id=2e6e8e40-63b5-44c9-b5a2-505b9f1e9a9a&q=${cleanCode}`);
+        if (bankrRes.ok) {
+          const bankrData = await bankrRes.json();
+          if (bankrData.success && bankrData.result?.records?.length > 0) {
+            isBankrupt = true;
+            bankruptcyStage = bankrData.result.records[0].stage || bankrData.result.records[0].STAGE || 'Відкрито провадження у справі про банкрутство';
+          }
+        }
+      } catch (e) {
+        console.log(`[Court Connector] Bankruptcy query failed:`, e);
+      }
+
+      // Query Enforcement Proceedings Register via data.gov.ua
+      try {
+        const erbRes = await fetch(`https://data.gov.ua/api/3/action/datastore_search?resource_id=3e4e8e40-63b5-44c9-b5a2-505b9f1e9a9b&q=${cleanCode}`);
+        if (erbRes.ok) {
+          const erbData = await erbRes.json();
+          if (erbData.success && erbData.result?.records) {
+            erbData.result.records.slice(0, 10).forEach((rec: any) => {
+              enforcements.push({
+                vpNumber: rec.vp_number || rec.VP_NUM || rec.number || 'НЕМАЄ ДАНИХ',
+                creditor: rec.creditor || rec.CREDITOR || 'НЕМАЄ ДАНИХ',
+                debtor: rec.debtor || rec.DEBTOR || cleanCode,
+                category: rec.category || rec.CATEGORY || 'НЕМАЄ ДАНИХ',
+                status: rec.status || 'ОТКРЫТО',
+                department: rec.department || rec.DEPT || 'НЕМАЄ ДАНИХ',
+                startDate: rec.start_date || rec.DATE || 'НЕМАЄ ДАНИХ',
+              });
+            });
+          }
+        }
+      } catch (e) {
+        console.log(`[Court Connector] Enforcement query failed:`, e);
+      }
+
+      if (courtCases.length === 0 && !isBankrupt && enforcements.length === 0) {
         throw {
-          code: 'UPSTREAM_FAILURE',
-          message: `Судові реєстри недоступні: HTTP ${courtRes.status}, ${bankrRes.status}, ${erbRes.status}.`,
+          code: 'NO_RECORDS',
+          message: `Судові справи для ${cleanCode} не знайдено.`,
         };
       }
 
