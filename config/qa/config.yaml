@@ -1,0 +1,69 @@
+# QA Environment Configuration
+# Environment: QA (Quality Assurance)
+# Purpose: Testing and validation
+
+environment:
+  name: qa
+  mode: development
+
+server:
+  port: 3000
+  host: localhost
+  cors:
+    origin: "*"
+    credentials: false
+
+database:
+  host: localhost
+  port: 5432
+  name: predator_qa
+  user: predator_qa
+  ssl: false
+  pool:
+    min: 2
+    max: 10
+
+connectors:
+  production_mode: false
+  certified_only: false
+  allow_unofficial: true
+  timeout_ms: 15000
+  concurrency: 8
+
+authentication:
+  required: false
+  default_role: SENIOR_ANALYST
+
+rate_limiting:
+  enabled: false
+  default:
+    max_requests: 1000
+    window_ms: 60000
+  search:
+    max_requests: 500
+    window_ms: 60000
+  probe:
+    max_requests: 200
+    window_ms: 60000
+  admin:
+    max_requests: 300
+    window_ms: 60000
+  ai:
+    max_requests: 100
+    window_ms: 60000
+
+logging:
+  level: debug
+  structured: true
+  console: true
+
+observability:
+  metrics_enabled: true
+  tracing_enabled: false
+  health_checks_enabled: true
+
+features:
+  ai_enabled: true
+  media_enabled: true
+  video_enabled: true
+  music_enabled: true

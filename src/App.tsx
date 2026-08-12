@@ -36,6 +36,8 @@ const InvestigationSandbox = React.lazy(() => import("./components/Investigation
 const MasterSpecificationViewer = React.lazy(() => import("./components/MasterSpecificationViewer"));
 
 import { EntityWorkspace } from "./components/EntityWorkspace";
+import { EnhancedEntityWorkspace } from "./components/EnhancedEntityWorkspace";
+import { ModernDashboard } from "./components/ModernDashboard";
 import { CommandBar } from "./components/CommandBar";
 import { AnalyticsDashboard } from "./components/AnalyticsDashboard";
 import { SkeletonLensPanel } from "./components/ui/SkeletonLoader";
@@ -953,12 +955,7 @@ export default function App() {
             case "admin-back-office": return <AdminBackOffice />;
             case "mlip-modules": return <MLIPMasterDashboard />;
             case "dashboard":
-              return (
-                <AnalyticsDashboard
-                  onOpenCommandBar={() => setCommandBarOpen(true)}
-                  onSelectTab={(tabId) => setActiveTab(tabId as TabId)}
-                />
-              );
+              return <ModernDashboard />;
             case "osint":
               return (
                 <OsintWorkbench
@@ -1010,34 +1007,8 @@ export default function App() {
                 );
               }
               return (
-                <EntityWorkspace 
-                  dossier={activeDossier} 
-                  onClearDossier={() => setActiveDossier(null)}
-                  onSelectEntity={async (codeOrName: string, type?: string) => {
-                    setIsDossierLoading(true);
-                    try {
-                      // Fallback to client mock if fetch fails, but try API first if exists
-                      const response = await fetch("/api/v2/intelligence/search", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ query: codeOrName, type })
-                      }).catch(() => null);
-                      
-                      if (response && response.ok) {
-                        const data = await response.json();
-                        setActiveDossier(data);
-                      } else {
-                         // Fallback to local data
-                         const result = await getOrCreateEntityForQuery(codeOrName);
-                         setActiveDossier(result as any);
-                      }
-                    } catch (err) {
-                      console.error("Failed to load nested dossier:", err);
-                    } finally {
-                      setIsDossierLoading(false);
-                    }
-                  }}
-                  onOpenCommandBar={() => setCommandBarOpen(true)}
+                <EnhancedEntityWorkspace 
+                  onBack={() => setActiveDossier(null)}
                 />
               );
             case "autonomous-factory": return <AutonomousFactory />;

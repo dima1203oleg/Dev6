@@ -9,6 +9,7 @@
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test:e2e": "tsx server/tests/e2e/ControlTestRunner.ts",
     "test:automated": "tsx server/tests/automated/runTests.ts",
     "test:ui": "tsx server/tests/ui/runUITests.ts",

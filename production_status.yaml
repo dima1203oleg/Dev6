@@ -1,0 +1,408 @@
+# PREDATOR Production Status Registry
+# Machine-readable canonical source of truth
+# Version: 1.0.0
+# Last Updated: 2026-08-09
+
+# ============================================
+# SYSTEM STATE MODEL
+# ============================================
+system_state:
+  current_state: "NOT_READY_FOR_PRODUCTION"
+  state_machine:
+    - UNKNOWN
+    - DISCOVERING
+    - VALIDATING
+    - TESTING
+    - REMEDIATING
+    - REGRESSION
+    - STABILIZING
+    - CERTIFIED
+    - MONITORING
+    - REVALIDATION
+  transition_rules:
+    CERTIFIED:
+      requires:
+        - all_connectors_verified
+        - security_audit_passed
+        - data_pipeline_verified
+        - ui_coverage_complete
+        - ci_cd_pipeline_active
+        - observability_operational
+      blockers:
+        - any_critical_security_issue
+        - any_unverified_connector
+        - any_synthetic_data_in_production
+
+# ============================================
+# OVERALL STATUS
+# ============================================
+overall_status:
+  status: "NOT_READY_FOR_PRODUCTION"
+  blockers:
+    p0:
+      - "P0-1: Canonical production truth document"
+      - "P0-2: Registry API contracts"
+      - "P0-3: Production defaults removal"
+      - "P0-4: Security wrapper implementation"
+      - "P0-5: Multi-level validation"
+    p1:
+      - "P1-6: TypeScript strict mode"
+      - "P1-7: Configuration separation"
+      - "P1-8: Observability implementation"
+      - "P1-9: Automated release gate"
+      - "P1-10: Documentation cleanup"
+    p2:
+      - "P2-11: Unified connector framework"
+      - "P2-12: Schema drift protection"
+      - "P2-13: Full evidence chain"
+
+# ============================================
+# REGISTRY CERTIFICATION STATUS
+# ============================================
+registry_certification:
+  total_registries: 170
+  verified: 6
+  unofficial_clarity: 164
+  certification_percentage: 3.5
+  
+  verified_sources:
+    - source_id: "hibp"
+      name: "Have I Been Pwned"
+      api_type: "official"
+      auth_method: "api_key"
+      status: "VERIFIED"
+      last_verified: "2026-08-09"
+      contract_complete: true
+      health_check: true
+      rate_limit_documented: true
+      schema_documented: true
+    - source_id: "crt_sh"
+      name: "crt.sh Certificate Search"
+      api_type: "official"
+      auth_method: "none"
+      status: "VERIFIED"
+      last_verified: "2026-08-09"
+      contract_complete: true
+      health_check: true
+      rate_limit_documented: true
+      schema_documented: true
+    - source_id: "pending_3"
+      name: "Pending Verification 3"
+      api_type: "unknown"
+      status: "PENDING_VERIFICATION"
+      contract_complete: false
+    - source_id: "pending_4"
+      name: "Pending Verification 4"
+      api_type: "unknown"
+      status: "PENDING_VERIFICATION"
+      contract_complete: false
+    - source_id: "pending_5"
+      name: "Pending Verification 5"
+      api_type: "unknown"
+      status: "PENDING_VERIFICATION"
+      contract_complete: false
+    - source_id: "pending_6"
+      name: "Pending Verification 6"
+      api_type: "unknown"
+      status: "PENDING_VERIFICATION"
+      contract_complete: false
+
+  unofficial_sources:
+    count: 164
+    status: "REQUIRES_OFFICIAL_CONTRACT"
+    certification_required: true
+
+# ============================================
+# CONNECTOR READINESS STATUS
+# ============================================
+connector_readiness:
+  total_connectors: 13
+  production_ready: 2
+  not_production_ready: 11
+  readiness_percentage: 15.4
+  
+  production_ready_connectors:
+    - connector_id: "hibp_connector"
+      source_id: "hibp"
+      status: "PRODUCTION_READY"
+      last_verified: "2026-08-09"
+      tests_passing: true
+      health_check: true
+    - connector_id: "crt_sh_connector"
+      source_id: "crt_sh"
+      status: "PRODUCTION_READY"
+      last_verified: "2026-08-09"
+      tests_passing: true
+      health_check: true
+      
+  not_production_ready_connectors:
+    count: 11
+    status: "REQUIRES_CERTIFICATION"
+    issues:
+      - "Missing official API contracts"
+      - "Incomplete health checks"
+      - "Missing integration tests"
+      - "No rate limiting awareness"
+      - "No retry/circuit breaker"
+
+# ============================================
+# SECURITY AUDIT STATUS
+# ============================================
+security_audit:
+  status: "PENDING"
+  required_components:
+    authentication:
+      status: "NOT_IMPLEMENTED"
+      priority: "P0"
+      description: "JWT/OAuth2 authentication required"
+    rbac:
+      status: "NOT_IMPLEMENTED"
+      priority: "P0"
+      description: "Role-based access control required"
+    secrets_management:
+      status: "INSECURE"
+      priority: "P0"
+      description: "Secrets in .env.example require vault migration"
+      affected_keys:
+        - "GEMINI_API_KEY"
+        - "YOUCONTROL_API_KEY"
+        - "NAIS_API_KEY"
+        - "TAX_GOV_API_KEY"
+        - "NAZK_API_TOKEN"
+        - "PROZORRO_API_KEY"
+        - "HIBP_API_KEY"
+    rate_limiting:
+      status: "PARTIAL"
+      priority: "P0"
+      description: "Basic rate limiting exists, needs per-endpoint configuration"
+    csrf_protection:
+      status: "NOT_IMPLEMENTED"
+      priority: "P1"
+      description: "CSRF protection required for state-changing operations"
+    cors_policy:
+      status: "PARTIAL"
+      priority: "P1"
+      description: "CORS needs discipline and proper configuration"
+    audit_logging:
+      status: "NOT_IMPLEMENTED"
+      priority: "P0"
+      description: "Audit trail required for all sensitive operations"
+    input_validation:
+      status: "PARTIAL"
+      priority: "P0"
+      description: "Input validation needs comprehensive coverage"
+
+# ============================================
+# DATA PIPELINE STATUS
+# ============================================
+data_pipeline:
+  status: "PARTIALLY_VERIFIED"
+  completed:
+    - "PostgreSQL schema definition"
+    - "Basic repository pattern"
+    - "Entity/Card/Evidence models"
+  pending:
+    - "Evidence graph implementation"
+    - "Provenance tracking"
+    - "Contradiction handling"
+    - "Normalized schema enforcement"
+    - "Field-level source mapping"
+    - "Real-time data validation"
+  issues:
+    - "Database health check failing (UNHEALTHY)"
+    - "No connection pooling verification"
+    - "No backup/restore procedures documented"
+    - "No retention policy defined"
+
+# ============================================
+# TYPESCRIPT STATUS
+# ============================================
+typescript_status:
+  strict_mode: false
+  issues:
+    - "allowJs enabled"
+    - "skipLibCheck enabled"
+    - "Widespread any usage"
+    - "Missing type contracts for connector outputs"
+    - "No strict null checks"
+    - "No unused parameter checks"
+  required_changes:
+    - "Enable strict mode"
+    - "Enable noImplicitAny"
+    - "Enable strictNullChecks"
+    - "Enable noUnusedLocals"
+    - "Enable noUnusedParameters"
+    - "Disable skipLibCheck"
+    - "Add connector output type contracts"
+    - "Remove any usage in critical paths"
+
+# ============================================
+# CI/CD STATUS
+# ============================================
+cicd_status:
+  pipeline: "MANUAL"
+  automated_gates: false
+  release_gate: "NOT_IMPLEMENTED"
+  required_pipeline_stages:
+    - name: "lint"
+      status: "CONFIGURED"
+      automated: true
+    - name: "typecheck"
+      status: "CONFIGURED"
+      automated: true
+    - name: "unit_tests"
+      status: "PARTIAL"
+      automated: false
+    - name: "integration_tests"
+      status: "PARTIAL"
+      automated: false
+    - name: "connector_contract_tests"
+      status: "NOT_IMPLEMENTED"
+      automated: false
+    - name: "ui_tests"
+      status: "PARTIAL"
+      automated: false
+    - name: "security_scan"
+      status: "NOT_IMPLEMENTED"
+      automated: false
+    - name: "build"
+      status: "CONFIGURED"
+      automated: true
+    - name: "deployment_gate"
+      status: "NOT_IMPLEMENTED"
+      automated: false
+    - name: "canary_smoke"
+      status: "NOT_IMPLEMENTED"
+      automated: false
+    - name: "promote_rollback"
+      status: "MANUAL"
+      automated: false
+
+# ============================================
+# OBSERVABILITY STATUS
+# ============================================
+observability:
+  status: "NOT_IMPLEMENTED"
+  required_components:
+    metrics:
+      status: "NOT_IMPLEMENTED"
+      technology: "Prometheus (planned)"
+    traces:
+      status: "NOT_IMPLEMENTED"
+      technology: "OpenTelemetry (planned)"
+    logs:
+      status: "PARTIAL"
+      technology: "Console logs"
+      issues:
+        - "No structured logging"
+        - "No log aggregation"
+        - "No correlation IDs"
+    dashboards:
+      status: "NOT_IMPLEMENTED"
+    alerts:
+      status: "NOT_IMPLEMENTED"
+    slo_sla:
+      status: "NOT_IMPLEMENTED"
+    connector_health:
+      status: "PARTIAL"
+      issues:
+        - "No connector-level metrics"
+        - "No health monitoring"
+        - "No error tracking"
+
+# ============================================
+# DOCUMENTATION STATUS
+# ============================================
+documentation:
+  status: "INCONSISTENT"
+  issues:
+    - "README shows basic AI Studio app (outdated)"
+    - "Actual system has registry catalog, probes, QA runners"
+    - "Architecture docs not synchronized with code"
+    - "Conflicting status documents"
+    - "No runbooks"
+    - "No ADR (Architecture Decision Records)"
+    - "No release notes"
+  required_updates:
+    - "Update README to reflect actual architecture"
+    - "Synchronize architecture documentation"
+    - "Create runbooks"
+    - "Add ADR"
+    - "Maintain release notes"
+    - "Remove contradictory documentation"
+
+# ============================================
+# CODE ISSUES SUMMARY
+# ============================================
+code_issues:
+  architectural:
+    - "Runtime duplication between server/, core/, server/datasources/connectors/"
+    - "No unified execution contract"
+    - "Deprecated paths not marked"
+  code_quality:
+    - "TypeScript not in strict mode"
+    - "Test values in production code (testCode = '14360570')"
+    - "Fallback mechanisms may substitute synthetic data"
+    - "Simple status === 'OK' checks insufficient"
+  security:
+    - "No authentication middleware"
+    - "No RBAC implementation"
+    - "No rate limiting on sensitive endpoints"
+    - "No CSRF protection"
+    - "No input validation middleware"
+    - "Secrets in .env.example"
+  testing:
+    - "Partial test coverage"
+    - "No automated gates"
+    - "Manual fix scripts (.cjs files)"
+
+# ============================================
+# PRODUCTION READINESS CRITERIA
+# ============================================
+production_readiness:
+  connectors:
+    all_inventoried: true
+    each_has_contract: false
+    each_has_health_check: false
+    each_has_test: false
+    each_has_explicit_status: false
+    no_hidden_synthetic: false
+  data:
+    each_field_has_source: false
+    provenance_complete: false
+    no_false_positives: false
+    no_hardcoded_answers: false
+    no_silent_fallback: false
+  ui:
+    critical_pages_working: false
+    data_display_correct: false
+    source_attribution_visible: false
+    empty_error_states_handled: false
+  security:
+    secrets_secured: false
+    auth_rbac_working: false
+    scans_clean: false
+    api_validation: false
+  devops:
+    cicd_pipeline_green: false
+    deploy_strategy_defined: false
+    rollback_working: false
+    monitoring_active: false
+    logs_traces_available: false
+
+# ============================================
+# ACCEPTANCE CRITERIA
+# ============================================
+acceptance_criteria:
+  system_can_be_production_ready: false
+  blocking_criteria:
+    - "All P0 blockers resolved"
+    - "All connectors verified"
+    - "Security audit passed"
+    - "Data pipeline verified"
+    - "UI coverage complete"
+    - "CI/CD pipeline active"
+    - "Observability operational"
+    - "TypeScript strict mode enabled"
+    - "Configuration separated"
+    - "Documentation synchronized"

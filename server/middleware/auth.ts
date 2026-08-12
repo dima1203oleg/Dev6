@@ -51,14 +51,38 @@ const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
 
 export function checkPermission(requiredPermission: string) {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    // Inject default user session if missing for dev workstation mode
-    if (!req.user) {
+    const productionMode = process.env.NODE_ENV === 'production';
+    
+    // In production mode, require authentication
+    if (productionMode && !req.user) {
+      return res.status(401).json({
+        error: {
+          code: "UNAUTHORIZED",
+          message: "Authentication required in production mode",
+          retryable: false
+        }
+      });
+    }
+
+    // In development mode, inject default user session if missing
+    if (!req.user && !productionMode) {
       req.user = {
         id: "usr-analyst-001",
         email: "analyst@predator.gov.ua",
         role: (req.headers["x-user-role"] as UserRole) || "SENIOR_ANALYST",
         tenantId: "tenant-predator-core"
       };
+    }
+
+    // If still no user after dev mode injection, deny
+    if (!req.user) {
+      return res.status(401).json({
+        error: {
+          code: "UNAUTHORIZED",
+          message: "Authentication required",
+          retryable: false
+        }
+      });
     }
 
     const userPermissions = ROLE_PERMISSIONS[req.user.role] || [];
@@ -74,6 +98,27 @@ export function checkPermission(requiredPermission: string) {
 
     next();
   };
+}
+
+export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  const productionMode = process.env.NODE_ENV === 'production';
+  
+  if (productionMode && !req.user) {
+    return res.status(401).json({
+      error: {
+        code: "UNAUTHORIZED",
+        message: "Authentication required",
+        retryable: false
+      }
+    });
+  }
+
+  // In development mode, allow without auth for testing
+  if (!productionMode) {
+    return next();
+  }
+
+  next();
 }
 
 /**

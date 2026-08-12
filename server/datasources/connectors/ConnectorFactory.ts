@@ -54,8 +54,17 @@ export class PredatorConnectorFactory {
 
   /** Bootstrap all registered free/auto connectors from FULL_REGISTRY_CATALOG */
   private bootstrap() {
+    const productionMode = process.env.NODE_ENV === 'production';
+    const certifiedSources = ['hibp', 'crt_sh']; // Only these sources are production-certified
+
     for (const entry of FULL_REGISTRY_CATALOG) {
-      // We load all connectors. If they lack API keys at runtime, they will fail with 401 as requested.
+      // In production mode, only load certified sources
+      if (productionMode && !certifiedSources.includes(entry.id)) {
+        console.log(`[ConnectorFactory] Skipping non-certified source in production: ${entry.id}`);
+        continue;
+      }
+
+      // We load all connectors in non-production modes. If they lack API keys at runtime, they will fail with 401 as requested.
       if (!entry.isAutomatic) continue;
 
       let connector: ProductionConnector | null = null;
@@ -101,19 +110,20 @@ export class PredatorConnectorFactory {
 
       if (connector) {
         this.connectorMap.set(entry.id, connector);
+        const isCertified = certifiedSources.includes(entry.id);
         this.registryMap.set(entry.id, {
           sourceId: entry.id,
           connectorId: `connector.${entry.id}`,
           connectorVersion: connector.VERSION,
           parserVersion: '1.0',
           normalizerVersion: '1.0',
-          compatibilityStatus: 'NEEDS_VERIFICATION',
-          certificationStatus: 'NOT_CERTIFIED',
+          compatibilityStatus: isCertified ? 'COMPATIBLE' : 'NEEDS_VERIFICATION',
+          certificationStatus: isCertified ? 'CERTIFIED' : 'NOT_CERTIFIED',
         });
       }
     }
 
-    console.log(`[ConnectorFactory] Bootstrapped ${this.connectorMap.size} production connectors.`);
+    console.log(`[ConnectorFactory] Bootstrapped ${this.connectorMap.size} production connectors (${productionMode ? 'production mode' : 'development mode'}).`);
   }
 
   // ─── PUBLIC METHODS ────────────────────────────────────────────────────

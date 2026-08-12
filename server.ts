@@ -17,9 +17,14 @@ import registryMasterCatalogRoutes from "./server/routes/registryMasterCatalogRo
 import adminRoutes from "./server/routes/adminRoutes";
 import mlipRoutes from "./server/routes/mlipRoutes";
 import predatorAPI from "./server/api/PredatorAPI";
-import { createRateLimiter } from "./server/middleware/rateLimiter";
+import { createRateLimiter, searchRateLimiter, probeRateLimiter, adminRateLimiter, aiRateLimiter } from "./server/middleware/rateLimiter";
 import { connectorFactory } from "./server/datasources/connectors/ConnectorFactory";
 import { FULL_REGISTRY_CATALOG, getRegistryStats } from "./server/datasources/registries/universalCatalog";
+import { requireAuth, checkPermission } from "./server/middleware/auth";
+import { validateBody, validateQuery, validators } from "./server/middleware/validation";
+import { errorHandler, correlationId, asyncHandler, AppError, ValidationError, NotFoundError } from "./server/middleware/errorHandler";
+import { logger, healthCheck, readinessCheck, livenessCheck, getMetricsEndpoint } from "./server/middleware/observability";
+import { productionAcceptanceContract } from "./server/certification/ProductionAcceptanceContract";
 
 
 import { GoogleGenAI, Type, ThinkingLevel, GenerateVideosOperation } from "@google/genai";
@@ -30,10 +35,44 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
+// Apply global middleware
+app.use(correlationId);
+app.use(logger);
 app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Apply Rate Limiter Middleware for API endpoints
 app.use("/api/", createRateLimiter(200, 60000));
+
+// Health check endpoints
+app.get('/health', healthCheck);
+app.get('/ready', readinessCheck);
+app.get('/live', livenessCheck);
+app.get('/metrics', getMetricsEndpoint);
+
+// Production Acceptance Contract endpoints
+app.post('/api/v1/certification/run', adminRateLimiter, checkPermission('system.admin'), async (req, res) => {
+  const { testIdentifier } = req.body;
+  try {
+    const result = await productionAcceptanceContract.runFullContract(testIdentifier);
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: err?.message || String(err) });
+  }
+});
+
+app.post('/api/v1/certification/battle-test', adminRateLimiter, checkPermission('system.admin'), async (req, res) => {
+  const { testIdentifier } = req.body;
+  if (!testIdentifier) {
+    return res.status(400).json({ error: 'testIdentifier is required' });
+  }
+  try {
+    const result = await productionAcceptanceContract.runFinalBattleTest(testIdentifier);
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: err?.message || String(err) });
+  }
+});
 
 // Mount DEV5 & DEV6 Architecture Upgrade Routes
 app.use("/api/v1/predator", predatorRoutes);
@@ -89,11 +128,15 @@ app.get('/api/v1/registry/matrix', (_req, res) => {
 });
 
 /** POST /api/v1/registry/probe — Live probe for a specific source (spec §5, Stage 5) */
-app.post('/api/v1/registry/probe', async (req, res) => {
+app.post('/api/v1/registry/probe', 
+  probeRateLimiter,
+  validateBody({
+    sourceId: validators.required,
+    testCode: validators.required
+  }),
+  checkPermission('source.read'),
+  async (req, res) => {
   const { sourceId, testCode } = req.body;
-  if (!sourceId || !testCode) {
-    return res.status(400).json({ ok: false, error: 'sourceId and testCode required' });
-  }
   try {
     const result = await connectorFactory.runLiveProbe(sourceId, testCode);
     res.json({ ok: true, sourceId, result });
@@ -103,8 +146,15 @@ app.post('/api/v1/registry/probe', async (req, res) => {
 });
 
 /** POST /api/v1/registry/probe-all — Probe ALL registered connectors */
-app.post('/api/v1/registry/probe-all', async (req, res) => {
-  const { testCode = '14360570' } = req.body; // Default: Укрзалізниця ЄДРПОУ
+app.post('/api/v1/registry/probe-all', 
+  adminRateLimiter,
+  validateBody({
+    testCode: validators.required
+  }),
+  checkPermission('source.admin'),
+  async (req, res) => {
+  const { testCode } = req.body;
+  
   try {
     const results = await connectorFactory.runBatchLiveProbe(testCode, 5);
     const report: Record<string, any> = {};
@@ -117,9 +167,15 @@ app.post('/api/v1/registry/probe-all', async (req, res) => {
 });
 
 /** POST /api/v1/registry/query-all — Query all 170+ sources for a code */
-app.post('/api/v1/registry/query-all', async (req, res) => {
+app.post('/api/v1/registry/query-all', 
+  searchRateLimiter,
+  validateBody({
+    code: validators.required,
+    identifierType: validators.enum(['edrpou', 'ipn', 'name'])
+  }),
+  checkPermission('entity.search'),
+  async (req, res) => {
   const { code, identifierType = 'edrpou' } = req.body;
-  if (!code) return res.status(400).json({ ok: false, error: 'code required' });
   try {
     const results = await connectorFactory.queryAll(code, identifierType, 8);
     const hits = results.filter(r => r.status === 'OK');
