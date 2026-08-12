@@ -3,7 +3,7 @@
  * Integrates with Predator API for real data display
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Search, Filter, Download, Share, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { PredatorCardView } from './PredatorCardView';
 
@@ -48,7 +48,11 @@ export function EnhancedEntityWorkspace({ onBack }: EnhancedEntityWorkspaceProps
     setError(null);
     
     try {
-      const response = await fetch(`/api/v2/predator/search?identifier=${encodeURIComponent(searchQuery)}&limit=10`);
+      const response = await fetch(`/api/v1/predator/search`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: searchQuery, entityType: 'AUTO' })
+      });
       if (!response.ok) {
         throw new Error(`Search failed: ${response.status}`);
       }
