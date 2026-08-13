@@ -14,6 +14,7 @@ import { fetchSanctionsAndCompliance } from '../datasources/registries/sanctions
 import { fetchTaxStatus } from '../datasources/registries/tax';
 import { fetchLicensesAndRegistries } from '../datasources/registries/licenses';
 import { fetchNAISEDR } from '../datasources/registries/nais-edr';
+import { fetchDPSTaxCabinet, DPSTaxConfig } from '../datasources/registries/dps-tax-cabinet';
 import crypto from "crypto";
 
 export class IntelligenceOrchestrator {
@@ -158,7 +159,7 @@ export class IntelligenceOrchestrator {
     
     // ─── PHASE 1: Core typed registry connectors (guaranteed schema) ─────────
     // PRIMARY: Clarity Project API, SECONDARY: NAIS EDR XML, TERTIARY: data.gov.ua EDR
-    let clarityResult, naisResult, edrResult;
+    let clarityResult, naisResult, edrResult, dpsResult;
     try {
       clarityResult = await fetchClarityEdr(code);
       console.log(`[Orchestrator] Clarity result:`, clarityResult.ok ? 'OK' : 'FAILED');
@@ -178,12 +179,34 @@ export class IntelligenceOrchestrator {
           console.log(`[Orchestrator] NAIS EDR data:`, naisResult.data);
         }
       } catch (e) {
-        console.log(`[Orchestrator] NAIS EDR failed, trying fallback EDR:`, e);
+        console.log(`[Orchestrator] NAIS EDR failed, trying DPS Tax Cabinet:`, e);
       }
     }
 
-    // Use fallback if both Clarity and NAIS fail
-    if (!clarityResult?.ok && (!naisResult || !naisResult.ok)) {
+    // Try DPS Tax Cabinet as tertiary source (if configured)
+    const dpsApiToken = process.env.DPS_TAX_CABINET_API_TOKEN;
+    if (!clarityResult?.ok && (!naisResult || !naisResult.ok) && dpsApiToken) {
+      try {
+        const dpsConfig: DPSTaxConfig = {
+          apiToken: dpsApiToken,
+        };
+        const dpsData = await fetchDPSTaxCabinet(code, dpsConfig);
+        if (dpsData) {
+          dpsResult = { ok: true, data: dpsData };
+          console.log(`[Orchestrator] DPS Tax Cabinet result: OK`);
+          console.log(`[Orchestrator] DPS Tax Cabinet data:`, dpsData);
+        } else {
+          dpsResult = { ok: false, data: null };
+          console.log(`[Orchestrator] DPS Tax Cabinet result: NOT FOUND`);
+        }
+      } catch (e) {
+        console.log(`[Orchestrator] DPS Tax Cabinet failed, trying fallback EDR:`, e);
+        dpsResult = { ok: false, data: null };
+      }
+    }
+
+    // Use fallback if all primary sources fail
+    if (!clarityResult?.ok && (!naisResult || !naisResult.ok) && (!dpsResult || !dpsResult.ok)) {
       edrResult = await fetchEdrFull(code);
       console.log(`[Orchestrator] EDR fallback result:`, edrResult.ok ? 'OK' : 'FAILED');
     }
@@ -197,7 +220,8 @@ export class IntelligenceOrchestrator {
 
     const edr = clarityResult?.ok ? { status: 'fulfilled', value: clarityResult } : 
                 (naisResult?.ok ? { status: 'fulfilled', value: naisResult } : 
-                (edrResult?.ok ? { status: 'fulfilled', value: edrResult } : { status: 'rejected' }));
+                (dpsResult?.ok ? { status: 'fulfilled', value: dpsResult } :
+                (edrResult?.ok ? { status: 'fulfilled', value: edrResult } : { status: 'rejected' })));
 
     const push = (predicate: string, src: string, data: any) => results.push({
       source: src,
@@ -219,7 +243,8 @@ export class IntelligenceOrchestrator {
 
     if (edr.status === 'fulfilled' && edr.value?.ok && edr.value?.data) {
       const sourceName = clarityResult?.ok ? 'Clarity Project API' : 
-                        (naisResult?.ok ? 'NAIS EDR XML (Мін\'юст)' : 'ЄДР (data.gov.ua)');
+                        (naisResult?.ok ? 'NAIS EDR XML (Мін\'юст)' : 
+                        (dpsResult?.ok ? 'DPS Tax Cabinet (cabinet.tax.gov.ua)' : 'ЄДР (data.gov.ua)'));
       push('has_edr_data', sourceName, edr.value.data);
     }
     if (court.status === 'fulfilled' && court.value?.ok && court.value?.data)
