@@ -1,0 +1,2 @@
+Registry ID,Registry Name,Endpoint,Access Type,Final Status,HTTP Code,Response Time (ms),Data Returned,Provenance Complete,Freshness Acceptable,Conflicts Detected,Confidence Score,QA Notes
+TEST-001,"Test Mock Endpoint","https://jsonplaceholder.typicode.com/users/1",FREE_AUTO,PASS,200,169,Yes,Yes,No,0,0.75,""

@@ -11,14 +11,12 @@ import GapAnalysisTab from "./components/GapAnalysisTab";
 import RoadmapTab from "./components/RoadmapTab";
 import VolumesTab from "./components/VolumesTab";
 import AdvisorTab from "./components/AdvisorTab";
-import PersonProfiler from "./components/PersonProfiler";
 import DataIngestionTab from "./components/DataIngestionTab";
 import RegistryDashboard from "./components/admin/RegistryDashboard";
 import InspectorPanel from "./components/InspectorPanel";
 import LiveAnalyticalCenter from "./components/LiveAnalyticalCenter";
 import AdminBackOffice from "./components/AdminBackOffice";
 import AutonomousFactory from "./components/AutonomousFactory";
-import AdverseIntelligenceTab from "./components/AdverseIntelligenceTab";
 import AuditLogViewer from "./components/AuditLogViewer";
 import SearchPortal from "./components/SearchPortal";
 import { EnterpriseDashboard } from "./components/ui/EnterpriseDashboard";
@@ -125,15 +123,15 @@ type TabId =
   | "predator-intel"
   | "ckan-explorer"
   | "enterprise-dashboard"
-  | "live-monitoring";
+  | "live-monitoring"
+  | "registry-health";
 
 export default function App() {
-  const { t, language, setLanguage } = useI18n();
+  const { t } = useI18n();
   const [ecosystem, setEcosystem] = useState<"user" | "admin">("user");
   const [activeTab, setActiveTab] = useState<TabId>("predator-intel");
   const [activeDossier, setActiveDossier] = useState<any>(null);
   const [comparisonDossier, setComparisonDossier] = useState<any>(null);
-  const [isDossierLoading, setIsDossierLoading] = useState<boolean>(false);
   const [selectedScenario, setSelectedScenario] = useState<string>("business");
   const [commandBarOpen, setCommandBarOpen] = useState(false);
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
@@ -141,6 +139,8 @@ export default function App() {
   const [isInspectorOpen, setIsInspectorOpen] = useState(true);
 
   // Interactive rendering and mobile adaptive states
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isUserGuideOpen, setIsUserGuideOpen] = useState(false);
   const [isRealMobile, setIsRealMobile] = useState<boolean>(() => {
     if (typeof window !== "undefined") {
       const isMobileUA = /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -148,8 +148,6 @@ export default function App() {
     }
     return false;
   });
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isUserGuideOpen, setIsUserGuideOpen] = useState(false);
 
   // Detect real narrow-screen mobile device on load and resize
   useEffect(() => {
@@ -188,7 +186,7 @@ export default function App() {
   // Inspector contents
   const [entitiesList, setEntitiesList] = useState<OsintEntity[]>(OSINT_ENTITIES);
   const [selectedEntity, setSelectedEntity] = useState<OsintEntity | null>(
-    OSINT_ENTITIES[0],
+    OSINT_ENTITIES[0] || null,
   );
   const [selectedTool, setSelectedTool] = useState<any | null>(SOLUTIONS[0]);
   const [selectedNode, setSelectedNode] = useState<any | null>({
@@ -990,13 +988,6 @@ export default function App() {
             case "ckan-explorer": return <CKANExplorerTab />;
 
             case "predator-intel":
-              if (isDossierLoading) {
-                return (
-                  <div className="flex-1 p-8 bg-slate-950">
-                    <SkeletonLensPanel />
-                  </div>
-                );
-              }
               if (activeDossier && comparisonDossier) {
                 return (
                   <ComparisonWorkspace
@@ -1769,7 +1760,7 @@ const renderDesktopLayout = () => {
                           >
                             <span>{e.label}</span>
                             <span className="text-xs bg-rose-500/10 border border-slate-800 px-2 py-1 rounded text-rose-400 font-mono font-bold">
-                              {e.raw.risk_level === "CRITICAL"
+                              {e.raw.riskScore >= 85
                                 ? "⚠️ КРИТИЧНИЙ"
                                 : "🔴 ВИСОКИЙ"}
                             </span>

@@ -304,7 +304,7 @@ export class RegistryIntelligence {
   /**
    * Calculate trend based on historical scores
    */
-  private calculateTrend(registryId: string): ConnectorScore['trend'] {
+  private calculateTrend(_registryId: string): ConnectorScore['trend'] {
     // TODO: Implement trend calculation based on historical scores
     return 'STABLE';
   }

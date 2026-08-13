@@ -4,7 +4,7 @@
  */
 
 import { BaseUITest } from '../BaseUITest';
-import { ValidationResult, UICardStructure, FieldStatus } from '../types';
+import { ValidationResult, UICardStructure } from '../types';
 
 export class FieldStatusValidator extends BaseUITest {
   async validateAllFieldStatuses(uiCard: UICardStructure): Promise<ValidationResult> {

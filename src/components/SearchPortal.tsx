@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Shield, ArrowRight, CheckCircle2, ChevronRight, Bookmark, X, AlertTriangle } from "lucide-react";
+import { Search, Shield, ArrowRight, CheckCircle2, ChevronRight, Bookmark, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Dossier } from "../types";
 import { useToast } from "./ToastProvider";
@@ -9,7 +9,7 @@ interface SearchPortalProps {
   onOpenCatalog?: () => void;
 }
 
-export default function SearchPortal({ onDossierGenerated, onOpenCatalog }: SearchPortalProps) {
+export default function SearchPortal({ onDossierGenerated, onOpenCatalog: _onOpenCatalog }: SearchPortalProps) {
   const [query, setQuery] = useState("");
   const [searchType, setSearchType] = useState("AUTO");
   const [isSearching, setIsSearching] = useState(false);

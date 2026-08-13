@@ -51,7 +51,7 @@ export class MediaPipelineService {
   /**
    * Simulates async media processing pipeline (Malware scan -> OCR/Whisper/Vision -> Indexing)
    */
-  public async processMediaAsync(jobId: string, base64Data?: string): Promise<MediaJob> {
+  public async processMediaAsync(jobId: string, _base64Data?: string): Promise<MediaJob> {
     const job = mediaJobsMap.get(jobId);
     if (!job) {
       throw new Error(`Media Job '${jobId}' not found`);

@@ -4,8 +4,8 @@
  * STIX 2.1 & GraphML Export Modal Component
  */
 
-import React, { useState } from 'react';
-import { FileCode, Download, Copy, Check, X, Share2, Layers, Shield, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { Download, Copy, Check, X, Share2, Layers, Shield } from 'lucide-react';
 import { motion } from 'motion/react';
 import { OsintEntity } from '../osintData';
 import { convertEntityToStix21, convertEntityToGraphML, downloadFile } from '../utils/stixGraphmlExporter';

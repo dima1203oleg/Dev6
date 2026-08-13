@@ -5,7 +5,6 @@
 
 import { SourceTestReport, SummaryReport } from './types';
 import * as fs from 'fs';
-import * as path from 'path';
 
 export class ReportGenerator {
   static generateJSONReport(

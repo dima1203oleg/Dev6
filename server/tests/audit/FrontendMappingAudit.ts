@@ -154,16 +154,18 @@ export class FrontendMappingAuditor {
       const propsMatch = content.match(/interface\s+\w*Props\s*{([^}]+)}/);
       if (propsMatch) {
         const propsContent = propsMatch[1];
-        const propNames = propsContent.match(/(\w+)\s*:/g);
-        if (propNames) {
-          props.push(...propNames.map(p => p.replace(':', '').trim()));
+        if (propsContent) {
+          const propNames = propsContent.match(/(\w+)\s*:/g);
+          if (propNames) {
+            props.push(...propNames.map(p => p.replace(':', '').trim()));
+          }
         }
       }
 
       // Витягти використані дані (data, entity, dossier, etc.)
       const dataMatches = content.match(/(?:props\.|{)(\w+)(?:\.|})/g);
       if (dataMatches) {
-        receivedData.push(...dataMatches.map(m => m.replace(/props\.|{|}/g, '').split('.')[0]));
+        receivedData.push(...dataMatches.map(m => m.replace(/props\.|{|}/g, '').split('.')[0] || '').filter(Boolean));
       }
 
       // Витягти відображені поля

@@ -24,14 +24,14 @@ export class TEST014_Repeatability extends BaseTest {
         const firstRun = await this.executeQuery(endpoint, context);
         const secondRun = await this.executeQuery(endpoint, context);
         
-        details.first_run = {
+        details['first_run'] = {
           http_code: firstRun.httpCode,
           response_time_ms: firstRun.responseTime,
           response_size: firstRun.responseSize,
           checksum: firstRun.checksum
         };
         
-        details.second_run = {
+        details['second_run'] = {
           http_code: secondRun.httpCode,
           response_time_ms: secondRun.responseTime,
           response_size: secondRun.responseSize,
@@ -40,10 +40,10 @@ export class TEST014_Repeatability extends BaseTest {
         
         // Compare results
         const comparison = this.compareResults(firstRun, secondRun);
-        details.http_code_match = comparison.httpCodeMatch;
-        details.response_identical = comparison.responseIdentical;
-        details.checksum_match = comparison.checksumMatch;
-        details.response_time_variance = comparison.responseTimeVariance;
+        details['http_code_match'] = comparison.httpCodeMatch;
+        details['response_identical'] = comparison.responseIdentical;
+        details['checksum_match'] = comparison.checksumMatch;
+        details['response_time_variance'] = comparison.responseTimeVariance;
         
         if (!comparison.httpCodeMatch) {
           errors.push(`HTTP codes differ: ${firstRun.httpCode} vs ${secondRun.httpCode}`);
@@ -51,7 +51,7 @@ export class TEST014_Repeatability extends BaseTest {
         
         if (!comparison.responseIdentical) {
           warnings.push('Responses differ between runs');
-          details.differences = comparison.differences;
+          details['differences'] = comparison.differences;
         }
         
         if (!comparison.checksumMatch) {
@@ -64,9 +64,9 @@ export class TEST014_Repeatability extends BaseTest {
         }
         
         // Determine if results are repeatable
-        details.repeatable = comparison.httpCodeMatch && comparison.checksumMatch;
+        details['repeatable'] = comparison.httpCodeMatch && comparison.checksumMatch;
         
-        if (!details.repeatable) {
+        if (!details['repeatable']) {
           errors.push('Results are not repeatable');
         }
         

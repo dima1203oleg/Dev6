@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { HelpCircle, Terminal, FileText, Send, Sparkles, MessageSquare, Bot, AlertTriangle, ShieldCheck, Database, Zap, BookOpen } from 'lucide-react';
+import { HelpCircle, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import SkeManifesto from './SkeManifesto';
 
@@ -112,7 +112,7 @@ docker run --gpus all \\
 
 export default function AdvisorTab() {
   const [activeTab, setActiveTab] = useState<'ske' | 'architecture'>('ske');
-  const [selectedQA, setSelectedQA] = useState<PredefinedQA | null>(FAQ_ITEMS[0]);
+  const [selectedQA, setSelectedQA] = useState<PredefinedQA | null>(FAQ_ITEMS[0] || null);
   const [chatInput, setChatInput] = useState('');
   
   // Simulated interactive chat logs
@@ -123,7 +123,7 @@ export default function AdvisorTab() {
     }
   ]);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const _handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim()) return;
 

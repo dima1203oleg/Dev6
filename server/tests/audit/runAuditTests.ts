@@ -16,7 +16,6 @@ import { dataConsistencyValidator } from './DataConsistencyValidator';
 import { ipnVerificationAuditor } from './IPNVerificationAudit';
 
 import * as fs from 'fs';
-import * as path from 'path';
 
 // Load environment variables
 dotenv.config();
@@ -65,15 +64,15 @@ function parseArguments(): AuditOptions {
     switch (arg) {
       case '--ipn':
       case '-i':
-        options.ipn = args[++i];
+        options.ipn = args[++i] || '';
         break;
       case '--type':
       case '-t':
-        options.identifierType = args[++i] as 'ipn' | 'edrpou';
+        options.identifierType = (args[++i] || 'ipn') as 'ipn' | 'edrpou';
         break;
       case '--output':
       case '-o':
-        options.outputDir = args[++i];
+        options.outputDir = args[++i] || '';
         break;
       case '--all':
         options.runAll = true;

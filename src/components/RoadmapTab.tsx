@@ -5,8 +5,7 @@
 
 import { useState } from 'react';
 import { ROADMAP_PHASES } from '../data';
-import { Calendar, AlertTriangle, CheckSquare, Square, Zap, Server, Cpu, Layers, DollarSign, ArrowRight, TrendingUp } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Calendar, AlertTriangle, CheckSquare, Square, Server, Cpu } from 'lucide-react';
 
 export default function RoadmapTab() {
   const [activePhaseId, setActivePhaseId] = useState('phase1');
@@ -40,8 +39,10 @@ export default function RoadmapTab() {
   const handleToggleMilestone = (phaseId: string, idx: number) => {
     setMilestonesState(prev => {
       const copy = { ...prev };
-      const list = [...copy[phaseId]];
-      list[idx] = { ...list[idx], done: !list[idx].done };
+      const list = [...(copy[phaseId] || [])];
+      if (list[idx]) {
+        list[idx] = { ...list[idx], done: !list[idx].done, text: list[idx].text || '' };
+      }
       copy[phaseId] = list;
       return copy;
     });
@@ -133,7 +134,7 @@ export default function RoadmapTab() {
           <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest pl-1">Етапи дорожньої карти</h3>
           
           <div className="space-y-2" id="roadmap-steps-list">
-            {ROADMAP_PHASES.map((phase, idx) => {
+            {ROADMAP_PHASES.map((phase, _idx) => {
               const isActive = phase.id === activePhaseId;
               const progress = getPhaseProgress(phase.id);
 

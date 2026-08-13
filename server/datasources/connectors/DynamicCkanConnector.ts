@@ -12,7 +12,7 @@ export class DynamicCkanConnector extends CkanConnector {
     // Map passport field mappings to the connector's identifiers
     const identifiers = passport.fields
       .map(f => f.mappedEntity)
-      .filter(e => e !== 'UNKNOWN') as IdentifierType[];
+      .filter(e => e !== 'UNKNOWN') as unknown as IdentifierType[];
 
     super(
       passport.sourceId,
@@ -30,7 +30,7 @@ export class DynamicCkanConnector extends CkanConnector {
   }
 
   // Override normalize to use auto-mapped fields from SchemaAnalyzer
-  public normalize(parsed: any[]): any[] {
+  public override normalize(parsed: any[]): any[] {
     return parsed.map(p => {
       const normalizedRecord: any = { ...p, canonicalFields: {} };
       

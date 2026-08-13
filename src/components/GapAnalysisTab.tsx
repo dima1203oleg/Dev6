@@ -5,8 +5,7 @@
 
 import { useState } from 'react';
 import { GAP_ITEMS } from '../data';
-import { HelpCircle, AlertOctagon, CheckCircle, Flame, ArrowUpRight, Wrench, ShieldX, Database, Calculator, Calendar, DollarSign, Clock } from 'lucide-react';
-import { motion } from 'motion/react';
+import { CheckCircle, ArrowUpRight, Wrench, ShieldX, Database, Calculator, Calendar, DollarSign, Clock } from 'lucide-react';
 
 export default function GapAnalysisTab() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -300,10 +299,10 @@ export default function GapAnalysisTab() {
                   </div>
 
                   <div className="text-right">
-                    <span className={`text-xs font-bold border px-2.5 py-0.5 rounded-full font-mono block ${getDifficultyColor(item.difficulty)}`}>
-                      {item.difficulty}
+                    <span className={`text-xs font-bold border px-2.5 py-0.5 rounded-full font-mono block ${getDifficultyColor(item.difficulty || '')}`}>
+                      {item.difficulty || 'N/A'}
                     </span>
-                    <span className="text-xs text-slate-500 font-mono block mt-1">Оцінка: {item.timeEstimate}</span>
+                    <span className="text-xs text-slate-500 font-mono block mt-1">Оцінка: {item.timeEstimate || 'N/A'}</span>
                   </div>
                 </div>
 
@@ -316,7 +315,7 @@ export default function GapAnalysisTab() {
                 <div className="space-y-2">
                   <span className="text-xs text-blue-400 font-bold uppercase tracking-wider block">Конкретні кроки & завдання:</span>
                   <div className="grid grid-cols-1 gap-2">
-                    {item.actionItems.map((action, idx) => (
+                    {item.actionItems?.map((action: string, idx: number) => (
                       <div
                         key={idx}
                         className="bg-slate-950/80 border border-slate-800 p-2.5 rounded-lg flex items-start gap-2.5"

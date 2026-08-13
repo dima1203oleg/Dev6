@@ -1,0 +1,589 @@
+{
+  "timestamp": "2026-08-13T12:23:45.174Z",
+  "summary": {
+    "total_sources": 1,
+    "passed": 0,
+    "passed_with_warnings": 0,
+    "partial": 0,
+    "failed": 1,
+    "blocked": 0,
+    "not_applicable": 0,
+    "needs_work": 1,
+    "using_fallback": 0,
+    "provenance_violations": 0,
+    "has_conflicts": 0,
+    "production_ready": 0,
+    "critical_sources_passed": false,
+    "hallucination_free": false,
+    "all_provenance_complete": true,
+    "conflicts_documented": true,
+    "results_reproducible": true,
+    "logging_complete": true,
+    "automated_tests_passed": false,
+    "production_ready_overall": false
+  },
+  "sources": [
+    {
+      "registry_id": "TEST-001",
+      "registry_name": "Test Mock Endpoint",
+      "endpoint": "https://jsonplaceholder.typicode.com/users/1",
+      "access_type": "FREE_AUTO",
+      "query_status": "PASS",
+      "http_code": 200,
+      "response_time_ms": 416,
+      "data_returned": true,
+      "provenance_complete": true,
+      "freshness_acceptable": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0.75,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-001: Registry ID format may be non-standard: TEST-001",
+        "TEST-006: Schema validation failed: data",
+        "TEST-007: Type validation failed: id: expected string, got number, address: expected string, got object, company: expected string, got object",
+        "TEST-008: Unicode issues detected: U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a",
+        "TEST-008: Character loss detected: 108 characters",
+        "TEST-010: Could not determine data age - no timestamp found",
+        "TEST-011: Transliteration issues detected: Possible transliteration in name, Possible transliteration in username, Possible transliteration in company.name",
+        "TEST-013: Fields without provenance: id, name, username, email, address.street, address.suite, address.city, address.zipcode, address.geo.lat, address.geo.lng, phone, website, company.name, company.catchPhrase, company.bs",
+        "TEST-014: High response time variance: 149.09%",
+        "TEST-017: Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-XSS-Protection",
+        "TEST-017: Security vulnerabilities detected: SSRF, IDOR; Sensitive data exposed: Email Address, Phone Number"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-13T12:23:40.602Z",
+          "details": {
+            "registry_id": "TEST-001",
+            "registry_name": "Test Mock Endpoint",
+            "endpoint": "https://jsonplaceholder.typicode.com/users/1",
+            "access_type": "FREE_AUTO",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "test_connector",
+            "connector_version": "1.0.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "NONE",
+            "supported_entities": [
+              "TEST"
+            ],
+            "supported_identifiers": [
+              "id"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Registry ID format may be non-standard: TEST-001"
+          ]
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS",
+          "duration_ms": 385,
+          "timestamp": "2026-08-13T12:23:40.988Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 200,
+            "response_time_ms": 385,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-13T12:23:40.988Z",
+          "details": {
+            "auth_type": "NONE",
+            "authentication_required": false,
+            "authentication_status": "NOT_REQUIRED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "PASS",
+          "duration_ms": 420,
+          "timestamp": "2026-08-13T12:23:41.408Z",
+          "details": {
+            "start_time": "2026-08-13T12:23:40.988Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-13T12:23:41.404Z",
+            "execution_time_ms": 416,
+            "http_code": 200,
+            "http_status_text": "OK",
+            "response_size_bytes": 509,
+            "response_preview": "{\n  \"id\": 1,\n  \"name\": \"Leanne Graham\",\n  \"username\": \"Bret\",\n  \"email\": \"Sincere@april.biz\",\n  \"address\": {\n    \"street\": \"Kulas Light\",\n    \"suite\": \"Apt. 556\",\n    \"city\": \"Gwenborough\",\n    \"zipco",
+            "query_status": "SUCCESS"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS",
+          "duration_ms": 168,
+          "timestamp": "2026-08-13T12:23:41.576Z",
+          "details": {
+            "response_size": 509,
+            "content_type": "application/json; charset=utf-8",
+            "http_code": 200,
+            "checksum": "00008a2f",
+            "sha256_hash": "3c88d6edad2d9b03a26dad748d151e7bd8efc58cfe490876b0f9a2157a7ba0af",
+            "headers_count": 25,
+            "content_type_valid": true
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "FAIL",
+          "duration_ms": 59,
+          "timestamp": "2026-08-13T12:23:41.636Z",
+          "details": {
+            "json_parseable": true,
+            "schema_version": "1.0",
+            "schema_valid": false,
+            "missing_fields": [
+              "data"
+            ],
+            "extra_fields": [
+              "id",
+              "name",
+              "username",
+              "email",
+              "address",
+              "address.street",
+              "address.suite",
+              "address.city",
+              "address.zipcode",
+              "address.geo",
+              "address.geo.lat",
+              "address.geo.lng",
+              "phone",
+              "website",
+              "company",
+              "company.name",
+              "company.catchPhrase",
+              "company.bs"
+            ],
+            "type_mismatches": []
+          },
+          "errors": [
+            "Schema validation failed: data"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 58,
+          "timestamp": "2026-08-13T12:23:41.694Z",
+          "details": {
+            "parser_version": "1.0.0",
+            "parse_errors_count": 0,
+            "parse_warnings_count": 1,
+            "fields_parsed": 8,
+            "type_validation": {
+              "valid": false,
+              "errors": [
+                "id: expected string, got number",
+                "address: expected string, got object",
+                "company: expected string, got object"
+              ]
+            },
+            "utf8_valid": true,
+            "null_fields": [],
+            "null_handling_valid": true,
+            "required_fields_present": [
+              "name",
+              "id"
+            ],
+            "missing_required_fields": [],
+            "optional_fields_present": [
+              "address",
+              "phone",
+              "email"
+            ]
+          },
+          "errors": [
+            "Type validation failed: id: expected string, got number, address: expected string, got object, company: expected string, got object"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 142,
+          "timestamp": "2026-08-13T12:23:41.836Z",
+          "details": {
+            "raw_length": 509,
+            "parsed_length": 401,
+            "character_loss": 108,
+            "data_corruption": false,
+            "unicode_issues": [
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a",
+              "U+000a"
+            ],
+            "truncation_detected": false,
+            "truncation_location": "none",
+            "encoding_valid": true,
+            "encoding_detected": "UTF-8",
+            "consistency_valid": true,
+            "consistency_issues": []
+          },
+          "errors": [
+            "Character loss detected: 108 characters"
+          ],
+          "warnings": [
+            "Unicode issues detected: U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a, U+000a"
+          ]
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "PASS",
+          "duration_ms": 57,
+          "timestamp": "2026-08-13T12:23:41.893Z",
+          "details": {
+            "provenance_records_count": 4,
+            "provenance_complete": true,
+            "source_id_present": true,
+            "record_id_present": true,
+            "timestamp_present": true,
+            "parser_version_present": true,
+            "confidence_present": true,
+            "raw_fragment_present": true,
+            "average_confidence": 0.75,
+            "min_confidence": 0.6000000000000001,
+            "max_confidence": 0.9
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 56,
+          "timestamp": "2026-08-13T12:23:41.949Z",
+          "details": {
+            "last_updated": null,
+            "age_seconds": null,
+            "ttl_seconds": 43200,
+            "cache_status": "HIT",
+            "max_age_seconds": 60,
+            "freshness_acceptable": false,
+            "cache_control": "max-age=43200",
+            "etag": "W/\"1fd-+2Y3G3w049iSZtw5t1mzSnunngE\"",
+            "last_modified": null,
+            "max_age_header": 43200
+          },
+          "errors": [],
+          "warnings": [
+            "Could not determine data age - no timestamp found"
+          ]
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 56,
+          "timestamp": "2026-08-13T12:23:42.005Z",
+          "details": {
+            "duplicates_found": 0,
+            "duplicate_ids": [],
+            "historical_records_found": 0,
+            "historical_record_ids": [],
+            "transliteration_issues": [
+              "Possible transliteration in name",
+              "Possible transliteration in username",
+              "Possible transliteration in company.name"
+            ],
+            "name_changes_detected": false,
+            "name_change_records": [],
+            "relationships_found": 0,
+            "relationship_types": [],
+            "entity_resolution_quality": 0.85
+          },
+          "errors": [],
+          "warnings": [
+            "Transliteration issues detected: Possible transliteration in name, Possible transliteration in username, Possible transliteration in company.name"
+          ]
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "PASS",
+          "duration_ms": 56,
+          "timestamp": "2026-08-13T12:23:42.061Z",
+          "details": {
+            "sources_compared": 0,
+            "matches_found": [],
+            "discrepancies_found": [],
+            "contradiction_records": [],
+            "contradiction_engine_triggered": false,
+            "internal_consistency": true,
+            "internal_inconsistencies": [],
+            "expected_fields_present": [],
+            "expected_fields_missing": []
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 55,
+          "timestamp": "2026-08-13T12:23:42.116Z",
+          "details": {
+            "fields_checked": 18,
+            "hallucinated_fields": [],
+            "not_found_fields": [],
+            "unknown_fields": [],
+            "not_applicable_fields": [],
+            "hallucination_detected": false,
+            "generic_values_found": false,
+            "generic_value_fields": [],
+            "placeholders_found": false,
+            "placeholder_fields": [],
+            "fields_with_provenance": [],
+            "fields_without_provenance": [
+              "id",
+              "name",
+              "username",
+              "email",
+              "address.street",
+              "address.suite",
+              "address.city",
+              "address.zipcode",
+              "address.geo.lat",
+              "address.geo.lng",
+              "phone",
+              "website",
+              "company.name",
+              "company.catchPhrase",
+              "company.bs"
+            ],
+            "ai_patterns_detected": false,
+            "ai_pattern_fields": []
+          },
+          "errors": [
+            "Fields without provenance: id, name, username, email, address.street, address.suite, address.city, address.zipcode, address.geo.lat, address.geo.lng, phone, website, company.name, company.catchPhrase, company.bs"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 193,
+          "timestamp": "2026-08-13T12:23:42.309Z",
+          "details": {
+            "first_run": {
+              "http_code": 200,
+              "response_time_ms": 55,
+              "response_size": 509,
+              "checksum": "00008a2f"
+            },
+            "second_run": {
+              "http_code": 200,
+              "response_time_ms": 137,
+              "response_size": 509,
+              "checksum": "00008a2f"
+            },
+            "http_code_match": true,
+            "response_identical": true,
+            "checksum_match": true,
+            "response_time_variance": 149.0909090909091,
+            "repeatable": true
+          },
+          "errors": [],
+          "warnings": [
+            "High response time variance: 149.09%"
+          ]
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS",
+          "duration_ms": 796,
+          "timestamp": "2026-08-13T12:23:43.105Z",
+          "details": {
+            "latency_ms": 57,
+            "throughput_rps": 13.531799729364005,
+            "cpu_usage_percent": 44.30703517587939,
+            "memory_usage_mb": 15.152870178222656,
+            "retry_count": 0,
+            "performance_rating": "EXCELLENT",
+            "latency_acceptable": true,
+            "throughput_acceptable": true,
+            "cpu_acceptable": true,
+            "memory_acceptable": true,
+            "degradation_detected": false,
+            "degradation_details": []
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 5,
+          "timestamp": "2026-08-13T12:23:43.110Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "FAIL",
+          "duration_ms": 2062,
+          "timestamp": "2026-08-13T12:23:45.173Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": true,
+            "idor_vulnerable": true,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 70,
+            "vulnerabilities_found": [
+              "SSRF",
+              "IDOR"
+            ],
+            "security_headers": {
+              "Strict-Transport-Security": false,
+              "Content-Security-Policy": false,
+              "X-Frame-Options": false,
+              "X-Content-Type-Options": true,
+              "X-XSS-Protection": false
+            },
+            "missing_security_headers": [
+              "Strict-Transport-Security",
+              "Content-Security-Policy",
+              "X-Frame-Options",
+              "X-XSS-Protection"
+            ],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": true,
+            "exposed_data_types": [
+              "Email Address",
+              "Phone Number"
+            ]
+          },
+          "errors": [
+            "Security vulnerabilities detected: SSRF, IDOR",
+            "Sensitive data exposed: Email Address, Phone Number"
+          ],
+          "warnings": [
+            "Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-XSS-Protection"
+          ]
+        }
+      ]
+    }
+  ]
+}

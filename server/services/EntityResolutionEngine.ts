@@ -3,7 +3,7 @@
  * §3.2 — Deterministic, Probabilistic, Fuzzy, Graph-based clustering
  */
 import {
-  EntityNode, EntityEdge, EntityMatchCandidate, ResolutionResult,
+  EntityNode, EntityEdge, EntityMatchCandidate,
   ConfidenceScore, MLIPGraph, getConfidenceLevel, IntelLayer
 } from '../../src/types/mlip';
 import crypto from 'crypto';
@@ -53,13 +53,20 @@ export class EntityResolutionEngine {
   // ─── Levenshtein Distance ─────────────────────────────────────────────
   private levenshtein(s1: string, s2: string): number {
     const m = s1.length, n = s2.length;
-    const dp = Array.from({ length: m + 1 }, (_, i) => Array.from({ length: n + 1 }, (_, j) => i === 0 ? j : j === 0 ? i : 0));
+    const dp: number[][] = Array.from({ length: m + 1 }, (_, i) =>
+      Array.from({ length: n + 1 }, (_, j) => i === 0 ? j : j === 0 ? i : 0)
+    );
     for (let i = 1; i <= m; i++) {
       for (let j = 1; j <= n; j++) {
-        dp[i][j] = s1[i-1] === s2[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+        const cost = s1[i-1] === s2[j-1] ? 0 : 1;
+        dp[i]![j] = Math.min(
+          dp[i-1]![j]! + 1,
+          dp[i]![j-1]! + 1,
+          dp[i-1]![j-1]! + cost
+        );
       }
     }
-    return dp[m][n];
+    return dp[m]![n]!;
   }
 
   private normalizedEditSimilarity(s1: string, s2: string): number {
@@ -98,25 +105,25 @@ export class EntityResolutionEngine {
     const matchedFields: string[] = [];
 
     // Name similarity (weighted 0.4)
-    const n1 = (a.fullName || a.name || node1.label || '').toLowerCase();
-    const n2 = (b.fullName || b.name || node2.label || '').toLowerCase();
+    const n1 = (a['fullName'] || a['name'] || node1.label || '').toLowerCase();
+    const n2 = (b['fullName'] || b['name'] || node2.label || '').toLowerCase();
     if (n1 && n2) {
       const nameSim = this.jaroWinkler(n1, n2);
       if (nameSim > 0.85) { score += nameSim * 0.4; matchedFields.push('name'); }
     }
 
     // Date of birth (weighted 0.3)
-    if (a.dateOfBirth && b.dateOfBirth && a.dateOfBirth === b.dateOfBirth) {
+    if (a['dateOfBirth'] && b['dateOfBirth'] && a['dateOfBirth'] === b['dateOfBirth']) {
       score += 0.3; matchedFields.push('dateOfBirth');
     }
 
     // Country/nationality (weighted 0.1)
-    if (a.country && b.country && a.country === b.country) {
+    if (a['country'] && b['country'] && a['country'] === b['country']) {
       score += 0.1; matchedFields.push('country');
     }
 
     // Photo hash (weighted 0.3)
-    if (a.faceHash && b.faceHash && a.faceHash === b.faceHash) {
+    if (a['faceHash'] && b['faceHash'] && a['faceHash'] === b['faceHash']) {
       score += 0.3; matchedFields.push('faceHash');
     }
 
@@ -134,11 +141,11 @@ export class EntityResolutionEngine {
   // ─── Fuzzy Match ──────────────────────────────────────────────────────
   fuzzyMatch(node1: EntityNode, candidates: EntityNode[]): EntityMatchCandidate[] {
     const results: EntityMatchCandidate[] = [];
-    const label1 = (node1.attributes?.fullName || node1.attributes?.name || node1.label || '');
+    const label1 = (node1.attributes?.['fullName'] || node1.attributes?.['name'] || node1.label || '');
 
     for (const candidate of candidates) {
       if (candidate.id === node1.id || candidate.type !== node1.type) continue;
-      const label2 = (candidate.attributes?.fullName || candidate.attributes?.name || candidate.label || '');
+      const label2 = (candidate.attributes?.['fullName'] || candidate.attributes?.['name'] || candidate.label || '');
 
       const jw = this.jaroWinkler(label1, label2);
       const ed = this.normalizedEditSimilarity(label1, label2);
@@ -168,6 +175,7 @@ export class EntityResolutionEngine {
     // Auto-create edges from shared attributes
     for (let i = 0; i < relatedNodes.length; i++) {
       const node = relatedNodes[i];
+      if (!node) continue;
 
       // Determine edge type based on node types
       let edgeType: EntityEdge['type'] = 'REFERENCES';

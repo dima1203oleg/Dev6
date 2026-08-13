@@ -18,12 +18,11 @@ export class TEST004_QueryExecution extends BaseTest {
       const warnings: string[] = [];
 
       const startTime = new Date();
-      details.start_time = startTime.toISOString();
-      details.test_ipn = context.test_ipn;
+      details['start_time'] = startTime.toISOString();
+      details['test_ipn'] = context.test_ipn;
 
       try {
         const endpoint = context.source_config.endpoint_or_resource;
-        const authType = context.source_config.auth_type;
         
         // Prepare headers based on auth type
         const headers: Record<string, string> = {
@@ -52,33 +51,33 @@ export class TEST004_QueryExecution extends BaseTest {
         clearTimeout(timeoutId);
         
         const endTime = new Date();
-        details.end_time = endTime.toISOString();
-        details.execution_time_ms = endTime.getTime() - startTime.getTime();
-        details.http_code = response.status;
-        details.http_status_text = response.statusText;
+        details['end_time'] = endTime.toISOString();
+        details['execution_time_ms'] = endTime.getTime() - startTime.getTime();
+        details['http_code'] = response.status;
+        details['http_status_text'] = response.statusText;
         
         // Get response body
         const responseBody = await response.text();
-        details.response_size_bytes = responseBody.length;
-        details.response_preview = responseBody.substring(0, 200);
+        details['response_size_bytes'] = responseBody.length;
+        details['response_preview'] = responseBody.substring(0, 200);
         
         if (!response.ok) {
           errors.push(`Query failed with HTTP ${response.status}: ${response.statusText}`);
-          details.error_message = responseBody;
+          details['error_message'] = responseBody;
         } else {
-          details.query_status = 'SUCCESS';
+          details['query_status'] = 'SUCCESS';
           
           // Check if response contains data
           if (responseBody.length === 0) {
             warnings.push('Query returned empty response');
-            details.query_status = 'EMPTY_RESPONSE';
+            details['query_status'] = 'EMPTY_RESPONSE';
           }
         }
         
       } catch (error) {
         const endTime = new Date();
-        details.end_time = endTime.toISOString();
-        details.execution_time_ms = endTime.getTime() - startTime.getTime();
+        details['end_time'] = endTime.toISOString();
+        details['execution_time_ms'] = endTime.getTime() - startTime.getTime();
         
         if (error instanceof Error) {
           if (error.name === 'AbortError') {
@@ -89,7 +88,7 @@ export class TEST004_QueryExecution extends BaseTest {
         } else {
           errors.push(`Query execution failed: ${String(error)}`);
         }
-        details.error_message = error instanceof Error ? error.message : String(error);
+        details['error_message'] = error instanceof Error ? error.message : String(error);
       }
 
       return { details, errors, warnings };
@@ -132,12 +131,12 @@ export class TEST004_QueryExecution extends BaseTest {
     const params: Record<string, string> = {};
     
     // Add IPN parameter
-    params.ipn = context.test_ipn;
+    params['ipn'] = context.test_ipn;
     
     // Add source-specific parameters based on supported identifiers
     const supportedIdentifiers = context.source_config.supported_identifiers;
     if (supportedIdentifiers.includes('ipn')) {
-      params.ipn = context.test_ipn;
+      params['ipn'] = context.test_ipn;
     }
     
     return params;

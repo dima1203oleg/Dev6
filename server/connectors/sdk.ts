@@ -1,4 +1,4 @@
-import { executeWithConnectorLogging, logConnectorEvent } from "./connectorLogger";
+import { executeWithConnectorLogging } from "./connectorLogger";
 
 export interface ConnectorMetadata {
   id: string;

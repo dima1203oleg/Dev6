@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  AlertOctagon, Scale, FileSearch, ShieldAlert, AlertTriangle, 
-  BookOpen, Gavel, FileDigit, CheckCircle2, Search, Crosshair, 
-  Network, ExternalLink, Info, Shield, Activity, Skull, Flame, 
-  FileWarning, Download, Copy, Filter, Check, Database, Globe, 
-  Lock, Terminal, RefreshCw, Zap, Share2, User, Building2,
-  FileText, Sparkles, Layers, ListFilter, ArrowRight, Eye, Trash2, X
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
+import {
+  AlertOctagon, ShieldAlert,
+  Gavel, FileDigit, CheckCircle2, Search,
+  Network, ExternalLink, Shield, Activity, Skull, Flame,
+  FileWarning, Download, Copy, Check, Database,
+  User, Building2,
+  FileText, Eye, Trash2
 } from 'lucide-react';
 import * as d3 from 'd3';
 import { 
@@ -343,7 +343,7 @@ export default function AdverseIntelligencePanel({ personName = 'ТОВ "Аль�
       .attr("in2", "blur")
       .attr("operator", "over");
 
-    const simulation = d3.forceSimulation<EvidenceNode>(currentSubject.nodes)
+    const simulation = d3.forceSimulation<EvidenceNode>(currentSubject.nodes as EvidenceNode[])
       .force("link", d3.forceLink<EvidenceNode, EvidenceLink>(currentSubject.links).id(d => d.id).distance(130))
       .force("charge", d3.forceManyBody().strength(-450))
       .force("center", d3.forceCenter(width / 2, height / 2))
@@ -372,19 +372,19 @@ export default function AdverseIntelligencePanel({ personName = 'ТОВ "Аль�
     // Nodes Group
     const nodeGroup = svg.append("g")
       .selectAll<SVGGElement, EvidenceNode>("g")
-      .data(currentSubject.nodes)
+      .data(currentSubject.nodes as EvidenceNode[])
       .enter().append("g")
       .call(d3.drag<SVGGElement, EvidenceNode>()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended))
-      .on("click", (event: any, d: any) => {
+      .on("click", (_event: any, d: any) => {
         setActiveNode(prev => prev === d.id ? null : d.id);
         showToast(`Обрано вузол: ${d.label}`, 'info');
       });
 
     // Node Circles
-    const nodeCircles = nodeGroup.append("circle")
+    nodeGroup.append("circle")
       .attr("r", 22)
       .attr("fill", "#090d16")
       .attr("stroke", (d: any) => d.riskLevel === 'high' ? 'rgba(244, 63, 94, 0.8)' : d.riskLevel === 'medium' ? 'rgba(245, 158, 11, 0.8)' : 'rgba(16, 185, 129, 0.8)')

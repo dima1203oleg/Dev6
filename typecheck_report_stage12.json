@@ -1,0 +1,26 @@
+{
+  "stage": "STAGE_12_FRONTEND_APP_TSX_UNUSED_VARIABLES",
+  "timestamp": "2026-08-10T04:15:00Z",
+  "previous_errors": 1662,
+  "current_errors": 1654,
+  "delta": -8,
+  "top_categories_fixed": [
+    "TS6133 - Unused variables (App.tsx state variables and functions)"
+  ],
+  "files_changed": [
+    "src/App.tsx"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining frontend components and other errors"
+}

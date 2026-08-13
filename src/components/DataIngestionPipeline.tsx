@@ -1,33 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 import {
   Play,
   Pause,
   RotateCcw,
   Zap,
-  CheckCircle2,
   AlertTriangle,
   Clock,
   Activity,
-  Database,
-  Cpu,
-  Server,
-  Layers,
   Sparkles,
-  ArrowRight,
   Terminal,
-  ShieldAlert,
-  Search,
-  Sliders,
-  Radio,
   Network,
-  FileCode,
-  HardDrive,
-  RefreshCw,
   Box,
   Check,
-  ChevronRight,
-  Filter,
 } from "lucide-react";
 
 export interface PipelineStep {
@@ -190,12 +175,12 @@ export default function DataIngestionPipeline() {
   const [speedMultiplier, setSpeedMultiplier] = useState<number>(1);
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(4); // Step 5 actively running
   const [processedRows, setProcessedRows] = useState<number>(142500);
-  const [totalRows, setTotalRows] = useState<number>(250000);
+  const [totalRows, _setTotalRows] = useState<number>(250000);
   const [speedRowsPerSec, setSpeedRowsPerSec] = useState<number>(12800);
   const [invalidRecords, setInvalidRecords] = useState<number>(18);
   const [elapsedSec, setElapsedSec] = useState<number>(38);
   const [selectedSource, setSelectedSource] = useState<string>("customs_s3");
-  const [selectedStepDetail, setSelectedStepDetail] = useState<PipelineStep | null>(PIPELINE_STEPS[4]);
+  const [selectedStepDetail, setSelectedStepDetail] = useState<PipelineStep | null>(PIPELINE_STEPS[4] || null);
   const [logMessages, setLogMessages] = useState<Array<{ time: string; level: string; msg: string; step: string }>>([
     { time: "00:00:02", level: "INFO", msg: "З'єднання з s3://customs-data-lake/ua_declarations_2026.parquet успішно встановлено.", step: "Source Discovery" },
     { time: "00:00:05", level: "SUCCESS", msg: "Згенеровано динамічний Parquet AST-парсер із нульовим копіюванням у пам'яті.", step: "Parser Generation" },
@@ -248,8 +233,8 @@ export default function DataIngestionPipeline() {
               {
                 time: nowTime,
                 level: nextIndex === PIPELINE_STEPS.length - 1 ? "SUCCESS" : "RUNNING",
-                msg: `Етап [${nextStep.name}] виконується: ${nextStep.description}`,
-                step: nextStep.name,
+                msg: nextStep ? `Етап [${nextStep.name}] виконується: ${nextStep.description}` : "Етап виконується",
+                step: nextStep?.name || "Unknown",
               },
             ]);
 

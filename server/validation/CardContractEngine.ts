@@ -5,7 +5,7 @@
  * Ensures data quality, completeness, and compliance before card generation
  */
 
-import { IntelligenceDossier, EntityType, VerificationStatus } from '../../src/types/predator.js';
+import { IntelligenceDossier, EntityType } from '../../src/types/predator.js';
 
 export interface CardContract {
   id: string;

@@ -32,7 +32,6 @@ export interface CategoryFlowReport {
 }
 
 export class DataFlowAuditor {
-  private auditLog: Map<string, DataFlowStage[]> = new Map();
 
   /**
    * Завдання 1: Провести End-to-End Audit всього pipeline
@@ -410,7 +409,7 @@ export class DataFlowAuditor {
    * Stage 7: Audit Frontend Store
    * Note: This requires frontend instrumentation
    */
-  private async auditFrontendStore(code: string, identifierType: 'ipn' | 'edrpou'): Promise<DataFlowStage> {
+  private async auditFrontendStore(code: string, _identifierType: 'ipn' | 'edrpou'): Promise<DataFlowStage> {
     const startTime = Date.now();
     const errors: string[] = [];
 
@@ -432,7 +431,7 @@ export class DataFlowAuditor {
    * Stage 8: Audit React Components
    * Note: This requires component instrumentation
    */
-  private async auditReactComponents(code: string, identifierType: 'ipn' | 'edrpou'): Promise<DataFlowStage> {
+  private async auditReactComponents(code: string, _identifierType: 'ipn' | 'edrpou'): Promise<DataFlowStage> {
     const startTime = Date.now();
     const errors: string[] = [];
 
@@ -482,7 +481,7 @@ export class DataFlowAuditor {
       const current = stages[i];
       const next = stages[i + 1];
       
-      if (current.stage.recordCount > 0 && next.stage.recordCount === 0) {
+      if (current?.stage?.recordCount && current.stage.recordCount > 0 && next?.stage?.recordCount === 0) {
         lossPoint = `${current.name} → ${next.name}`;
         break;
       }

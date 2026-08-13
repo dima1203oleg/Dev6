@@ -1,0 +1,155 @@
+{
+  "timestamp": "2026-08-09T21:36:54.818Z",
+  "total_errors": 1897,
+  "error_categories": {
+    "UNUSED_VARIABLE": 837,
+    "UNUSED_PARAMETER": 0,
+    "IMPLICIT_ANY": 57,
+    "NULLABILITY": 382,
+    "MISSING_PROPERTY": 122,
+    "TYPE_MISMATCH": 75,
+    "IMPORT": 2,
+    "EXPORT": 2,
+    "MODULE": 0,
+    "INDEX_SIGNATURE": 325,
+    "OTHER": 95
+  },
+  "top_10_root_causes": [
+    {
+      "cause": "TS2532: Object is possibly 'undefined'.",
+      "count": 114
+    },
+    {
+      "cause": "TS6133: 'React' is declared but its value is never read.",
+      "count": 38
+    },
+    {
+      "cause": "TS18048: 'selectedPerson' is possibly 'undefined'.",
+      "count": 38
+    },
+    {
+      "cause": "TS18048: 'selectedSource' is possibly 'undefined'.",
+      "count": 32
+    },
+    {
+      "cause": "TS2345: Argument of type 'string | undefined' is not assig",
+      "count": 21
+    },
+    {
+      "cause": "TS7030: Not all code paths return a value.",
+      "count": 19
+    },
+    {
+      "cause": "TS2322: Type 'string | undefined' is not assignable to typ",
+      "count": 17
+    },
+    {
+      "cause": "TS6133: 'AlertTriangle' is declared but its value is never",
+      "count": 17
+    },
+    {
+      "cause": "TS18048: 'activeAlert' is possibly 'undefined'.",
+      "count": 16
+    },
+    {
+      "cause": "TS6133: 'FileText' is declared but its value is never read",
+      "count": 15
+    }
+  ],
+  "top_20_files": [
+    {
+      "file": "components/AutonomousFactory.tsx",
+      "count": 98
+    },
+    {
+      "file": "components/LiveAnalyticalCore.tsx",
+      "count": 70
+    },
+    {
+      "file": "components/PersonProfiler.tsx",
+      "count": 60
+    },
+    {
+      "file": "components/DataIngestionTab.tsx",
+      "count": 57
+    },
+    {
+      "file": "components/FreeSourcesTab.tsx",
+      "count": 48
+    },
+    {
+      "file": "App.tsx",
+      "count": 43
+    },
+    {
+      "file": "components/LiveAnalyticalCenter.tsx",
+      "count": 43
+    },
+    {
+      "file": "components/InvestigationSandbox.tsx",
+      "count": 41
+    },
+    {
+      "file": "tests/automated/tests/TEST003_Authentication.ts",
+      "count": 38
+    },
+    {
+      "file": "components/MediaForensicsTab.tsx",
+      "count": 33
+    },
+    {
+      "file": "components/ArchitectureTab.tsx",
+      "count": 32
+    },
+    {
+      "file": "components/DossierView.tsx",
+      "count": 29
+    },
+    {
+      "file": "components/MapsTab.tsx",
+      "count": 29
+    },
+    {
+      "file": "components/AdminBackOffice.tsx",
+      "count": 28
+    },
+    {
+      "file": "components/RiskAlertTicker.tsx",
+      "count": 28
+    },
+    {
+      "file": "components/DataOnboardingCenter.tsx",
+      "count": 26
+    },
+    {
+      "file": "components/ConnectorHealthDashboard.tsx",
+      "count": 25
+    },
+    {
+      "file": "components/MasterSpecificationViewer.tsx",
+      "count": 25
+    },
+    {
+      "file": "components/OsintWorkbench.tsx",
+      "count": 25
+    },
+    {
+      "file": "components/AdverseIntelligencePanel.tsx",
+      "count": 24
+    }
+  ],
+  "summary": {
+    "most_common_category": [
+      "UNUSED_VARIABLE",
+      837
+    ],
+    "most_common_root_cause": {
+      "cause": "TS2532: Object is possibly 'undefined'.",
+      "count": 114
+    },
+    "most_problematic_file": {
+      "file": "components/AutonomousFactory.tsx",
+      "count": 98
+    }
+  }
+}

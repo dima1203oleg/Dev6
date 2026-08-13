@@ -3,9 +3,8 @@
  * Report Generator for UI Integration Tests
  */
 
-import { UIIntegrationTestReport, ScenarioTestResult } from './types';
+import { UIIntegrationTestReport } from './types';
 import * as fs from 'fs';
-import * as path from 'path';
 
 export class UIReportGenerator {
   static generateJSONReport(

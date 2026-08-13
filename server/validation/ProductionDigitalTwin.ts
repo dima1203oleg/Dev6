@@ -259,7 +259,7 @@ export class ProductionDigitalTwin {
   private reduceSize(size: string, factor: number): string {
     // Parse size like "100Gi" and reduce by factor
     const match = size.match(/^(\d+)(Gi|Mi|GB|MB)$/);
-    if (!match) return size;
+    if (!match || !match[1]) return size;
     
     const value = parseInt(match[1]);
     const unit = match[2];
@@ -274,7 +274,7 @@ export class ProductionDigitalTwin {
   private generateTestSecrets(prodSecrets: any): Map<string, string> {
     const testSecrets = new Map<string, string>();
     
-    for (const [key, value] of Object.entries(prodSecrets)) {
+    for (const [key, _value] of Object.entries(prodSecrets)) {
       // Generate test values for secrets
       testSecrets.set(key, `TEST_${key}_${Date.now()}`);
     }
@@ -321,7 +321,7 @@ export class ProductionDigitalTwin {
   /**
    * Detect configuration drift
    */
-  private detectConfigDrift(twin: DigitalTwinConfig, productionConfig: any): ConfigDrift[] {
+  private detectConfigDrift(_twin: DigitalTwinConfig, _productionConfig: any): ConfigDrift[] {
     const drift: ConfigDrift[] = [];
     
     // TODO: Implement actual config comparison

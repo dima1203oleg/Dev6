@@ -64,7 +64,7 @@ export class UIWebInterfaceValidator extends BaseGoldenValidator {
     return results;
   }
 
-  private validateCorrectCardOpened(backendData: any, uiData: any): GoldenValidationResult {
+  private validateCorrectCardOpened(_backendData: any, uiData: any): GoldenValidationResult {
     if (!uiData || !uiData.header) {
       return this.createValidationResult(
         'ui_interface',
@@ -150,7 +150,7 @@ export class UIWebInterfaceValidator extends BaseGoldenValidator {
     return this.createValidationResult('ui_interface', 'pib_matches', backendPIB, uiPIB);
   }
 
-  private validateIPNDisplayedCorrectly(backendData: any, uiData: any): GoldenValidationResult {
+  private validateIPNDisplayedCorrectly(_backendData: any, uiData: any): GoldenValidationResult {
     if (!uiData || !uiData.header) {
       return this.createValidationResult('ui_interface', 'ipn_displayed', this.testIPN, null, 'MISSING_DATA');
     }

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Bot, Send, X, Sparkles, ShieldAlert, FileText, CheckCircle2, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+import { Send, X, Sparkles, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Dossier } from '../types';
 

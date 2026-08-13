@@ -83,7 +83,7 @@ router.post(
       
       console.log(`[Search Route] Calling intelligenceOrchestrator.buildDossier with entityId: ${entityId}, identifiers:`, identifiers);
       
-      // Use IntelligenceOrchestrator directly for real data fetching
+      // PRODUCTION MODE: No demo fallback - use real intelligence orchestrator
       const backendDossier = await intelligenceOrchestrator.buildDossier(entityId, identifiers);
       
       console.log(`[Search Route] Dossier received, entity:`, backendDossier.entity ? backendDossier.entity.canonicalName : 'null');
@@ -435,8 +435,9 @@ router.post(
         },
         queryPlan: plan,
       });
-    } catch (err: any) {
-      res.status(500).json({ error: { code: "QUERY_PLAN_FAILED", message: err.message } });
+    } catch (err: unknown) {
+      const error = err as Error;
+      return res.status(500).json({ error: { code: "QUERY_PLAN_FAILED", message: error.message } });
     }
   }
 );

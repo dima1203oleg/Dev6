@@ -1,12 +1,12 @@
 import React from 'react';
-import { Briefcase, ShoppingCart, Award, Building, Activity, FileText } from 'lucide-react';
+import { Briefcase, ShoppingCart, Building, FileText } from 'lucide-react';
 
 interface ProcurementCardProps {
   entity: any;
   procurementData?: any;
 }
 
-export const ProcurementCard: React.FC<ProcurementCardProps> = ({ entity, procurementData }) => {
+export const ProcurementCard: React.FC<ProcurementCardProps> = ({ entity: _entity, procurementData }) => {
   const tenders = procurementData?.tenders || [];
   const tendersCount = procurementData?.tendersCount || tenders.length;
   const totalValue = procurementData?.totalValue || 0;

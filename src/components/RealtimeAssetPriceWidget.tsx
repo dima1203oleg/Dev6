@@ -4,24 +4,14 @@
  * Real-Time Asset Price & Market Dynamics Indicator Widget
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
-  TrendingUp,
-  TrendingDown,
   Activity,
-  DollarSign,
   RefreshCw,
-  Zap,
-  Sparkles,
   ArrowUpRight,
   ArrowDownRight,
-  Coins,
-  Globe,
   Clock,
   ShieldAlert,
-  BarChart2,
-  CheckCircle2,
-  Filter,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -143,7 +133,6 @@ export default function RealtimeAssetPriceWidget() {
   >("ALL");
   const [isLiveFeedActive, setIsLiveFeedActive] = useState(true);
   const [selectedAsset, setSelectedAsset] = useState<AssetPriceData | null>(null);
-  const [lastGlobalTickTime, setLastGlobalTickTime] = useState<string>("");
 
   // Ticker animation simulator
   useEffect(() => {
@@ -154,6 +143,8 @@ export default function RealtimeAssetPriceWidget() {
         // Pick 1 or 2 random assets to update tick
         const updatedIndex = Math.floor(Math.random() * prevAssets.length);
         const assetToUpdate = prevAssets[updatedIndex];
+
+        if (!assetToUpdate) return prevAssets;
 
         // Random price oscillation between -0.6% and +0.6%
         const percentChange = (Math.random() - 0.49) * 0.012;
@@ -183,8 +174,6 @@ export default function RealtimeAssetPriceWidget() {
           minute: "2-digit",
           second: "2-digit",
         });
-
-        setLastGlobalTickTime(nowStr);
 
         return prevAssets.map((a, idx) =>
           idx === updatedIndex
@@ -304,7 +293,6 @@ export default function RealtimeAssetPriceWidget() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {filteredAssets.map((asset) => {
           const isPositive = asset.change24h >= 0;
-          const isRecentlyUpdated = asset.lastTickDirection && asset.lastTickDirection !== "flat";
 
           return (
             <motion.div
@@ -436,7 +424,7 @@ export default function RealtimeAssetPriceWidget() {
                           {/* Circle on last point */}
                           <circle
                             cx="100"
-                            cy={30 - ((asset.history[asset.history.length - 1] - min) / range) * 25}
+                            cy={30 - (((asset.history[asset.history.length - 1] || 0) - min) / range) * 25}
                             r="3"
                             fill={isPositive ? "#10b981" : "#f43f5e"}
                             className="animate-ping"

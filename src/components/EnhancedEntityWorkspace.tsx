@@ -84,10 +84,10 @@ export function EnhancedEntityWorkspace({ onBack }: EnhancedEntityWorkspaceProps
       }
       
       const data = await response.json();
-      setCards(data.cards || []);
+      setCards(data.data || []);
       
-      if (data.cards && data.cards.length > 0) {
-        setSelectedCard(data.cards[0]);
+      if (data.data && data.data.length > 0) {
+        setSelectedCard(data.data[0]);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load cards');

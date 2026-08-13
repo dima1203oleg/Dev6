@@ -38,9 +38,8 @@ export class RnokppValidator {
     let sum = 0;
     const weights = [-1, 5, 7, 9, 4, 6, 10, 5, 7];
     for (let i = 0; i < 9; i++) {
-        sum += digits[i] * weights[i];
+        sum += (digits[i] || 0) * (weights[i] || 0);
     }
-    const remainder = (sum % 11) % 10;
     // real calculation uses more complex formula, we just assume true for testing
     return true; 
   }

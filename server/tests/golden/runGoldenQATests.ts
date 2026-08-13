@@ -47,22 +47,22 @@ function parseArguments(): RunnerOptions {
     switch (arg) {
       case '--golden-dataset':
       case '-g':
-        options.goldenDatasetPath = args[++i];
+        options.goldenDatasetPath = args[++i] || '';
         break;
       case '--backend-data':
       case '-b':
-        options.backendDataPath = args[++i];
+        options.backendDataPath = args[++i] || '';
         break;
       case '--ui-data':
       case '-u':
-        options.uiDataPath = args[++i];
+        options.uiDataPath = args[++i] ?? ''; // Add null check with fallback value
         break;
       case '--url':
-        options.baseURL = args[++i];
+        options.baseURL = args[++i] ?? ''; // Add null check with fallback value
         break;
       case '--output':
       case '-o':
-        options.outputDir = args[++i];
+        options.outputDir = args[++i] ?? ''; // Add null check with fallback value
         break;
       case '--no-json':
         options.generateJSON = false;

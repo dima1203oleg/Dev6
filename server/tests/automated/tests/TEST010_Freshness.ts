@@ -43,32 +43,32 @@ export class TEST010_Freshness extends BaseTest {
         // Extract freshness information
         const freshness = this.extractFreshnessInfo(jsonData, response, context);
         
-        details.last_updated = freshness.last_updated?.toISOString() || null;
-        details.age_seconds = freshness.age_seconds;
-        details.ttl_seconds = freshness.ttl_seconds;
-        details.cache_status = freshness.cache_status;
+        details['last_updated'] = freshness.last_updated?.toISOString() || null;
+        details['age_seconds'] = freshness.age_seconds;
+        details['ttl_seconds'] = freshness.ttl_seconds;
+        details['cache_status'] = freshness.cache_status;
         
         // Check if data is fresh enough
         const maxAge = this.getMaxAge(context.source_config.update_frequency);
-        details.max_age_seconds = maxAge;
-        details.freshness_acceptable = freshness.age_seconds !== null && freshness.age_seconds <= maxAge;
+        details['max_age_seconds'] = maxAge;
+        details['freshness_acceptable'] = freshness.age_seconds !== null && freshness.age_seconds <= maxAge;
         
         if (freshness.age_seconds === null) {
           warnings.push('Could not determine data age - no timestamp found');
-        } else if (!details.freshness_acceptable) {
+        } else if (!details['freshness_acceptable']) {
           warnings.push(`Data is stale: ${freshness.age_seconds}s old (max: ${maxAge}s)`);
         }
         
         // Check cache headers
         const cacheInfo = this.checkCacheHeaders(response);
-        details.cache_control = cacheInfo.cacheControl;
-        details.etag = cacheInfo.etag;
-        details.last_modified = cacheInfo.lastModified;
+        details['cache_control'] = cacheInfo.cacheControl;
+        details['etag'] = cacheInfo.etag;
+        details['last_modified'] = cacheInfo.lastModified;
         
         if (cacheInfo.cacheControl) {
           const maxAgeHeader = this.extractMaxAge(cacheInfo.cacheControl);
           if (maxAgeHeader) {
-            details.max_age_header = maxAgeHeader;
+            details['max_age_header'] = maxAgeHeader;
           }
         }
         
@@ -83,7 +83,7 @@ export class TEST010_Freshness extends BaseTest {
     return this.createResult(status, result.details, result.errors, result.warnings, durationMs);
   }
 
-  private extractFreshnessInfo(data: any, response: Response, context: TestContext): FreshnessInfo {
+  private extractFreshnessInfo(data: any, response: Response, _context: TestContext): FreshnessInfo {
     const freshness: FreshnessInfo = {
       last_updated: null,
       age_seconds: null,
@@ -132,7 +132,7 @@ export class TEST010_Freshness extends BaseTest {
         freshness.cache_status = 'HIT';
         const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
         if (maxAgeMatch) {
-          freshness.ttl_seconds = parseInt(maxAgeMatch[1], 10);
+          freshness.ttl_seconds = parseInt(maxAgeMatch[1] || '0', 10);
         }
       }
     }
@@ -171,7 +171,7 @@ export class TEST010_Freshness extends BaseTest {
 
   private extractMaxAge(cacheControl: string): number | null {
     const match = cacheControl.match(/max-age=(\d+)/);
-    return match ? parseInt(match[1], 10) : null;
+    return match ? parseInt(match[1] || '0', 10) : null;
   }
 
   private determineStatus(errors: string[], warnings: string[]): TestStatus {

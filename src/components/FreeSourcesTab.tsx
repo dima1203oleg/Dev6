@@ -8,48 +8,22 @@ import {
   QueryExecutionResult,
 } from "../lib/freeConnectors";
 import {
-  ShieldCheck,
   Search,
   Play,
   Terminal,
-  Database,
   Network,
   Cpu,
-  Layers,
   CheckCircle2,
-  ExternalLink,
   Key,
   Copy,
   Check,
   RefreshCw,
-  Sparkles,
-  Zap,
-  Globe,
-  Lock,
   Code,
-  Sliders,
-  Server,
   FileText,
-  AlertCircle,
-  HelpCircle,
-  Clock,
-  Building2,
-  Code2,
-  Activity,
-  Workflow,
   Wand2,
   Bot,
-  Filter,
-  Eye,
-  Settings,
   HardDrive,
-  FileCode2,
   Star,
-  Binary,
-  Compass,
-  Radar,
-  Radio,
-  Share2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useToast } from "./ToastProvider";
@@ -115,7 +89,7 @@ export default function FreeSourcesTab() {
     try {
       const res = await executeFreeConnectorQuery(selectedConnectorId, queryTerm);
       setQueryResult(res);
-      showToast(`Запит успішно виконано через ${selectedConnector.name}`, "success");
+      showToast(`Запит успішно виконано через ${selectedConnector?.name || 'connector'}`, "success");
     } catch (err) {
       showToast("Помилка виконання запиту", "error");
     } finally {
@@ -437,22 +411,22 @@ export class UniversalDiscoveredConnector extends BaseConnector {
         {/* Selected Connector Passport Summary Bar */}
         <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs font-mono">
           <div className="flex items-center gap-2">
-            <span className="text-base">{selectedConnector.flag}</span>
+            <span className="text-base">{selectedConnector?.flag || ''}</span>
             <div>
-              <span className="font-bold text-white">{selectedConnector.name}</span>
-              <span className="text-slate-500 ml-2">({selectedConnector.passport.owner})</span>
+              <span className="font-bold text-white">{selectedConnector?.name || 'Unknown'}</span>
+              <span className="text-slate-500 ml-2">({selectedConnector?.passport?.owner || 'Unknown'})</span>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-[11px]">
             <button
-              onClick={() => setActivePassportConnector(selectedConnector)}
+              onClick={() => setActivePassportConnector(selectedConnector || null)}
               className="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded-lg font-bold flex items-center gap-1 cursor-pointer transition-all"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>Паспорт Конектора (18 Параметрів)</span>
             </button>
             <span className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded font-bold">
-              Trust Score: {selectedConnector.passport.trustScore}%
+              Trust Score: {selectedConnector?.passport?.trustScore || 0}%
             </span>
           </div>
         </div>
@@ -928,12 +902,12 @@ export class UniversalDiscoveredConnector extends BaseConnector {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">1. Назва Джерела</span>
-                  <div className="text-white font-bold">{activePassportConnector.passport.sourceName}</div>
+                  <div className="text-white font-bold">{activePassportConnector.name}</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">2. Категорія</span>
-                  <div className="text-emerald-400 font-bold">{activePassportConnector.passport.category}</div>
+                  <div className="text-emerald-400 font-bold">{activePassportConnector.category}</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
@@ -963,58 +937,58 @@ export class UniversalDiscoveredConnector extends BaseConnector {
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">8. Бізнес-цінність (Business Value)</span>
-                  <div className="text-amber-400 font-bold text-sm">{activePassportConnector.passport.businessValueScore}%</div>
+                  <div className="text-amber-400 font-bold text-sm">N/A</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">9. Рівень ризику (Risk Rating)</span>
-                  <div className="text-emerald-400 font-bold">{activePassportConnector.passport.riskRating}</div>
+                  <div className="text-emerald-400 font-bold">N/A</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">10. Повнота даних (Completeness)</span>
-                  <div className="text-slate-200">{activePassportConnector.passport.completeness}%</div>
+                  <div className="text-slate-200">N/A</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">11. Частота оновлення</span>
-                  <div className="text-slate-200">{activePassportConnector.passport.updateFrequency}</div>
+                  <div className="text-slate-200">{activePassportConnector.passport.updateFreq || 'N/A'}</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">12. Середня затримка (Latency)</span>
-                  <div className="text-emerald-400 font-bold">{activePassportConnector.passport.latencyMs}ms</div>
+                  <div className="text-emerald-400 font-bold">N/A</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">13. Кількість сутностей</span>
-                  <div className="text-slate-200">{activePassportConnector.passport.entityCount}</div>
+                  <div className="text-slate-200">N/A</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">14. Кількість графових зв'язків</span>
-                  <div className="text-purple-400 font-bold">{activePassportConnector.passport.graphEdgesCount}</div>
+                  <div className="text-purple-400 font-bold">N/A</div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1 sm:col-span-2">
                   <span className="text-slate-400 text-[10px] uppercase">15. Підтримувані формати даних</span>
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    {activePassportConnector.passport.supportedDataTypes.map((dt) => (
+                    {activePassportConnector.passport.dataFormats?.map((dt) => (
                       <span key={dt} className="px-2 py-0.5 bg-slate-900 border border-slate-800 text-slate-300 rounded text-[10px]">
                         {dt}
                       </span>
-                    ))}
+                    )) || <span className="text-slate-500">N/A</span>}
                   </div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1 sm:col-span-2">
                   <span className="text-slate-400 text-[10px] uppercase">16. Вимоги авторизації</span>
                   <div className="flex flex-wrap gap-1.5 pt-1">
-                    {activePassportConnector.passport.authRequirements.map((ar) => (
-                      <span key={ar} className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded text-[10px] font-bold">
-                        {ar}
+                    {activePassportConnector.passport.authProtocol ? (
+                      <span className="px-2 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded text-[10px] font-bold">
+                        {activePassportConnector.passport.authProtocol}
                       </span>
-                    ))}
+                    ) : <span className="text-slate-500">N/A</span>}
                   </div>
                 </div>
 
@@ -1022,13 +996,13 @@ export class UniversalDiscoveredConnector extends BaseConnector {
                   <span className="text-slate-400 text-[10px] uppercase">17. Статус працездатності</span>
                   <div className="text-emerald-400 font-bold flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>{activePassportConnector.passport.healthStatus}</span>
+                    <span>N/A</span>
                   </div>
                 </div>
 
                 <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px] uppercase">18. AI Priority Score</span>
-                  <div className="text-indigo-400 font-bold text-sm">{activePassportConnector.passport.aiPriorityScore}%</div>
+                  <div className="text-indigo-400 font-bold text-sm">N/A</div>
                 </div>
               </div>
 
@@ -1130,7 +1104,7 @@ export class UniversalDiscoveredConnector extends BaseConnector {
   );
 }
 
-function PowerIcon({ enabled }: { enabled: boolean }) {
+function PowerIcon({ enabled: _enabled }: { enabled: boolean }) {
   return (
     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path

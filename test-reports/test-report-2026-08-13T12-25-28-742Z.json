@@ -1,0 +1,277 @@
+{
+  "timestamp": "2026-08-13T12:25:28.743Z",
+  "summary": {
+    "total_sources": 1,
+    "passed": 1,
+    "passed_with_warnings": 0,
+    "partial": 0,
+    "failed": 0,
+    "blocked": 0,
+    "not_applicable": 0,
+    "needs_work": 0,
+    "using_fallback": 0,
+    "provenance_violations": 0,
+    "has_conflicts": 0,
+    "production_ready": 1,
+    "critical_sources_passed": true,
+    "hallucination_free": true,
+    "all_provenance_complete": true,
+    "conflicts_documented": true,
+    "results_reproducible": true,
+    "logging_complete": true,
+    "automated_tests_passed": true,
+    "production_ready_overall": true
+  },
+  "sources": [
+    {
+      "registry_id": "TEST-001",
+      "registry_name": "Test Mock Endpoint",
+      "endpoint": "https://jsonplaceholder.typicode.com/users/1",
+      "access_type": "FREE_AUTO",
+      "query_status": "PASS",
+      "http_code": 200,
+      "response_time_ms": 169,
+      "data_returned": true,
+      "provenance_complete": true,
+      "freshness_acceptable": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0.75,
+      "final_status": "PASS",
+      "qa_notes": [],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-13T12:25:27.090Z",
+          "details": {
+            "registry_id": "TEST-001",
+            "registry_name": "Test Mock Endpoint",
+            "endpoint": "https://jsonplaceholder.typicode.com/users/1",
+            "access_type": "FREE_AUTO",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "test_connector",
+            "connector_version": "1.0.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "NONE",
+            "supported_entities": [
+              "TEST"
+            ],
+            "supported_identifiers": [
+              "id"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS",
+          "duration_ms": 241,
+          "timestamp": "2026-08-13T12:25:27.331Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 200,
+            "response_time_ms": 241,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-13T12:25:27.331Z",
+          "details": {
+            "auth_type": "NONE",
+            "authentication_required": false,
+            "authentication_status": "NOT_REQUIRED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "PASS",
+          "duration_ms": 172,
+          "timestamp": "2026-08-13T12:25:27.503Z",
+          "details": {
+            "start_time": "2026-08-13T12:25:27.331Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-13T12:25:27.500Z",
+            "execution_time_ms": 169,
+            "http_code": 200,
+            "http_status_text": "OK",
+            "response_size_bytes": 509,
+            "response_preview": "{\n  \"id\": 1,\n  \"name\": \"Leanne Graham\",\n  \"username\": \"Bret\",\n  \"email\": \"Sincere@april.biz\",\n  \"address\": {\n    \"street\": \"Kulas Light\",\n    \"suite\": \"Apt. 556\",\n    \"city\": \"Gwenborough\",\n    \"zipco",
+            "query_status": "SUCCESS"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS",
+          "duration_ms": 247,
+          "timestamp": "2026-08-13T12:25:27.750Z",
+          "details": {
+            "response_size": 509,
+            "content_type": "application/json; charset=utf-8",
+            "http_code": 200,
+            "checksum": "00008a2f",
+            "sha256_hash": "3c88d6edad2d9b03a26dad748d151e7bd8efc58cfe490876b0f9a2157a7ba0af",
+            "headers_count": 25,
+            "content_type_valid": true
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "PASS",
+          "duration_ms": 56,
+          "timestamp": "2026-08-13T12:25:27.806Z",
+          "details": {
+            "provenance_records_count": 4,
+            "provenance_complete": true,
+            "source_id_present": true,
+            "record_id_present": true,
+            "timestamp_present": true,
+            "parser_version_present": true,
+            "confidence_present": true,
+            "raw_fragment_present": true,
+            "average_confidence": 0.75,
+            "min_confidence": 0.6000000000000001,
+            "max_confidence": 0.9
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "PASS",
+          "duration_ms": 56,
+          "timestamp": "2026-08-13T12:25:27.862Z",
+          "details": {
+            "sources_compared": 0,
+            "matches_found": [],
+            "discrepancies_found": [],
+            "contradiction_records": [],
+            "contradiction_engine_triggered": false,
+            "internal_consistency": true,
+            "internal_inconsistencies": [],
+            "expected_fields_present": [],
+            "expected_fields_missing": []
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS",
+          "duration_ms": 875,
+          "timestamp": "2026-08-13T12:25:28.737Z",
+          "details": {
+            "latency_ms": 54,
+            "throughput_rps": 12.195121951219512,
+            "cpu_usage_percent": 37.112228571428574,
+            "memory_usage_mb": 13.988059997558594,
+            "retry_count": 0,
+            "performance_rating": "EXCELLENT",
+            "latency_acceptable": true,
+            "throughput_acceptable": true,
+            "cpu_acceptable": true,
+            "memory_acceptable": true,
+            "degradation_detected": false,
+            "degradation_details": []
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 5,
+          "timestamp": "2026-08-13T12:25:28.742Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        }
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@ export class ComintService {
 
   // ─── Email Breach Lookup (HaveIBeenPwned) ─────────────────────────────
   async emailBreachSearch(email: string): Promise<BreachRecord[]> {
-    const apiKey = process.env.HIBP_API_KEY;
+    const apiKey = process.env['HIBP_API_KEY'];
     if (!apiKey) {
       console.warn('[COMINT] HIBP_API_KEY not set — using public endpoint (limited)');
       return this.emailBreachPublicFallback(email);
@@ -74,7 +74,6 @@ export class ComintService {
 
   // ─── Full Breach Scan (email/phone/domain/username/IP) ─────────────────
   async breachScan(query: string, queryType: BreachSearchResult['queryType']): Promise<BreachSearchResult> {
-    const start = Date.now();
     let breaches: BreachRecord[] = [];
 
     if (queryType === 'EMAIL') {
@@ -97,7 +96,7 @@ export class ComintService {
     const result: PhoneIntelResult = { number: phone };
 
     // 1. Try AbstractAPI phone validation (free tier: 500/month)
-    const abstractKey = process.env.ABSTRACTAPI_PHONE_KEY;
+    const abstractKey = process.env['ABSTRACTAPI_PHONE_KEY'];
     if (abstractKey) {
       try {
         const res = await fetch(
@@ -114,8 +113,8 @@ export class ComintService {
       } catch {}
     }
 
-    // 2. Try NumVerify (free 100/month)
-    const numverifyKey = process.env.NUMVERIFY_API_KEY;
+    // 2. Try NumVerify (free tier: 250/month)
+    const numverifyKey = process.env['NUMVERIFY_API_KEY'];
     if (numverifyKey && !result.carrier) {
       try {
         const res = await fetch(
@@ -161,7 +160,7 @@ export class ComintService {
   async ipIntel(ip: string): Promise<IPIntelResult> {
     const result: IPIntelResult = { ip, version: ip.includes(':') ? 'v6' : 'v4' };
 
-    const ipinfoKey = process.env.IPINFO_API_KEY;
+    const ipinfoKey = process.env['IPINFO_API_KEY'];
     const url = ipinfoKey
       ? `https://ipinfo.io/${ip}?token=${ipinfoKey}`
       : `https://ipinfo.io/${ip}/json`;
@@ -207,7 +206,7 @@ export class ComintService {
     }
 
     // AbuseIPDB check
-    const abuseKey = process.env.ABUSEIPDB_API_KEY;
+    const abuseKey = process.env['ABUSEIPDB_API_KEY'];
     if (abuseKey) {
       try {
         const res = await fetch(
@@ -234,7 +233,7 @@ export class ComintService {
 
   // ─── Domain Passive DNS ────────────────────────────────────────────────
   async passiveDNS(domain: string): Promise<PassiveDNSRecord[]> {
-    const securityTrailsKey = process.env.SECURITYTRAILS_API_KEY;
+    const securityTrailsKey = process.env['SECURITYTRAILS_API_KEY'];
     if (securityTrailsKey) {
       try {
         const res = await fetch(

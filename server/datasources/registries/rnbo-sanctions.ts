@@ -196,7 +196,7 @@ export async function checkSanctionsStatus(
     
     if (searchResults.length > 0) {
       // Return the first result
-      return searchResults[0];
+      return searchResults[0] ?? null;
     }
   } catch (error) {
     console.error('[RNBO Sanctions] Search failed:', error);

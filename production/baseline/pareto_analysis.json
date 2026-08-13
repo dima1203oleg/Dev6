@@ -1,0 +1,395 @@
+{
+  "pareto_analysis_timestamp": "2026-08-09T21:26:21.071Z",
+  "baseline_total_errors": 1936,
+  
+  "top_10_error_categories": [
+    {
+      "rank": 1,
+      "category": "UNUSED_VARIABLE",
+      "count": 838,
+      "percentage": 43.3,
+      "cumulative_percentage": 43.3,
+      "priority": "HIGH",
+      "fix_strategy": "Remove unused variables or prefix with underscore"
+    },
+    {
+      "rank": 2,
+      "category": "OTHER",
+      "count": 441,
+      "percentage": 22.8,
+      "cumulative_percentage": 66.1,
+      "priority": "HIGH",
+      "fix_strategy": "Analyze and categorize remaining errors"
+    },
+    {
+      "rank": 3,
+      "category": "NULLABILITY",
+      "count": 395,
+      "percentage": 20.4,
+      "cumulative_percentage": 86.5,
+      "priority": "HIGH",
+      "fix_strategy": "Add proper null checks and optional chaining"
+    },
+    {
+      "rank": 4,
+      "category": "MISSING_PROPERTY",
+      "count": 122,
+      "percentage": 6.3,
+      "cumulative_percentage": 92.8,
+      "priority": "MEDIUM",
+      "fix_strategy": "Fix type definitions and property access"
+    },
+    {
+      "rank": 5,
+      "category": "TYPE_MISMATCH",
+      "count": 76,
+      "percentage": 3.9,
+      "cumulative_percentage": 96.7,
+      "priority": "MEDIUM",
+      "fix_strategy": "Fix type compatibility issues"
+    },
+    {
+      "rank": 6,
+      "category": "IMPLICIT_ANY",
+      "count": 57,
+      "percentage": 2.9,
+      "cumulative_percentage": 99.6,
+      "priority": "MEDIUM",
+      "fix_strategy": "Add proper type annotations"
+    },
+    {
+      "rank": 7,
+      "category": "UNUSED_PARAMETER",
+      "count": 0,
+      "percentage": 0.0,
+      "cumulative_percentage": 99.6,
+      "priority": "LOW",
+      "fix_strategy": "Prefix unused parameters with underscore"
+    },
+    {
+      "rank": 8,
+      "category": "EXPORT",
+      "count": 5,
+      "percentage": 0.3,
+      "cumulative_percentage": 99.9,
+      "priority": "LOW",
+      "fix_strategy": "Fix module exports"
+    },
+    {
+      "rank": 9,
+      "category": "IMPORT",
+      "count": 2,
+      "percentage": 0.1,
+      "cumulative_percentage": 100.0,
+      "priority": "LOW",
+      "fix_strategy": "Fix module imports"
+    },
+    {
+      "rank": 10,
+      "category": "MODULE",
+      "count": 0,
+      "percentage": 0.0,
+      "cumulative_percentage": 100.0,
+      "priority": "LOW",
+      "fix_strategy": "Fix module definitions"
+    }
+  ],
+  
+  "top_20_problematic_files": [
+    {
+      "rank": 1,
+      "file": "components/AutonomousFactory.tsx",
+      "errors": 98,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1-2 hours",
+      "production_critical": false
+    },
+    {
+      "rank": 2,
+      "file": "components/LiveAnalyticalCore.tsx",
+      "errors": 70,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 3,
+      "file": "components/PersonProfiler.tsx",
+      "errors": 60,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 4,
+      "file": "components/DataIngestionTab.tsx",
+      "errors": 57,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 5,
+      "file": "components/FreeSourcesTab.tsx",
+      "errors": 48,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 6,
+      "file": "services/EntityResolutionEngine.ts",
+      "errors": 45,
+      "package": "src",
+      "dominant_category": "NULLABILITY",
+      "estimated_fix_time": "2-3 hours",
+      "production_critical": true
+    },
+    {
+      "rank": 7,
+      "file": "App.tsx",
+      "errors": 43,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 8,
+      "file": "components/LiveAnalyticalCenter.tsx",
+      "errors": 43,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 9,
+      "file": "components/InvestigationSandbox.tsx",
+      "errors": 41,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 10,
+      "file": "tests/automated/tests/TEST003_Authentication.ts",
+      "errors": 38,
+      "package": "server",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 11,
+      "file": "components/MediaForensicsTab.tsx",
+      "errors": 33,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 12,
+      "file": "components/ArchitectureTab.tsx",
+      "errors": 32,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 13,
+      "file": "components/DossierView.tsx",
+      "errors": 29,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 14,
+      "file": "components/MapsTab.tsx",
+      "errors": 29,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 15,
+      "file": "components/AdminBackOffice.tsx",
+      "errors": 28,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 16,
+      "file": "components/RiskAlertTicker.tsx",
+      "errors": 28,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 17,
+      "file": "components/DataOnboardingCenter.tsx",
+      "errors": 26,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 18,
+      "file": "components/ConnectorHealthDashboard.tsx",
+      "errors": 25,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 19,
+      "file": "components/MasterSpecificationViewer.tsx",
+      "errors": 25,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    },
+    {
+      "rank": 20,
+      "file": "components/OsintWorkbench.tsx",
+      "errors": 25,
+      "package": "src",
+      "dominant_category": "UNUSED_VARIABLE",
+      "estimated_fix_time": "1 hour",
+      "production_critical": false
+    }
+  ],
+  
+  "root_cause_analysis": {
+    "high_impact_findings": [
+      {
+        "finding": "43% of errors are unused variables in frontend components",
+        "impact": "Quick wins possible - can be fixed systematically",
+        "estimated_errors_resolved": 838,
+        "fix_approach": "Mass fix of unused imports/variables in components"
+      },
+      {
+        "finding": "395 nullability errors indicate incomplete type safety",
+        "impact": "Runtime safety risk, needs proper null handling",
+        "estimated_errors_resolved": 395,
+        "fix_approach": "Add optional chaining and null checks"
+      },
+      {
+        "finding": "EntityResolutionEngine.ts has 45 errors and is production-critical",
+        "impact": "Core production logic affected",
+        "estimated_errors_resolved": 45,
+        "fix_approach": "Priority fix for core shared type"
+      },
+      {
+        "finding": "Module export/import issues in registry-discovery",
+        "impact": "Cascading type errors across modules",
+        "estimated_errors_resolved": 20,
+        "fix_approach": "Fix module exports first to reduce downstream errors"
+      }
+    ],
+    
+    "error_patterns": [
+      {
+        "pattern": "React components with unused imports",
+        "count": "high",
+        "files_affected": 15+ frontend components",
+        "recommended_fix": "Clean up unused imports systematically"
+      },
+      {
+        "pattern": "Test files with unused parameters",
+        "count": "medium",
+        "files_affected": "test files",
+        "recommended_fix": "Prefix unused test parameters with underscore"
+      },
+      {
+        "pattern": "Type definition issues in shared types",
+        "count": "medium",
+        "files_affected": "registry-discovery, validation",
+        "recommended_fix": "Fix core shared types to resolve downstream errors"
+      }
+    ]
+  },
+  
+  "fix_priority_matrix": {
+    "phase_a_configuration": {
+      "priority": "CRITICAL",
+      "estimated_errors_resolved": 0,
+      "root_cause_target": true,
+      "estimated_time": "30 minutes"
+    },
+    "phase_b_module_import_export": {
+      "priority": "HIGH",
+      "estimated_errors_resolved": 50,
+      "root_cause_target": true,
+      "estimated_time": "2 hours"
+    },
+    "phase_c_core_shared_types": {
+      "priority": "HIGH",
+      "estimated_errors_resolved": 200,
+      "root_cause_target": true,
+      "estimated_time": "4 hours"
+    },
+    "phase_d_backend": {
+      "priority": "MEDIUM",
+      "estimated_errors_resolved": 300,
+      "root_cause_target": false,
+      "estimated_time": "6 hours"
+    },
+    "phase_e_frontend": {
+      "priority": "MEDIUM",
+      "estimated_errors_resolved": 1200,
+      "root_cause_target": false,
+      "estimated_time": "8 hours"
+    },
+    "phase_f_library": {
+      "priority": "LOW",
+      "estimated_errors_resolved": 186,
+      "root_cause_target": false,
+      "estimated_time": "3 hours"
+    }
+  },
+  
+  "regression_protection": {
+    "certification_engine_files": [
+      "server/certification/RegistryCertifier.ts",
+      "server/certification/FakeDataScanner.ts",
+      "server/certification/HardcodedIdentifierScanner.ts",
+      "server/certification/EvidenceChain.ts",
+      "server/certification/ProductionAcceptanceContract.ts"
+    ],
+    "current_errors": 0,
+    "max_allowed": 0,
+    "protection_status": "ACTIVE"
+  },
+  
+  "recommended_fix_sequence": [
+    "1. Fix module export/import issues in registry-discovery (Phase B)",
+    "2. Fix core shared types and EntityResolutionEngine (Phase C)",
+    "3. Systematic cleanup of unused variables in frontend components (Phase E)",
+    "4. Add nullability checks throughout codebase (Phase D/E)",
+    "5. Fix remaining type mismatches and implicit any issues (Phase D/E)",
+    "6. Address library code issues (Phase F)"
+  ],
+  
+  "estimated_total_fix_time": "23.5 hours",
+  "confidence_level": "HIGH",
+  "notes": "Estimates based on error taxonomy analysis. Actual times may vary based on code complexity and interdependencies."
+}

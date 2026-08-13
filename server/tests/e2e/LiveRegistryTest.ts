@@ -7,8 +7,6 @@
  * Використання: npx tsx server/tests/e2e/LiveRegistryTest.ts
  */
 
-import crypto from 'crypto';
-
 const CONTROL_ID = '3111724753';
 
 interface TestResult {
@@ -312,7 +310,7 @@ async function testDiiaCity(): Promise<TestResult> {
 // ═══════════════════════════════════════════════
 async function discoverDataGovUaResources(): Promise<TestResult> {
   const queries = ['єдиний державний реєстр', 'фоп реєстр', 'юридичні особи реєстр'];
-  const url = `https://data.gov.ua/api/3/action/package_search?q=${encodeURIComponent(queries[0])}&rows=5`;
+  const url = `https://data.gov.ua/api/3/action/package_search?q=${encodeURIComponent(queries[0] || '')}&rows=5`;
   const start = Date.now();
   try {
     const res = await fetchWithTimeout(url);

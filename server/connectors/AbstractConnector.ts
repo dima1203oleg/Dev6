@@ -7,7 +7,8 @@ export type ConnectorStatus =
   | 'UNREACHABLE'         // API endpoint not responding
   | 'API_CONTRACT_UNKNOWN' // API exists but contract not verified
   | 'DISABLED'            // Explicitly disabled by administrator
-  | 'MAINTENANCE';        // API under maintenance
+  | 'MAINTENANCE'        // API under maintenance
+  | 'RATE_LIMITED';       // Rate limit exceeded
 
 export interface ConnectorResponse {
   status: 'SUCCESS' | 'FAILED' | 'NO_MATCH' | 'UNAVAILABLE';

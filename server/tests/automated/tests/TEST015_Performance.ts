@@ -23,19 +23,19 @@ export class TEST015_Performance extends BaseTest {
         // Measure performance metrics
         const metrics = await this.measurePerformance(endpoint, context);
         
-        details.latency_ms = metrics.latency_ms;
-        details.throughput_rps = metrics.throughput_rps;
-        details.cpu_usage_percent = metrics.cpu_usage_percent;
-        details.memory_usage_mb = metrics.memory_usage_mb;
-        details.retry_count = metrics.retry_count;
+        details['latency_ms'] = metrics.latency_ms;
+        details['throughput_rps'] = metrics.throughput_rps;
+        details['cpu_usage_percent'] = metrics.cpu_usage_percent;
+        details['memory_usage_mb'] = metrics.memory_usage_mb;
+        details['retry_count'] = metrics.retry_count;
         
         // Evaluate performance against thresholds
         const evaluation = this.evaluatePerformance(metrics);
-        details.performance_rating = evaluation.rating;
-        details.latency_acceptable = evaluation.latencyAcceptable;
-        details.throughput_acceptable = evaluation.throughputAcceptable;
-        details.cpu_acceptable = evaluation.cpuAcceptable;
-        details.memory_acceptable = evaluation.memoryAcceptable;
+        details['performance_rating'] = evaluation.rating;
+        details['latency_acceptable'] = evaluation.latencyAcceptable;
+        details['throughput_acceptable'] = evaluation.throughputAcceptable;
+        details['cpu_acceptable'] = evaluation.cpuAcceptable;
+        details['memory_acceptable'] = evaluation.memoryAcceptable;
         
         if (!evaluation.latencyAcceptable) {
           warnings.push(`Latency exceeds threshold: ${metrics.latency_ms}ms`);
@@ -55,8 +55,8 @@ export class TEST015_Performance extends BaseTest {
         
         // Check for performance degradation
         const degradationCheck = this.checkPerformanceDegradation(metrics);
-        details.degradation_detected = degradationCheck.detected;
-        details.degradation_details = degradationCheck.details;
+        details['degradation_detected'] = degradationCheck.detected;
+        details['degradation_details'] = degradationCheck.details;
         
         if (degradationCheck.detected) {
           warnings.push(`Performance degradation detected: ${degradationCheck.details.join(', ')}`);

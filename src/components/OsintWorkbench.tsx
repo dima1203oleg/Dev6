@@ -5,9 +5,9 @@
 
 import React, { useState, useMemo } from 'react';
 import { 
-  Search, ShieldAlert, Network, Map, Globe, Briefcase, User, 
-  DollarSign, FileText, Compass, Server, CheckCircle, HelpCircle, 
-  AlertTriangle, ArrowRight, Zap, RefreshCw, Send, Plus, Filter,
+  Search, ShieldAlert, Network, Globe, Briefcase, User, 
+  DollarSign, FileText, Server, 
+  AlertTriangle, Zap, RefreshCw, Filter,
   TrendingUp, ShieldCheck, Landmark, ChevronRight, Hash, Truck,
   X, Printer, FileDown, Eye, EyeOff, Sliders, Copy, Check, Calendar,
   MapPin, Layers, Database, Lock, Shield, ServerCrash, ExternalLink,
@@ -450,7 +450,6 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
   const [mapShowFlows, setMapShowFlows] = useState(true);
   const [mapShowHeatmap, setMapShowHeatmap] = useState(false);
   const [hoveredMapEntityId, setHoveredMapEntityId] = useState<string | null>(null);
-  const [mapHoverCoords, setMapHoverCoords] = useState<{ x: number; y: number } | null>(null);
 
   const handleCopyToClipboard = (text: string, fieldKey: string) => {
     navigator.clipboard.writeText(text);
@@ -2161,16 +2160,17 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                 {/* Connective lines */}
                 <g stroke="#1e293b" strokeWidth="1.5">
                   {/* Central Node is always (300, 160) */}
-                  {(activeEntity.relationships || []).map((rel, i) => {
+                  {(activeEntity.relationships || []).map((rel, i: number) => {
                      const coords = [
-                       {x: 160, y: 80},
-                       {x: 440, y: 80},
-                       {x: 300, y: 260},
-                       {x: 160, y: 240},
-                       {x: 440, y: 240}
+                       {x: 160, y: 80, rx: 210, ry: 120, rot: -30},
+                       {x: 440, y: 80, rx: 380, ry: 120, rot: 30},
+                       {x: 300, y: 260, rx: 335, ry: 210, rot: 90},
+                       {x: 160, y: 240, rx: 210, ry: 200, rot: 30},
+                       {x: 440, y: 240, rx: 380, ry: 200, rot: -30}
                      ];
                      if(i >= coords.length) return null;
                      const c = coords[i];
+                     if (!c) return null;
                      const found = entities.find(e => e.id === rel.targetId);
                      const isCrypto = found?.type === 'cryptowallet' || rel.targetName.toLowerCase().includes('wallet');
                      const color = isCrypto ? '#f59e0b' : (rel.risk === 'HIGH' ? '#f43f5e' : '#3b82f6');
@@ -2197,7 +2197,7 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                   </g>
                   
                   {/* Connected Target Nodes */}
-                  {(activeEntity.relationships || []).map((rel, i) => {
+                  {(activeEntity.relationships || []).map((rel, i: number) => {
                      const coords = [
                        {x: 160, y: 80, rx: 210, ry: 120, rot: -30},
                        {x: 440, y: 80, rx: 380, ry: 120, rot: 30},
@@ -2207,11 +2207,13 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                      ];
                      if(i >= coords.length) return null;
                      const c = coords[i];
+                     if (!c) return null;
                      const found = entities.find(e => e.id === rel.targetId);
                      const isCrypto = found?.type === 'cryptowallet' || rel.targetName.toLowerCase().includes('wallet');
                      const color = isCrypto ? '#f59e0b' : (rel.risk === 'HIGH' ? '#f43f5e' : '#3b82f6');
                      const strokeClass = isCrypto ? 'stroke-amber-500 hover:fill-amber-500/10' : (rel.risk === 'HIGH' ? 'stroke-rose-500 hover:fill-rose-500/10' : 'stroke-blue-500 hover:fill-blue-500/10');
                      const label = isCrypto ? 'WALLET' : (found?.type === 'company' ? 'CORP' : 'PEP');
+                     const targetNameFirst = rel.targetName.split(' ')[0];
 
                      return (
                         <g 
@@ -2224,7 +2226,7 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                           <circle cx={c.x} cy={c.y} r="16" className={`fill-slate-950 stroke-2 transition-all ${strokeClass}`} />
                           <text x={c.x} y={c.y + 3} textAnchor="middle" fill={color} fontSize="7" fontWeight="bold" fontFamily="monospace">{label}</text>
                           <text x={c.x} y={c.y + 30} textAnchor="middle" fill="#94a3b8" fontSize="8" fontWeight="bold">
-                            {rel.targetName.split(' ')[0].slice(0, 15)}
+                            {targetNameFirst?.slice(0, 15)}
                           </text>
                           <text x={c.rx} y={c.ry} textAnchor="middle" fill={color} fontSize="7" fontWeight="bold" fontFamily="monospace" transform={`rotate(${c.rot} ${c.rx} ${c.ry})`}>
                             {rel.type}
@@ -2292,7 +2294,7 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-800/50 text-slate-300 font-mono">
-                      {((activeEntity as any).cryptoData?.recentTransactions || []).map((tx, i) => (
+                      {((activeEntity as any).cryptoData?.recentTransactions || []).map((tx: any, i: number) => (
                         <tr key={i} className="hover:bg-slate-800/30">
                           <td className="px-2 py-1.5 text-blue-400 truncate max-w-[100px]">{tx.txHash}</td>
                           <td className="px-2 py-1.5">{tx.date}</td>

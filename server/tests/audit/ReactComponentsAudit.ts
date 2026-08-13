@@ -141,9 +141,11 @@ export class ReactComponentsAuditor {
       const propsMatch = content.match(/interface\s+\w*Props\s*{([^}]+)}/);
       if (propsMatch) {
         const propsContent = propsMatch[1];
-        const propNames = propsContent.match(/(\w+)\s*:/g);
-        if (propNames) {
-          propsReceived.push(...propNames.map(p => p.replace(':', '').trim()));
+        if (propsContent) {
+          const propNames = propsContent.match(/(\w+)\s*:/g);
+          if (propNames) {
+            propsReceived.push(...propNames.map(p => p.replace(':', '').trim()));
+          }
         }
       }
 

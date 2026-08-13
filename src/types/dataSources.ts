@@ -4,6 +4,7 @@ export interface Provenance {
   fetchedAt: string;
   cached: boolean;
   stale: boolean;
+  recordId?: string;
 }
 
 export interface DataSourceError {

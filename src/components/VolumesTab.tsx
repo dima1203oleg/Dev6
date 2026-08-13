@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { 
   BookOpen, Search, Code, Cpu, FileText, Database, Shield, Zap, 
   Terminal, CheckCircle, Copy, Check, ChevronRight, ChevronDown, 
-  ExternalLink, Layers, Info, Filter
+  Layers, Info, Filter
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -651,15 +651,15 @@ export default function VolumesTab() {
           <div className="border-b border-slate-800 pb-5">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs bg-blue-500/10 text-blue-400 font-mono font-bold uppercase tracking-widest px-2.5 py-0.5 rounded">
-                {currentVolumeObj.category} специфікація
+                {currentVolumeObj?.category} специфікація
               </span>
               <span className="text-xs bg-black/40 backdrop-blur-md text-slate-300 font-mono px-2 py-1 rounded">
                 Verified
               </span>
             </div>
             
-            <h3 className="text-base font-bold text-white mb-1.5">{currentVolumeObj.title}</h3>
-            <p className="text-xs text-slate-300 leading-relaxed">{currentVolumeObj.subtitle}</p>
+            <h3 className="text-base font-bold text-white mb-1.5">{currentVolumeObj?.title}</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">{currentVolumeObj?.subtitle}</p>
           </div>
 
           {/* Chapters loop */}
@@ -668,7 +668,7 @@ export default function VolumesTab() {
               Структура та зміст тому
             </h4>
 
-            {currentVolumeObj.chapters.map((ch, idx) => {
+            {currentVolumeObj?.chapters.map((ch, idx) => {
               const isOpen = expandedChapter === ch.title;
               return (
                 <div 

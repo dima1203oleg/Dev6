@@ -226,6 +226,7 @@ export class ScenarioE_RepeatQuery extends BaseUITest {
     // Check if UI should indicate changes
     const valuesChanged = firstCard.profile_fields.some((f, i) => {
       const secondField = secondCard.profile_fields[i];
+      if (!secondField) return false;
       return JSON.stringify(f.value) !== JSON.stringify(secondField.value);
     });
 

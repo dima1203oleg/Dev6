@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Server, Activity, ShieldCheck, Cpu, Database, Layers, Lock, FileText, CheckCircle2, Zap, ArrowUpRight, Play, Filter, History, Code, Volume2, Sliders, SlidersHorizontal, Mic, HelpCircle, Check, FileJson, Music, RefreshCw, Terminal, VolumeX } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Server, Activity, ShieldCheck, Cpu, Database, Layers, Lock, CheckCircle2, Zap, Play, Filter, History, Code, Volume2, Sliders, SlidersHorizontal, Check, Music, RefreshCw, Terminal, VolumeX } from "lucide-react";
 import { PredatorApiService } from "../services/predatorApi";
 import { AiTaskType, AuditLogEntry } from "../types/predator";
 import { 
@@ -13,8 +13,6 @@ import {
 
 export default function PredatorControlPlane() {
   const [connectors, setConnectors] = useState<any[]>([]);
-  const [health, setHealth] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
 
   // AI Task Router state
   const [selectedTask, setSelectedTask] = useState<AiTaskType>("RISK_ANALYSIS");
@@ -31,7 +29,6 @@ export default function PredatorControlPlane() {
 
   // Audit Logs state
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
-  const [logsLoading, setLogsLoading] = useState(false);
 
   // Voice Lab state
   const [voiceTestText, setVoiceTestText] = useState("За результатами аналізу ТОВ 'ІННОВАЦІЙНІ АГРО ТЕХНОЛОГІЇ' (ЄДРПОУ 42345678) виявлено високий рівень фінансового ризику. Санкційні списки не містять збігів, проте знайдені пов'язані компанії під санкціями.");
@@ -125,11 +122,9 @@ export default function PredatorControlPlane() {
   };
 
   const fetchAuditLogs = () => {
-    setLogsLoading(true);
     PredatorApiService.getAuditLogs()
       .then(res => setAuditLogs(res.logs))
-      .catch(console.error)
-      .finally(() => setLogsLoading(false));
+      .catch(console.error);
   };
 
   useEffect(() => {
@@ -137,11 +132,9 @@ export default function PredatorControlPlane() {
     Promise.all([
       PredatorApiService.getConnectors().catch(() => []),
       fetch("/api/v1/connectors/health").then(r => r.json()).catch(() => null)
-    ]).then(([connData, healthData]) => {
+    ]).then(([connData]) => {
       if (active) {
         setConnectors(connData);
-        setHealth(healthData);
-        setLoading(false);
       }
     });
 
@@ -611,41 +604,41 @@ export default function PredatorControlPlane() {
               ))}
             </div>
 
-            {selectedQaCase !== null && (
+            {selectedQaCase !== null && QA_TEST_CASES[selectedQaCase - 1] && (
               <div className="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-2 text-xs font-mono">
                 <div className="flex items-center justify-between border-b border-slate-900 pb-1.5">
-                  <span className="text-slate-400">Оцінка поведінки: <strong className="text-white">{QA_TEST_CASES[selectedQaCase - 1].category}</strong></span>
-                  <span className="text-emerald-400 font-bold">Загальний збіг: {QA_TEST_CASES[selectedQaCase - 1].scores.overall}%</span>
+                  <span className="text-slate-400">Оцінка поведінки: <strong className="text-white">{QA_TEST_CASES[selectedQaCase - 1]?.category}</strong></span>
+                  <span className="text-emerald-400 font-bold">Загальний збіг: {QA_TEST_CASES[selectedQaCase - 1]?.scores?.overall || 0}%</span>
                 </div>
                 
                 <p className="text-slate-400 text-[11px] leading-relaxed">
-                  <strong className="text-slate-300">Очікувана акустика:</strong> {QA_TEST_CASES[selectedQaCase - 1].expectedBehavior}
+                  <strong className="text-slate-300">Очікувана акустика:</strong> {QA_TEST_CASES[selectedQaCase - 1]?.expectedBehavior}
                 </p>
 
                 <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center pt-1.5 border-t border-slate-900/60">
                   <div>
                     <div className="text-[10px] text-slate-500">PITCH</div>
-                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1].scores.pitch}%</div>
+                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1]?.scores?.pitch || 0}%</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-slate-500">COLD</div>
-                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1].scores.coldness}%</div>
+                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1]?.scores?.coldness || 0}%</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-slate-500">INTO</div>
-                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1].scores.intonation}%</div>
+                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1]?.scores?.intonation || 0}%</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-slate-500">TIMBR</div>
-                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1].scores.timbre}%</div>
+                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1]?.scores?.timbre || 0}%</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-slate-500">RHYTH</div>
-                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1].scores.rhythm}%</div>
+                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1]?.scores?.rhythm || 0}%</div>
                   </div>
                   <div>
                     <div className="text-[10px] text-slate-500">ARTIC</div>
-                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1].scores.articulation}%</div>
+                    <div className="font-bold text-white text-[11px]">{QA_TEST_CASES[selectedQaCase - 1]?.scores?.articulation || 0}%</div>
                   </div>
                 </div>
               </div>
@@ -794,7 +787,7 @@ export default function PredatorControlPlane() {
               <div key={log.id} className="p-3 bg-slate-950 border border-slate-800/60 rounded-xl flex items-center justify-between text-xs font-mono">
                 <div className="flex items-center gap-3">
                   <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                  <span className="text-slate-400">{log.timestamp.split("T")[1].substring(0, 8)}</span>
+                  <span className="text-slate-400">{log.timestamp.split("T")[1]?.substring(0, 8) || log.timestamp}</span>
                   <span className="text-purple-400 font-bold">[{log.role}]</span>
                   <span className="text-white font-bold">{log.action}</span>
                   <span className="text-slate-400">({log.resource})</span>

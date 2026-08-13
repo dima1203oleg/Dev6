@@ -5,8 +5,7 @@
 
 import { useState } from 'react';
 import { LICENSE_MATRIX } from '../data';
-import { ShieldCheck, ShieldAlert, AlertOctagon, HelpCircle, FileText, CheckCircle, Info, GitFork, ArrowRight, Zap } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ShieldCheck, ShieldAlert, AlertOctagon, FileText, Info, Zap } from 'lucide-react';
 
 export default function LicenseTab() {
   const [selectedSourceLicense, setSelectedSourceLicense] = useState('GPL v3 (Neo4j, BBOT)');

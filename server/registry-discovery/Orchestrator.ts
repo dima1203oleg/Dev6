@@ -10,6 +10,8 @@ import {
   Dataset,
   RegistryPassport,
   ProductionArtifacts,
+  DownloadResult,
+  ScanResult,
 } from './types';
 import {
   discoveryEngine,
@@ -19,11 +21,9 @@ import {
 } from './adapters/CKANAdapter';
 import {
   datasetScanner,
-  ScanResult,
 } from './DatasetScanner';
 import {
   resourceDownloader,
-  DownloadResult,
 } from './ResourceDownloader';
 import {
   connectorGenerator,
@@ -94,8 +94,8 @@ export class RDPOrchestrator {
 
     // Initialize storage
     if (this.config.storagePath) {
-      const customStorage = new (require('./StorageManager')).StorageManager(this.config.storagePath);
-      // Use custom storage if needed
+      // Custom storage path configured
+      new (require('./StorageManager')).StorageManager(this.config.storagePath);
     }
 
     // Start scheduler if configured
@@ -124,8 +124,8 @@ export class RDPOrchestrator {
     try {
       // Phase 1: Discovery
       console.log('[RDP] Phase 1: Discovery');
-      const discoveryReports = await discoveryEngine.runDiscovery();
-      const datasets = discoveryReports.flatMap(r => r.datasets);
+      const discoveryReport = await discoveryEngine.runDiscovery();
+      const datasets = discoveryReport.datasets;
       console.log(`[RDP] Discovered ${datasets.length} datasets`);
 
       // Phase 2: Scanning
@@ -194,7 +194,7 @@ export class RDPOrchestrator {
 
       const artifacts = await productionArtifactsGenerator.generateArtifacts(
         datasets,
-        discoveryReports,
+        [discoveryReport],
         passports,
         qualityMetrics
       );
@@ -255,8 +255,8 @@ export class RDPOrchestrator {
     console.log('[RDP] Running quick discovery');
     await storageManager.storeLog('INFO', 'Quick discovery started');
 
-    const discoveryReports = await discoveryEngine.runDiscovery();
-    const datasets = discoveryReports.flatMap(r => r.datasets);
+    const discoveryReport = await discoveryEngine.runDiscovery();
+    const datasets = discoveryReport.datasets;
     const scanResults = await datasetScanner.scanBatch(datasets);
 
     await storageManager.storeLog('INFO', `Quick discovery complete: ${datasets.length} datasets`);
@@ -355,20 +355,20 @@ export class RDPOrchestrator {
     const status = this.getStatus();
     const artifacts = await productionArtifactsGenerator.loadArtifacts();
 
-    const state = {
+    const _state = {
       timestamp: new Date(),
       status,
       artifacts,
     };
 
-    return JSON.stringify(state, null, 2);
+    return JSON.stringify(_state, null, 2);
   }
 
   /**
    * Import platform state
    */
   async importState(data: string): Promise<void> {
-    const state = JSON.parse(data);
+    JSON.parse(data);
 
     // TODO: Implement state restoration logic
     console.log('[RDP] State import not yet implemented');

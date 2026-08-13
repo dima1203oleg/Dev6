@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, ShieldAlert, AlertOctagon, CheckCircle2 } from 'lucide-react';
+import { Shield, AlertOctagon, CheckCircle2 } from 'lucide-react';
 import { CanonicalEntity } from '../../../types/predator';
 
 interface SanctionsCardProps {
@@ -7,7 +7,7 @@ interface SanctionsCardProps {
   sanctionsData?: any;
 }
 
-export const SanctionsCard: React.FC<SanctionsCardProps> = ({ entity, sanctionsData }) => {
+export const SanctionsCard: React.FC<SanctionsCardProps> = ({ entity: _entity, sanctionsData }) => {
   const data = sanctionsData || {
     isSanctionedRnbo: false,
     rnboSanctions: [],

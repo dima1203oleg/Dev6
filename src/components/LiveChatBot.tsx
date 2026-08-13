@@ -6,14 +6,14 @@ function pcmToBase64(pcmData: Float32Array): string {
   const buffer = new ArrayBuffer(pcmData.length * 2);
   const view = new DataView(buffer);
   for (let i = 0; i < pcmData.length; i++) {
-    let s = Math.max(-1, Math.min(1, pcmData[i]));
+    let s = Math.max(-1, Math.min(1, pcmData[i] ?? 0));
     view.setInt16(i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
   }
   let binary = '';
   const bytes = new Uint8Array(buffer);
   const len = bytes.byteLength;
   for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
+    binary += String.fromCharCode(bytes[i] ?? 0);
   }
   return btoa(binary);
 }
@@ -59,7 +59,6 @@ export function LiveChatBot() {
   const streamRef = useRef<MediaStream | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
-  const [frequencies, setFrequencies] = useState<number[]>(new Array(16).fill(0));
 
   useEffect(() => {
     let animationFrameId: number;
@@ -67,17 +66,6 @@ export function LiveChatBot() {
       if (analyserRef.current) {
         const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
         analyserRef.current.getByteFrequencyData(dataArray);
-        
-        const step = Math.floor(dataArray.length / 16);
-        const newFreqs = [];
-        for (let i = 0; i < 16; i++) {
-          let sum = 0;
-          for (let j = 0; j < step; j++) {
-            sum += dataArray[i * step + j];
-          }
-          newFreqs.push(sum / step);
-        }
-        setFrequencies(newFreqs);
       }
       animationFrameId = requestAnimationFrame(updateFrequencies);
     };
@@ -123,8 +111,11 @@ export function LiveChatBot() {
         setMessages(prev => {
           // If the last message is from bot, append to it, else create new
           const newMsgs = [...prev];
-          if (newMsgs.length > 0 && newMsgs[newMsgs.length - 1].sender === 'bot') {
-            newMsgs[newMsgs.length - 1].text += msg.text;
+          if (newMsgs.length > 0 && newMsgs[newMsgs.length - 1]?.sender === 'bot') {
+            newMsgs[newMsgs.length - 1] = {
+              ...newMsgs[newMsgs.length - 1]!,
+              text: (newMsgs[newMsgs.length - 1]?.text ?? '') + msg.text
+            };
           } else {
             newMsgs.push({ id: Date.now().toString(), sender: 'bot', text: msg.text });
           }
@@ -147,11 +138,14 @@ export function LiveChatBot() {
         const pcm16 = new Int16Array(bytes.buffer);
         const float32 = new Float32Array(pcm16.length);
         for (let i = 0; i < pcm16.length; i++) {
-          float32[i] = pcm16[i] / 0x8000;
+          float32[i] = (pcm16[i] ?? 0) / 0x8000;
         }
 
         const audioBuffer = outputAudioCtx.createBuffer(1, float32.length, 24000);
-        audioBuffer.getChannelData(0).set(float32);
+        const channelData = audioBuffer.getChannelData(0);
+        if (channelData) {
+          channelData.set(float32);
+        }
 
         const sourceNode = outputAudioCtx.createBufferSource();
         sourceNode.buffer = audioBuffer;

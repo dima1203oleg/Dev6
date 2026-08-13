@@ -169,7 +169,7 @@ export class AITrustFramework {
   /**
    * Cross-validate claim against evidence
    */
-  private async crossValidate(claim: string, evidence: any[]): Promise<CrossValidationResult> {
+  private async crossValidate(_claim: string, evidence: any[]): Promise<CrossValidationResult> {
     if (evidence.length === 0) {
       return {
         totalSources: 0,
@@ -186,7 +186,7 @@ export class AITrustFramework {
 
     // TODO: Implement actual cross-validation logic
     // This would compare the claim against evidence from multiple sources
-    for (const ev of evidence) {
+    for (const _ev of evidence) {
       // Placeholder logic
       agreeing++;
     }
@@ -205,7 +205,7 @@ export class AITrustFramework {
   /**
    * Determine consensus level
    */
-  private determineConsensusLevel(agreeing: number, disagreeing: number, total: number): CrossValidationResult['consensusLevel'] {
+  private determineConsensusLevel(agreeing: number, _disagreeing: number, total: number): CrossValidationResult['consensusLevel'] {
     if (total === 0) return 'NONE';
     
     const agreementRatio = agreeing / total;

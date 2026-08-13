@@ -43,11 +43,11 @@ export class TEST008_DataIntegrity extends BaseTest {
         // Check for character loss
         const integrityCheck = this.checkDataIntegrity(rawBody, jsonData);
         
-        details.raw_length = rawBody.length;
-        details.parsed_length = JSON.stringify(jsonData).length;
-        details.character_loss = integrityCheck.characterLoss;
-        details.data_corruption = integrityCheck.corruptionDetected;
-        details.unicode_issues = integrityCheck.unicodeIssues;
+        details['raw_length'] = rawBody.length;
+        details['parsed_length'] = JSON.stringify(jsonData).length;
+        details['character_loss'] = integrityCheck.characterLoss;
+        details['data_corruption'] = integrityCheck.corruptionDetected;
+        details['unicode_issues'] = integrityCheck.unicodeIssues;
         
         if (integrityCheck.characterLoss > 0) {
           errors.push(`Character loss detected: ${integrityCheck.characterLoss} characters`);
@@ -63,8 +63,8 @@ export class TEST008_DataIntegrity extends BaseTest {
         
         // Check for data truncation
         const truncationCheck = this.checkTruncation(rawBody);
-        details.truncation_detected = truncationCheck.detected;
-        details.truncation_location = truncationCheck.location;
+        details['truncation_detected'] = truncationCheck.detected;
+        details['truncation_location'] = truncationCheck.location;
         
         if (truncationCheck.detected) {
           errors.push(`Data truncation detected at ${truncationCheck.location}`);
@@ -72,8 +72,8 @@ export class TEST008_DataIntegrity extends BaseTest {
         
         // Check for encoding issues
         const encodingCheck = this.checkEncoding(rawBody);
-        details.encoding_valid = encodingCheck.valid;
-        details.encoding_detected = encodingCheck.detected;
+        details['encoding_valid'] = encodingCheck.valid;
+        details['encoding_detected'] = encodingCheck.detected;
         
         if (!encodingCheck.valid) {
           warnings.push(`Encoding issue detected: ${encodingCheck.detected}`);
@@ -81,8 +81,8 @@ export class TEST008_DataIntegrity extends BaseTest {
         
         // Verify data consistency
         const consistencyCheck = this.checkConsistency(jsonData);
-        details.consistency_valid = consistencyCheck.valid;
-        details.consistency_issues = consistencyCheck.issues;
+        details['consistency_valid'] = consistencyCheck.valid;
+        details['consistency_issues'] = consistencyCheck.issues;
         
         if (!consistencyCheck.valid) {
           warnings.push(`Consistency issues: ${consistencyCheck.issues.join(', ')}`);

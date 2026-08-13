@@ -4,6 +4,7 @@
  * Tests the parsing logic with a minimal sample
  */
 
+// @ts-ignore - adm-zip library doesn't have TypeScript definitions
 import AdmZip from 'adm-zip';
 import { XMLParser } from 'fast-xml-parser';
 import iconv from 'iconv-lite';

@@ -1,0 +1,29 @@
+{
+  "stage": "STAGE_28_ONBOARDINGAGENT_PREDATORCLIENT_FIXES",
+  "timestamp": "2026-08-10T08:15:00Z",
+  "previous_errors": 1450,
+  "current_errors": 1446,
+  "delta": -4,
+  "top_categories_fixed": [
+    "TS6133 - Unused imports and variables (OnboardingAgent, predatorClient)",
+    "TS4111 - Index signature property access (predatorClient)"
+  ],
+  "files_changed": [
+    "server/services/MedintService.ts",
+    "server/services/onboarding/OnboardingAgent.ts",
+    "server/services/predatorClient.ts"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining errors - progress: 432 errors fixed (1878 -> 1446)"
+}

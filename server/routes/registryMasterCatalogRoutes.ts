@@ -1,16 +1,15 @@
 import { Router } from "express";
-import { 
-  MASTER_REGISTRY_CATALOG, 
-  ENTITY_COVERAGE_MATRIX, 
-  COMPETITOR_EVIDENCE_TABLE, 
-  PRODUCTION_PREFLIGHT_CHECKLIST,
-  calculatePriorityScore
+import {
+  MASTER_REGISTRY_CATALOG,
+  ENTITY_COVERAGE_MATRIX,
+  COMPETITOR_EVIDENCE_TABLE,
+  PRODUCTION_PREFLIGHT_CHECKLIST
 } from "../../src/data/masterRegistryCatalogData";
 
 const router = Router();
 
 // Full System Master Sources List (177 Registries)
-router.get(["/system/sources", "/sources"], (req, res) => {
+router.get(["/system/sources", "/sources"], (_req, res) => {
   const now = new Date().toISOString();
 
   const healthyCount = MASTER_REGISTRY_CATALOG.filter(s => s.status === "HEALTHY").length;
@@ -63,7 +62,7 @@ router.get(["/system/sources", "/sources"], (req, res) => {
 });
 
 // Priority Matrix & Formula Evaluator
-router.get("/matrix", (req, res) => {
+router.get("/matrix", (_req, res) => {
   res.json({
     ok: true,
     formula: "Priority Score = BV + CA + AUT + FREE + DU + EC - IC - LR - COST",
@@ -79,7 +78,7 @@ router.get("/matrix", (req, res) => {
 });
 
 // Contours Breakdown
-router.get("/contours", (req, res) => {
+router.get("/contours", (_req, res) => {
   const contourA = MASTER_REGISTRY_CATALOG.filter(s => s.contour === "A");
   const contourB = MASTER_REGISTRY_CATALOG.filter(s => s.contour === "B");
   const contourC = MASTER_REGISTRY_CATALOG.filter(s => s.contour === "C");
@@ -97,7 +96,7 @@ router.get("/contours", (req, res) => {
 });
 
 // Competitor Evidence Table
-router.get("/competitors", (req, res) => {
+router.get("/competitors", (_req, res) => {
   res.json({
     ok: true,
     evidenceTable: COMPETITOR_EVIDENCE_TABLE
@@ -105,7 +104,7 @@ router.get("/competitors", (req, res) => {
 });
 
 // Production Pre-flight Checklist
-router.get("/preflight", (req, res) => {
+router.get("/preflight", (_req, res) => {
   res.json({
     ok: true,
     checklist: PRODUCTION_PREFLIGHT_CHECKLIST
@@ -116,19 +115,19 @@ import fs from "fs";
 import path from "path";
 
 // Master Test Report
-router.get("/master-test-report", (req, res) => {
+router.get("/master-test-report", (_req, res) => {
   try {
     const reportPath = path.join(process.cwd(), 'server', 'tests', 'correctness', 'MasterTestReport.json');
     if (!fs.existsSync(reportPath)) {
       return res.status(404).json({ ok: false, error: "Master Test Report not found. Run tests first." });
     }
     const reportData = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-    res.json({
+    return res.json({
       ok: true,
       report: reportData
     });
   } catch (error: any) {
-    res.status(500).json({ ok: false, error: error.message });
+    return res.status(500).json({ ok: false, error: error.message });
   }
 });
 

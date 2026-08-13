@@ -55,12 +55,12 @@ export class TEST005_RawResponse extends BaseTest {
         this.previousResponse = rawResponse;
         
         // Validate raw response
-        details.response_size = rawResponse.size_bytes;
-        details.content_type = rawResponse.content_type;
-        details.http_code = rawResponse.http_code;
-        details.checksum = rawResponse.checksum;
-        details.sha256_hash = rawResponse.sha256_hash;
-        details.headers_count = Object.keys(rawResponse.headers).length;
+        details['response_size'] = rawResponse.size_bytes;
+        details['content_type'] = rawResponse.content_type;
+        details['http_code'] = rawResponse.http_code;
+        details['checksum'] = rawResponse.checksum;
+        details['sha256_hash'] = rawResponse.sha256_hash;
+        details['headers_count'] = Object.keys(rawResponse.headers).length;
         
         // Check for empty response
         if (rawResponse.size_bytes === 0) {
@@ -69,10 +69,10 @@ export class TEST005_RawResponse extends BaseTest {
         
         // Check content type
         if (rawResponse.content_type.includes('application/json')) {
-          details.content_type_valid = true;
+          details['content_type_valid'] = true;
         } else {
           warnings.push(`Unexpected content type: ${rawResponse.content_type}`);
-          details.content_type_valid = false;
+          details['content_type_valid'] = false;
         }
         
         // Check response size

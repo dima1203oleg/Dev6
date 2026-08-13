@@ -5,21 +5,8 @@
  * Generates all production artifacts after each cycle
  */
 
-import { Dataset, RegistryPassport, Schema, QualityMetrics, HealthReport, ProductionStatus } from './types';
-import { DiscoveryReport } from './DiscoveryEngine';
+import { Dataset, RegistryPassport, QualityMetrics, HealthReport, ProductionStatus, DiscoveryReport, ProductionArtifacts } from './types';
 import { storageManager } from './StorageManager';
-
-export interface ProductionArtifacts {
-  catalog: any;
-  registryPassports: RegistryPassport[];
-  downloadQueue: any[];
-  connectorRegistry: any[];
-  schemaHistory: any;
-  healthReport: HealthReport;
-  qualityReport: any;
-  discoveryReport: string;
-  productionStatus: ProductionStatus;
-}
 
 export class ProductionArtifactsGenerator {
   /**
@@ -341,10 +328,10 @@ export class ProductionArtifactsGenerator {
     await storageManager.storeProcessedData('download_queue', artifacts.downloadQueue);
     await storageManager.storeProcessedData('connector_registry', artifacts.connectorRegistry);
     await storageManager.storeProcessedData('schema_history', artifacts.schemaHistory);
-    await storageManager.storeProcessedData('health_report', artifacts.healthReport);
+    await storageManager.storeHealthReport(artifacts.healthReport);
     await storageManager.storeProcessedData('quality_report', artifacts.qualityReport);
     await storageManager.storeEvidence('discovery_report', { content: artifacts.discoveryReport });
-    await storageManager.storeProcessedData('production_status', artifacts.productionStatus);
+    await storageManager.storeProductionStatus(artifacts.productionStatus);
   }
 
   /**
@@ -362,7 +349,9 @@ export class ProductionArtifactsGenerator {
    */
   private groupByOrganization(datasets: Dataset[]): Record<string, number> {
     return datasets.reduce((acc, dataset) => {
-      const org = dataset.organization || 'Unknown';
+      const org = typeof dataset.organization === 'string' 
+        ? dataset.organization 
+        : (dataset.organization?.name || 'Unknown');
       acc[org] = (acc[org] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
@@ -406,7 +395,7 @@ export class ProductionArtifactsGenerator {
       const min = bucketIndex * (100 / bucketCount);
       const max = (bucketIndex + 1) * (100 / bucketCount);
       const key = `${Math.round(min)}-${Math.round(max)}`;
-      distribution[key]++;
+      distribution[key] = (distribution[key] || 0) + 1;
     }
 
     return distribution;
@@ -429,10 +418,10 @@ export class ProductionArtifactsGenerator {
       const downloadQueue = await storageManager.loadProcessedData('download_queue');
       const connectorRegistry = await storageManager.loadProcessedData('connector_registry');
       const schemaHistory = await storageManager.loadProcessedData('schema_history');
-      const healthReport = await storageManager.loadProcessedData('health_report');
+      const healthReport = await storageManager.loadHealthReport();
       const qualityReport = await storageManager.loadProcessedData('quality_report');
       const discoveryReportData = await storageManager.loadEvidence('discovery_report');
-      const productionStatus = await storageManager.loadProcessedData('production_status');
+      const productionStatus = await storageManager.loadProductionStatus();
 
       return {
         catalog,

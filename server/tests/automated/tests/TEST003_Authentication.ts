@@ -18,12 +18,12 @@ export class TEST003_Authentication extends BaseTest {
       const errors: string[] = [];
       const warnings: string[] = [];
 
-      details.auth_type = authType;
+      details['auth_type'] = authType;
 
       switch (authType.toUpperCase()) {
         case 'NONE':
-          details.authentication_required = false;
-          details.authentication_status = 'NOT_REQUIRED';
+          details['authentication_required'] = false;
+          details['authentication_status'] = 'NOT_REQUIRED';
           break;
 
         case 'API_KEY':
@@ -48,7 +48,7 @@ export class TEST003_Authentication extends BaseTest {
 
         default:
           warnings.push(`Unknown authentication type: ${authType}`);
-          details.authentication_status = 'UNKNOWN';
+          details['authentication_status'] = 'UNKNOWN';
       }
 
       return { details, errors, warnings };
@@ -64,8 +64,8 @@ export class TEST003_Authentication extends BaseTest {
     errors: string[],
     warnings: string[]
   ): Promise<void> {
-    details.authentication_required = true;
-    details.authentication_method = 'API_KEY';
+    details['authentication_required'] = true;
+    details['authentication_method'] = 'API_KEY';
 
     // Check if API key is configured in environment
     const apiKey = process.env[`${context.source_config.source_id}_API_KEY`] || 
@@ -73,18 +73,18 @@ export class TEST003_Authentication extends BaseTest {
 
     if (!apiKey) {
       errors.push('API Key not configured in environment');
-      details.authentication_status = 'MISSING_CREDENTIALS';
+      details['authentication_status'] = 'MISSING_CREDENTIALS';
     } else {
-      details.api_key_configured = true;
-      details.api_key_length = apiKey.length;
-      details.api_key_prefix = apiKey.substring(0, 4) + '...';
+      details['api_key_configured'] = true;
+      details['api_key_length'] = apiKey.length;
+      details['api_key_prefix'] = apiKey.substring(0, 4) + '...';
       
       // Validate API key format (basic check)
       if (apiKey.length < 8) {
         warnings.push('API key appears to be too short');
       }
       
-      details.authentication_status = 'CONFIGURED';
+      details['authentication_status'] = 'CONFIGURED';
     }
   }
 
@@ -92,10 +92,10 @@ export class TEST003_Authentication extends BaseTest {
     context: TestContext,
     details: Record<string, any>,
     errors: string[],
-    warnings: string[]
+    _warnings: string[]
   ): Promise<void> {
-    details.authentication_required = true;
-    details.authentication_method = 'OAUTH';
+    details['authentication_required'] = true;
+    details['authentication_method'] = 'OAUTH';
 
     const clientId = process.env[`${context.source_config.source_id}_CLIENT_ID`] ||
                      process.env[`${context.source_config.connector_id.toUpperCase()}_CLIENT_ID`];
@@ -104,11 +104,11 @@ export class TEST003_Authentication extends BaseTest {
 
     if (!clientId || !clientSecret) {
       errors.push('OAuth credentials not configured in environment');
-      details.authentication_status = 'MISSING_CREDENTIALS';
+      details['authentication_status'] = 'MISSING_CREDENTIALS';
     } else {
-      details.client_id_configured = true;
-      details.client_secret_configured = true;
-      details.authentication_status = 'CONFIGURED';
+      details['client_id_configured'] = true;
+      details['client_secret_configured'] = true;
+      details['authentication_status'] = 'CONFIGURED';
     }
   }
 
@@ -116,20 +116,20 @@ export class TEST003_Authentication extends BaseTest {
     context: TestContext,
     details: Record<string, any>,
     errors: string[],
-    warnings: string[]
+    _warnings: string[]
   ): Promise<void> {
-    details.authentication_required = true;
-    details.authentication_method = 'JWT';
+    details['authentication_required'] = true;
+    details['authentication_method'] = 'JWT';
 
     const jwtSecret = process.env[`${context.source_config.source_id}_JWT_SECRET`] ||
                       process.env[`${context.source_config.connector_id.toUpperCase()}_JWT_SECRET`];
 
     if (!jwtSecret) {
       errors.push('JWT secret not configured in environment');
-      details.authentication_status = 'MISSING_CREDENTIALS';
+      details['authentication_status'] = 'MISSING_CREDENTIALS';
     } else {
-      details.jwt_secret_configured = true;
-      details.authentication_status = 'CONFIGURED';
+      details['jwt_secret_configured'] = true;
+      details['authentication_status'] = 'CONFIGURED';
     }
   }
 
@@ -137,21 +137,21 @@ export class TEST003_Authentication extends BaseTest {
     context: TestContext,
     details: Record<string, any>,
     errors: string[],
-    warnings: string[]
+    _warnings: string[]
   ): Promise<void> {
-    details.authentication_required = true;
-    details.authentication_method = 'BEARER_TOKEN';
+    details['authentication_required'] = true;
+    details['authentication_method'] = 'BEARER_TOKEN';
 
     const bearerToken = process.env[`${context.source_config.source_id}_BEARER_TOKEN`] ||
                         process.env[`${context.source_config.connector_id.toUpperCase()}_BEARER_TOKEN`];
 
     if (!bearerToken) {
       errors.push('Bearer token not configured in environment');
-      details.authentication_status = 'MISSING_CREDENTIALS';
+      details['authentication_status'] = 'MISSING_CREDENTIALS';
     } else {
-      details.bearer_token_configured = true;
-      details.token_length = bearerToken.length;
-      details.authentication_status = 'CONFIGURED';
+      details['bearer_token_configured'] = true;
+      details['token_length'] = bearerToken.length;
+      details['authentication_status'] = 'CONFIGURED';
     }
   }
 
@@ -159,10 +159,10 @@ export class TEST003_Authentication extends BaseTest {
     context: TestContext,
     details: Record<string, any>,
     errors: string[],
-    warnings: string[]
+    _warnings: string[]
   ): Promise<void> {
-    details.authentication_required = true;
-    details.authentication_method = 'MTLS';
+    details['authentication_required'] = true;
+    details['authentication_method'] = 'MTLS';
 
     const certPath = process.env[`${context.source_config.source_id}_CERT_PATH`] ||
                     process.env[`${context.source_config.connector_id.toUpperCase()}_CERT_PATH`];
@@ -171,11 +171,11 @@ export class TEST003_Authentication extends BaseTest {
 
     if (!certPath || !keyPath) {
       errors.push('mTLS certificate paths not configured in environment');
-      details.authentication_status = 'MISSING_CREDENTIALS';
+      details['authentication_status'] = 'MISSING_CREDENTIALS';
     } else {
-      details.cert_path_configured = true;
-      details.key_path_configured = true;
-      details.authentication_status = 'CONFIGURED';
+      details['cert_path_configured'] = true;
+      details['key_path_configured'] = true;
+      details['authentication_status'] = 'CONFIGURED';
     }
   }
 

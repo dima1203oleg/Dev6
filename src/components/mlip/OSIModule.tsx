@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Server, Globe } from 'lucide-react';
+import { Server, Globe } from 'lucide-react';
 
 export const OSIModule: React.FC = () => {
   const [query, setQuery] = useState('');

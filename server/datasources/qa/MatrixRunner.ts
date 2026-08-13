@@ -55,9 +55,14 @@ export class MatrixRunner {
     // 3. Search Test
     if (connector.capabilities().canSearch) {
       try {
-        raw = await connector.search({ identifier: testIdentifier, identifierType: meta.supportedIdentifiers[0] });
-        if (raw.statusCode >= 200 && raw.statusCode < 300) {
-          result.test_search = 'PASS';
+        const identifierType = meta.supportedIdentifiers[0];
+        if (!identifierType) {
+          result.test_search = 'NA';
+        } else {
+          raw = await connector.search({ identifier: testIdentifier, identifierType });
+          if (raw.statusCode >= 200 && raw.statusCode < 300) {
+            result.test_search = 'PASS';
+          }
         }
       } catch {
         result.test_search = 'FAIL';
@@ -97,11 +102,16 @@ export class MatrixRunner {
 
     // 7. Evidence
     try {
-      const evidence = connector.buildEvidence(
-        { sourceId: meta.id, query: testIdentifier, identifierType: meta.supportedIdentifiers[0], connectorVersion: connector.VERSION, requestedAt: new Date().toISOString() },
-        raw
-      );
-      if (evidence && evidence.evidenceId) result.test_evidence = 'PASS';
+      const identifierType = meta.supportedIdentifiers[0];
+      if (!identifierType) {
+        result.test_evidence = 'FAIL';
+      } else {
+        const evidence = connector.buildEvidence(
+          { sourceId: meta.id, query: testIdentifier, identifierType, connectorVersion: connector.VERSION, requestedAt: new Date().toISOString() },
+          raw
+        );
+        if (evidence && evidence.evidenceId) result.test_evidence = 'PASS';
+      }
     } catch {
       result.test_evidence = 'FAIL';
     }

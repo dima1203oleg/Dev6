@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mic, MicOff, AlertCircle } from 'lucide-react';
 
 function pcmToBase64(pcmData: Float32Array): string {
-  const buffer = new ArrayBuffer(pcmData.length * 2);
+  const buffer = new ArrayBuffer((pcmData?.length || 0) * 2);
   const view = new DataView(buffer);
-  for (let i = 0; i < pcmData.length; i++) {
-    let s = Math.max(-1, Math.min(1, pcmData[i]));
+  for (let i = 0; i < (pcmData?.length || 0); i++) {
+    let s = Math.max(-1, Math.min(1, pcmData[i] || 0));
     view.setInt16(i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
   }
   let binary = '';
   const bytes = new Uint8Array(buffer);
   const len = bytes.byteLength;
   for (let i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
+    binary += String.fromCharCode(bytes[i] || 0);
   }
   return btoa(binary);
 }
@@ -121,10 +121,10 @@ export function VoiceCall() {
           const pcm16 = new Int16Array(bytes.buffer);
           const float32 = new Float32Array(pcm16.length);
           for (let i = 0; i < pcm16.length; i++) {
-            float32[i] = pcm16[i] / 0x8000;
+            float32[i] = (pcm16[i] || 0) / 0x8000;
           }
 
-          const audioBuffer = outputAudioCtx.createBuffer(1, float32.length, 24000);
+          const audioBuffer = outputAudioCtx!.createBuffer(1, float32.length, outputAudioCtx!.sampleRate || 24000);
           audioBuffer.getChannelData(0).set(float32);
 
           const sourceNode = outputAudioCtx.createBufferSource();

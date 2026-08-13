@@ -3,9 +3,8 @@
  * Enhanced visibility and design with Predator API integration
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
-  TrendingUp, 
   Shield, 
   AlertTriangle, 
   CheckCircle, 
@@ -14,7 +13,6 @@ import {
   Database, 
   Globe,
   BarChart3,
-  PieChart,
   Clock,
   ArrowUpRight,
   ArrowDownRight,

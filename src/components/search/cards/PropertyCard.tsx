@@ -7,7 +7,7 @@ interface PropertyCardProps {
   propertyData?: any;
 }
 
-export const PropertyCard: React.FC<PropertyCardProps> = ({ entity, propertyData }) => {
+export const PropertyCard: React.FC<PropertyCardProps> = ({ entity: _entity, propertyData }) => {
   const data = propertyData || {
     hasRealEstate: false,
     realEstateCount: 0,
@@ -17,8 +17,6 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ entity, propertyData
     landCount: 0,
     isArrested: false
   };
-
-  const hasAnyProperty = data.hasRealEstate || data.hasVehicles || data.hasLand;
 
   return (
     <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 shadow-[0_0_15px_rgba(0,0,0,0.5)] rounded-xl overflow-hidden p-6 space-y-6 hover:border-slate-600 transition-colors">

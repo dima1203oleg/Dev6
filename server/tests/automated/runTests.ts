@@ -26,6 +26,7 @@ interface RunnerOptions {
   generateMarkdown: boolean;
   generateCSV: boolean;
   consoleOutput: boolean;
+  skipTests?: string[];
 }
 
 async function loadSourceConfigs(configPath: string): Promise<SourceConfig[]> {
@@ -57,7 +58,8 @@ function parseArguments(): RunnerOptions {
     generateMarkdown: true,
     generateCSV: true,
     consoleOutput: true,
-    sourceIds: undefined
+    sourceIds: undefined,
+    skipTests: undefined
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -70,27 +72,27 @@ function parseArguments(): RunnerOptions {
         break;
       case '--ipn':
       case '-i':
-        options.testIPN = args[++i];
+        options.testIPN = args[++i] || '';
         break;
       case '--timeout':
       case '-t':
-        options.timeoutMs = parseInt(args[++i], 10);
+        options.timeoutMs = parseInt(args[++i] || '30000', 10);
         break;
       case '--retries':
       case '-r':
-        options.retryCount = parseInt(args[++i], 10);
+        options.retryCount = parseInt(args[++i] || '3', 10);
         break;
       case '--output':
       case '-o':
-        options.outputDir = args[++i];
+        options.outputDir = args[++i] || '';
         break;
       case '--config':
       case '-c':
-        options.sourceConfigPath = args[++i];
+        options.sourceConfigPath = args[++i] || '';
         break;
       case '--sources':
       case '-s':
-        options.sourceIds = args[++i].split(',');
+        options.sourceIds = (args[++i] || '').split(',');
         break;
       case '--no-json':
         options.generateJSON = false;
@@ -103,6 +105,9 @@ function parseArguments(): RunnerOptions {
         break;
       case '--no-console':
         options.consoleOutput = false;
+        break;
+      case '--skip-tests':
+        options.skipTests = (args[++i] || '').split(',');
         break;
       case '--help':
       case '-h':
@@ -133,6 +138,7 @@ Options:
   -o, --output <dir>        Output directory for reports [default: ./test-reports]
   -c, --config <path>       Path to source configuration file [default: ./server/config/sourceMatrix.yaml]
   -s, --sources <ids>       Comma-separated list of source IDs to test (tests all if not specified)
+  --skip-tests <ids>        Comma-separated list of test IDs to skip (e.g., TEST-006,TEST-007)
   --no-json                 Skip JSON report generation
   --no-markdown             Skip Markdown report generation
   --no-csv                  Skip CSV report generation
@@ -179,7 +185,7 @@ async function main(): Promise<void> {
   }
 
   // Initialize test orchestrator
-  const orchestrator = new TestOrchestrator(options.testIPN);
+  const orchestrator = new TestOrchestrator(options.testIPN, options.skipTests);
 
   console.log(`\nTest Configuration:`);
   console.log(`  Environment: ${options.environment}`);

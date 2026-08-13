@@ -5,7 +5,6 @@ export const DARKINTModule: React.FC = () => {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
-  const [accessLevel, setAccessLevel] = useState('GREEN');
 
   const handleSearch = async () => {
     if (!query) return;

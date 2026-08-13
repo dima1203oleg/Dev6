@@ -1,0 +1,32 @@
+{
+  "stage": "STAGE_3_SERVER_SIDE_ROUTES",
+  "timestamp": "2026-08-10T02:00:00Z",
+  "previous_errors": 1840,
+  "current_errors": 1809,
+  "delta": -31,
+  "top_categories_fixed": [
+    "TS7030 - Not all code paths return a value (adminRoutes, aiRoutes, connectorRoutes)",
+    "TS6133 - Unused variables (adminRoutes, aiRoutes, connectorRoutes)",
+    "TS4111 - Index signature property access (auditRoutes, connectorRoutes, dataRoutes)"
+  ],
+  "files_changed": [
+    "server/routes/adminRoutes.ts",
+    "server/routes/aiRoutes.ts",
+    "server/routes/auditRoutes.ts",
+    "server/routes/connectorRoutes.ts",
+    "server/routes/dataRoutes.ts"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Fix certification engine dependencies and validation"
+}

@@ -7,7 +7,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { Dataset, RegistryPassport, Schema, SchemaDrift, QualityMetrics, ConnectorConfig } from './types';
+import { RegistryPassport, Schema, SchemaDrift, ConnectorConfig, HealthReport, ProductionStatus } from './types';
 
 export class StorageManager {
   private basePath: string;
@@ -205,6 +205,7 @@ export class StorageManager {
     if (files.length === 0) return null;
 
     const latestFile = files[0];
+    if (!latestFile) return null;
     const filePath = path.join(schemaDir, latestFile);
     return await this.readJSON(filePath);
   }
@@ -268,6 +269,38 @@ export class StorageManager {
     const logLine = JSON.stringify(logEntry) + '\n';
 
     fs.appendFileSync(logPath, logLine);
+  }
+
+  /**
+   * Store health report
+   */
+  async storeHealthReport(report: HealthReport): Promise<void> {
+    const filePath = path.join(this.basePath, 'processed', 'health_report.json');
+    await this.writeJSON(filePath, report);
+  }
+
+  /**
+   * Store production status
+   */
+  async storeProductionStatus(status: ProductionStatus): Promise<void> {
+    const filePath = path.join(this.basePath, 'processed', 'production_status.json');
+    await this.writeJSON(filePath, status);
+  }
+
+  /**
+   * Load health report
+   */
+  async loadHealthReport(): Promise<HealthReport> {
+    const filePath = path.join(this.basePath, 'processed', 'health_report.json');
+    return await this.readJSON(filePath);
+  }
+
+  /**
+   * Load production status
+   */
+  async loadProductionStatus(): Promise<ProductionStatus> {
+    const filePath = path.join(this.basePath, 'processed', 'production_status.json');
+    return await this.readJSON(filePath);
   }
 
   /**

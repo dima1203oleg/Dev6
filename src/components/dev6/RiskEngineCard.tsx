@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, AlertTriangle, CheckCircle, ExternalLink, Info, ShieldCheck } from 'lucide-react';
+import { ShieldAlert, ExternalLink, ShieldCheck } from 'lucide-react';
 import { RiskScoringResult, RiskSignalItem } from '../../types/dataSources';
 
 interface RiskEngineCardProps {

@@ -94,9 +94,9 @@ export class FOPConnector extends AbstractConnector {
     try {
       // Test health by querying a known valid EDRPOU
       const testResult = await fetchEdrFull('00000000');
-      return testResult.ok ? 'HEALTHY' : 'UNHEALTHY';
+      return testResult.ok ? 'CONNECTED' : 'UNREACHABLE';
     } catch {
-      return 'UNHEALTHY';
+      return 'UNREACHABLE';
     }
   }
 

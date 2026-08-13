@@ -1,0 +1,27 @@
+{
+  "stage": "STAGE_137_DOSSIERVIEW_STATUS_TYPE_AND_SETISLIVELOADING",
+  "timestamp": "2026-08-11T11:30:00Z",
+  "previous_errors": 799,
+  "current_errors": 796,
+  "delta": -3,
+  "top_categories_fixed": [
+    "TS2322 - Type not assignable (DossierView status type)",
+    "TS2304 - Cannot find name 'setIsLiveLoading' (removed references)"
+  ],
+  "files_changed": [
+    "src/components/DossierView.tsx"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining errors - progress: 1082 errors fixed (1878 -> 796)"
+}

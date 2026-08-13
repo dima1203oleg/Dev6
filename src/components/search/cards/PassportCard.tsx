@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ReactNode } from 'react';
 import { User, Briefcase, Hash, Calendar, FileText, CheckCircle, AlertTriangle } from 'lucide-react';
 import { CanonicalEntity } from '../../../types/predator';
 
@@ -23,7 +24,7 @@ export const PassportCard: React.FC<PassportCardProps> = ({ entity }) => {
     'SUSPENDED': 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30',
   };
 
-  const statusColor = (statusColors as any)[entity.status || 'ACTIVE'] || 'bg-slate-500/10 text-slate-400 border-slate-500/30';
+  const statusColor = (statusColors as any)[(entity as any).status || 'ACTIVE'] || 'bg-slate-500/10 text-slate-400 border-slate-500/30';
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">
@@ -32,12 +33,12 @@ export const PassportCard: React.FC<PassportCardProps> = ({ entity }) => {
           {type === 'FOP' ? <User size={24} /> : <Briefcase size={24} />}
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white uppercase">{name}</h2>
+          <h2 className="text-xl font-bold text-white uppercase">{name as ReactNode}</h2>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">{type === 'FOP' ? 'Фізична особа-підприємець' : 'Юридична особа'}</span>
             <span className="text-slate-600">•</span>
             <span className={`px-2 py-0.5 rounded text-[10px] font-bold border uppercase tracking-wider ${statusColor}`}>
-              {entity.status || 'ACTIVE'}
+              {(entity as any).status || 'ACTIVE'}
             </span>
           </div>
         </div>

@@ -316,7 +316,7 @@ export function generateDynamicEntity(rawQuery: string): OsintEntity {
         totalCases: 0,
         criminalCases: 0,
         lastCaseTitle: "Дані про судові справи очікують запиту в ЄДРСР",
-        lastCaseDate: new Date().toISOString().split('T')[0]
+        lastCaseDate: new Date().toISOString().split('T')[0] as string
       },
       description: `Запит фізичної особи: ${query}. Увага: збіг лише за ПІБ не є підставою для ідентифікації (потрібен підтверджений РНОКПП або дата народження).`,
       relationships: [],
@@ -348,7 +348,7 @@ export function generateDynamicEntity(rawQuery: string): OsintEntity {
       totalCases: 0,
       criminalCases: 0,
       lastCaseTitle: "Запит до реєстру ЄДРСР не виконано",
-      lastCaseDate: new Date().toISOString().split('T')[0]
+      lastCaseDate: new Date().toISOString().split('T')[0] as string
     },
     description: `Сутність: ${formattedName}. Офіційні реєстраційні дані вимагають перевірки за ЄДРПОУ у реєстрах.`,
     relationships: [],
@@ -362,7 +362,22 @@ export function generateDynamicEntity(rawQuery: string): OsintEntity {
  */
 export function getOrCreateEntityForQuery(rawQuery: string, existingList: OsintEntity[] = OSINT_ENTITIES): OsintEntity {
   const query = rawQuery.trim().toLowerCase();
-  if (!query) return existingList[0] || OSINT_ENTITIES[0];
+  if (!query) return existingList[0] ?? OSINT_ENTITIES[0] ?? {
+    id: 'default',
+    type: 'company',
+    name: 'Default Entity',
+    code: 'DEFAULT',
+    status: 'ACTIVE',
+    riskScore: 0,
+    address: '',
+    founders: [],
+    taxes: { year: '', paid: '', debt: '', status: '' },
+    courts: { totalCases: 0, criminalCases: 0, lastCaseTitle: '', lastCaseDate: '' },
+    description: '',
+    relationships: [],
+    aiRecommendations: '',
+    lastActivityDate: ''
+  };
 
   const found = existingList.find(e => {
     const eName = e.name.toLowerCase();

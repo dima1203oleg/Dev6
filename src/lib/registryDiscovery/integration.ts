@@ -12,12 +12,11 @@ import { ProvenanceEngine, ProvenanceEnvelope } from '../../../core/provenance/P
 import { 
   EntityType, 
   VerificationStatus, 
-  RiskLevel, 
   CanonicalEntity, 
   EntityAttribute, 
   EvidenceClaim, 
   IntelligenceDossier 
-} from '../../../types/predator.js';
+} from '../../types/predator';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -106,7 +105,7 @@ export class RDPIntegration {
   /**
    * Check if registry is relevant for given IPN
    */
-  private isRelevantRegistry(dataset: any, ipn: string): boolean {
+  private isRelevantRegistry(dataset: any, _ipn: string): boolean {
     const keywords = [
       'edr', 'єдр', 'register', 'реєстр', 'person', 'особа', 
       'company', 'компанія', 'entity', 'суб\'єкт', 'business', 'бізнес',
@@ -199,11 +198,11 @@ export class RDPIntegration {
       // Parse as CSV with proper field extraction
       if (lines.length === 0) return [];
       
-      const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+      const headers = lines[0]?.split(',').map(h => h.trim().replace(/"/g, '')) || [];
       const records = [];
       
       for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+        const values = lines[i]?.split(',').map(v => v.trim().replace(/"/g, '')) || [];
         const record: any = {};
         
         headers.forEach((header, index) => {
@@ -332,13 +331,13 @@ export class RDPIntegration {
         dataset.url,
         dataset.resources?.[0]?.id || 'unknown',
         String(entity.raw_record_id),
-        {
+        JSON.stringify({
           publishedAt: dataset.modified || null,
           datasetVersion: '1.0',
           connectorVersion: '1.0',
           verificationStatus: 'FACT',
           confidence: entity.confidence,
-        }
+        })
       );
       
       const claim = {
@@ -627,14 +626,14 @@ export class RDPIntegration {
   }> {
     console.log(`[RDP Integration] Running full pipeline for IPN: ${ipn}`);
     
-    const registries = await this.discoverRelevantRegistries();
+    const registries = Array.from(this.discoveredRegistries.values());
     const cards: any[] = [];
     const errors: any[] = [];
     const truthValidations: any[] = [];
     
     for (const registry of registries) {
       try {
-        const pipelineData = await this.integrateRegistry(registry, ipn);
+        const pipelineData = await this.fetchAndIntegrate(registry);
         cards.push(...pipelineData.cards);
         
         // Validate truth for each card
@@ -646,7 +645,7 @@ export class RDPIntegration {
           });
         }
       } catch (error) {
-        errors.push({ registry: registry.id, error: String(error) });
+        errors.push({ registry: (registry as any).id || 'unknown', error: String(error) });
       }
     }
     

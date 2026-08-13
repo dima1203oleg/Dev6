@@ -6,7 +6,7 @@
  * Integrates with RelevanceEngine for priority queue creation
  */
 
-import { CatalogConfig, CatalogType, Dataset, DiscoveryReport } from './types';
+import { CatalogConfig, Dataset, DiscoveryReport } from './types';
 import { RelevanceEngine } from './RelevanceEngine';
 
 export class DiscoveryEngine {
@@ -59,22 +59,30 @@ export class DiscoveryEngine {
     
     const startTime = Date.now();
     const allDatasets: Dataset[] = [];
+    const allErrors: any[] = [];
     
     for (const catalog of this.catalogs.values()) {
       try {
-        const datasets = await this.discoverCatalog(catalog);
-        allDatasets.push(...datasets);
+        const report = await this.discoverCatalog(catalog);
+        allDatasets.push(...report.datasets);
+        allErrors.push(...report.errors);
       } catch (error) {
         console.error(`[Discovery] Failed to discover catalog ${catalog.id}:`, error);
       }
     }
     
     const report: DiscoveryReport = {
+      runId: crypto.randomUUID(),
       timestamp: new Date(),
+      catalogId: 'all',
       totalDatasets: allDatasets.length,
+      newDatasets: allDatasets.length,
+      updatedDatasets: 0,
+      failedDatasets: 0,
+      processingTime: Date.now() - startTime,
       datasets: allDatasets,
-      catalogs: Array.from(this.catalogs.values()),
-      duration: Date.now() - startTime,
+      errors: allErrors,
+      summary: `Discovered ${allDatasets.length} datasets from all catalogs`,
     };
     
     this.discoveryHistory.push(report);
@@ -100,11 +108,13 @@ export class DiscoveryEngine {
     
     const startTime = Date.now();
     const allDatasets: Dataset[] = [];
+    const allErrors: any[] = [];
     
     for (const catalog of this.catalogs.values()) {
       try {
-        const datasets = await this.discoverCatalog(catalog);
-        allDatasets.push(...datasets);
+        const report = await this.discoverCatalog(catalog);
+        allDatasets.push(...report.datasets);
+        allErrors.push(...report.errors);
       } catch (error) {
         console.error(`[Discovery] Failed to discover catalog ${catalog.id}:`, error);
       }
@@ -115,11 +125,17 @@ export class DiscoveryEngine {
     const statistics = this.relevanceEngine.getStatistics(allDatasets);
     
     const report: DiscoveryReport = {
+      runId: crypto.randomUUID(),
       timestamp: new Date(),
+      catalogId: 'all',
       totalDatasets: allDatasets.length,
+      newDatasets: allDatasets.length,
+      updatedDatasets: 0,
+      failedDatasets: 0,
+      processingTime: Date.now() - startTime,
       datasets: allDatasets,
-      catalogs: Array.from(this.catalogs.values()),
-      duration: Date.now() - startTime,
+      errors: allErrors,
+      summary: `Discovered ${allDatasets.length} datasets from all catalogs`,
     };
     
     this.discoveryHistory.push(report);
@@ -144,7 +160,7 @@ export class DiscoveryEngine {
   /**
    * Discover datasets from a specific catalog
    */
-  private async discoverCatalog(catalog: CatalogConfig): Promise<Dataset[]> {
+  private async discoverCatalog(catalog: CatalogConfig): Promise<DiscoveryReport> {
     const runId = `${catalog.id}-${Date.now()}`;
     const startTime = Date.now();
 
@@ -183,7 +199,7 @@ export class DiscoveryEngine {
 
     } catch (error) {
       errors.push({
-        catalogId: catalog.id,
+        datasetId: catalog.id,
         error: String(error),
         timestamp: new Date(),
       });
@@ -268,7 +284,7 @@ export class DiscoveryEngine {
   /**
    * Check if dataset is new
    */
-  private isNewDataset(dataset: Dataset): boolean {
+  private isNewDataset(_dataset: Dataset): boolean {
     // TODO: Implement check against existing catalog
     return true;
   }
@@ -276,7 +292,7 @@ export class DiscoveryEngine {
   /**
    * Check if dataset has been updated
    */
-  private isUpdatedDataset(dataset: Dataset): boolean {
+  private isUpdatedDataset(_dataset: Dataset): boolean {
     // TODO: Implement check against existing catalog
     return false;
   }

@@ -24,11 +24,6 @@ export class UIIntegrationTestOrchestrator extends BaseUITest {
     const scenarios: ScenarioTestResult[] = [];
     const criticalFailures: string[] = [];
 
-    // Initialize validators
-    const fieldValidator = new FieldStatusValidator(this.testIPN, this.baseURL);
-    const provenanceValidator = new ProvenanceValidator(this.testIPN, this.baseURL);
-    const structureValidator = new UICardStructureValidator(this.testIPN, this.baseURL);
-
     // Run Scenario A - Direct Search
     console.log('Running Scenario A - Direct Search...');
     const scenarioA = new ScenarioA_DirectSearch(this.testIPN, this.baseURL);

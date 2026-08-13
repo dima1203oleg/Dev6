@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Camera, FileAudio, FileVideo, Search, Map, Sparkles, UploadCloud, AlertTriangle, Play, FileText, Image as ImageIcon, Video, Bot, Scan, CheckCircle2, XCircle, Loader2, Music, Trash2, Bell, BellOff, Download, Eye, RefreshCw, TrendingUp } from 'lucide-react';
+import { Camera, Search, UploadCloud, AlertTriangle, FileText, Image as ImageIcon, Scan, XCircle, Loader2, Eye, RefreshCw, TrendingUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 
@@ -14,17 +14,6 @@ interface AnalysisLog {
   resultText?: string;
 }
 
-interface MonitoredResource {
-  id: string;
-  type: string;
-  url: string;
-  title: string;
-  status: 'active' | 'syncing' | 'error';
-  lastActivity: string;
-  messagesAnalyzed: number;
-  threatsDetected: number;
-}
-
 interface QueuedFile {
   id: string;
   fileName: string;
@@ -33,16 +22,17 @@ interface QueuedFile {
   status: 'queued' | 'scanning' | 'analyzing' | 'done' | 'error';
   progress: number;
   boxes?: any[];
+  file?: File;
   resultText?: string;
   error?: string;
 }
 
-const defaultMonitoredResources: MonitoredResource[] = [
-  { id: '1', type: 'telegram', url: 't.me/insider_ua', title: 'Insider UA', status: 'active', lastActivity: '2 хв тому', messagesAnalyzed: 14502, threatsDetected: 12 },
-  { id: '2', type: 'telegram', url: 't.me/rybar', title: 'Рыбарь', status: 'syncing', lastActivity: '15 хв тому', messagesAnalyzed: 8301, threatsDetected: 84 },
-  { id: '3', type: 'news', url: 'pravda.com.ua/rss', title: 'Українська Правда', status: 'active', lastActivity: '1 год тому', messagesAnalyzed: 530, threatsDetected: 0 },
-  { id: '4', type: 'crypto', url: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', title: 'Binance Hot Wallet', status: 'active', lastActivity: '1 хв тому', messagesAnalyzed: 125034, threatsDetected: 3 },
-];
+interface TrendData {
+  date: string;
+  fullDate: string;
+  processed: number;
+  isAnomaly: boolean;
+}
 
 const generateDefaultLogs = (): AnalysisLog[] => {
   const logs: AnalysisLog[] = [];
@@ -71,6 +61,7 @@ const generateDefaultLogs = (): AnalysisLog[] => {
     for (let j = 0; j < logsCount; j++) {
       const fileIndex = (i * 3 + j) % files.length;
       const file = files[fileIndex];
+      if (!file) continue;
       const hours = String(9 + Math.floor(Math.random() * 8)).padStart(2, '0');
       const minutes = String(Math.floor(Math.random() * 60)).padStart(2, '0');
       const seconds = String(Math.floor(Math.random() * 60)).padStart(2, '0');
@@ -93,25 +84,9 @@ const generateDefaultLogs = (): AnalysisLog[] => {
 
 export function MediaForensicsTab() {
   const [activeMode, setActiveMode] = useState<'analysis' | 'generation' | 'grounding' | 'parsers'>('analysis');
-  const [prompt, setPrompt] = useState('');
+  const [prompt] = useState('');
   const [loading, setLoading] = useState(false);
-  const [simulatedProgress, setSimulatedProgress] = useState(0);
 
-  React.useEffect(() => {
-    let interval: any;
-    if (loading && activeMode !== 'analysis') {
-      setSimulatedProgress(0);
-      interval = setInterval(() => {
-        setSimulatedProgress(prev => {
-          if (prev >= 95) return prev;
-          return prev + Math.random() * 5 + 1;
-        });
-      }, 500);
-    } else {
-      setSimulatedProgress(100);
-    }
-    return () => clearInterval(interval);
-  }, [loading, activeMode]);
   const [result, setResult] = useState<any>(null);
   const [videoPolling, setVideoPolling] = useState<boolean>(false);
   
@@ -142,28 +117,10 @@ export function MediaForensicsTab() {
   const [selectedLogIds, setSelectedLogIds] = useState<Set<string>>(new Set());
   const [selectedLog, setSelectedLog] = useState<AnalysisLog | null>(null);
   const [logSearchQuery, setLogSearchQuery] = useState('');
-  const [audioFeedbackEnabled, setAudioFeedbackEnabled] = useState(false);
-  const [monitoredResources, setMonitoredResources] = useState<MonitoredResource[]>(defaultMonitoredResources);
-  const [parserUrl, setParserUrl] = useState('');
-  const [parserType, setParserType] = useState('telegram');
-  
-  const handleAddResource = () => {
-    if (!parserUrl.trim()) return;
-    const newRes: MonitoredResource = {
-      id: Date.now().toString(),
-      type: parserType,
-      url: parserUrl,
-      title: parserUrl.replace(/^https?:\/\//, ''),
-      status: 'syncing',
-      lastActivity: 'щойно',
-      messagesAnalyzed: 0,
-      threatsDetected: 0
-    };
-    setMonitoredResources([newRes, ...monitoredResources]);
-    setParserUrl('');
-  };
+  const [audioFeedbackEnabled] = useState(false);
+
   const [isRefetching, setIsRefetching] = useState(false);
-  const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('7d');
+  const [timeRange] = useState<'24h' | '7d' | '30d'>('7d');
 
   const simulateRefetch = () => {
     if (isRefetching) return;
@@ -183,7 +140,7 @@ export function MediaForensicsTab() {
   }, []);
 
   const trendData = useMemo(() => {
-    const data = [];
+    const data: TrendData[] = [];
     const today = new Date();
     
     let points = 7;
@@ -221,7 +178,8 @@ export function MediaForensicsTab() {
           ? d.toLocaleTimeString(undefined, formatOptions) 
           : d.toLocaleDateString(undefined, formatOptions),
         fullDate: dateStr,
-        processed: finalCount
+        processed: finalCount,
+        isAnomaly: false
       });
     }
 
@@ -359,7 +317,7 @@ export function MediaForensicsTab() {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => resolve((reader.result as string).split(',')[1]);
+      reader.onload = () => resolve((reader.result as string)?.split(',')[1] ?? '');
       reader.onerror = error => reject(error);
     });
   };
@@ -456,14 +414,19 @@ export function MediaForensicsTab() {
     
     // Processing files sequentially
     for (const qFile of queuedToProcess) {
+      if (!qFile.file) continue;
       if (qFile.fileType.startsWith('image/')) {
         await simulateClientVision(qFile);
       }
       
       updateFileInQueue(qFile.id, { status: 'analyzing', progress: 50 });
-      
+
       try {
-        let fileBase64 = await fileToBase64(filesRef.current[qFile.id]);
+        const file = filesRef.current[qFile.id];
+        if (!file) {
+          throw new Error('File not found');
+        }
+        let fileBase64 = await fileToBase64(file);
         
         const res = await fetch('/api/media-forensics', {
           method: 'POST',
@@ -772,7 +735,7 @@ export function MediaForensicsTab() {
                     {trendMetrics.isNegative && <TrendingUp className="w-3 h-3 transform rotate-180" />}
                     {!trendMetrics.isPositive && !trendMetrics.isNegative && <TrendingUp className="w-3 h-3 transform rotate-90" />}
                     {trendMetrics.isPositive ? '+' : ''}{trendMetrics.percentChange}%
-                    {trendMetrics.percentChange > 50 && <AlertTriangle className="w-3 h-3 text-rose-400 ml-1 animate-pulse" title="Значне зростання частоти логів" />}
+                    {trendMetrics.percentChange > 50 && <AlertTriangle className="w-3 h-3 text-rose-400 ml-1 animate-pulse" />}
                   </span>
                 </div>
                 

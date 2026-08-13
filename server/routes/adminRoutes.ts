@@ -6,7 +6,7 @@ import { matrixRunner } from '../datasources/qa/MatrixRunner';
 const router = Router();
 
 // ─── SOURCE REGISTRY (Dashboard) ──────────────────────────────────────────
-router.get('/sources', async (req, res) => {
+router.get('/sources', async (_req, res) => {
   try {
     const stats = connectorFactory.getDashboardStats();
     const matrix = connectorFactory.getCompatibilityMatrix();
@@ -50,7 +50,7 @@ router.post('/probe', async (req, res) => {
     // Run live probe for stats
     const probeResults = await connectorFactory.runLiveProbe(sourceId, testIdentifier);
 
-    res.json({
+    return res.json({
       success: true,
       sourceId,
       certificationStatus: certStatus,
@@ -58,7 +58,7 @@ router.post('/probe', async (req, res) => {
       probeResults,
     });
   } catch (error: any) {
-    res.status(500).json({ success: false, error: error.message });
+    return res.status(500).json({ success: false, error: error.message });
   }
 });
 

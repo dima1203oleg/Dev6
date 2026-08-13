@@ -8,23 +8,16 @@ import {
   ShieldAlert,
   Activity,
   TrendingUp,
-  Compass,
   Globe,
-  Server,
   CheckCircle,
-  HelpCircle,
   ArrowRight,
   Zap,
   RefreshCw,
-  Eye,
   Briefcase,
   User,
   Terminal,
-  Calendar,
   AlertTriangle,
-  FileText,
   Sparkles,
-  Award,
   Bot,
   Download,
   Network,
@@ -167,7 +160,7 @@ export default function DashboardView({
       dashboardDoc,
       (snapshot) => {
         if (snapshot.exists()) {
-          setChartData(snapshot.data().metrics);
+          setChartData(snapshot.data()['metrics']);
           setIsDbInitialized(true);
         } else {
           // Initialize if it doesn't exist
@@ -299,20 +292,28 @@ export default function DashboardView({
     const slopeCr = (n * sumXYCr - sumX * sumYCr) / (n * sumX2 - sumX * sumX);
     const interceptCr = (sumYCr - slopeCr * sumX) / n;
 
-    const forecastData = [];
-    const lastDate = chartData[chartData.length - 1].date;
-    const [lastMonth, lastDay] = lastDate.split("-").map(Number);
+    const forecastData: Array<{ date: string; operationsForecast: number; criticalForecast: number; isForecast: boolean }> = [];
+    const lastDataPoint = chartData[chartData.length - 1];
+    if (!lastDataPoint) return forecastData;
+    
+    const lastDate = lastDataPoint.date;
+    const dateParts = lastDate.split("-").map(Number);
+    const lastMonth = dateParts[0];
+    const lastDay = dateParts[1];
+    if (lastMonth === undefined || lastDay === undefined) return forecastData;
+    
     let currentDate = new Date(2024, lastMonth - 1, lastDay);
 
     // Connect the lines by adding forecast keys to the last actual point
     const enhancedChartData = [...chartData];
+    const lastEnhancedPoint = enhancedChartData[enhancedChartData.length - 1];
+    if (!lastEnhancedPoint) return forecastData;
+    
     enhancedChartData[enhancedChartData.length - 1] = {
-      ...enhancedChartData[enhancedChartData.length - 1],
-      operationsForecast:
-        enhancedChartData[enhancedChartData.length - 1].operations,
-      criticalForecast:
-        enhancedChartData[enhancedChartData.length - 1].critical,
-    };
+      ...lastEnhancedPoint,
+      operationsForecast: lastEnhancedPoint.operations,
+      criticalForecast: lastEnhancedPoint.critical,
+    } as typeof enhancedChartData[number] & { operationsForecast?: number; criticalForecast?: number };
 
     for (let i = 1; i <= 7; i++) {
       currentDate.setDate(currentDate.getDate() + 1);
@@ -397,14 +398,13 @@ export default function DashboardView({
           const dashboardDoc = doc(db, "dashboard", "risk_metrics");
           setChartData((prevData) => {
             const newData = [...prevData];
+            const lastItem = newData[newData.length - 1];
+            if (!lastItem) return prevData;
+            
             newData[newData.length - 1] = {
-              ...newData[newData.length - 1],
-              operations:
-                newData[newData.length - 1].operations +
-                Math.floor(Math.random() * 5),
-              critical:
-                newData[newData.length - 1].critical +
-                Math.floor(Math.random() * 2),
+              ...lastItem,
+              operations: lastItem.operations + Math.floor(Math.random() * 5),
+              critical: lastItem.critical + Math.floor(Math.random() * 2),
             };
 
             // Only update Firestore if it was initialized, to avoid race conditions
@@ -994,12 +994,6 @@ export default function DashboardView({
                   {filteredEntities.map((ent) => {
                     const coords = getEntityCoords(ent);
                     const isSelected = activeHoverId === ent.id;
-                    const riskColor =
-                      ent.riskScore >= 75
-                        ? "bg-rose-500 border-rose-400 text-rose-500"
-                        : ent.riskScore >= 50
-                          ? "bg-amber-500 border-amber-400 text-amber-500"
-                          : "bg-emerald-500 border-emerald-400 text-emerald-500";
                     const riskText =
                       ent.riskScore >= 75
                         ? "text-rose-400"

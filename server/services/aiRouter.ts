@@ -156,7 +156,7 @@ export class AiRouterService {
   private ai: GoogleGenAI | null = null;
 
   constructor() {
-    const key = process.env.GEMINI_API_KEY;
+    const key = process.env['GEMINI_API_KEY'];
     if (key) {
       this.ai = new GoogleGenAI({ apiKey: key });
     }
@@ -309,7 +309,7 @@ export class AiRouterService {
   /**
    * 2.2 Function Calling - Coordinator Agent deciding tool execution sequence
    */
-  public async orchestrateAgent(query: string, availableTools = ["search_internal_graph", "call_youcontrol_api", "fetch_court_decisions", "search_free_core_sources"]) {
+  public async orchestrateAgent(query: string, _availableTools = ["search_internal_graph", "call_youcontrol_api", "fetch_court_decisions", "search_free_core_sources"]) {
     const sanitized = this.sanitizeInput(query);
     const systemInstruction = `Ти — Агент-Координатор OSINT платформи PREDATOR.
 Твоє завдання — проаналізувати запит аналітика і сформувати оптимізований план виклику інструментів (Function Calling Sequence).
@@ -501,7 +501,6 @@ export class AiRouterService {
 
     const startTime = Date.now();
     const modelsToTry = Array.from(new Set([config.preferredModel, "gemini-flash-latest", config.fallbackModel, "gemini-3.1-flash-lite"]));
-    let lastErr: any = null;
 
     for (const modelName of modelsToTry) {
       for (let attempt = 0; attempt < 2; attempt++) {
@@ -524,7 +523,6 @@ export class AiRouterService {
             latencyMs
           };
         } catch (err: any) {
-          lastErr = err;
           console.warn(`[AI ROUTER] Model ${modelName} attempt ${attempt + 1} failed for task ${task}:`, err.message || err);
           if (attempt === 0) {
             await new Promise(r => setTimeout(r, 1000));

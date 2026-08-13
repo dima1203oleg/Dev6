@@ -28,23 +28,6 @@ export interface CoverageTestSummary {
 }
 
 export class AutomaticCoverageTest {
-  private REQUIRED_CATEGORIES = [
-    'addresses',
-    'phones',
-    'emails',
-    'companies',
-    'roles',
-    'family',
-    'vehicles',
-    'realEstate',
-    'courtCases',
-    'executions',
-    'licenses',
-    'customs',
-    'declarations',
-    'sanctions',
-    'pep'
-  ];
 
   /**
    * Запустити Automatic Coverage Test

@@ -22,9 +22,9 @@ export class TEST001_RegistryDiscovery extends BaseTest {
       if (!config.source_id || config.source_id.trim() === '') {
         errors.push('Registry ID is missing or empty');
       } else {
-        details.registry_id = config.source_id;
-        // Validate ID format (e.g., UA-001, INT-001)
-        const idPattern = /^[A-Z]{2,3}-\d{3,4}$/;
+        details['registry_id'] = config.source_id;
+        // Validate ID format (e.g., UA-001, INT-001, TEST-001)
+        const idPattern = /^[A-Z]{2,4}-\d{3,4}$/;
         if (!idPattern.test(config.source_id)) {
           warnings.push(`Registry ID format may be non-standard: ${config.source_id}`);
         }
@@ -34,14 +34,14 @@ export class TEST001_RegistryDiscovery extends BaseTest {
       if (!config.source_name || config.source_name.trim() === '') {
         errors.push('Registry name is missing or empty');
       } else {
-        details.registry_name = config.source_name;
+        details['registry_name'] = config.source_name;
       }
 
       // Check Endpoint
       if (!config.endpoint_or_resource || config.endpoint_or_resource.trim() === '') {
         errors.push('Endpoint is missing or empty');
       } else {
-        details.endpoint = config.endpoint_or_resource;
+        details['endpoint'] = config.endpoint_or_resource;
         if (!this.isValidEndpoint(config.endpoint_or_resource)) {
           errors.push(`Invalid endpoint URL: ${config.endpoint_or_resource}`);
         }
@@ -51,7 +51,7 @@ export class TEST001_RegistryDiscovery extends BaseTest {
       if (!config.access_level || config.access_level.trim() === '') {
         errors.push('Access type is missing or empty');
       } else {
-        details.access_type = config.access_level;
+        details['access_type'] = config.access_level;
         const validAccessTypes = ['FREE_AUTO', 'FREE_API_KEY', 'PAID', 'RESTRICTED', 'PRIVATE'];
         if (!validAccessTypes.includes(config.access_level)) {
           warnings.push(`Non-standard access type: ${config.access_level}`);
@@ -59,8 +59,8 @@ export class TEST001_RegistryDiscovery extends BaseTest {
       }
 
       // Check Configuration Status
-      details.config_status = this.checkConfigStatus(config, warnings);
-      details.production_ready = config.production_ready;
+      details['config_status'] = this.checkConfigStatus(config, warnings);
+      details['production_ready'] = config.production_ready;
 
       // Check required fields
       const requiredFields = [

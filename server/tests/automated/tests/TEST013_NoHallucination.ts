@@ -43,23 +43,23 @@ export class TEST013_NoHallucination extends BaseTest {
         // Check for hallucinated values
         const hallucinationCheck = this.checkForHallucination(jsonData);
         
-        details.fields_checked = hallucinationCheck.fieldsChecked;
-        details.hallucinated_fields = hallucinationCheck.hallucinatedFields;
-        details.not_found_fields = hallucinationCheck.notFoundFields;
-        details.unknown_fields = hallucinationCheck.unknownFields;
-        details.not_applicable_fields = hallucinationCheck.notApplicableFields;
+        details['fields_checked'] = hallucinationCheck.fieldsChecked;
+        details['hallucinated_fields'] = hallucinationCheck.hallucinatedFields;
+        details['not_found_fields'] = hallucinationCheck.notFoundFields;
+        details['unknown_fields'] = hallucinationCheck.unknownFields;
+        details['not_applicable_fields'] = hallucinationCheck.notApplicableFields;
         
         if (hallucinationCheck.hallucinatedFields.length > 0) {
           errors.push(`Hallucinated values detected: ${hallucinationCheck.hallucinatedFields.join(', ')}`);
-          details.hallucination_detected = true;
+          details['hallucination_detected'] = true;
         } else {
-          details.hallucination_detected = false;
+          details['hallucination_detected'] = false;
         }
         
         // Check for default/generic values that might indicate hallucination
         const genericValueCheck = this.checkForGenericValues(jsonData);
-        details.generic_values_found = genericValueCheck.found;
-        details.generic_value_fields = genericValueCheck.fields;
+        details['generic_values_found'] = genericValueCheck.found;
+        details['generic_value_fields'] = genericValueCheck.fields;
         
         if (genericValueCheck.found) {
           warnings.push(`Generic values found: ${genericValueCheck.fields.join(', ')}`);
@@ -67,8 +67,8 @@ export class TEST013_NoHallucination extends BaseTest {
         
         // Check for data that looks like placeholders
         const placeholderCheck = this.checkForPlaceholders(jsonData);
-        details.placeholders_found = placeholderCheck.found;
-        details.placeholder_fields = placeholderCheck.fields;
+        details['placeholders_found'] = placeholderCheck.found;
+        details['placeholder_fields'] = placeholderCheck.fields;
         
         if (placeholderCheck.found) {
           warnings.push(`Placeholder values found: ${placeholderCheck.fields.join(', ')}`);
@@ -76,8 +76,8 @@ export class TEST013_NoHallucination extends BaseTest {
         
         // Verify all values have provenance
         const provenanceCheck = this.checkProvenance(jsonData);
-        details.fields_with_provenance = provenanceCheck.withProvenance;
-        details.fields_without_provenance = provenanceCheck.withoutProvenance;
+        details['fields_with_provenance'] = provenanceCheck.withProvenance;
+        details['fields_without_provenance'] = provenanceCheck.withoutProvenance;
         
         if (provenanceCheck.withoutProvenance.length > 0) {
           errors.push(`Fields without provenance: ${provenanceCheck.withoutProvenance.join(', ')}`);
@@ -85,8 +85,8 @@ export class TEST013_NoHallucination extends BaseTest {
         
         // Check for AI-generated patterns
         const aiPatternCheck = this.checkForAIPatterns(jsonData);
-        details.ai_patterns_detected = aiPatternCheck.detected;
-        details.ai_pattern_fields = aiPatternCheck.fields;
+        details['ai_patterns_detected'] = aiPatternCheck.detected;
+        details['ai_pattern_fields'] = aiPatternCheck.fields;
         
         if (aiPatternCheck.detected) {
           warnings.push(`AI-like patterns detected: ${aiPatternCheck.fields.join(', ')}`);

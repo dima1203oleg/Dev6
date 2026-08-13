@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { ShieldCheck, FileCheck, ExternalLink, Hash, CheckCircle, AlertTriangle, Cpu, X, Database } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ShieldCheck, FileCheck, Hash, CheckCircle, Cpu, X, Database } from "lucide-react";
 import { DataProvenanceChain, EvidenceClaim } from "../types/predator";
 import { PredatorApiService } from "../services/predatorApi";
 
@@ -17,10 +17,11 @@ export default function EvidenceProvenanceModal({ entityId, entityName, onClose 
     let active = true;
     PredatorApiService.getProvenanceChain(entityId)
       .then((data) => {
-        if (active) setChain(data);
+        if (active) setChain(data as any);
       })
       .catch((err) => {
         console.error("Provenance error:", err);
+        if (active) setChain(null);
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -153,7 +154,7 @@ export default function EvidenceProvenanceModal({ entityId, entityName, onClose 
                     <div key={i} className="p-3 bg-slate-950 border border-slate-800/60 rounded-xl flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                        <span className="text-slate-400">{step.timestamp.split("T")[1].substring(0, 8)}</span>
+                        <span className="text-slate-400">{step.timestamp?.split("T")?.[1]?.substring(0, 8) || ''}</span>
                         <span className="text-white font-bold">{step.action}</span>
                       </div>
                       <span className="text-slate-500">{step.details}</span>

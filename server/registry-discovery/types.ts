@@ -153,13 +153,14 @@ export interface Dataset {
   created: Date;
   modified: Date;
   license?: string;
-  tags: string[];
-  organization?: string;
+  tags: (string | { name: string; display_name?: string; id: string })[];
+  organization?: string | { name: string; id: string; display_name?: string };
   datastoreActive: boolean;
   resourceType: string;
   downloadUrl: string;
   hash?: string;
   metadata: any;
+  resources?: Array<{ name: string; description?: string; url: string }>;
 }
 
 // Registry Passport
@@ -337,4 +338,52 @@ export interface ProductionStatus {
   failedRegistries: number;
   lastUpdate: Date;
   nextScheduled: Date;
+}
+
+// Scan Result
+export interface ScanResult {
+  dataset: Dataset;
+  hasDataStore: boolean;
+  hasCSV: boolean;
+  hasJSON: boolean;
+  hasXML: boolean;
+  hasZIP: boolean;
+  hasXLSX: boolean;
+  hasAPI: boolean;
+  hasDump: boolean;
+  hasStreaming: boolean;
+  recommendedMethod: 'DATASTORE' | 'DOWNLOAD' | 'API' | 'DUMP';
+  estimatedSize: number;
+  estimatedRecords: number;
+  schema?: Schema;
+  qualityScore: number;
+}
+
+// Download Result
+export interface DownloadResult {
+  dataset: Dataset;
+  method: 'DATASTORE' | 'DOWNLOAD' | 'API' | 'DUMP';
+  success: boolean;
+  records?: any[];
+  rawData?: Buffer;
+  format: DatasetFormat;
+  size: number;
+  downloadTime: number;
+  error?: string;
+  paginated?: boolean;
+  pages?: number;
+  checkpoint?: string;
+}
+
+
+export interface ProductionArtifacts {
+  catalog: any;
+  registryPassports: RegistryPassport[];
+  downloadQueue: any[];
+  connectorRegistry: any[];
+  schemaHistory: any;
+  healthReport: HealthReport;
+  qualityReport: any;
+  discoveryReport: string;
+  productionStatus: ProductionStatus;
 }

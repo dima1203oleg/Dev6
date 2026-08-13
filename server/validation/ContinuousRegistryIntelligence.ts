@@ -75,7 +75,6 @@ export class ContinuousRegistryIntelligence {
   private monitors: Map<string, RegistryMonitor> = new Map();
   private schedules: Map<string, MonitoringSchedule> = new Map();
   private alerts: Map<string, RegistryAlert> = new Map();
-  private monitoringInterval: number = 300; // 5 minutes default
 
   /**
    * Start monitoring for a registry
@@ -142,7 +141,7 @@ export class ContinuousRegistryIntelligence {
       monitor.monitoringEnabled = false;
       
       // Deactivate schedule
-      for (const [scheduleId, schedule] of this.schedules) {
+      for (const [_scheduleId, schedule] of this.schedules) {
         if (schedule.registryId === registryId) {
           schedule.active = false;
         }
@@ -218,7 +217,7 @@ export class ContinuousRegistryIntelligence {
   /**
    * Check registry health (placeholder implementation)
    */
-  private async checkRegistryHealth(registryId: string): Promise<{
+  private async checkRegistryHealth(_registryId: string): Promise<{
     healthy: boolean;
     severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
     message: string;
@@ -318,7 +317,7 @@ export class ContinuousRegistryIntelligence {
     const now = Date.now();
     let checksRun = 0;
 
-    for (const [scheduleId, schedule] of this.schedules) {
+    for (const [_scheduleId, schedule] of this.schedules) {
       if (!schedule.active) continue;
 
       const nextExecution = new Date(schedule.nextExecution).getTime();

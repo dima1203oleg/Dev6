@@ -38,15 +38,15 @@ function parseArguments(): RunnerOptions {
     switch (arg) {
       case '--ipn':
       case '-i':
-        options.testIPN = args[++i];
+        options.testIPN = args[++i] || '';
         break;
       case '--url':
       case '-u':
-        options.baseURL = args[++i];
+        options.baseURL = args[++i] || '';
         break;
       case '--output':
       case '-o':
-        options.outputDir = args[++i];
+        options.outputDir = args[++i] || '';
         break;
       case '--no-json':
         options.generateJSON = false;

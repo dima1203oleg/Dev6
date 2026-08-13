@@ -10,7 +10,7 @@
  */
 
 import { BaseUITest } from '../BaseUITest';
-import { ScenarioTestResult, ValidationResult, UICardStructure, SearchExecution, FieldStatus } from '../types';
+import { ScenarioTestResult, ValidationResult, UICardStructure, SearchExecution } from '../types';
 
 export class ScenarioC_ConflictDetection extends BaseUITest {
   async execute(): Promise<ScenarioTestResult> {

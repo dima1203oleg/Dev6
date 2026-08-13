@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image as ImageIcon, Search } from 'lucide-react';
+import { Image as ImageIcon } from 'lucide-react';
 
 export const MEDINTModule: React.FC = () => {
   const [query, setQuery] = useState('');

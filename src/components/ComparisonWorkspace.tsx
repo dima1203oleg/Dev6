@@ -1,7 +1,5 @@
-import React from 'react';
 import { Dossier } from '../types';
-import { ArrowLeftRight, Check, X, ShieldAlert, GitCompare, Building, Users, AlertTriangle } from 'lucide-react';
-import { ProvenanceBadge } from './ui/ProvenanceBadge';
+import { ShieldAlert, GitCompare, AlertTriangle } from 'lucide-react';
 
 interface ComparisonWorkspaceProps {
   entityA: Dossier;

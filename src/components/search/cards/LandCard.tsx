@@ -1,12 +1,12 @@
 import React from 'react';
-import { Map, MapPin, Database, LandPlot } from 'lucide-react';
+import { MapPin, Database, LandPlot } from 'lucide-react';
 
 interface LandCardProps {
   entity: any;
   landData?: any;
 }
 
-export const LandCard: React.FC<LandCardProps> = ({ entity, landData }) => {
+export const LandCard: React.FC<LandCardProps> = ({ entity: _entity, landData }) => {
   const plots = landData?.plots || [];
 
   return (

@@ -5,23 +5,8 @@
  * Automatically selects optimal download method and handles multiple formats
  */
 
-import { Dataset, DatasetFormat, ScanResult } from './types';
+import { Dataset, DatasetFormat, ScanResult, DownloadResult } from './types';
 import { CKANAdapter } from './adapters/CKANAdapter';
-
-export interface DownloadResult {
-  dataset: Dataset;
-  method: 'DATASTORE' | 'DOWNLOAD' | 'API' | 'DUMP';
-  success: boolean;
-  records?: any[];
-  rawData?: Buffer;
-  format: DatasetFormat;
-  size: number;
-  downloadTime: number;
-  error?: string;
-  paginated?: boolean;
-  pages?: number;
-  checkpoint?: string;
-}
 
 export interface SafeBatchConfig {
   maxConcurrent: number;
@@ -406,11 +391,11 @@ export class ResourceDownloader {
     
     if (lines.length === 0) return [];
 
-    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+    const headers = lines[0]?.split(',').map(h => h.trim().replace(/"/g, '')) || [];
     const records: any[] = [];
 
     for (let i = 1; i < lines.length; i++) {
-      const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+      const values = lines[i]?.split(',').map(v => v.trim().replace(/"/g, '')) || [];
       const record: any = {};
       
       headers.forEach((header, index) => {
@@ -445,7 +430,7 @@ export class ResourceDownloader {
   /**
    * Extract ZIP archive
    */
-  private async extractZIP(buffer: Buffer): Promise<{ records: any[]; format: DatasetFormat }> {
+  private async extractZIP(_buffer: Buffer): Promise<{ records: any[]; format: DatasetFormat }> {
     // Simple ZIP extraction (in production, use adm-zip or similar)
     // TODO: Implement proper ZIP extraction
     return {
@@ -478,7 +463,7 @@ export class ResourceDownloader {
           console.error(`[Downloader] Failed to download dataset ${dataset.id}:`, error);
           return {
             dataset,
-            method: 'DOWNLOAD',
+            method: 'DOWNLOAD' as const,
             success: false,
             format: dataset.format,
             size: 0,

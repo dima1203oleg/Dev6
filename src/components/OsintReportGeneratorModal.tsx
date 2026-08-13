@@ -4,8 +4,8 @@
  * Official OSINT Report & Memorandum Generator Modal
  */
 
-import React, { useRef } from 'react';
-import { FileText, Printer, Download, X, ShieldCheck, CheckCircle2, Lock, Award, QrCode } from 'lucide-react';
+import { useRef } from 'react';
+import { Printer, Download, X, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 import { QRCodeSVG } from 'qrcode.react';
 import jsPDF from 'jspdf';

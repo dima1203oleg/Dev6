@@ -291,7 +291,7 @@ export class HardcodedIdentifierScanner {
   /**
    * Check if identifier is production accessible
    */
-  private isProductionAccessible(filePath: string, line: string, content: string, lineIndex: number): boolean {
+  private isProductionAccessible(filePath: string, line: string, _content: string, _lineIndex: number): boolean {
     const lowerPath = filePath.toLowerCase();
     
     // Check file location
@@ -369,11 +369,11 @@ export class HardcodedIdentifierScanner {
     }
     
     // Check for specific identifier types
-    if (scanResult.summary.byType['EDRPOU'] > 0) {
+    if ((scanResult.summary.byType['EDRPOU'] || 0) > 0) {
       warnings.push(`${scanResult.summary.byType['EDRPOU']} EDRPOU identifiers found`);
     }
     
-    if (scanResult.summary.byType['IPN'] > 0) {
+    if ((scanResult.summary.byType['IPN'] || 0) > 0) {
       warnings.push(`${scanResult.summary.byType['IPN']} IPN identifiers found`);
     }
     

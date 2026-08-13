@@ -91,7 +91,9 @@ class DataStoreFallbackVerification {
       // Test DataStore probing on DataStore resources
       console.log('\n--- Testing DataStore Probing ---');
       for (let i = 0; i < Math.min(5, dataStoreResources.length); i++) {
-        const { resource, packageId } = dataStoreResources[i];
+        const item = dataStoreResources[i];
+        if (!item) continue;
+        const { resource, packageId } = item;
         summary.totalTested++;
 
         console.log(`\nTest ${i + 1}: Resource ${resource.id} (${resource.name})`);
@@ -144,7 +146,9 @@ class DataStoreFallbackVerification {
       // Test fallback on non-DataStore resources
       console.log('\n--- Testing Fallback to Direct Download ---');
       for (let i = 0; i < Math.min(5, nonDataStoreResources.length); i++) {
-        const { resource, packageId } = nonDataStoreResources[i];
+        const item = nonDataStoreResources[i];
+        if (!item) continue;
+        const { resource, packageId } = item;
         summary.totalTested++;
 
         console.log(`\nTest ${i + 1}: Resource ${resource.id} (${resource.name})`);

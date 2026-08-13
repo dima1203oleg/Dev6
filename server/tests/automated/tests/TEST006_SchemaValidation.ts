@@ -35,21 +35,21 @@ export class TEST006_SchemaValidation extends BaseTest {
         let jsonData: any;
         try {
           jsonData = JSON.parse(body);
-          details.json_parseable = true;
+          details['json_parseable'] = true;
         } catch (parseError) {
           errors.push('Response is not valid JSON');
-          details.json_parseable = false;
+          details['json_parseable'] = false;
           return { details, errors, warnings };
         }
         
         // Validate against expected schema based on source type
         const schemaValidation = this.validateSchema(context.source_config, jsonData);
         
-        details.schema_version = context.source_config.schema_version;
-        details.schema_valid = schemaValidation.valid;
-        details.missing_fields = schemaValidation.missingFields;
-        details.extra_fields = schemaValidation.extraFields;
-        details.type_mismatches = schemaValidation.typeMismatches;
+        details['schema_version'] = context.source_config.schema_version;
+        details['schema_valid'] = schemaValidation.valid;
+        details['missing_fields'] = schemaValidation.missingFields;
+        details['extra_fields'] = schemaValidation.extraFields;
+        details['type_mismatches'] = schemaValidation.typeMismatches;
         
         if (!schemaValidation.valid) {
           errors.push(`Schema validation failed: ${schemaValidation.missingFields.join(', ')}`);
@@ -120,7 +120,7 @@ export class TEST006_SchemaValidation extends BaseTest {
     return result;
   }
 
-  private getExpectedFields(category: string, entities: string[]): {
+  private getExpectedFields(category: string, _entities: string[]): {
     required: string[];
     optional: string[];
     types: Record<string, string>;

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 
 export interface AuditLogEntry {
   id: string;
@@ -41,7 +41,6 @@ export function recordAuditLog(entry: Omit<AuditLogEntry, "id" | "timestamp">) {
 export function auditMiddleware(action: string, resource: string) {
   return (req: any, res: Response, next: NextFunction) => {
     const originalJson = res.json;
-    const startTime = Date.now();
 
     res.json = function (body: any) {
       const user = req.user || {

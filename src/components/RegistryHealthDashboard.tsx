@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Server, CheckCircle2, AlertTriangle, XCircle, Clock, Database, RefreshCw, Activity, ShieldAlert, Cpu, HardDrive, ArrowRight, Network, Layers, ShieldCheck, Zap } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Server, CheckCircle2, AlertTriangle, Database, RefreshCw, Network, Layers, ShieldCheck, ShieldAlert } from "lucide-react";
 import { DataApiService } from "../services/dataApi";
 import { motion } from "motion/react";
 
@@ -30,7 +30,6 @@ export default function RegistryHealthDashboard() {
   const totalRecords = sources.reduce((acc, curr) => acc + (curr.recordsCount || 0), 0);
   const healthyCount = sources.filter(s => s.status === 'HEALTHY').length;
   const degradedCount = sources.filter(s => s.status === 'DEGRADED').length;
-  const failedCount = sources.filter(s => s.status !== 'HEALTHY' && s.status !== 'DEGRADED').length;
 
   return (
     <div className="p-6 h-full overflow-y-auto bg-slate-950/50">

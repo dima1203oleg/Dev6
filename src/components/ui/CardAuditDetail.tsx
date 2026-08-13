@@ -4,8 +4,8 @@
  */
 
 import React, { useState } from 'react';
-import { CardValidationResult, FieldAudit, CardStatus } from '../../lib/cardValidation/types';
-import { ChevronDown, ChevronRight, Hash, Database, Clock, Shield, FileText, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
+import { CardValidationResult, CardStatus } from '../../lib/cardValidation/types';
+import { ChevronDown, ChevronRight, Hash, FileText, AlertTriangle, XCircle } from 'lucide-react';
 
 interface CardAuditDetailProps {
   validationResult: CardValidationResult;
@@ -179,7 +179,7 @@ export const CardAuditDetail: React.FC<CardAuditDetailProps> = ({
                   {getFieldStatusBadge(field.status)}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400">{field.source}</span>
+                  <span className="text-xs text-slate-400">{field.sourceId}</span>
                 </div>
               </button>
               
@@ -192,7 +192,7 @@ export const CardAuditDetail: React.FC<CardAuditDetailProps> = ({
                     </div>
                     <div>
                       <span className="text-xs text-slate-500 block mb-1">Джерело</span>
-                      <span className="text-sm text-slate-300">{field.source}</span>
+                      <span className="text-sm text-slate-300">{field.sourceId}</span>
                     </div>
                     <div>
                       <span className="text-xs text-slate-500 block mb-1">Реєстр</span>

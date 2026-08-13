@@ -11,7 +11,6 @@ import {
   CardCoverageScore,
   ProductionHealthIndex,
   CertificationReport,
-  CardStatus,
 } from './types';
 import { CanonicalEntity } from '../../types/predator';
 

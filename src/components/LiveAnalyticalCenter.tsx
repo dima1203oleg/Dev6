@@ -8,59 +8,32 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   Search,
   ShieldAlert,
-  Network,
   Map,
   Globe,
   Briefcase,
   User,
-  DollarSign,
   FileText,
-  Compass,
-  Server,
   CheckCircle,
-  HelpCircle,
-  AlertTriangle,
-  ArrowRight,
-  Zap,
-  RefreshCw,
-  Send,
-  Plus,
-  Filter,
   TrendingUp,
   ShieldCheck,
   Landmark,
   ChevronRight,
   Hash,
   Truck,
-  FileSpreadsheet,
   ShieldX,
   Eye,
-  BookOpen,
   Download,
-  Calendar,
-  Maximize2,
-  Minimize2,
-  ChevronDown,
   Check,
-  Info,
   Clock,
-  AlertCircle,
   Sparkles,
-  Sliders,
   Cpu,
   Volume2,
   VolumeX,
-  EyeOff,
-  Play,
-  Pause,
-  Activity,
-  Users,
   Bot,
   Database,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { OSINT_ENTITIES, OsintEntity, generateDynamicEntity } from "../osintData";
-import { SOLUTIONS } from "../data";
 import LiveAnalyticalCore from "./LiveAnalyticalCore";
 
 interface LiveAnalyticalCenterProps {
@@ -118,13 +91,13 @@ export default function LiveAnalyticalCenter({
   onSelectEntityGlobal,
   selectedEntity,
   selectedScenario = "business",
-  onSelectScenario,
+  onSelectScenario: _onSelectScenario,
 }: LiveAnalyticalCenterProps) {
   // Interactive core parameters
   const [searchQuery, setSearchQuery] = useState("");
-  const [isThinking, setIsThinking] = useState(false);
+  const [_isThinking, _setIsThinking] = useState(false);
   const [activeEntity, setActiveEntity] = useState<OsintEntity | null>(
-    selectedEntity || OSINT_ENTITIES[0],
+    selectedEntity || OSINT_ENTITIES[0] || null,
   );
 
   useEffect(() => {
@@ -244,8 +217,8 @@ export default function LiveAnalyticalCenter({
       const item = labels[i % labels.length];
       return {
         id: `gal-part-${i}`,
-        label: item.l,
-        type: item.t as any,
+        label: item?.l || 'Unknown',
+        type: item?.t as any,
         angle: (i / 30) * Math.PI * 2 + Math.random() * 0.4,
         radius: 120 + Math.random() * 220,
         size: 3 + Math.random() * 5,
@@ -377,28 +350,32 @@ export default function LiveAnalyticalCenter({
       autopilotIntervalRef.current = setInterval(() => {
         const nextEntity = OSINT_ENTITIES[idx % OSINT_ENTITIES.length];
         idx++;
-        setActiveEntity(nextEntity);
-        buildGraphForEntity(nextEntity);
-        onSelectEntityGlobal(nextEntity);
+        if (nextEntity) {
+          setActiveEntity(nextEntity);
+          buildGraphForEntity(nextEntity);
+          onSelectEntityGlobal(nextEntity);
+        }
 
         // Cycle core modes randomly
         const modes: Array<
           "learning" | "optimization" | "inference" | "validation"
         > = ["learning", "optimization", "inference", "validation"];
-        const randomMode = modes[Math.floor(Math.random() * modes.length)];
+        const randomMode = modes[Math.floor(Math.random() * modes.length)] || "idle";
         setCoreState(randomMode);
 
-        const voicePhrases = [
-          `Аналізую суб'єкт ${nextEntity.name}. Рівень загрози: ${nextEntity.riskScore} відсотків.`,
-          `Проводжу семантичний аналіз зв'язків. Виявлено ${(nextEntity.relationships || []).length} залежностей.`,
-          `Співвідношу компанію з базою Qdrant. Запускаю моделювання ризиків.`,
-          `ШІ-перевірка завершена. Оновлено статус здоров'я системи.`,
-        ];
-        speakVoice(
-          voicePhrases[Math.floor(Math.random() * voicePhrases.length)],
-        );
+        if (nextEntity) {
+          const voicePhrases = [
+            `Аналізую суб'єкт ${nextEntity.name}. Рівень загрози: ${nextEntity.riskScore} відсотків.`,
+            `Проводжу семантичний аналіз зв'язків. Виявлено ${(nextEntity.relationships || []).length} залежностей.`,
+            `Співвідношу компанію з базою Qdrant. Запускаю моделювання ризиків.`,
+            `ШІ-перевірка завершена. Оновлено статус здоров'я системи.`,
+          ];
+          speakVoice(
+            voicePhrases[Math.floor(Math.random() * voicePhrases.length)] || "Аналіз завершено.",
+          );
 
-        setTimeout(() => setCoreState("idle"), 3000);
+          setTimeout(() => setCoreState("idle"), 3000);
+        }
       }, 7000);
     } else {
       if (autopilotIntervalRef.current) {
@@ -561,7 +538,7 @@ export default function LiveAnalyticalCenter({
   const handleSearchTrigger = (queryText: string) => {
     if (!queryText.trim()) return;
 
-    setIsThinking(true);
+    _setIsThinking(true);
     setCoreState("learning");
     speakVoice(
       "Запускаю процес мислення. Шукаю зв'язки у семантичній галактиці.",
@@ -571,7 +548,7 @@ export default function LiveAnalyticalCenter({
     setIsGalaxySwirling(true);
 
     setTimeout(() => {
-      setIsThinking(false);
+      _setIsThinking(false);
       setIsGalaxySwirling(false);
       setCoreState("inference");
 
@@ -694,7 +671,7 @@ export default function LiveAnalyticalCenter({
       "command-center":
         "Запуск командного центру. Система автоматично аналізує потік подій.",
     };
-    speakVoice(modePhrases[mode]);
+    speakVoice(modePhrases[mode] || "Режим змінено.");
   };
 
   return (
@@ -953,7 +930,7 @@ export default function LiveAnalyticalCenter({
                     inference: "Виконую висновок. Будую логічні взаємозв'язки.",
                     validation: "Запускаю валідацію. Перевіряю комплаєнс умов.",
                   };
-                  speakVoice(stateGreetings[s.id]);
+                  speakVoice(stateGreetings[s.id] || "Стан змінено.");
                 }}
                 className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${coreState === s.id ? "bg-blue-600 text-white" : "text-slate-300 hover:text-slate-200"}`}
               >
@@ -1193,7 +1170,7 @@ export default function LiveAnalyticalCenter({
                     {/* Central Core Orb */}
                     <motion.div
                       whileHover={{ scale: 1.1 }}
-                      className={`w-20 h-20 rounded-full bg-gradient-to-tr p-0.5 border border-blue-400/30 flex flex-col items-center justify-center text-center cursor-pointer relative ${coreColors[coreState] || coreColors.idle}`}
+                      className={`w-20 h-20 rounded-full bg-gradient-to-tr p-0.5 border border-blue-400/30 flex flex-col items-center justify-center text-center cursor-pointer relative ${coreColors[coreState] || coreColors['idle']}`}
                     >
                       <Cpu className="w-7 h-7 text-white animate-pulse" />
                       <span className="text-xs text-white font-mono font-black uppercase tracking-widest mt-1">

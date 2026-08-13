@@ -30,7 +30,7 @@ export function validateBody(schema: Record<string, (value: any) => string | nul
       });
     }
     
-    next();
+    return next();
   };
 }
 
@@ -58,7 +58,7 @@ export function validateQuery(schema: Record<string, (value: any) => string | nu
       });
     }
     
-    next();
+    return next();
   };
 }
 

@@ -1,6 +1,4 @@
 
-import { useState, useEffect } from 'react';
-
 export function useFirebaseSync() {
   return {
     isOnline: true,

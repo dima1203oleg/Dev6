@@ -5,12 +5,12 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
-  Map as MapIcon, Globe, Compass, MapPin, Activity, ShieldAlert, TrendingUp, 
-  Layers, Search, Briefcase, User, Terminal, ArrowRight, RefreshCw, 
-  Zap, CheckCircle, Sliders, Eye, EyeOff, AlertTriangle, Sparkles, Navigation,
-  ExternalLink, Key, Info, Check, MapPinOff
+  Map as MapIcon, Globe, Compass, MapPin, Activity, ShieldAlert, 
+  Layers, Search, Briefcase, User, Terminal, RefreshCw, 
+  Zap, CheckCircle, Sliders, Sparkles, Navigation,
+  Key, MapPinOff
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { APIProvider, Map as GoogleMap, AdvancedMarker, Pin, InfoWindow, useAdvancedMarkerRef, useMapsLibrary, useMap } from '@vis.gl/react-google-maps';
 import { OSINT_ENTITIES, OsintEntity } from '../osintData';
 
@@ -197,52 +197,61 @@ function MapVectorOverlay({ showRoutes, showFlows }: { showRoutes: boolean; show
   useEffect(() => {
     if (!map || !mapsLib) return;
 
-    const polylines: google.maps.Polyline[] = [];
+    const polylines: any[] = [];
 
     if (showRoutes) {
-      // Kyiv to Kozyn
-      const poly1 = new mapsLib.Polyline({
-        path: [
-          { lat: MAP_LOCATIONS['comp-1'].lat, lng: MAP_LOCATIONS['comp-1'].lng },
-          { lat: MAP_LOCATIONS['person-1'].lat, lng: MAP_LOCATIONS['person-1'].lng }
-        ],
-        geodesic: true,
-        strokeColor: '#f43f5e',
-        strokeOpacity: 0.8,
-        strokeWeight: 3,
-        map
-      });
-      polylines.push(poly1);
+      const comp1 = MAP_LOCATIONS['comp-1'];
+      const person1 = MAP_LOCATIONS['person-1'];
+      if (comp1 && person1) {
+        const poly1 = new mapsLib.Polyline({
+          path: [
+            { lat: comp1.lat, lng: comp1.lng },
+            { lat: person1.lat, lng: person1.lng }
+          ],
+          geodesic: true,
+          strokeColor: '#f43f5e',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          map
+        });
+        polylines.push(poly1);
+      }
     }
 
     if (showFlows) {
-      // Kyiv to Odesa BTC Node
-      const poly2 = new mapsLib.Polyline({
-        path: [
-          { lat: MAP_LOCATIONS['comp-1'].lat, lng: MAP_LOCATIONS['comp-1'].lng },
-          { lat: MAP_LOCATIONS['wallet-1'].lat, lng: MAP_LOCATIONS['wallet-1'].lng }
-        ],
-        geodesic: true,
-        strokeColor: '#f59e0b',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        map
-      });
+      const comp1 = MAP_LOCATIONS['comp-1'];
+      const wallet1 = MAP_LOCATIONS['wallet-1'];
+      const comp2 = MAP_LOCATIONS['comp-2'];
 
-      // Kyiv to Lviv
-      const poly3 = new mapsLib.Polyline({
-        path: [
-          { lat: MAP_LOCATIONS['comp-1'].lat, lng: MAP_LOCATIONS['comp-1'].lng },
-          { lat: MAP_LOCATIONS['comp-2'].lat, lng: MAP_LOCATIONS['comp-2'].lng }
-        ],
-        geodesic: true,
-        strokeColor: '#3b82f6',
-        strokeOpacity: 0.7,
-        strokeWeight: 2,
-        map
-      });
+      if (comp1 && wallet1) {
+        const poly2 = new mapsLib.Polyline({
+          path: [
+            { lat: comp1.lat, lng: comp1.lng },
+            { lat: wallet1.lat, lng: wallet1.lng }
+          ],
+          geodesic: true,
+          strokeColor: '#f59e0b',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          map
+        });
+        polylines.push(poly2);
+      }
 
-      polylines.push(poly2, poly3);
+      if (comp1 && comp2) {
+        const poly3 = new mapsLib.Polyline({
+          path: [
+            { lat: comp1.lat, lng: comp1.lng },
+            { lat: comp2.lat, lng: comp2.lng }
+          ],
+          geodesic: true,
+          strokeColor: '#3b82f6',
+          strokeOpacity: 0.7,
+          strokeWeight: 2,
+          map
+        });
+        polylines.push(poly3);
+      }
     }
 
     return () => {
@@ -1031,15 +1040,15 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
                 ДОСЬЄ ВУЗЛА В РЕАЛЬНОМУ ЧАСІ
               </span>
               <span className="text-[10px] bg-slate-950 text-slate-300 border border-slate-800 px-2 py-0.5 rounded font-mono uppercase font-black">
-                {selectedEntity.status}
+                {selectedEntity?.status}
               </span>
             </div>
 
             <div className="space-y-2.5">
               <div>
-                <h4 className="text-xs font-bold text-slate-200">{selectedEntity.name}</h4>
+                <h4 className="text-xs font-bold text-slate-200">{selectedEntity?.name}</h4>
                 <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest mt-0.5">
-                  {selectedEntity.type === 'company' ? 'Юридична особа' : selectedEntity.type === 'person' ? 'Фізична особа' : 'Криптовалютна адреса'} • Код {selectedEntity.code}
+                  {selectedEntity?.type === 'company' ? 'Юридична особа' : selectedEntity?.type === 'person' ? 'Фізична особа' : 'Криптовалютна адреса'} • Код {selectedEntity?.code}
                 </p>
               </div>
 
@@ -1048,7 +1057,7 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
                   <MapPin className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-[10px] text-slate-400 block uppercase font-bold">Географічна адреса</span>
-                    <span className="text-slate-200 font-sans leading-relaxed text-xs">{selectedEntity.address}</span>
+                    <span className="text-slate-200 font-sans leading-relaxed text-xs">{selectedEntity?.address}</span>
                   </div>
                 </div>
 
@@ -1061,10 +1070,10 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
               </div>
 
               <div className="text-xs leading-relaxed text-slate-300 font-sans italic">
-                "{selectedEntity.description}"
+                "{selectedEntity?.description}"
               </div>
 
-              {onSelectEntityGlobal && (
+              {onSelectEntityGlobal && selectedEntity && (
                 <button
                   onClick={() => onSelectEntityGlobal(selectedEntity)}
                   className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-mono font-bold uppercase tracking-widest py-2 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"

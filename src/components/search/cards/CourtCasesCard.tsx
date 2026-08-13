@@ -7,7 +7,7 @@ interface CourtCasesCardProps {
   courtData?: any;
 }
 
-export const CourtCasesCard: React.FC<CourtCasesCardProps> = ({ entity, courtData }) => {
+export const CourtCasesCard: React.FC<CourtCasesCardProps> = ({ entity: _entity, courtData }) => {
   // If no court data provided, fallback to empty state
   const data = courtData || {
     totalCases: 0,

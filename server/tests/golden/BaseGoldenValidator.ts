@@ -7,7 +7,6 @@ import {
   GoldenDataset, 
   GoldenValidationResult, 
   GoldenDiagnostics,
-  GoldenValidationReport,
   ValidationResultSummary,
   SelfHealingAction,
   RegistryChange

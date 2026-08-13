@@ -54,7 +54,7 @@ export const SourceRegistryDashboard: React.FC = () => {
     setProbingId(null);
   };
 
-  const renderStatusBadge = (status: string, type: 'health' | 'cert') => {
+  const renderStatusBadge = (status: string, _type: 'health' | 'cert') => {
     let color = 'bg-gray-100 text-gray-800 border-gray-200';
     let icon = null;
 
@@ -139,9 +139,9 @@ export const SourceRegistryDashboard: React.FC = () => {
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-center">
                   {src.isProductionGateOpen ? (
-                    <ShieldCheck className="w-5 h-5 text-green-500 mx-auto" title="Production Enabled" />
+                    <ShieldCheck className="w-5 h-5 text-green-500 mx-auto" />
                   ) : (
-                    <ShieldAlert className="w-5 h-5 text-red-500 mx-auto" title="Production Blocked" />
+                    <ShieldAlert className="w-5 h-5 text-red-500 mx-auto" />
                   )}
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">

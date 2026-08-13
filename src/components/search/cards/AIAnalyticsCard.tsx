@@ -7,7 +7,7 @@ interface AIAnalyticsCardProps {
   riskData?: any;
 }
 
-export const AIAnalyticsCard: React.FC<AIAnalyticsCardProps> = ({ entity, riskData }) => {
+export const AIAnalyticsCard: React.FC<AIAnalyticsCardProps> = ({ entity: _entity, riskData }) => {
   const [typingIndex, setTypingIndex] = useState(0);
   
   const riskScore = riskData?.score || 0;
@@ -20,6 +20,7 @@ export const AIAnalyticsCard: React.FC<AIAnalyticsCardProps> = ({ entity, riskDa
       }, 20); // Typing speed
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [typingIndex, aiSummaryText]);
 
   return (

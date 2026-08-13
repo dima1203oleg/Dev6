@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFirebaseSync } from '../hooks/useFirebaseSync';
-import { Cloud, CloudOff, RefreshCw, CheckCircle2, AlertTriangle, Database, Wifi, WifiOff, Zap } from 'lucide-react';
+import { Cloud, RefreshCw, CheckCircle2, AlertTriangle, Database, Wifi, WifiOff, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface FirebaseSyncIndicatorProps {

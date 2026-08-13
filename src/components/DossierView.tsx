@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { 
   User, Landmark, Briefcase, Truck, Shield, CheckCircle, AlertTriangle, 
-  ExternalLink, Clock, Database, Network, FileText, Activity, Layers,
-  ChevronRight, ArrowRight, Info, ShieldAlert, HeartPulse, History,
-  MapPin, Phone, Mail, FileCheck, X
+  ExternalLink, Database, Network, FileText, Activity, Layers,
+  ChevronRight, ArrowRight, Info, ShieldAlert, History,
+  X
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { Dossier, VerificationStatus, RelationshipType, EntityType } from "../types";
+import { Dossier, VerificationStatus, EntityType } from "../types";
 import NetworkGraph from "./NetworkGraph";
 import EvidenceViewer from "./EvidenceViewer";
 import { SourceBadge } from "./dev6/SourceBadge";
 import { ProvenanceDrawer } from "./dev6/ProvenanceDrawer";
-import { CoverageBanner } from "./dev6/CoverageBanner";
 import { RiskEngineCard } from "./dev6/RiskEngineCard";
 import { DataStatePanel } from "./dev6/DataStatePanel";
 import { SystemHealthModal } from "./dev6/SystemHealthModal";
@@ -24,21 +23,10 @@ import { SearchResultContainer } from "./search/SearchResultContainer";
 import { PassportCard } from "./search/cards/PassportCard";
 import { TaxSignalsCard } from "./search/cards/TaxSignalsCard";
 import { AIAnalyticsCard } from "./search/cards/AIAnalyticsCard";
-import { EmptyTabState } from "./ui/EmptyTabState";
-import { RegistryCard } from "./search/cards/RegistryCard";
 import { PropertyCard } from "./search/cards/PropertyCard";
-import { FamilyLinksCard } from "./search/cards/FamilyLinksCard";
-import { LegalLinksCard } from "./search/cards/LegalLinksCard";
-import { CourtAndDebtCard } from "./search/cards/CourtAndDebtCard";
 import { SanctionsCard } from "./search/cards/SanctionsCard";
-import { ProcurementCard } from "./search/cards/ProcurementCard";
 import { LicensesCard } from "./search/cards/LicensesCard";
-import { AddressCard } from "./search/cards/AddressCard";
-import { RiskCard } from "./search/cards/RiskCard";
 import { ExecutionsCard } from "./search/cards/ExecutionsCard";
-import { LandCard } from "./search/cards/LandCard";
-import { DeclarationsCard } from "./search/cards/DeclarationsCard";
-import { ChronologyCard } from "./search/cards/ChronologyCard";
 
 interface DossierViewProps {
   dossier: Dossier;
@@ -111,13 +99,12 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
     );
   }
 
-  const { entity, verification, risk, quality, modules } = dossier;
+  const { entity, risk, quality, modules } = dossier;
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedClaim, setSelectedClaim] = useState<any | null>(null);
 
   // Dev6 State
   const [liveDossierData, setLiveDossierData] = useState<any>(null);
-  const [isLiveLoading, setIsLiveLoading] = useState<boolean>(false);
   const [liveError, setLiveError] = useState<any>(null);
   const [isProvenanceOpen, setIsProvenanceOpen] = useState<boolean>(false);
   const [isSystemHealthOpen, setIsSystemHealthOpen] = useState<boolean>(false);
@@ -138,10 +125,8 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
 
   useEffect(() => {
     if (edrpouCode && /^\d{8,10}$/.test(edrpouCode.trim())) {
-      setIsLiveLoading(true);
       DataApiService.getCompanyDossier(edrpouCode.trim())
         .then((res: any) => {
-          setIsLiveLoading(false);
           if (res.ok) {
             setLiveDossierData(res.data);
           } else {
@@ -149,7 +134,6 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
           }
         })
         .catch((err) => {
-          setIsLiveLoading(false);
           setLiveError({
             code: 'UPSTREAM_FAILURE',
             message: err.message || 'Помилка підключення до реєстру',
@@ -250,7 +234,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
               </div>
             </div>
 
-            <PassportCard entity={entity} />
+            <PassportCard entity={entity as any} />
 
             {(() => {
               const fops = dossier.modules?.fop || [];
@@ -337,14 +321,6 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         const sanctionsData = sanctionsModule || (dossier as any).claims?.find((c: any) => c.predicate === 'has_sanctions_data')?.object;
         const taxData = taxModule || (dossier as any).claims?.find((c: any) => c.predicate === 'has_tax_data')?.object;
         
-        const sanctionsEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('РНБО'));
-        const taxEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('ДПС'));
-        
-        const sanctionsSource = sanctionsEvidence?.sourceName || 'РНБО (sanctions-t.rnbo.gov.ua)';
-        const taxSource = taxEvidence?.sourceName || 'ДПС (tax.gov.ua)';
-        const sanctionsConfidence = sanctionsEvidence?.confidence ? Math.round(sanctionsEvidence.confidence * 100) : 100;
-        const taxConfidence = taxEvidence?.confidence ? Math.round(taxEvidence.confidence * 100) : 100;
-        
         const activeRiskResult: RiskScoringResult = liveDossierData?.risk || {
           totalScore: dossier.risk?.score || 0,
           level: dossier.risk?.level === 'HIGH' ? 'CRITICAL' : dossier.risk?.level === 'MEDIUM' ? 'MEDIUM' : 'LOW',
@@ -361,9 +337,9 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         return (
           <div className="space-y-6">
             <RiskEngineCard riskResult={activeRiskResult} />
-            <SanctionsCard entity={entity} sanctionsData={sanctionsData} sourceName={sanctionsSource} confidence={sanctionsConfidence} />
-            <TaxSignalsCard entity={entity} taxData={taxData} sourceName={taxSource} confidence={taxConfidence} />
-            <AIAnalyticsCard entity={entity} />
+            <SanctionsCard entity={entity as any} sanctionsData={sanctionsData} />
+            <TaxSignalsCard entity={entity as any} taxData={taxData} />
+            <AIAnalyticsCard entity={entity as any} />
           </div>
         );
       }
@@ -373,13 +349,9 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
         const licensesModule = (dossier.modules as any)?.licenses?.[0];
         const licensesData = licensesModule || (dossier as any).claims?.find((c: any) => c.predicate === 'has_licenses_data')?.object;
         
-        const licensesEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('Ліцензійний'));
-        const licensesSource = licensesEvidence?.sourceName || 'Ліцензійний реєстр (data.gov.ua)';
-        const licensesConfidence = licensesEvidence?.confidence ? Math.round(licensesEvidence.confidence * 100) : 100;
-        
         return (
           <div className="space-y-6">
-            <PropertyCard entity={entity} propertyData={(dossier.modules as any)?.property?.[0]} />
+            <PropertyCard entity={entity as any} propertyData={(dossier.modules as any)?.property?.[0]} />
             {vehicles && vehicles.length > 0 && (
               <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
                 <div className="p-4 border-b border-slate-800">
@@ -409,7 +381,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
                 />
               </div>
             )}
-            <LicensesCard entity={entity} licensesData={licensesData} sourceName={licensesSource} confidence={licensesConfidence} />
+            <LicensesCard licenses={licensesData || []} onViewEvidence={() => {}} />
           </div>
         );
       }
@@ -1167,14 +1139,14 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
       {liveError && (
         <div className="px-6 pt-4">
           <DataStatePanel
-            status={liveError.code === 'CREDENTIALS_MISSING' ? 'credentials_missing' : liveError.code === 'RATE_LIMITED' ? 'rate_limited' : 'upstream_failure'}
-            errorDetails={{ message: liveError.message || 'Служба реєстрів тимчасово недоступна.', attemptedAt: liveError.attemptedAt || new Date().toISOString() }}
+            status={liveError.code === 'CREDENTIALS_MISSING' ? 'credentials_missing' : liveError.code === 'RATE_LIMITED' ? 'rate_limited' : 'unavailable'}
+            error={liveError}
             onRetry={() => {
               if (edrpouCode) {
-                setIsLiveLoading(true); setLiveError(null);
+                setLiveError(null);
                 DataApiService.getCompanyDossier(edrpouCode.trim())
-                  .then((res: any) => { setIsLiveLoading(false); if (res.ok) setLiveDossierData(res.data); else setLiveError(res.error); })
-                  .catch((err) => { setIsLiveLoading(false); setLiveError({ code: 'UPSTREAM_FAILURE', message: err.message, attemptedAt: new Date().toISOString() }); });
+                  .then((res: any) => { if (res.ok) setLiveDossierData(res.data); else setLiveError(res.error); })
+                  .catch((err) => { setLiveError({ code: 'UPSTREAM_FAILURE', message: err.message, attemptedAt: new Date().toISOString() }); });
               }
             }}
           />

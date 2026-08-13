@@ -43,34 +43,34 @@ export class TEST007_ParserValidation extends BaseTest {
         // Simulate parsing
         const parsedData = this.parseData(jsonData, context.source_config);
         
-        details.parser_version = parsedData.parser_version;
-        details.parse_errors_count = parsedData.parse_errors.length;
-        details.parse_warnings_count = parsedData.parse_warnings.length;
-        details.fields_parsed = Object.keys(parsedData.data).length;
+        details['parser_version'] = parsedData.parser_version;
+        details['parse_errors_count'] = parsedData.parse_errors.length;
+        details['parse_warnings_count'] = parsedData.parse_warnings.length;
+        details['fields_parsed'] = Object.keys(parsedData.data).length;
         
         // Validate types
         const typeValidation = this.validateTypes(parsedData.data);
-        details.type_validation = typeValidation;
+        details['type_validation'] = typeValidation;
         
         if (!typeValidation.valid) {
           errors.push(`Type validation failed: ${typeValidation.errors.join(', ')}`);
         }
         
         // Check UTF-8 encoding
-        details.utf8_valid = this.validateUTF8(body);
-        if (!details.utf8_valid) {
+        details['utf8_valid'] = this.validateUTF8(body);
+        if (!details['utf8_valid']) {
           warnings.push('Response may not be valid UTF-8');
         }
         
         // Check null handling
         const nullHandling = this.checkNullHandling(parsedData.data);
-        details.null_fields = nullHandling.nullFields;
-        details.null_handling_valid = nullHandling.valid;
+        details['null_fields'] = nullHandling.nullFields;
+        details['null_handling_valid'] = nullHandling.valid;
         
         // Check required fields
         const requiredFieldsCheck = this.checkRequiredFields(parsedData.data, context.source_config);
-        details.required_fields_present = requiredFieldsCheck.present;
-        details.missing_required_fields = requiredFieldsCheck.missing;
+        details['required_fields_present'] = requiredFieldsCheck.present;
+        details['missing_required_fields'] = requiredFieldsCheck.missing;
         
         if (requiredFieldsCheck.missing.length > 0) {
           errors.push(`Missing required fields: ${requiredFieldsCheck.missing.join(', ')}`);
@@ -78,7 +78,7 @@ export class TEST007_ParserValidation extends BaseTest {
         
         // Check optional fields
         const optionalFieldsCheck = this.checkOptionalFields(parsedData.data, context.source_config);
-        details.optional_fields_present = optionalFieldsCheck.present;
+        details['optional_fields_present'] = optionalFieldsCheck.present;
         
       } catch (error) {
         errors.push(`Parser validation failed: ${error instanceof Error ? error.message : String(error)}`);
@@ -91,7 +91,7 @@ export class TEST007_ParserValidation extends BaseTest {
     return this.createResult(status, result.details, result.errors, result.warnings, durationMs);
   }
 
-  private parseData(rawData: any, config: any): ParsedData {
+  private parseData(rawData: any, _config: any): ParsedData {
     const parseErrors: string[] = [];
     const parseWarnings: string[] = [];
     
@@ -229,7 +229,7 @@ export class TEST007_ParserValidation extends BaseTest {
     };
   }
 
-  private checkRequiredFields(data: any, config: any): { present: string[]; missing: string[] } {
+  private checkRequiredFields(data: any, _config: any): { present: string[]; missing: string[] } {
     const requiredFields = ['name', 'id'];
     const present: string[] = [];
     const missing: string[] = [];
@@ -245,7 +245,7 @@ export class TEST007_ParserValidation extends BaseTest {
     return { present, missing };
   }
 
-  private checkOptionalFields(data: any, config: any): { present: string[] } {
+  private checkOptionalFields(data: any, _config: any): { present: string[] } {
     const optionalFields = ['address', 'phone', 'email', 'status'];
     const present: string[] = [];
     

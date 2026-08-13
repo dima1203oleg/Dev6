@@ -87,13 +87,13 @@ export abstract class BaseConnector implements ProductionConnector {
     
     // Inject API keys based on real registry integration requirements
     if (sourceId.startsWith('ua.edr') || sourceId.startsWith('ua.court')) {
-      if (process.env.NAIS_API_KEY) authHeaders['Authorization'] = `Bearer ${process.env.NAIS_API_KEY}`;
+      if (process.env['NAIS_API_KEY']) authHeaders['Authorization'] = `Bearer ${process.env['NAIS_API_KEY']}`;
     } else if (sourceId.startsWith('ua.tax')) {
-      if (process.env.TAX_GOV_API_KEY) authHeaders['X-API-KEY'] = process.env.TAX_GOV_API_KEY;
+      if (process.env['TAX_GOV_API_KEY']) authHeaders['X-API-KEY'] = process.env['TAX_GOV_API_KEY'];
     } else if (sourceId.startsWith('ua.nazk')) {
-      if (process.env.NAZK_API_TOKEN) authHeaders['Authorization'] = `Bearer ${process.env.NAZK_API_TOKEN}`;
+      if (process.env['NAZK_API_TOKEN']) authHeaders['Authorization'] = `Bearer ${process.env['NAZK_API_TOKEN']}`;
     } else if (sourceId.startsWith('ua.prozorro')) {
-      if (process.env.PROZORRO_API_KEY) authHeaders['Authorization'] = `Bearer ${process.env.PROZORRO_API_KEY}`;
+      if (process.env['PROZORRO_API_KEY']) authHeaders['Authorization'] = `Bearer ${process.env['PROZORRO_API_KEY']}`;
     }
 
     const res = await fetch(url, {
@@ -214,9 +214,9 @@ export class CkanConnector extends BaseConnector {
     };
   }
 
-  async search(query: QueryInput): Promise<RawResponse> {
+  override async search(query: QueryInput): Promise<RawResponse> {
     // If identifierType is specified and not 'any', we can use SQL for exact matching
-    if (query.identifierType && query.identifierType !== 'any' && query.identifierType !== 'NAME') {
+    if (query.identifierType && query.identifierType !== 'any' && query.identifierType !== 'name') {
       // Use SQL search for exact match on specific column (assuming column name matches identifierType, e.g., 'edrpou')
       const sql = `SELECT * from "${this.resourceId}" WHERE "${query.identifierType}" LIKE '%${query.identifier}%' LIMIT ${query.limit || 50}`;
       const url = `https://data.gov.ua/api/3/action/datastore_search_sql?sql=${encodeURIComponent(sql)}`;
@@ -233,7 +233,7 @@ export class CkanConnector extends BaseConnector {
     return this.doFetch(url);
   }
 
-  validateSchema(raw: RawResponse): ValidationResult {
+  override validateSchema(raw: RawResponse): ValidationResult {
     const body = raw.body;
     if (!body?.success) {
       return { valid: false, errors: ['CKAN response: success=false'], warnings: [] };
@@ -244,7 +244,7 @@ export class CkanConnector extends BaseConnector {
     return { valid: true, errors: [], warnings: [] };
   }
 
-  parse(raw: RawResponse): ParsedRecord[] {
+  override parse(raw: RawResponse): ParsedRecord[] {
     if (!raw.body?.result?.records) return [];
     return (raw.body.result.records as any[]).map((rec, i) => ({
       sourceId: this.meta.id,
@@ -255,7 +255,7 @@ export class CkanConnector extends BaseConnector {
     }));
   }
 
-  normalize(parsed: ParsedRecord[]): CanonicalRecord[] {
+  override normalize(parsed: ParsedRecord[]): CanonicalRecord[] {
     return parsed.map(p => ({
       ...p,
       canonicalFields: p.rawFields,
@@ -288,7 +288,7 @@ export class DirectApiConnector extends BaseConnector {
     };
   }
 
-  async search(query: QueryInput): Promise<RawResponse> {
+  override async search(query: QueryInput): Promise<RawResponse> {
     const url = `${this.apiUrl}${encodeURIComponent(query.identifier)}`;
     return this.doFetch(url);
   }

@@ -7,11 +7,9 @@
  * - Maintains live probe results and certification status
  * - Blocks non-certified connectors from production routing
  */
-import crypto from 'crypto';
 import {
   ProductionConnector, ConnectorConstructor, ConnectorRegistry,
-  CompatibilityReport, CompatibilityRecord, TestMatrix,
-  SourceStatus, CertificationStatus, AccessLevel
+  CompatibilityReport, CompatibilityRecord
 } from './sdk';
 import { CkanConnector, DirectApiConnector } from './BaseConnector';
 import { onboardingOrchestrator } from '../../services/onboarding/OnboardingOrchestrator';
@@ -19,22 +17,6 @@ import { DynamicCkanConnector } from './DynamicCkanConnector';
 import { RegistryPassport } from '../../models/discovery';
 
 // ─── MASTER SOURCE DEFINITION ─────────────────────────────────────────────
-
-interface SourceDefinition {
-  sourceId: string;
-  name: string;
-  nameEn: string;
-  owner: string;
-  category: string;
-  accessLevel: AccessLevel;
-  ckanResourceId?: string;
-  directApiUrl?: string;
-  officialUrl: string;
-  searchFields: string[];
-  entities: string[];
-  provides: string;
-  productionAllowed: boolean; // false = PAID/TRIAL → blocked from production core
-}
 
 // ─── FULL SOURCE CATALOG (170+ entries from universalCatalog.ts) ───────────
 
@@ -46,7 +28,6 @@ export class PredatorConnectorFactory {
   private connectorMap = new Map<string, ProductionConnector>();
   private registryMap = new Map<string, ConnectorRegistry>();
   private compatibilityCache = new Map<string, CompatibilityRecord>();
-  private testCache = new Map<string, TestMatrix>();
 
   constructor() {
     this.bootstrap();
@@ -54,7 +35,7 @@ export class PredatorConnectorFactory {
 
   /** Bootstrap all registered free/auto connectors from FULL_REGISTRY_CATALOG */
   private bootstrap() {
-    const productionMode = process.env.NODE_ENV === 'production';
+    const productionMode = process.env['NODE_ENV'] === 'production';
     const certifiedSources = ['hibp', 'crt_sh']; // Only these sources are production-certified
 
     for (const entry of FULL_REGISTRY_CATALOG) {
@@ -179,7 +160,6 @@ export class PredatorConnectorFactory {
   // ─── COMPATIBILITY CHECK (5 Stages A–E) ──────────────────────────────
 
   async validateCompatibility(sourceId: string): Promise<CompatibilityReport> {
-    const start = Date.now();
     const errors: string[] = [];
     const report: CompatibilityReport = {
       sourceId,
@@ -271,7 +251,7 @@ export class PredatorConnectorFactory {
         ok: raw.statusCode >= 200 && raw.statusCode < 300,
         latencyMs: Date.now() - start,
         recordsFound: parsed.length,
-        rawSample: parsed.length > 0 ? parsed[0].rawFields : null,
+        rawSample: parsed.length > 0 ? parsed[0]?.rawFields || null : null,
         probeAt: new Date().toISOString(),
       };
 
@@ -398,7 +378,7 @@ export class PredatorConnectorFactory {
 
   // ─── PRIVATE HELPERS ──────────────────────────────────────────────────
 
-  private updateCompatibilityRecord(sourceId: string, ok: boolean, latencyMs: number, recordsFound: number) {
+  private updateCompatibilityRecord(sourceId: string, ok: boolean, _latencyMs: number, recordsFound: number) {
     const existing = this.compatibilityCache.get(sourceId);
     const sourceDef = FULL_REGISTRY_CATALOG.find(s => s.id === sourceId);
     const now = new Date().toISOString();

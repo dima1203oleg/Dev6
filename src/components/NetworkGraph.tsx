@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { Network } from "lucide-react";
 
@@ -7,11 +7,6 @@ interface Node extends d3.SimulationNodeDatum {
   name: string;
   type: string;
   color: string;
-}
-
-interface Link extends d3.SimulationLinkDatum<Node> {
-  type: string;
-  confidence: number;
 }
 
 interface NetworkGraphProps {
@@ -58,7 +53,7 @@ export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
       .attr("stroke", "#0f172a")
       .attr("stroke-width", 2)
       .style("cursor", "pointer")
-      .on("dblclick", (event, d: any) => {
+      .on("dblclick", (_event, d: any) => {
         if (onNodeClick) {
           const targetQuery = d.label || d.name || d.id;
           if (targetQuery && targetQuery !== "main") {
@@ -69,7 +64,7 @@ export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
       .call(drag(simulation) as any);
 
     node.append("title")
-      .text(d => `${d.name} (${d.type})`);
+      .text((d: any) => `${d.name} (${d.type})`);
 
     const label = svg.append("g")
       .selectAll("text")
@@ -79,7 +74,7 @@ export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
       .attr("text-anchor", "middle")
       .attr("font-size", "10px")
       .attr("fill", "#94a3b8")
-      .text(d => d.name);
+      .text((d: any) => d.name);
 
     simulation.on("tick", () => {
       link
@@ -97,32 +92,34 @@ export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
         .attr("y", (d: any) => d.y);
     });
 
-    function drag(simulation: d3.Simulation<Node, undefined>) {
-      function dragstarted(event: any) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        event.subject.fx = event.subject.x;
-        event.subject.fy = event.subject.y;
-      }
+    return () => {
+      simulation.stop();
+    };
+  }, [data, onNodeClick]);
 
-      function dragged(event: any) {
-        event.subject.fx = event.x;
-        event.subject.fy = event.y;
-      }
-
-      function dragended(event: any) {
-        if (!event.active) simulation.alphaTarget(0);
-        event.subject.fx = null;
-        event.subject.fy = null;
-      }
-
-      return d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
+  function drag(simulation: d3.Simulation<Node, undefined>) {
+    function dragstarted(event: any) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
     }
 
-    return () => simulation.stop();
-  }, [data]);
+    function dragged(event: any) {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    }
+
+    function dragended(event: any) {
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    }
+
+    return d3.drag()
+      .on("start", dragstarted)
+      .on("drag", dragged)
+      .on("end", dragended);
+  }
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative">

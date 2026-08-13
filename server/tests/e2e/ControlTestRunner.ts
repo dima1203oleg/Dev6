@@ -8,7 +8,6 @@ import { ProzorroConnector } from '../../connectors/ProzorroConnector';
 import { HibpConnector } from '../../connectors/HibpConnector';
 import { CrtshConnector } from '../../connectors/CrtshConnector';
 import { CrossSourceComparer } from '../../src/engine/CrossSourceComparer';
-import { ConflictResolver } from '../../src/engine/ConflictResolver';
 import { ReportBuilder } from '../../utils/ReportBuilder';
 import fs from 'fs';
 import path from 'path';
@@ -88,9 +87,6 @@ async function runTest(rnokpp: string) {
   // 4. Verification & Resolution
   const comparer = new CrossSourceComparer();
   const comparisonResult = comparer.compare(responses);
-
-  const resolver = new ConflictResolver();
-  const finalProfile = resolver.resolve(comparisonResult);
 
   // 5. Reporting
   const matchedSources = sourceDetails.filter(s => s.status === 'MATCH').length;

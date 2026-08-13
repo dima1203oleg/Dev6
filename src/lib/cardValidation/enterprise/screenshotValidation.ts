@@ -62,8 +62,8 @@ export class ScreenshotValidator {
    * Compare two images
    */
   private static async compareImages(
-    image1: string,
-    image2: string
+    _image1: string,
+    _image2: string
   ): Promise<{ pixelDifference: number; diffImage?: string }> {
     // In production, this would use a proper image comparison library
     // like sharp, pixelmatch, or similar
@@ -81,8 +81,8 @@ export class ScreenshotValidator {
    * Detect visual issues in screenshot
    */
   private static async detectVisualIssues(
-    image: string,
-    diffImage?: string
+    _image: string,
+    _diffImage?: string
   ): Promise<VisualIssue[]> {
     const issues: VisualIssue[] = [];
 

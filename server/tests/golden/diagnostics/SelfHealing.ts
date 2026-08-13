@@ -271,7 +271,7 @@ export class SelfHealing extends BaseGoldenValidator {
     // Re-run diagnostics after healing
     const remainingIssues = diagnostics.filter(d => {
       const wasHealed = successfulActions.some(a => 
-        a.action_type === this.mapActionToType(d.suggested_actions[0])
+        a.action_type === this.mapActionToType(d.suggested_actions[0] || '')
       );
       return !wasHealed;
     });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Network, Users, UserPlus, GitMerge, ArrowRight } from 'lucide-react';
+import { Network, Users, GitMerge, ArrowRight } from 'lucide-react';
 import { CanonicalEntity } from '../../../types/predator';
 import NetworkGraph from '../../NetworkGraph';
 
@@ -9,12 +9,10 @@ interface NetworkCardProps {
   onSelectEntity?: (id: string, type: string) => void;
 }
 
-export const NetworkCard: React.FC<NetworkCardProps> = ({ entity, dossier, onSelectEntity }) => {
+export const NetworkCard: React.FC<NetworkCardProps> = ({ entity: _entity, dossier, onSelectEntity }) => {
   // Extract related entities from the dossier if available
   const relatedPersons = dossier?.modules?.relatedPersons || [];
   const relatedCompanies = dossier?.modules?.relatedCompanies || [];
-  
-  const hasNetwork = relatedPersons.length > 0 || relatedCompanies.length > 0;
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">

@@ -141,14 +141,14 @@ export class SearchPlanner {
   }
 
   // 4. Two-stage search: DISCOVERY
-  private async runDiscoveryPhase(context: QueryContext, plan: SearchPlan): Promise<any[]> {
+  private async runDiscoveryPhase(_context: QueryContext, _plan: SearchPlan): Promise<any[]> {
     this.log(`[STAGE 1: DISCOVERY] Пошук потенційних збігів у джерелах...`);
     // Simulated discovery
     return [{ candidateId: 'cand-1', matchScore: 92 }];
   }
 
   // 4. Two-stage search: VERIFICATION
-  private async runVerificationPhase(candidates: any[], context: QueryContext, plan: SearchPlan) {
+  private async runVerificationPhase(_candidates: any[], _context: QueryContext, plan: SearchPlan) {
     this.log(`[STAGE 2: VERIFICATION] Перевірка знайдених кандидатів за точними ідентифікаторами...`);
     
     // Simulate parallel requests
@@ -159,7 +159,7 @@ export class SearchPlanner {
     this.log(`[RAW EVIDENCE] Отримано сирі дані (JSON). Хешування (SHA-256) та фіксація timestamp...`);
   }
 
-  private performNormalizationAndFusion(context: QueryContext) {
+  private performNormalizationAndFusion(_context: QueryContext) {
     this.log(`[NORMALIZATION] Нормалізація назв, адрес, телефонів, транслітерація (UA↔EN)...`);
     this.log(`[CROSS-SOURCE FUSION] Зіставлення фактів з ЄДР, НАЗК, Prozorro та ін...`);
   }
@@ -179,7 +179,7 @@ export class SearchPlanner {
     return [];
   }
 
-  private calculateTruthAndConfidence(context: QueryContext, contradictions: string[]) {
+  private calculateTruthAndConfidence(_context: QueryContext, _contradictions: string[]) {
     this.log(`[TRUTH / CONFIDENCE] Оцінка достовірності: CONFIDENCE = HIGH (97%). Source agreement: 100%.`);
     return {
       truthScore: 97,

@@ -1,4 +1,3 @@
-import { sourceDiscoveryService } from '../../services/SourceDiscoveryService';
 import { FOPConnector } from '../../connectors/FOPConnector';
 import { CourtConnector } from '../../connectors/CourtConnector';
 import { SanctionsConnector } from '../../connectors/SanctionsConnector';
@@ -151,8 +150,6 @@ export class RegistryCorrectnessEngine {
     console.log(`\nReport generated at: ${reportPath}`);
   }
 }
-
-import { fileURLToPath } from 'url';
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   new RegistryCorrectnessEngine().runAllTests().catch(console.error);

@@ -178,9 +178,9 @@ export class ExplainabilityEngine {
    */
   private static generateReasoning(
     fieldName: string,
-    value: any,
+    _value: any,
     fieldAudit: FieldAudit,
-    relatedFields?: Map<string, FieldAudit>
+    _relatedFields?: Map<string, FieldAudit>
   ): string[] {
     const reasoning: string[] = [];
 
@@ -206,12 +206,12 @@ export class ExplainabilityEngine {
    */
   private static extractSources(fieldAudit: FieldAudit): string[] {
     const sources: string[] = [];
-    
+
     sources.push(fieldAudit.registry);
     sources.push(fieldAudit.connector);
-    
-    if (fieldAudit.source && fieldAudit.source !== 'unknown') {
-      sources.push(fieldAudit.source);
+
+    if (fieldAudit.sourceId && fieldAudit.sourceId !== 'unknown') {
+      sources.push(fieldAudit.sourceId);
     }
 
     return [...new Set(sources)];

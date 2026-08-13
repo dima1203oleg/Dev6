@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { 
-  FolderGit2, Plus, Share2, Download, ShieldAlert, FileText, CheckCircle2, 
-  Clock, User, Link2, Sparkles, MessageSquare, Cloud, CloudUpload, CloudDownload, 
-  FileCode, Check, Loader2, MapPin, ShieldCheck, Hash, Trash2, RefreshCw
+  FolderGit2, Download, FileText, 
+  Clock, Cloud, CloudUpload, CloudDownload, 
+  Loader2, MapPin, Hash, Trash2, RefreshCw
 } from "lucide-react";
 import { useToast } from "./ToastProvider";
 import EvidenceProvenanceModal from "./EvidenceProvenanceModal";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../services/firebaseService";
-import { saveInvestigationToFirestore, fetchInvestigationsFromFirestore, subscribeInvestigationsFromFirestore, testFirestoreConnection } from "../services/firebaseService";
+import { saveInvestigationToFirestore, fetchInvestigationsFromFirestore, subscribeInvestigationsFromFirestore } from "../services/firebaseService";
 import { useFirebaseSync } from "../hooks/useFirebaseSync";
 import { exportInvestigationPDFReport, exportInvestigationGeoJSON, exportInvestigationCSV, calculateSHA256 } from "../utils/exportReport";
 
@@ -100,10 +100,10 @@ export default function InvestigationWorkspaceTab() {
             }
         } else if (file.name.endsWith('.csv')) {
             const lines = text.split('\n');
-            const headers = lines[0].split(',');
+            // const headers = lines[0]?.split(','); // Not used
             for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                const values = lines[i].split(',');
+                if (!lines[i]?.trim()) continue;
+                const values = lines[i]?.split(',') || [];
                 const ent = {
                     id: `imported-${Date.now()}-${i}`,
                     name: values[0] ? values[0].replace(/['"]/g, '') : "Unknown",
@@ -133,7 +133,7 @@ export default function InvestigationWorkspaceTab() {
           } catch(e) {}
 
         } else {
-            showToast("Не знайдено валідних даних для імпорту", "warning");
+            showToast("Не знайдено валідних даних для імпорту", "info");
         }
       } catch (error) {
         showToast("Помилка обробки файлу", "error");
@@ -196,13 +196,13 @@ export default function InvestigationWorkspaceTab() {
     try {
       const cloudData = await fetchInvestigationsFromFirestore();
       if (cloudData && cloudData.length > 0) {
-        const latest = cloudData[0];
+        const latest = cloudData[0] as any;
         setInvestigation(prev => ({
           ...prev,
-          id: latest.id || prev.id,
-          title: latest.title || prev.title,
-          lead: latest.leadInvestigator || prev.lead,
-          entities: (latest.entities && latest.entities.length > 0) ? latest.entities.map((e: any) => ({
+          id: latest?.id || prev.id,
+          title: latest?.title || prev.title,
+          lead: latest?.leadInvestigator || prev.lead,
+          entities: (latest?.entities && latest.entities.length > 0) ? latest.entities.map((e: any) => ({
             id: e.id,
             name: e.canonicalName || e.name || "Суб'єкт",
             type: e.type || "COMPANY",

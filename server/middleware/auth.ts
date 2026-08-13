@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { Request, Response, NextFunction } from "express";
 
 export type UserRole = 
@@ -16,6 +17,64 @@ export interface AuthenticatedRequest extends Request {
     role: UserRole;
     tenantId: string;
   };
+}
+
+interface ApiTokenPrincipal {
+  token: string;
+  id: string;
+  email: string;
+  role: UserRole;
+  tenantId: string;
+}
+
+function parseApiTokens(): ApiTokenPrincipal[] {
+  const raw = process.env['AUTH_TOKENS'];
+  if (!raw) return [];
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((item): item is ApiTokenPrincipal => {
+      if (typeof item !== 'object' || item === null) return false;
+      const candidate = item as Partial<ApiTokenPrincipal>;
+      return typeof candidate.token === 'string'
+        && candidate.token.length >= 32
+        && typeof candidate.id === 'string'
+        && typeof candidate.email === 'string'
+        && typeof candidate.tenantId === 'string'
+        && typeof candidate.role === 'string'
+        && Object.prototype.hasOwnProperty.call(ROLE_PERMISSIONS, candidate.role);
+    });
+  } catch {
+    return [];
+  }
+}
+
+function tokensMatch(left: string, right: string): boolean {
+  const leftHash = crypto.createHash('sha256').update(left).digest();
+  const rightHash = crypto.createHash('sha256').update(right).digest();
+  return crypto.timingSafeEqual(leftHash, rightHash);
+}
+
+/**
+ * Resolves a bearer token into a server-controlled principal.  In production
+ * this is deliberately the only source of identity; client supplied role
+ * headers are ignored.
+ */
+export function authenticateApiRequest(req: AuthenticatedRequest, _res: Response, next: NextFunction): void {
+  const header = req.headers.authorization;
+  if (typeof header === 'string' && header.startsWith('Bearer ')) {
+    const presentedToken = header.slice('Bearer '.length).trim();
+    const principal = parseApiTokens().find((candidate) => tokensMatch(candidate.token, presentedToken));
+    if (principal) {
+      req.user = {
+        id: principal.id,
+        email: principal.email,
+        role: principal.role,
+        tenantId: principal.tenantId,
+      };
+    }
+  }
+  next();
 }
 
 const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
@@ -51,7 +110,7 @@ const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
 
 export function checkPermission(requiredPermission: string) {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const productionMode = process.env.NODE_ENV === 'production';
+    const productionMode = process.env['NODE_ENV'] === 'production';
     
     // In production mode, require authentication
     if (productionMode && !req.user) {
@@ -64,12 +123,16 @@ export function checkPermission(requiredPermission: string) {
       });
     }
 
-    // In development mode, inject default user session if missing
+    // Development-only local principal.  Roles supplied by the browser are
+    // never trusted; test role override must be explicitly enabled.
     if (!req.user && !productionMode) {
+      const configuredRole = process.env['ALLOW_DEV_ROLE_OVERRIDE'] === 'true'
+        ? req.headers['x-user-role'] as UserRole
+        : undefined;
       req.user = {
         id: "usr-analyst-001",
         email: "analyst@predator.gov.ua",
-        role: (req.headers["x-user-role"] as UserRole) || "SENIOR_ANALYST",
+        role: configuredRole && ROLE_PERMISSIONS[configuredRole] ? configuredRole : "SENIOR_ANALYST",
         tenantId: "tenant-predator-core"
       };
     }
@@ -96,12 +159,12 @@ export function checkPermission(requiredPermission: string) {
       });
     }
 
-    next();
+    return next();
   };
 }
 
 export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  const productionMode = process.env.NODE_ENV === 'production';
+  const productionMode = process.env['NODE_ENV'] === 'production';
   
   if (productionMode && !req.user) {
     return res.status(401).json({

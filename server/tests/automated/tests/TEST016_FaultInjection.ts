@@ -41,14 +41,14 @@ export class TEST016_FaultInjection extends BaseTest {
         // Test 7: Empty Response
         scenarios.push(await this.testEmptyResponse(context));
         
-        details.scenarios_tested = scenarios.length;
-        details.scenarios_passed = scenarios.filter(s => s.handled_gracefully).length;
-        details.scenarios_failed = scenarios.filter(s => !s.handled_gracefully).length;
-        details.scenario_results = scenarios;
+        details['scenarios_tested'] = scenarios.length;
+        details['scenarios_passed'] = scenarios.filter(s => s.handled_gracefully).length;
+        details['scenarios_failed'] = scenarios.filter(s => !s.handled_gracefully).length;
+        details['scenario_results'] = scenarios;
         
         // Check if all scenarios were handled gracefully
         const allHandledGracefully = scenarios.every(s => s.handled_gracefully);
-        details.fault_tolerance = allHandledGracefully ? 'EXCELLENT' : 'NEEDS_IMPROVEMENT';
+        details['fault_tolerance'] = allHandledGracefully ? 'EXCELLENT' : 'NEEDS_IMPROVEMENT';
         
         if (!allHandledGracefully) {
           const failedScenarios = scenarios.filter(s => !s.handled_gracefully);
@@ -118,7 +118,7 @@ export class TEST016_FaultInjection extends BaseTest {
     return scenario;
   }
 
-  private async testHTTPError(context: TestContext, statusCode: number): Promise<FaultInjectionScenario> {
+  private async testHTTPError(_context: TestContext, statusCode: number): Promise<FaultInjectionScenario> {
     const scenario: FaultInjectionScenario = {
       name: `HTTP ${statusCode}`,
       type: statusCode === 500 ? 'http_500' : 'http_429',
@@ -169,7 +169,7 @@ export class TEST016_FaultInjection extends BaseTest {
     return scenario;
   }
 
-  private async testDNSError(context: TestContext): Promise<FaultInjectionScenario> {
+  private async testDNSError(_context: TestContext): Promise<FaultInjectionScenario> {
     const scenario: FaultInjectionScenario = {
       name: 'DNS Error',
       type: 'dns_error',
@@ -207,7 +207,7 @@ export class TEST016_FaultInjection extends BaseTest {
     return scenario;
   }
 
-  private async testBrokenJSON(context: TestContext): Promise<FaultInjectionScenario> {
+  private async testBrokenJSON(_context: TestContext): Promise<FaultInjectionScenario> {
     const scenario: FaultInjectionScenario = {
       name: 'Broken JSON',
       type: 'broken_json',
@@ -236,7 +236,7 @@ export class TEST016_FaultInjection extends BaseTest {
     return scenario;
   }
 
-  private async testEmptyResponse(context: TestContext): Promise<FaultInjectionScenario> {
+  private async testEmptyResponse(_context: TestContext): Promise<FaultInjectionScenario> {
     const scenario: FaultInjectionScenario = {
       name: 'Empty Response',
       type: 'empty_response',

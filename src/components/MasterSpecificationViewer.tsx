@@ -1,17 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { 
-  BookOpen, ShieldCheck, Cpu, Terminal, Compass, Zap, Search, 
-  Layers, CheckCircle2, ChevronRight, Sparkles, Network, Globe, 
-  Key, Lock, Database, RefreshCw, Wand2, ArrowRight, Eye, FileText,
-  Workflow, Share2, Scale, Activity, ShieldAlert, Binary, Box, HelpCircle, AlertTriangle
+  BookOpen, ShieldCheck, Cpu, Terminal, Search, 
+  Layers, CheckCircle2, Network, FileText,
+  Lock, Scale, Activity, ShieldAlert, Box, HelpCircle
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
 import { useToast } from './ToastProvider';
 import { 
   FIVE_QUESTIONS_FRAMEWORK, 
   DEV5_20_STEP_TEST, 
-  DEV5_145_SPEC_ITEMS,
-  Dev5SpecItem
+  DEV5_145_SPEC_ITEMS
 } from '../data/dev5MasterSpecData';
 
 export interface SpecChapter {
@@ -632,10 +629,10 @@ export default function MasterSpecificationViewer() {
                 <div>
                   <div className="flex items-center gap-2 mb-1 font-mono">
                     <span className="px-2.5 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 rounded-lg text-[10px] font-bold uppercase">
-                      Том #{selectedChapter.id} • {selectedChapter.category}
+                      Том #{selectedChapter?.id} • {selectedChapter?.category}
                     </span>
                   </div>
-                  <h3 className="text-xl font-black text-white">{selectedChapter.title}</h3>
+                  <h3 className="text-xl font-black text-white">{selectedChapter?.title}</h3>
                 </div>
 
                 <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full text-xs font-mono font-bold flex items-center gap-1.5 shrink-0">
@@ -646,7 +643,7 @@ export default function MasterSpecificationViewer() {
 
               <div className="space-y-4">
                 <p className="text-xs sm:text-sm text-slate-200 leading-relaxed bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                  {selectedChapter.summary}
+                  {selectedChapter?.summary}
                 </p>
 
                 {/* Key Technical Requirements */}
@@ -656,7 +653,7 @@ export default function MasterSpecificationViewer() {
                     Ключові Технічні Положення Розділу
                   </h4>
                   <div className="space-y-2">
-                    {selectedChapter.details.map((detail, idx) => (
+                    {selectedChapter?.details.map((detail, idx) => (
                       <div
                         key={idx}
                         className="p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2.5 leading-relaxed"
@@ -675,7 +672,7 @@ export default function MasterSpecificationViewer() {
                     Компоненти та Сервіси
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {selectedChapter.components.map((comp, idx) => (
+                    {selectedChapter?.components.map((comp, idx) => (
                       <span
                         key={idx}
                         className="px-3 py-1.5 bg-slate-950 border border-slate-800 text-slate-200 rounded-xl text-xs font-bold flex items-center gap-1.5"
@@ -694,7 +691,7 @@ export default function MasterSpecificationViewer() {
                     Суворі Архітектурні Інваріанти
                   </h4>
                   <div className="space-y-1.5">
-                    {selectedChapter.invariants.map((inv, idx) => (
+                    {selectedChapter?.invariants.map((inv, idx) => (
                       <div
                         key={idx}
                         className="p-2.5 bg-rose-950/20 border border-rose-500/30 text-rose-200 rounded-xl text-[11px] flex items-center gap-2 font-bold"

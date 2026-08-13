@@ -6,6 +6,18 @@
 
 import { RelationshipValidation, RelationshipEdge } from './types';
 
+// EntityRelationship type - define locally or import from appropriate location
+interface EntityRelationship {
+  id: string;
+  sourceId: string;
+  targetId: string;
+  type: string;
+  evidenceIds: string[];
+  confidence: number;
+  validFrom?: string;
+  validTo?: string;
+}
+
 export class RelationshipValidator {
   /**
    * Validate all relationships for an entity

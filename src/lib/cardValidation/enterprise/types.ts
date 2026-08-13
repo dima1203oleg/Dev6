@@ -6,21 +6,20 @@
 export * from '../types';
 import { CardDefinition } from '../cardRegistry';
 
-
 // Dynamic Card Registry Types
-export interface CardCategory {
+export interface CardCategoryHierarchy {
   id: string;
   name: string;
   description: string;
   parent?: string;
-  children?: CardCategory[];
+  children?: CardCategoryHierarchy[];
   cards: CardDefinition[];
 }
 
 export interface DynamicCardRegistry {
   version: string;
   lastUpdated: string;
-  categories: CardCategory[];
+  categories: CardCategoryHierarchy[];
   totalCards: number;
   autoDiscovered: boolean;
 }

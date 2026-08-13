@@ -30,9 +30,9 @@ export class CKANAdapter {
    */
   private async request(endpoint: string, options: RequestInit = {}): Promise<any> {
     const url = `${this.apiUrl}${endpoint}`;
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string> || {}),
     };
 
     if (this.apiKey) {
@@ -41,7 +41,7 @@ export class CKANAdapter {
 
     const response = await fetch(url, {
       ...options,
-      headers,
+      headers: headers as HeadersInit,
     });
 
     if (!response.ok) {

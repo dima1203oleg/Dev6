@@ -7,12 +7,11 @@ import { useToast } from './ToastProvider';
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useContext,  useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   User,
   Users,
-  Briefcase,
   Car,
   Home,
   ShieldAlert,
@@ -20,32 +19,23 @@ import {
   Coins,
   Terminal,
   Activity,
-  ChevronRight,
   Download,
   AlertTriangle,
   Search,
   Building,
   ArrowRightLeft,
-  Award,
-  FileText,
-  Layers,
-  Heart,
-  UserCheck,
-  Percent,
-  CheckCircle,
-  Play,
-  FileDown,
-  Printer,
-  ChevronDown,
-  Trash2,
-  RotateCcw,
-  Eraser,
   X,
   Check,
   Database,
-  Shield
+  Shield,
+  Play,
+  CheckCircle,
+  FileDown,
+  Award,
+  Trash2,
+  Layers
 } from 'lucide-react';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, BarChart, Bar } from 'recharts';
+import { ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, BarChart, Bar, Cell } from 'recharts';
 
 // --- DATA STRUCTURES ---
 
@@ -389,9 +379,9 @@ const PROFILER_ASSETS: ProfilerAsset[] = [
   }
 ];
 
-export default function PersonProfiler({ initialTab = 'overview' }: { initialTab?: 'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse' }) {
+export default function PersonProfiler({ initialTab = 'overview' }: { initialTab?: 'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse' | 'profile' | 'audit' | 'behavioral' }) {
   const [selectedPersonId, setSelectedPersonId] = useState<string>('kizyma-dmytro');
-  const [activeTab, setActiveTab] = useState<'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse'>(initialTab);
+  const [activeTab, setActiveTab] = useState<'overview' | 'assets' | 'nominees' | 'wealth' | 'psycho' | 'adverse' | 'profile' | 'audit' | 'behavioral'>(initialTab);
   const [isAuditing, setIsAuditing] = useState(false);
   const [isPurgedNoise, setIsPurgedNoise] = useState(false);
   const terminalEndRef = useRef<HTMLDivElement>(null);
@@ -410,7 +400,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
   const { showToast } = useToast();
 
   const selectedPerson = PROFILER_PEOPLE.find(p => p.id === selectedPersonId) || PROFILER_PEOPLE[0];
-  const personAssets = PROFILER_ASSETS.filter(a => a.registeredToId === selectedPerson.id);
+  const personAssets = PROFILER_ASSETS.filter(a => a.registeredToId === selectedPerson?.id);
   const allAssetsForView = personAssets;
   const totalDirectValue = personAssets.filter(a => !a.isNominee).reduce((sum, a) => sum + a.valueNum, 0);
   const totalNomineeValue = personAssets.filter(a => a.isNominee).reduce((sum, a) => sum + a.valueNum, 0);
@@ -459,7 +449,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
     let current = 0;
     const interval = setInterval(() => {
       if (current < logs.length) {
-        setAuditLog(prev => [...prev, logs[current]]);
+        setAuditLog(prev => [...prev, logs[current] || '']);
         setAuditProgress(Math.min(100, Math.round(((current + 1) / logs.length) * 100)));
         current++;
       } else {
@@ -482,7 +472,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
     let current = 0;
     const interval = setInterval(() => {
       if (current < result.logs.length) {
-        setAiSearchLog(prev => [...prev, result.logs[current]]);
+        setAiSearchLog(prev => [...prev, result.logs[current] ?? ''] as string[]);
         current++;
       } else {
         clearInterval(interval);
@@ -493,11 +483,11 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
   };
 
   // Source of Wealth chart data
-  const isVirtualChart = selectedPerson.id.startsWith('virtual-');
+  const isVirtualChart = selectedPerson?.id?.startsWith('virtual-') || false;
   const wealthChartData = [
-    { name: 'Офіційний дохід', сума: isVirtualChart ? 320000 : (selectedPerson.id === 'kovalenko-ihor' ? 540000 : selectedPerson.id === 'petrenko-olha' ? 0 : 180000) },
-    { name: 'Тіньові схеми', сума: isVirtualChart ? 0 : (selectedPerson.id === 'kovalenko-ihor' ? 8200000 : selectedPerson.id === 'petrenko-olha' ? 1400000 : 2400000) },
-    { name: 'Закордонні рахунки', сума: isVirtualChart ? 0 : (selectedPerson.id === 'kovalenko-ihor' ? 12000000 : selectedPerson.id === 'petrenko-olha' ? 4200000 : 800000) }
+    { name: 'Офіційний дохід', сума: isVirtualChart ? 320000 : (selectedPerson?.id === 'kovalenko-ihor' ? 540000 : selectedPerson?.id === 'petrenko-olha' ? 0 : 180000) },
+    { name: 'Тіньові схеми', сума: isVirtualChart ? 0 : (selectedPerson?.id === 'kovalenko-ihor' ? 8200000 : selectedPerson?.id === 'petrenko-olha' ? 1400000 : 2400000) },
+    { name: 'Закордонні рахунки', сума: isVirtualChart ? 0 : (selectedPerson?.id === 'kovalenko-ihor' ? 12000000 : selectedPerson?.id === 'petrenko-olha' ? 4200000 : 800000) }
   ];
 
   return (
@@ -521,7 +511,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                 
                 <h3 className="text-base font-display text-white tracking-wide">Генерація комплексного досьє</h3>
                 <p className="text-xs text-slate-400 font-mono">
-                  Агрегація даних: {selectedPerson.name}
+                  Агрегація даних: {selectedPerson?.name || ''}
                 </p>
                 
                 <div className="w-full space-y-3 mt-4 text-left">
@@ -546,6 +536,12 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                     <span className={dossierProgress > 90 ? 'text-slate-200' : 'text-slate-600'}>Формування зведеного звіту...</span>
                   </div>
                 </div>
+
+                {selectedPerson && (
+                  <div className="text-xs font-mono text-slate-500 mt-4">
+                    Об'єкт: {selectedPerson.name} ({selectedPerson.id})
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
@@ -751,7 +747,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
           </div>
 
           <AnimatePresence mode="wait">
-            {activeTab === 'profile' && (
+            {activeTab === 'profile' && selectedPerson && (
               <motion.div
                 key="tab-profile"
                 initial={{ opacity: 0, y: 10 }}
@@ -794,30 +790,30 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                     <div className="bg-black/40 border border-slate-800 p-2 rounded-lg space-y-2">
                       <div className="flex justify-between border-b border-slate-800 pb-1.5 text-xs">
                         <span className="text-slate-500">Дата народження:</span>
-                        <span className="text-slate-300 font-bold">{selectedPerson.dob} ({selectedPerson.age} років)</span>
+                        <span className="text-slate-300 font-bold">{selectedPerson.dob || ''} ({selectedPerson.age || 0} років)</span>
                       </div>
                       <div className="flex justify-between border-b border-slate-800 pb-1.5 text-xs">
                         <span className="text-slate-500">Індивідуальний код (ІПН):</span>
-                        <span className="text-slate-300 font-bold">{selectedPerson.taxId}</span>
+                        <span className="text-slate-300 font-bold">{selectedPerson.taxId || ''}</span>
                       </div>
                       <div className="flex justify-between text-xs">
                         <span className="text-slate-500">Серія/Номер паспорта:</span>
-                        <span className="text-slate-300 font-bold">{selectedPerson.passport}</span>
+                        <span className="text-slate-300 font-bold">{selectedPerson.passport || ''}</span>
                       </div>
                     </div>
 
                     <div className="bg-black/40 border border-slate-800 p-2 rounded-lg space-y-2">
                       <div className="flex justify-between border-b border-slate-800 pb-1.5 text-xs">
                         <span className="text-slate-500">Контактний телефон:</span>
-                        <span className="text-slate-300 font-bold">{selectedPerson.phone}</span>
+                        <span className="text-slate-300 font-bold">{selectedPerson.phone || ''}</span>
                       </div>
                       <div className="flex justify-between border-b border-slate-800 pb-1.5 text-xs">
                         <span className="text-slate-500">Електронна пошта:</span>
-                        <span className="text-slate-300 font-bold">{selectedPerson.email}</span>
+                        <span className="text-slate-300 font-bold">{selectedPerson.email || ''}</span>
                       </div>
                       <div className="flex justify-between text-xs items-start">
                         <span className="text-slate-500">Реєстрація:</span>
-                        <span className="text-slate-300 font-bold text-right truncate w-[160px]" title={selectedPerson.address}>{selectedPerson.address}</span>
+                        <span className="text-slate-300 font-bold text-right truncate w-[160px]" title={selectedPerson.address || ''}>{selectedPerson.address || ''}</span>
                       </div>
                     </div>
                   </div>
@@ -870,7 +866,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                   <div className="mt-4 space-y-1">
                     <span className="text-xs text-slate-500 font-mono font-bold uppercase tracking-widest block">Оперативне досьє / ШІ-Оцінка</span>
                     <p className="text-slate-300 text-xs leading-relaxed bg-black/40 p-2.5 rounded-lg border border-slate-800">
-                      {selectedPerson.narrative}
+                      {selectedPerson.narrative || ''}
                     </p>
                   </div>
                 </div>
@@ -887,15 +883,15 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                     <div className="space-y-3.5 text-xs">
                       <div className="space-y-1">
                         <span className="text-xs text-slate-500 font-mono uppercase tracking-wider block">Схильність до ризику:</span>
-                        <p className="text-slate-300 text-xs font-sans leading-relaxed">{selectedPerson.psychoProfile.riskTolerance}</p>
+                        <p className="text-slate-300 text-xs font-sans leading-relaxed">{selectedPerson.psychoProfile?.riskTolerance || ''}</p>
                       </div>
                       <div className="space-y-1">
                         <span className="text-xs text-slate-500 font-mono uppercase tracking-wider block">Географічні патерни (Авіа):</span>
-                        <p className="text-slate-300 text-xs font-sans leading-relaxed">{selectedPerson.psychoProfile.travelPattern}</p>
+                        <p className="text-slate-300 text-xs font-sans leading-relaxed">{selectedPerson.psychoProfile?.travelPattern || ''}</p>
                       </div>
                       <div className="space-y-1">
                         <span className="text-xs text-slate-500 font-mono uppercase tracking-wider block">Витратні патерни (Lifestyle):</span>
-                        <p className="text-slate-300 text-xs font-sans leading-relaxed">{selectedPerson.psychoProfile.spendingHabits}</p>
+                        <p className="text-slate-300 text-xs font-sans leading-relaxed">{selectedPerson.psychoProfile?.spendingHabits || ''}</p>
                       </div>
                     </div>
                   </div>
@@ -908,30 +904,29 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                         <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Джерела Доходів vs Активи</h4>
                       </div>
                       <span className="text-xs font-mono font-bold text-rose-400 px-2 py-1 bg-rose-500/10 border border-slate-800 rounded">
-                        НЕЗБІГ: {selectedPerson.psychoProfile.unexplainedWealthRatio}%
+                        НЕЗБІГ: {selectedPerson.psychoProfile?.unexplainedWealthRatio || 0}%
                       </span>
                     </div>
 
                     <div className="space-y-3 text-xs font-mono">
                       <div className="bg-slate-950/60 p-2 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                         <span className="text-slate-500">Офіційна з/п (Декларація):</span>
-                        <span className="text-emerald-400 font-bold">{selectedPerson.sourcesOfWealth.officialSalary}</span>
+                        <span className="text-emerald-400 font-bold">{selectedPerson.sourcesOfWealth?.officialSalary || ''}</span>
                       </div>
                       <div className="bg-slate-950/60 p-2 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                         <span className="text-slate-500">Тіньові надходження (ШІ-Оцінка):</span>
-                        <span className="text-rose-400 font-bold">{selectedPerson.sourcesOfWealth.unofficialIncomeEst}</span>
+                        <span className="text-rose-400 font-bold">{selectedPerson.sourcesOfWealth?.unofficialIncomeEst || ''}</span>
                       </div>
                       <div className="bg-slate-950/60 p-2 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
                         <span className="text-slate-500">Дивіденди (Офшори):</span>
-                        <span className="text-blue-400 font-bold">{selectedPerson.sourcesOfWealth.dividends}</span>
+                        <span className="text-blue-400 font-bold">{selectedPerson.sourcesOfWealth?.dividends || ''}</span>
                       </div>
                       <div className="bg-slate-950/60 p-2 rounded-lg border border-slate-800 flex justify-between items-start text-xs">
-                        <span className="text-slate-500 shrink-0">Перекази з-за кордону:</span>
-                        <span className="text-slate-300 font-bold text-right truncate w-[140px]" title={selectedPerson.sourcesOfWealth.foreignTransfers}>{selectedPerson.sourcesOfWealth.foreignTransfers}</span>
+                        <span className="text-slate-500">Закордонні перекази:</span>
+                        <span className="text-slate-300 font-bold text-right">{selectedPerson.sourcesOfWealth?.foreignTransfers || ''}</span>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </motion.div>
             )}
@@ -1224,7 +1219,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                 )}
               </motion.div>
             )}
-            {activeTab === 'behavioral' && (
+            {activeTab === 'behavioral' && selectedPerson && (
               <motion.div
                 key="tab-behavioral"
                 initial={{ opacity: 0, y: 10 }}
@@ -1232,10 +1227,10 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <CognitiveProfileTab personName={selectedPerson.name} />
+                <CognitiveProfileTab personName={selectedPerson.name || ''} />
               </motion.div>
             )}
-            {activeTab === 'adverse' && (
+            {activeTab === 'adverse' && selectedPerson && (
               <motion.div
                 key="tab-adverse"
                 initial={{ opacity: 0, y: 10 }}
@@ -1243,7 +1238,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <AdverseIntelligenceTab personName={selectedPerson.name} />
+                <AdverseIntelligenceTab personName={selectedPerson.name || ''} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -1271,7 +1266,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
             <div className="relative w-full h-[360px] bg-slate-950/80 backdrop-blur-xl border border-slate-800 rounded-lg overflow-hidden flex items-center justify-center" style={{ backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
               
               <svg className="w-full h-full" viewBox="0 0 500 360">
-                {selectedPersonId.startsWith('virtual-') ? (
+                {selectedPersonId.startsWith('virtual-') && selectedPerson ? (
                   selectedPerson.name.toLowerCase().includes('кізима') || selectedPerson.name.toLowerCase().includes('кизима') ? (
                     <>
                       {/* Custom SVG connections for isKizyma */}
@@ -1298,7 +1293,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                       <g className="cursor-pointer">
                         <circle cx="250" cy="180" r="26" fill="#020617" stroke="#10b981" strokeWidth="2.5" className="stroke-emerald-400" />
                         <text x="250" y="183" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold" fontFamily="monospace">ОБ'ЄКТ</text>
-                        <text x="250" y="220" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">{selectedPerson.name.split(' ')[0]}</text>
+                        <text x="250" y="220" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">{selectedPerson.name?.split(' ')[0] || ''}</text>
                       </g>
                       
                       <g className="cursor-pointer">
@@ -1323,7 +1318,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                       <g className="cursor-pointer">
                         <circle cx="250" cy="180" r="26" fill="#020617" stroke="#10b981" strokeWidth="2.5" className="stroke-emerald-400" />
                         <text x="250" y="183" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold" fontFamily="monospace">ОБ'ЄКТ</text>
-                        <text x="250" y="220" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">{selectedPerson.name.split(' ')[0]}</text>
+                        <text x="250" y="220" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">{selectedPerson.name?.split(' ')[0] || ''}</text>
                       </g>
                     </>
                   )
@@ -1362,7 +1357,7 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                     </g>
                     <g className="cursor-pointer" onClick={() => setSelectedPersonId('petrenko-serhiy')}>
                       <circle cx="110" cy="270" r="18" fill="#020617" stroke="#3b82f6" strokeWidth="2" className={selectedPersonId === 'petrenko-serhiy' ? 'stroke-blue-400' : 'opacity-80'} />
-                      <text x="110" y="273" textAnchor="middle" fill="#60a5fa" fontSize="7" fontWeight="bold" fontFamily="monospace">ТЕСТ</text>
+                      <text x="110" y="273" textAnchor="middle" fill="#60a5fa" fontSize="7" fontWeight="bold" fontFamily="monospace">ТЕСТЬ</text>
                       <text x="110" y="300" textAnchor="middle" fill="#94a3b8" fontSize="8" fontWeight="bold">С. Л. Петренко</text>
                     </g>
                     <g className="cursor-pointer" onClick={() => setSelectedPersonId('kharchenko-dmytro')}>
@@ -1410,9 +1405,9 @@ export default function PersonProfiler({ initialTab = 'overview' }: { initialTab
                     cursor={{ fill: 'rgba(59, 130, 246, 0.05)' }}
                   />
                   <Bar dataKey="сума" fill="#3b82f6" radius={[4, 4, 0, 0]}>
-                    {wealthChartData.map((entry, index) => {
+                    {wealthChartData.map((_entry, index) => {
                       const color = index === 0 ? '#10b981' : index === 1 ? '#f43f5e' : '#f59e0b';
-                      return <cell key={`cell-${index}`} fill={color} />;
+                      return <Cell key={`cell-${index}`} fill={color} />;
                     })}
                   </Bar>
                 </BarChart>

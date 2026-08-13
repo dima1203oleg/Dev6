@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dossier } from '../types';
 import DossierView from './DossierView';
 

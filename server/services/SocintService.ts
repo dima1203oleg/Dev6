@@ -7,13 +7,12 @@ import { SocintResult } from '../../src/types/mlip';
 export class SocintService {
 
   // ─── Telegram Public Profile Search ──────────────────────────────────
-  async searchTelegram(query: string): Promise<SocintResult[]> {
+  async searchTelegram(_query: string): Promise<SocintResult[]> {
     const results: SocintResult[] = [];
-    const sanitized = query.replace('@', '').trim();
     
     // In production, this would use MTProto API (Telethon/GramJS) or a scraping service.
     // Here we use a generic placeholder for the backend implementation.
-    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const botToken = process.env['TELEGRAM_BOT_TOKEN'];
     if (botToken) {
       try {
         // Fallback to bot API if MTProto is unavailable (limited to bot interactions)
@@ -37,7 +36,7 @@ export class SocintService {
       activityScore: 0,
     };
 
-    const token = process.env.GITHUB_TOKEN;
+    const token = process.env['GITHUB_TOKEN'];
     const headers: Record<string, string> = { 'Accept': 'application/vnd.github.v3+json' };
     if (token) headers['Authorization'] = `token ${token}`;
 

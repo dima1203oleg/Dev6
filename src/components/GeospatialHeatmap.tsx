@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { geoEquirectangular, geoPath } from 'd3-geo';
 import worldGeoData from '../world.geo.json';
 

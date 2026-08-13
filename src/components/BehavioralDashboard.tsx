@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
 import { 
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
+  XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip,
   BarChart, Bar, Cell, AreaChart, Area
 } from 'recharts';
-import { Brain, Activity, Target, ShieldAlert, Fingerprint, Eye, Zap, Lock, Clock, ShieldCheck } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Brain, Activity, Target, ShieldAlert, Fingerprint, Eye, Zap, Lock } from 'lucide-react';
 
 interface BehavioralDashboardProps {
   personName?: string;

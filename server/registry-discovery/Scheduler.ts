@@ -5,12 +5,8 @@
  * Manages automated cycles for all platform operations
  */
 
-import { CatalogConfig, Dataset } from './types';
+import { Dataset } from './types';
 import { discoveryEngine } from './DiscoveryEngine';
-import { datasetScanner } from './DatasetScanner';
-import { resourceDownloader } from './ResourceDownloader';
-import { connectorGenerator } from './ConnectorGenerator';
-import { schemaAnalyzer } from './SchemaAnalyzer';
 import { registryIntelligence } from './RegistryIntelligence';
 import { qualityEngine } from './QualityEngine';
 
@@ -235,13 +231,13 @@ export class AutonomousScheduler {
     task.lastRun = new Date();
 
     try {
-      const reports = await discoveryEngine.runDiscovery();
+      const report = await discoveryEngine.runDiscovery();
       
       task.status = 'COMPLETED';
       task.result = {
-        reports,
-        totalDatasets: reports.reduce((sum, r) => sum + r.totalDatasets, 0),
-        newDatasets: reports.reduce((sum, r) => sum + r.newDatasets, 0),
+        report,
+        totalDatasets: report.totalDatasets,
+        newDatasets: report.newDatasets,
       };
 
       console.log(`[Scheduler] Discovery complete: ${task.result.totalDatasets} datasets, ${task.result.newDatasets} new`);
@@ -311,9 +307,9 @@ export class AutonomousScheduler {
 
     try {
       const datasets = this.getAllDatasets();
-      const drifts = [];
+      const drifts: any[] = [];
 
-      for (const dataset of datasets) {
+      for (const _dataset of datasets) {
         // TODO: Implement schema drift detection
         // This would require current schema data
       }
@@ -351,7 +347,7 @@ export class AutonomousScheduler {
       const passports = registryIntelligence.getAllPassports();
       const refreshed = [];
 
-      for (const passport of passports) {
+      for (const _passport of passports) {
         // TODO: Implement metadata refresh
         // This would re-fetch dataset metadata and update passports
       }

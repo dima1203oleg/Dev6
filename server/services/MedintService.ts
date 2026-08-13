@@ -47,7 +47,7 @@ export class MedintService {
   // ─── Reverse Image Search (Google Vision API / Yandex) ───────────────
   async reverseImageSearch(imageUrl: string): Promise<string[]> {
     const results: string[] = [];
-    const gVisionKey = process.env.GOOGLE_VISION_API_KEY;
+    const gVisionKey = process.env['GOOGLE_VISION_API_KEY'];
     
     if (gVisionKey) {
       try {
@@ -66,7 +66,6 @@ export class MedintService {
         
         if (res.ok) {
           const data = await res.json();
-          const webEntities = data.responses[0]?.webDetection?.webEntities || [];
           const pagesWithMatchingImages = data.responses[0]?.webDetection?.pagesWithMatchingImages || [];
           
           pagesWithMatchingImages.forEach((page: any) => {

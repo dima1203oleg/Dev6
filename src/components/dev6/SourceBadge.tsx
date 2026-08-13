@@ -1,19 +1,17 @@
 import React from 'react';
-import { Database, ShieldCheck, Clock, RefreshCw, AlertCircle } from 'lucide-react';
+import { Database, ShieldCheck, Clock, RefreshCw } from 'lucide-react';
 import { Provenance } from '../../types/dataSources';
 
 interface SourceBadgeProps {
   provenance?: Provenance;
   sourceName?: string;
   onClick?: () => void;
-  compact?: boolean;
 }
 
 export const SourceBadge: React.FC<SourceBadgeProps> = ({
   provenance,
   sourceName,
   onClick,
-  compact = false,
 }) => {
   const name = provenance?.source || sourceName || 'Державний реєстр';
   const isCached = provenance?.cached ?? false;

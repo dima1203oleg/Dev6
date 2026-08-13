@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  ShieldAlert, Activity, Search, AlertTriangle, Briefcase,
-  CheckCircle, Clock, TrendingUp, Database, Network, Bot,
+  ShieldAlert, Search, AlertTriangle, Briefcase,
+  Clock, TrendingUp, Database, Network, Bot,
   ArrowRight, FileText, RefreshCw, Eye
 } from "lucide-react";
 import { motion } from "motion/react";

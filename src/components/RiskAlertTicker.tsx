@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  ShieldAlert, AlertTriangle, TrendingUp, Zap, Radio, Bell, BellOff,
-  ChevronLeft, ChevronRight, Pause, Play, Filter, Info, Eye, ArrowUpRight
+  ShieldAlert, Radio, Bell, BellOff,
+  ChevronLeft, ChevronRight, Pause, Play, Info
 } from 'lucide-react';
 import { OsintEntity } from '../osintData';
 
@@ -140,6 +140,9 @@ export default function RiskAlertTicker({ entities, onSelectEntity, onSelectTab 
         // Pick random entity from OSINT list
         const entitiesWithSc = entities.filter(e => e.riskScore > 30);
         const target = entitiesWithSc[Math.floor(Math.random() * entitiesWithSc.length)] || entities[0];
+        
+        if (!target) return;
+        
         const oldSc = Math.max(10, target.riskScore - Math.floor(Math.random() * 15 + 5));
         
         newAlert = {
@@ -147,7 +150,7 @@ export default function RiskAlertTicker({ entities, onSelectEntity, onSelectTab 
           entityId: target.id,
           title: `${target.name} — Раптове підвищення ризику`,
           type: 'SPIKE',
-          severity: randomSeverity,
+          severity: randomSeverity || 'MEDIUM',
           timestamp: now,
           text: `Автоматичні комплаєнс-алгоритми зафіксували зростання індексу загрози з ${oldSc}% до ${target.riskScore}%.`,
           oldScore: oldSc,
@@ -163,7 +166,7 @@ export default function RiskAlertTicker({ entities, onSelectEntity, onSelectTab 
           type: 'TRANSACTION',
           severity: 'CRITICAL',
           timestamp: now,
-          text: `Адреса ${wallet.name} провела транскордонну транзакцію, пов'язану з підсанкційними сервісами РФ.`,
+          text: `Адреса ${wallet?.name || 'unknown'} провела транскордонну транзакцію, пов'язану з підсанкційними сервісами РФ.`,
           newScore: 92
         };
       } else if (randomType === 'SANCTION_MATCH') {
@@ -373,68 +376,43 @@ export default function RiskAlertTicker({ entities, onSelectEntity, onSelectTab 
           </div>
         ) : (
           <AnimatePresence mode="wait">
-            <motion.div
-              key={activeAlert.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
-              className="flex-1 flex flex-col md:flex-row md:items-center justify-between gap-2"
-            >
-              <div className="space-y-1">
-                <div className="flex items-center flex-wrap gap-1.5">
-                  <span className={`px-2 py-1 rounded text-xs font-bold border ${getSeverityBadgeClass(activeAlert.severity)}`}>
-                    {activeAlert.severity}
-                  </span>
-                  <span className="text-xs font-mono bg-slate-900/40 backdrop-blur-md border border-slate-800/60 text-slate-400 px-1 py-0.5 rounded font-bold">
-                    {getTypeLabel(activeAlert.type)}
-                  </span>
-                  <span className="text-xs text-slate-500 font-mono">
-                    {new Date(activeAlert.timestamp).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                  </span>
-                </div>
-                
-                <h4 className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                  {activeAlert.title}
-                  {activeAlert.newScore && (
-                    <span className="text-rose-400 text-xs font-black font-mono">
-                      ({activeAlert.newScore}%)
+            {activeAlert && (
+              <motion.div
+                key={activeAlert.id}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
+                className="flex-1 flex flex-col md:flex-row md:items-center justify-between gap-2"
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center flex-wrap gap-1.5">
+                    <span className={`px-2 py-1 rounded text-xs font-bold border ${getSeverityBadgeClass(activeAlert.severity)}`}>
+                      {activeAlert.severity}
                     </span>
-                  )}
-                </h4>
-                
-                <p className="text-xs text-slate-300 leading-relaxed font-sans line-clamp-1">
-                  {activeAlert.text}
-                </p>
-              </div>
-
-              {/* Action trigger for the active alert */}
-              {activeAlert.entityId && (
-                <div className="shrink-0 flex items-center gap-2 self-end md:self-auto">
-                  {activeAlert.oldScore && activeAlert.newScore && (
-                    <div className="flex items-center gap-1 font-mono text-xs bg-red-950/10 border border-red-500/20 px-2 py-1 rounded-lg">
-                      <TrendingUp className="w-3.5 h-3.5 text-red-400" />
-                      <span className="text-slate-400">{activeAlert.oldScore}%</span>
-                      <span className="text-slate-500">&rarr;</span>
-                      <span className="text-red-400 font-black">{activeAlert.newScore}%</span>
-                    </div>
-                  )}
-
-                  <button
-                    onClick={() => {
-                      if (activeAlert.entityId) {
-                        onSelectEntity(activeAlert.entityId);
-                        if (onSelectTab) onSelectTab('volumes'); // switch to details or appropriate view
-                      }
-                    }}
-                    className="flex items-center gap-1 text-xs font-mono font-bold bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 border border-slate-800 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer"
-                  >
-                    Дослідити
-                    <ArrowUpRight className="w-3 h-3" />
-                  </button>
+                    <span className="text-xs font-mono bg-slate-900/40 backdrop-blur-md border border-slate-800/60 text-slate-400 px-1 py-0.5 rounded font-bold">
+                      {getTypeLabel(activeAlert.type)}
+                    </span>
+                    <span className="text-xs text-slate-500 font-mono">
+                      {new Date(activeAlert.timestamp).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                    </span>
+                  </div>
+                  
+                  <h4 className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                    {activeAlert.title}
+                    {activeAlert.newScore && (
+                      <span className="text-rose-400 text-xs font-black font-mono">
+                        ({activeAlert.newScore}%)
+                      </span>
+                    )}
+                  </h4>
+                  
+                  <p className="text-xs text-slate-300 leading-relaxed font-sans line-clamp-1">
+                    {activeAlert.text}
+                  </p>
                 </div>
-              )}
-            </motion.div>
+              </motion.div>
+            )}
           </AnimatePresence>
         )}
       </div>

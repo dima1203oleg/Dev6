@@ -8,7 +8,6 @@ export class OSIService {
 
   // ─── WHOIS Lookup via who.is / IANA ────────────────────────────────────
   async whoisLookup(domain: string): Promise<WhoisRecord> {
-    const start = Date.now();
     try {
       // Use whoisfreaks public API (free tier)
       const res = await fetch(`https://api.whoisfreaks.com/v1.0/whois?whois=live&domainName=${encodeURIComponent(domain)}&apiKey=free`, {
@@ -177,7 +176,7 @@ export class OSIService {
         .filter(line => line.includes(','))
         .map(line => {
           const [host, ip] = line.split(',');
-          return { host: host.trim(), ip: ip.trim() };
+          return { host: host?.trim() || '', ip: ip?.trim() || '' };
         });
     } catch {
       return [];

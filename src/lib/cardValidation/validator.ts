@@ -4,7 +4,7 @@
  */
 
 import { CardStatus, CardCategory, FieldAudit, CardValidationResult, RootCauseAnalysis } from './types';
-import { CanonicalEntity, EvidenceClaim } from '../../types/predator';
+import { CanonicalEntity } from '../../types/predator';
 
 export class CardValidator {
   /**
@@ -64,11 +64,12 @@ export class CardValidator {
 
     // Extract from entity attributes
     if (entity.attributes) {
-      entity.attributes.forEach((attr, index) => {
+      entity.attributes.forEach((attr, _index) => {
+        if (!attr) return;
         audits.push({
           fieldName: attr.key,
           value: attr.value,
-          source: attr.sourceId,
+          sourceId: attr.sourceId,
           registry: this.extractRegistryName(attr.sourceId),
           connector: 'unknown',
           retrievedAt: new Date().toISOString(),
@@ -90,7 +91,7 @@ export class CardValidator {
           audits.push({
             fieldName: key,
             value,
-            source: 'card_data',
+            sourceId: 'card_data',
             registry: 'unknown',
             connector: 'unknown',
             retrievedAt: new Date().toISOString(),
@@ -128,7 +129,7 @@ export class CardValidator {
    * Count unique data sources
    */
   private static countUniqueSources(fields: FieldAudit[]): number {
-    const sources = new Set(fields.map(f => f.source));
+    const sources = new Set(fields.map(f => f.sourceId));
     return sources.size;
   }
 
@@ -149,7 +150,7 @@ export class CardValidator {
     completionPercentage: number,
     confidenceScore: number,
     fields: FieldAudit[],
-    cardData: any
+    _cardData: any
   ): CardStatus {
     // Check for critical errors
     const hasCriticalErrors = fields.some(f => f.status === 'CONFLICT');
@@ -218,13 +219,6 @@ export class CardValidator {
     cardData: any,
     entity: CanonicalEntity
   ): RootCauseAnalysis {
-    const steps: RootCauseAnalysis = {
-      step: 'API_CHECK',
-      status: 'UNKNOWN',
-      details: 'Analysis not yet performed',
-      timestamp: new Date().toISOString(),
-    };
-
     // Check if cardData exists
     if (!cardData) {
       return {

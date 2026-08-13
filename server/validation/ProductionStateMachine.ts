@@ -198,7 +198,7 @@ export class ProductionStateMachine {
   /**
    * Execute actions when entering a state
    */
-  private async onStateEnter(state: ProductionState, metadata?: any): Promise<void> {
+  private async onStateEnter(state: ProductionState, _metadata?: any): Promise<void> {
     switch (state) {
       case 'DISCOVERING':
         console.log('[STATE MACHINE] Starting component discovery...');
@@ -275,7 +275,7 @@ export class ProductionStateMachine {
     const currentState = this.context.currentState;
     const possible: Array<{ to: ProductionState; criteria: string }> = [];
     
-    for (const [key, criteria] of this.transitionCriteria) {
+    for (const [key, _criteria] of this.transitionCriteria) {
       const [from, to] = key.split('->');
       if (from === currentState) {
         possible.push({

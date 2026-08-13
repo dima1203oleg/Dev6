@@ -11,7 +11,7 @@ interface State {
 
 export class ErrorBoundary extends Component<Props, State> {
   public declare props: Props;
-  public state: State = {
+  public override state: State = {
     hasError: false,
     error: null
   };
@@ -22,7 +22,7 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  public componentDidMount() {
+  public override componentDidMount() {
     const handleGlobalError = (event: ErrorEvent) => {
       const errorMsg = event.message || "";
       if (
@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<Props, State> {
     this._cleanupError = () => window.removeEventListener("error", handleGlobalError);
   }
 
-  public componentWillUnmount() {
+  public override componentWillUnmount() {
     if (this._cleanupError) {
       this._cleanupError();
     }
@@ -53,7 +53,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  public override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Uncaught error:', error, errorInfo);
     
     // Check if it's a dynamic module/chunk import failure
@@ -69,7 +69,7 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  public render() {
+  public override render() {
     if (this.state.hasError) {
       const errorMsg = this.state.error?.toString() || "";
       const isChunkError = 

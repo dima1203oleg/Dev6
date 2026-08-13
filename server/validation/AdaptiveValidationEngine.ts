@@ -356,7 +356,7 @@ export class AdaptiveValidationEngine {
   private findComponentsByType(componentType: ComponentImpact['componentType']): string[] {
     const components: string[] = [];
     
-    for (const [compId, deps] of this.componentDependencies) {
+    for (const [compId, _deps] of this.componentDependencies) {
       const inferredType = this.inferComponentType(compId);
       if (inferredType === componentType) {
         components.push(compId);

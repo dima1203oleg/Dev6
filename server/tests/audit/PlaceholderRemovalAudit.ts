@@ -230,8 +230,8 @@ export class PlaceholderRemovalAuditor {
 
   private generateSuggestedFix(
     componentName: string,
-    content: string,
-    placeholderCondition: string,
+    _content: string,
+    _placeholderCondition: string,
     placeholderText: string[]
   ): string {
     if (placeholderText.length === 0) {

@@ -187,7 +187,7 @@ export class EvidenceChainBuilder {
   /**
    * Perform cross-source validation
    */
-  private performCrossSourceValidation(value: any, primarySource: string): {
+  private performCrossSourceValidation(_value: any, primarySource: string): {
     validated: boolean;
     confidence: number;
     matchingSources: string[];
@@ -210,7 +210,6 @@ export class EvidenceChainBuilder {
     if (chain.length === 0) return 0;
     
     const confidenceValues = chain.map(link => link.confidence);
-    const average = confidenceValues.reduce((sum, conf) => sum + conf, 0) / confidenceValues.length;
     
     // Weight recent steps more heavily
     const weightedSum = confidenceValues.reduce((sum, conf, index) => {

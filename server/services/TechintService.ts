@@ -58,7 +58,7 @@ export class TechintService {
     } catch {}
 
     // 3. SecurityTrails API (if key available)
-    const stKey = process.env.SECURITYTRAILS_API_KEY;
+    const stKey = process.env['SECURITYTRAILS_API_KEY'];
     if (stKey) {
       try {
         const res = await fetch(
@@ -115,7 +115,6 @@ export class TechintService {
       const ctEntries = await osiService.ctLogSearch(domain);
       const latest = ctEntries[0];
       if (latest) {
-        const validFrom = new Date(latest.notBefore);
         const validTo = new Date(latest.notAfter);
         const daysRemaining = Math.floor((validTo.getTime() - Date.now()) / 86400000);
         return {
@@ -145,7 +144,6 @@ export class TechintService {
   private parseSslLabsResult(domain: string, data: any): SSLCertResult {
     const ep = data.endpoints[0];
     const cert = ep?.details?.cert || {};
-    const chain = ep?.details?.chain?.certs?.[0] || {};
 
     const validFrom = cert.notBefore ? new Date(cert.notBefore * 1000).toISOString() : '';
     const validTo = cert.notAfter ? new Date(cert.notAfter * 1000).toISOString() : '';
@@ -220,7 +218,7 @@ export class TechintService {
 
   // ─── Port Scan (passive via Shodan / Censys) ──────────────────────────
   async passivePortInfo(ip: string): Promise<{ ports: number[]; services: Record<number, string>; banners?: Record<number, string> }> {
-    const shodanKey = process.env.SHODAN_API_KEY;
+    const shodanKey = process.env['SHODAN_API_KEY'];
     if (shodanKey) {
       try {
         const res = await fetch(`https://api.shodan.io/shodan/host/${ip}?key=${shodanKey}`, {
@@ -252,9 +250,9 @@ export class TechintService {
       for (const line of text.split('\n')) {
         const match = line.match(/(\d+)\/(tcp|udp)\s+open\s+(\S+)/);
         if (match) {
-          const port = parseInt(match[1]);
+          const port = parseInt(match[1] || '0');
           ports.push(port);
-          services[port] = match[3];
+          services[port] = match[3] || 'unknown';
         }
       }
       return { ports, services };

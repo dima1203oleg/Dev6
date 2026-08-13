@@ -240,31 +240,33 @@ export class SchemaDriftProtection {
    * Levenshtein distance calculation
    */
   private levenshteinDistance(str1: string, str2: string): number {
-    const matrix = [];
-    
-    for (let i = 0; i <= str2.length; i++) {
-      matrix[i] = [i];
+    const rows = str2.length + 1;
+    const cols = str1.length + 1;
+    const matrix: number[][] = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+    for (let i = 0; i < rows; i++) {
+      matrix[i]![0] = i;
     }
-    
-    for (let j = 0; j <= str1.length; j++) {
-      matrix[0][j] = j;
+
+    for (let j = 0; j < cols; j++) {
+      matrix[0]![j] = j;
     }
-    
-    for (let i = 1; i <= str2.length; i++) {
-      for (let j = 1; j <= str1.length; j++) {
+
+    for (let i = 1; i < rows; i++) {
+      for (let j = 1; j < cols; j++) {
         if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
+          matrix[i]![j] = matrix[i - 1]![j - 1]!;
         } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
+          matrix[i]![j] = Math.min(
+            matrix[i - 1]![j - 1]! + 1,
+            matrix[i]![j - 1]! + 1,
+            matrix[i - 1]![j]! + 1
           );
         }
       }
     }
-    
-    return matrix[str2.length][str1.length];
+
+    return matrix[str2.length]![str1.length]!;
   }
 
   /**
@@ -372,7 +374,7 @@ export class SchemaDriftProtection {
   private async createFieldMapping(action: SelfHealingAction): Promise<void> {
     // Extract field names from description
     const match = action.description.match(/renamed field: (.+) -> (.+)/);
-    if (!match) return;
+    if (!match || !match[1] || !match[2]) return;
     
     const sourceField = match[1];
     const targetField = match[2];

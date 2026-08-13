@@ -130,7 +130,7 @@ export class ProductionEvidenceGraph {
     
     const path: EvidencePath = {
       pathId,
-      startNodeId: nodes.length > 0 ? nodes[0].nodeId : '',
+      startNodeId: nodes.length > 0 ? nodes[0]?.nodeId || '' : '',
       endNodeId: uiValueNodeId,
       nodes,
       edges,
@@ -186,7 +186,7 @@ export class ProductionEvidenceGraph {
    * Check if path is complete (has all required node types)
    */
   private isPathComplete(nodes: EvidenceNode[]): boolean {
-    const requiredTypes = ['REGISTRY', 'CONNECTOR', 'RAW_DATA', 'EVIDENCE', 'UI_VALUE'];
+    const requiredTypes: Array<'REGISTRY' | 'CONNECTOR' | 'RAW_DATA' | 'EVIDENCE' | 'UI_VALUE'> = ['REGISTRY', 'CONNECTOR', 'RAW_DATA', 'EVIDENCE', 'UI_VALUE'];
     const presentTypes = new Set(nodes.map(n => n.nodeType));
     
     return requiredTypes.every(type => presentTypes.has(type));

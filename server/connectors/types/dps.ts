@@ -624,9 +624,9 @@ export interface DPSEndpointMetadata {
   description: string;
   requiresAuth: boolean;
   rateLimit: number;
-  requestType: keyof DPSRequest;
-  responseType: keyof DPSResponse;
-  normalizedType: keyof DPSNormalized;
+  requestType: string;
+  responseType: string;
+  normalizedType: string;
   schemaDocumented: boolean;
   primary: boolean;
 }

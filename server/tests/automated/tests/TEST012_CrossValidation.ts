@@ -49,22 +49,22 @@ export class TEST012_CrossValidation extends BaseTest {
         // Compare with other sources
         const comparison = this.compareWithOtherSources(sourceId, jsonData);
         
-        details.sources_compared = comparison.sourcesCompared;
-        details.matches_found = comparison.matches;
-        details.discrepancies_found = comparison.discrepancies;
-        details.contradiction_records = comparison.contradictions;
+        details['sources_compared'] = comparison.sourcesCompared;
+        details['matches_found'] = comparison.matches;
+        details['discrepancies_found'] = comparison.discrepancies;
+        details['contradiction_records'] = comparison.contradictions;
         
         if (comparison.contradictions.length > 0) {
           warnings.push(`Contradictions detected with other sources: ${comparison.contradictions.join(', ')}`);
-          details.contradiction_engine_triggered = true;
+          details['contradiction_engine_triggered'] = true;
         } else {
-          details.contradiction_engine_triggered = false;
+          details['contradiction_engine_triggered'] = false;
         }
         
         // Check for data consistency
         const consistencyCheck = this.checkDataConsistency(jsonData);
-        details.internal_consistency = consistencyCheck.consistent;
-        details.internal_inconsistencies = consistencyCheck.inconsistencies;
+        details['internal_consistency'] = consistencyCheck.consistent;
+        details['internal_inconsistencies'] = consistencyCheck.inconsistencies;
         
         if (!consistencyCheck.consistent) {
           warnings.push(`Internal inconsistencies found: ${consistencyCheck.inconsistencies.join(', ')}`);
@@ -72,8 +72,8 @@ export class TEST012_CrossValidation extends BaseTest {
         
         // Check for expected fields based on entity type
         const entityCheck = this.checkEntityFields(jsonData, context);
-        details.expected_fields_present = entityCheck.present;
-        details.expected_fields_missing = entityCheck.missing;
+        details['expected_fields_present'] = entityCheck.present;
+        details['expected_fields_missing'] = entityCheck.missing;
         
         if (entityCheck.missing.length > 0) {
           warnings.push(`Missing expected entity fields: ${entityCheck.missing.join(', ')}`);

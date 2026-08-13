@@ -1,0 +1,31 @@
+{
+  "stage": "STAGE_110_DASHBOARD_VIEW_TYPE_FIXES",
+  "timestamp": "2026-08-11T04:45:00Z",
+  "previous_errors": 946,
+  "current_errors": 943,
+  "delta": -3,
+  "top_categories_fixed": [
+    "TS6133 - Unused imports (D3RiskHeatmapWidget, DashboardView)",
+    "TS4111 - Index signature access (DashboardView)",
+    "TS2532 - Object possibly undefined (DashboardView)",
+    "TS18048 - Possibly undefined (DashboardView)",
+    "TS2353 - Object literal property (DashboardView)"
+  ],
+  "files_changed": [
+    "src/components/D3RiskHeatmapWidget.tsx",
+    "src/components/DashboardView.tsx"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining errors - progress: 935 errors fixed (1878 -> 943)"
+}

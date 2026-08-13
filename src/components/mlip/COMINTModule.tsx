@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Fingerprint, Search } from 'lucide-react';
+import { Fingerprint } from 'lucide-react';
 
 export const COMINTModule: React.FC = () => {
   const [query, setQuery] = useState('');

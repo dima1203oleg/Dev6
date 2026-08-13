@@ -6,8 +6,7 @@
  * without manual programming
  */
 
-import { Dataset, Schema, ConnectorConfig, Transformation, FieldMapping, ScheduleConfig } from './types';
-import { ScanResult } from './DatasetScanner';
+import { Dataset, ConnectorConfig, Transformation, FieldMapping, ScheduleConfig, ScanResult } from './types';
 
 export interface GeneratedConnector {
   connector: ConnectorConfig;
@@ -108,7 +107,7 @@ export class ConnectorGenerator {
   /**
    * Determine endpoint
    */
-  private determineEndpoint(dataset: Dataset, scanResult: ScanResult): string | undefined {
+  private determineEndpoint(_dataset: Dataset, scanResult: ScanResult): string | undefined {
     if (scanResult.hasDataStore) {
       return `/api/3/action/datastore_search`;
     }
@@ -118,7 +117,7 @@ export class ConnectorGenerator {
   /**
    * Determine authentication
    */
-  private determineAuthentication(dataset: Dataset): any {
+  private determineAuthentication(_dataset: Dataset): any {
     // Most public registries don't require authentication
     return {
       type: 'NONE',
@@ -128,7 +127,7 @@ export class ConnectorGenerator {
   /**
    * Determine pagination strategy
    */
-  private determinePagination(dataset: Dataset, scanResult: ScanResult): any {
+  private determinePagination(_dataset: Dataset, scanResult: ScanResult): any {
     if (scanResult.hasDataStore) {
       return {
         type: 'LIMIT_OFFSET',
@@ -145,14 +144,14 @@ export class ConnectorGenerator {
   /**
    * Determine filters
    */
-  private determineFilters(dataset: Dataset): any {
+  private determineFilters(_dataset: Dataset): any {
     return {};
   }
 
   /**
    * Determine transformations
    */
-  private determineTransformations(dataset: Dataset, scanResult: ScanResult): Transformation[] {
+  private determineTransformations(_dataset: Dataset, scanResult: ScanResult): Transformation[] {
     const transformations: Transformation[] = [];
 
     // Add type casting transformations based on schema
@@ -174,7 +173,7 @@ export class ConnectorGenerator {
   /**
    * Determine schedule
    */
-  private determineSchedule(dataset: Dataset): ScheduleConfig {
+  private determineSchedule(_dataset: Dataset): ScheduleConfig {
     // Default to daily for most registries
     return {
       enabled: true,
@@ -186,10 +185,10 @@ export class ConnectorGenerator {
   /**
    * Generate transformer code
    */
-  private generateTransformer(dataset: Dataset, scanResult: ScanResult): string {
+  private generateTransformer(_dataset: Dataset, scanResult: ScanResult): string {
     const code = `
 /**
- * Auto-generated transformer for ${dataset.title}
+ * Auto-generated transformer for ${_dataset.title}
  * Generated at: ${new Date().toISOString()}
  */
 
@@ -197,7 +196,7 @@ export function transformRecord(record: any): any {
   const transformed = { ...record };
 
   // Apply transformations
-  ${this.generateTransformationCode(dataset, scanResult)}
+  ${this.generateTransformationCode(_dataset, scanResult)}
 
   return transformed;
 }
@@ -213,7 +212,7 @@ export function transformBatch(records: any[]): any[] {
   /**
    * Generate transformation code
    */
-  private generateTransformationCode(dataset: Dataset, scanResult: ScanResult): string {
+  private generateTransformationCode(_dataset: Dataset, scanResult: ScanResult): string {
     const code: string[] = [];
 
     if (scanResult.schema) {
@@ -274,7 +273,7 @@ export function normalizeBatch(records: any[]): any[] {
   /**
    * Generate normalization code
    */
-  private generateNormalizationCode(dataset: Dataset, scanResult: ScanResult): string {
+  private generateNormalizationCode(_dataset: Dataset, scanResult: ScanResult): string {
     const code: string[] = [];
 
     if (scanResult.schema) {
@@ -312,7 +311,7 @@ export function normalizeBatch(records: any[]): any[] {
   /**
    * Generate field mappings
    */
-  private generateMapping(dataset: Dataset, scanResult: ScanResult): FieldMapping[] {
+  private generateMapping(_dataset: Dataset, scanResult: ScanResult): FieldMapping[] {
     const mappings: FieldMapping[] = [];
 
     if (scanResult.schema) {
@@ -339,7 +338,7 @@ export function normalizeBatch(records: any[]): any[] {
   /**
    * Generate validation rules
    */
-  private generateValidationRules(dataset: Dataset, scanResult: ScanResult): any[] {
+  private generateValidationRules(_dataset: Dataset, scanResult: ScanResult): any[] {
     const rules: any[] = [];
 
     if (scanResult.schema) {

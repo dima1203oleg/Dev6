@@ -1,12 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Database,
-  Server,
-  Search,
-  Play,
-  Pause,
   Activity,
-  Terminal,
   Bot,
   RefreshCw,
   X,
@@ -15,35 +10,17 @@ import {
   CheckCircle2,
   HardDrive,
   Cpu,
-  Radio,
   Network,
-  Globe,
-  AlertTriangle,
   FileText,
-  ChevronRight,
   Eye,
-  Code,
-  ArrowRight,
-  Layers,
-  Sliders,
-  Shield,
-  BookOpen,
-  Download,
-  AlertCircle,
   Sparkles,
   Check,
-  TrendingUp,
   BarChart2,
-  Lock,
-  UploadCloud,
-  FileCode,
-  Box,
-  Compass,
+  ArrowRight,
   Link as LinkIcon,
-  HelpCircle,
-  Share2,
+  Box,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "./ToastProvider";
 
 // Define Pipeline Stage Interface
@@ -448,9 +425,25 @@ export default function DataOnboardingCenter() {
   const { showToast } = useToast();
 
   // Active domain preset
-  const [selectedPreset, setSelectedPreset] = useState<DomainPreset>(
-    DOMAIN_PRESETS[0]
-  );
+  const [selectedPreset, setSelectedPreset] = useState<DomainPreset>(() => {
+    const preset = DOMAIN_PRESETS[0];
+    if (preset) return preset;
+    // Fallback if array is empty
+    return {
+      id: "custom",
+      title: "Custom Source",
+      subtitle: "Custom data source",
+      icon: "🔌",
+      color: "from-slate-600 to-slate-500",
+      sourceType: "S3 / MinIO",
+      sampleEndpoint: "s3://custom-bucket/data.parquet",
+      domainSubject: "Custom",
+      expectedEntities: [],
+      recommendedModules: [],
+      targetRows: 0,
+      sampleRecords: [],
+    };
+  });
 
   // Form inputs
   const [sourceName, setSourceName] = useState<string>(
@@ -828,7 +821,7 @@ export default function DataOnboardingCenter() {
   const handleSelectPreset = (p: DomainPreset) => {
     setSelectedPreset(p);
     setSourceName(`${p.title} (Навчальний масив)`);
-    setProtocolType(p.sourceType.split(" ")[0]);
+    setProtocolType(p.sourceType.split(" ")[0] || "S3");
     setEndpointUrl(p.sampleEndpoint);
     setIsRunningPipeline(false);
     setPipelineFinished(false);

@@ -14,7 +14,7 @@ interface ChronologyCardProps {
   timeline?: TimelineEvent[];
 }
 
-export const ChronologyCard: React.FC<ChronologyCardProps> = ({ entity, timeline = [] }) => {
+export const ChronologyCard: React.FC<ChronologyCardProps> = ({ entity: _entity, timeline = [] }) => {
   // Sort timeline by date descending
   const sortedTimeline = [...timeline].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 

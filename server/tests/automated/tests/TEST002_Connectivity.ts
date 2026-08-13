@@ -22,23 +22,23 @@ export class TEST002_Connectivity extends BaseTest {
         const url = new URL(endpoint);
         
         // DNS Resolution
-        details.dns_resolution = await this.checkDNS(url.hostname);
+        details['dns_resolution'] = await this.checkDNS(url.hostname);
         
         // HTTPS Check
-        details.https_enabled = url.protocol === 'https:';
-        if (!details.https_enabled) {
+        details['https_enabled'] = url.protocol === 'https:';
+        if (!details['https_enabled']) {
           warnings.push('Endpoint does not use HTTPS');
         }
         
         // TLS Check (for HTTPS)
-        if (details.https_enabled) {
-          details.tls_valid = await this.checkTLS(endpoint);
+        if (details['https_enabled']) {
+          details['tls_valid'] = await this.checkTLS(endpoint);
         }
         
         // HTTP Status
         const httpStatus = await this.checkHTTPStatus(endpoint, context.timeout_ms);
-        details.http_status = httpStatus.status;
-        details.response_time_ms = httpStatus.responseTime;
+        details['http_status'] = httpStatus.status;
+        details['response_time_ms'] = httpStatus.responseTime;
         
         if (httpStatus.status >= 500) {
           errors.push(`Server error: HTTP ${httpStatus.status}`);
@@ -47,17 +47,17 @@ export class TEST002_Connectivity extends BaseTest {
         }
         
         // Timeout Check
-        details.timeout_ms = context.timeout_ms;
-        details.timeout_exceeded = httpStatus.responseTime > context.timeout_ms;
-        if (details.timeout_exceeded) {
+        details['timeout_ms'] = context.timeout_ms;
+        details['timeout_exceeded'] = httpStatus.responseTime > context.timeout_ms;
+        if (details['timeout_exceeded']) {
           errors.push(`Request timeout exceeded: ${httpStatus.responseTime}ms > ${context.timeout_ms}ms`);
         }
         
         // Retry Capability
-        details.retry_supported = context.retry_count > 0;
+        details['retry_supported'] = context.retry_count > 0;
         
         // Circuit Breaker Status (simulated)
-        details.circuit_breaker_status = 'CLOSED';
+        details['circuit_breaker_status'] = 'CLOSED';
         
       } catch (error) {
         errors.push(`Connectivity check failed: ${error instanceof Error ? error.message : String(error)}`);

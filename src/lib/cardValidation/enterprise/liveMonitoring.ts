@@ -260,10 +260,10 @@ export class LiveMonitoringEngine {
     activeAlerts: number;
   } {
     const lastCheck = this.healthHistory.length > 0 
-      ? this.healthHistory[this.healthHistory.length - 1].timestamp 
+      ? this.healthHistory[this.healthHistory.length - 1]?.timestamp || null
       : null;
     const currentHealth = this.healthHistory.length > 0 
-      ? this.healthHistory[this.healthHistory.length - 1].score 
+      ? this.healthHistory[this.healthHistory.length - 1]?.score || null
       : null;
 
     return {

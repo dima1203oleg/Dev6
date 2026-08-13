@@ -365,7 +365,7 @@ export class FakeDataScanner {
           column,
           pattern: patternConfig.pattern,
           context: line.trim(),
-          severity: patternConfig.severity,
+          severity: patternConfig.severity as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW',
           category: patternConfig.category as any
         });
       }
@@ -402,15 +402,15 @@ export class FakeDataScanner {
     }
     
     // Check for specific categories
-    if (scanResult.summary.byCategory['HARDCODED_VALUE'] > 0) {
+    if ((scanResult.summary.byCategory['HARDCODED_VALUE'] || 0) > 0) {
       blockers.push('Hardcoded production identifiers found - must use test-only mode');
     }
     
-    if (scanResult.summary.byCategory['MOCK_DATA'] > 0) {
+    if ((scanResult.summary.byCategory['MOCK_DATA'] || 0) > 0) {
       blockers.push('Mock data found in production code - connectors must return real data only');
     }
     
-    if (scanResult.summary.byCategory['FALLBACK_DATA'] > 0) {
+    if ((scanResult.summary.byCategory['FALLBACK_DATA'] || 0) > 0) {
       blockers.push('Fallback data found - connectors must return UNAVAILABLE status instead');
     }
     

@@ -8,8 +8,7 @@ import { scaleLinear, scaleTime } from 'd3-scale';
 import { line, area, curveMonotoneX } from 'd3-shape';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  TrendingUp, Calendar, ShieldAlert, Award, AlertTriangle, 
-  ChevronRight, Info, Eye, Sparkles, Filter, CheckCircle
+  TrendingUp, Calendar, ShieldAlert
 } from 'lucide-react';
 import { OsintEntity } from '../osintData';
 
@@ -40,7 +39,7 @@ interface IncidentEvent {
 }
 
 export default function D3HistoricalRiskTrendsWidget({ 
-  entities, 
+  entities: _entities, 
   onSelectEntity, 
   onSelectTab 
 }: D3HistoricalRiskTrendsWidgetProps) {
@@ -182,8 +181,13 @@ export default function D3HistoricalRiskTrendsWidget({
   const padding = { top: 15, right: 20, bottom: 30, left: 35 };
 
   const xScale = useMemo(() => {
+    if (dataPoints.length === 0) {
+      return scaleTime()
+        .domain([new Date(), new Date()])
+        .range([padding.left, dimensions.width - padding.right]);
+    }
     return scaleTime()
-      .domain([dataPoints[0].date, dataPoints[dataPoints.length - 1].date])
+      .domain([dataPoints[0]!.date, dataPoints[dataPoints.length - 1]!.date])
       .range([padding.left, dimensions.width - padding.right]);
   }, [dataPoints, dimensions.width, padding.left, padding.right]);
 
@@ -227,6 +231,11 @@ export default function D3HistoricalRiskTrendsWidget({
     // Find the closest data point based on Date domain mapping
     const dateAtX = xScale.invert(x);
     let closestPoint = dataPoints[0];
+    if (!closestPoint) {
+      setHoveredPoint(null);
+      setHoverX(null);
+      return;
+    }
     let minDiff = Math.abs(closestPoint.date.getTime() - dateAtX.getTime());
 
     for (const point of dataPoints) {

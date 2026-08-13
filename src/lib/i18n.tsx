@@ -600,7 +600,7 @@ export const translations: Record<Language, Translations> = {
 };
 
 // React Context для локалізації
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface I18nContextType {
   language: Language;

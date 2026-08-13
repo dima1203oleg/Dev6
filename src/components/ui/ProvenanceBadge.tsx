@@ -1,5 +1,4 @@
-import React from 'react';
-import { Database, ShieldAlert, CheckCircle, Info, HelpCircle } from 'lucide-react';
+import { Database } from 'lucide-react';
 
 export type ConfidenceLevel = 'HIGH' | 'MEDIUM' | 'LOW' | 'UNVERIFIED';
 
@@ -17,15 +16,6 @@ export function ProvenanceBadge({ source, confidence = 'HIGH', timestamp, classN
       case 'MEDIUM': return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
       case 'LOW': return 'bg-red-500/10 text-red-400 border-red-500/20';
       case 'UNVERIFIED': return 'bg-slate-500/10 text-slate-400 border-slate-500/20';
-    }
-  };
-
-  const getConfidenceIcon = (level: ConfidenceLevel) => {
-    switch (level) {
-      case 'HIGH': return <CheckCircle size={10} />;
-      case 'MEDIUM': return <Info size={10} />;
-      case 'LOW': return <ShieldAlert size={10} />;
-      case 'UNVERIFIED': return <HelpCircle size={10} />;
     }
   };
 

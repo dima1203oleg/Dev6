@@ -263,7 +263,7 @@ export class ValidationOrchestrator {
   async detectIssues(): Promise<Issue[]> {
     const allIssues: Issue[] = [];
     
-    for (const [campaign, result] of this.results) {
+    for (const [_campaign, result] of this.results) {
       allIssues.push(...result.issues);
     }
     

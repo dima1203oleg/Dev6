@@ -157,7 +157,7 @@ export class RemediationEngine {
       incidents.map(i => i.affectedComponents)
     );
     
-    const category = incidents[0].category;
+    const category = incidents[0]?.category || 'UNKNOWN';
     
     // Generate root cause description
     const description = this.generateRootCauseDescription(pattern, category, commonComponents);
@@ -395,7 +395,7 @@ export class RemediationEngine {
   /**
    * Run validation tests for a solution
    */
-  private async runValidationTests(solution: Solution): Promise<Array<{ name: string; passed: boolean }>> {
+  private async runValidationTests(_solution: Solution): Promise<Array<{ name: string; passed: boolean }>> {
     const tests: Array<{ name: string; passed: boolean }> = [];
     
     // Test 1: Deployment verification

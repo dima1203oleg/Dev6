@@ -6,12 +6,11 @@
  * to prove it works end-to-end, not just on paper.
  */
 
-const { CatalogConfig } = require('./types');
 const { CKANAdapter } = require('./adapters/CKANAdapter');
 
 class RDPRealWorldTest {
-  private catalogConfig: CatalogConfig;
-  private adapter: CKANAdapter;
+  private catalogConfig: any;
+  private adapter: typeof CKANAdapter;
 
   constructor() {
     this.catalogConfig = {
@@ -208,14 +207,12 @@ class RDPRealWorldTest {
       });
 
       let resourceWithDS: any = null;
-      let packageId: string = '';
 
       for (const pkg of searchResult.results) {
         const fullPkg = await this.adapter.getPackage(pkg.id);
         const dsResource = fullPkg.resources.find((r: any) => r.datastore_active);
         if (dsResource) {
           resourceWithDS = dsResource;
-          packageId = pkg.id;
           break;
         }
       }
@@ -423,7 +420,9 @@ class RDPRealWorldTest {
       const text = buffer.toString('utf-8');
       const lines = text.split('\n').filter(line => line.trim());
       console.log(`   Lines in CSV: ${lines.length}`);
-      console.log(`   First line: ${lines[0].substring(0, 100)}...`);
+      if (lines[0]) {
+        console.log(`   First line: ${lines[0].substring(0, 100)}...`);
+      }
       
       return { 
         success: true, 
@@ -454,12 +453,12 @@ class RDPRealWorldTest {
         version: '2.0',
         generatedAt: new Date().toISOString(),
         totalDatasets: searchResult.count,
-        datasets: searchResult.results.map(pkg => ({
+        datasets: searchResult.results.map((pkg: any) => ({
           id: pkg.id,
           name: pkg.name,
           title: pkg.title,
           organization: pkg.owner_org,
-          resources: pkg.resources.map(r => ({
+          resources: pkg.resources.map((r: any) => ({
             id: r.id,
             name: r.name,
             format: r.format,

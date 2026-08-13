@@ -5,10 +5,9 @@
 
 import React from 'react';
 import {  
-  ShieldAlert, Info, List, Server, Cpu, CheckCircle, Clock, 
-  HelpCircle, Zap, Terminal, Sparkles, Database, FileText, 
-  ArrowUpRight, Share2, AlertTriangle, Key, Network
-, Download } from 'lucide-react';
+  Terminal, Sparkles, FileText, 
+  Network, Download
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { OsintEntity, OSINT_ENTITIES } from '../osintData';
 import { OpenSourceSolution } from '../types';
@@ -355,14 +354,14 @@ export default function InspectorPanel({ selectedEntity, selectedTool, selectedN
                   <div className="space-y-1.5">
                     <span className="text-xs text-emerald-400 font-mono font-bold uppercase tracking-widest block">Переваги інтеграції</span>
                     <ul className="space-y-1 text-slate-300 list-disc list-inside pl-1 text-xs">
-                      {selectedTool.advantages.map((adv, i) => <li key={i} className="leading-relaxed">{adv}</li>)}
+                      {selectedTool.advantages?.map((adv, i) => <li key={i} className="leading-relaxed">{adv}</li>) || <li className="text-slate-500">N/A</li>}
                     </ul>
                   </div>
 
                   <div className="space-y-1.5">
                     <span className="text-xs text-red-400 font-mono font-bold uppercase tracking-widest block">Недоліки / Ризики ліцензування</span>
                     <ul className="space-y-1 text-slate-300 list-disc list-inside pl-1 text-xs">
-                      {selectedTool.disadvantages.map((dis, i) => <li key={i} className="leading-relaxed">{dis}</li>)}
+                      {selectedTool.disadvantages?.map((dis, i) => <li key={i} className="leading-relaxed">{dis}</li>) || <li className="text-slate-500">N/A</li>}
                     </ul>
                   </div>
                 </div>

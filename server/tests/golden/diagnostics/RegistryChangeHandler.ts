@@ -174,13 +174,13 @@ export class RegistryChangeHandler extends BaseGoldenValidator {
     }
   }
 
-  private async queryRegistryForVerification(change: RegistryChange): Promise<boolean> {
+  private async queryRegistryForVerification(_change: RegistryChange): Promise<boolean> {
     // Simulate registry query
     // In real implementation, this would query the actual registry
     return false; // Default to not verified
   }
 
-  async updateGoldenDatasetForChange(change: RegistryChange): Promise<boolean> {
+  async updateGoldenDatasetForChange(_change: RegistryChange): Promise<boolean> {
     console.log(`[Registry Change Handler] Updating golden dataset for verified change`);
 
     // In real implementation, this would:
@@ -229,7 +229,7 @@ export class RegistryChangeHandler extends BaseGoldenValidator {
     };
   }
 
-  async trackChangeHistory(ipn: string): Promise<RegistryChange[]> {
+  async trackChangeHistory(_ipn: string): Promise<RegistryChange[]> {
     // In real implementation, this would load change history from storage
     return this.getRegistryChanges();
   }

@@ -1,4 +1,4 @@
-import { OnboardingTask, OnboardingStatus } from '../../models/OnboardingTask';
+import { OnboardingTask } from '../../models/OnboardingTask';
 
 export interface OnboardingRequirements {
   requiresManualSign: boolean;

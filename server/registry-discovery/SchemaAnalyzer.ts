@@ -6,7 +6,6 @@
  */
 
 import { Schema, SchemaField, SchemaDrift, Dataset } from './types';
-import { ScanResult } from './DatasetScanner';
 
 export interface SchemaComparison {
   renamedFields: Array<{ old: string; new: string }>;
@@ -66,7 +65,7 @@ export class SchemaAnalyzer {
     const structureChanges: string[] = [];
 
     // Detect renamed fields (fuzzy matching)
-    for (const [oldName, oldField] of oldFields) {
+    for (const [oldName] of oldFields) {
       if (!newFields.has(oldName)) {
         // Field removed or renamed - check for similar names
         const similar = this.findSimilarField(oldName, newSchema.fields);
@@ -154,31 +153,33 @@ export class SchemaAnalyzer {
    * Levenshtein distance
    */
   private levenshteinDistance(str1: string, str2: string): number {
-    const matrix: number[][] = [];
+    const rows = str2.length + 1;
+    const cols = str1.length + 1;
+    const matrix: number[][] = Array.from({ length: rows }, () => Array(cols).fill(0));
 
-    for (let i = 0; i <= str2.length; i++) {
-      matrix[i] = [i];
+    for (let i = 0; i < rows; i++) {
+      matrix[i]![0] = i;
     }
 
-    for (let j = 0; j <= str1.length; j++) {
-      matrix[0][j] = j;
+    for (let j = 0; j < cols; j++) {
+      matrix[0]![j] = j;
     }
 
-    for (let i = 1; i <= str2.length; i++) {
-      for (let j = 1; j <= str1.length; j++) {
+    for (let i = 1; i < rows; i++) {
+      for (let j = 1; j < cols; j++) {
         if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
+          matrix[i]![j] = matrix[i - 1]![j - 1]!;
         } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
+          matrix[i]![j] = Math.min(
+            matrix[i - 1]![j - 1]! + 1,
+            matrix[i]![j - 1]! + 1,
+            matrix[i - 1]![j]! + 1
           );
         }
       }
     }
 
-    return matrix[str2.length][str1.length];
+    return matrix[str2.length]![str1.length]!;
   }
 
   /**
@@ -254,7 +255,7 @@ export class SchemaAnalyzer {
    */
   private async applyAutoFixes(dataset: Dataset, comparison: SchemaComparison): Promise<void> {
     // Generate new mapping based on changes
-    const newMapping = this.generateUpdatedMapping(dataset, comparison);
+    this.generateUpdatedMapping(dataset, comparison);
     
     // Update connector configuration
     // TODO: Implement connector update logic
@@ -265,7 +266,7 @@ export class SchemaAnalyzer {
   /**
    * Generate updated field mapping
    */
-  private generateUpdatedMapping(dataset: Dataset, comparison: SchemaComparison): any {
+  private generateUpdatedMapping(_dataset: Dataset, comparison: SchemaComparison): any {
     const mapping: any = {};
 
     // Handle renamed fields
@@ -284,7 +285,7 @@ export class SchemaAnalyzer {
   /**
    * Create pull request for schema changes
    */
-  private async createPullRequest(dataset: Dataset, comparison: SchemaComparison): Promise<void> {
+  private async createPullRequest(dataset: Dataset, _comparison: SchemaComparison): Promise<void> {
     // TODO: Implement PR creation logic
     console.log(`[SchemaAnalyzer] Creating PR for ${dataset.id} schema changes`);
   }
@@ -295,7 +296,8 @@ export class SchemaAnalyzer {
   private getLatestSchemaVersion(datasetId: string): string {
     const schemas = this.schemaHistory.get(datasetId) || [];
     if (schemas.length === 0) return '0.0.0';
-    return schemas[schemas.length - 1].version;
+    const latest = schemas[schemas.length - 1];
+    return latest?.version || '0.0.0';
   }
 
   /**
@@ -304,7 +306,9 @@ export class SchemaAnalyzer {
   private generateNewSchemaVersion(datasetId: string): string {
     const currentVersion = this.getLatestSchemaVersion(datasetId);
     const parts = currentVersion.split('.').map(Number);
-    parts[2]++; // Increment patch version
+    if (parts[2] !== undefined) {
+      parts[2]++; // Increment patch version
+    }
     return parts.join('.');
   }
 

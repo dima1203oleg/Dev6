@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { CertificationReport as CertificationReportType, CardStatus } from '../../lib/cardValidation/types';
+import { CertificationReport as CertificationReportType } from '../../lib/cardValidation/types';
 import { CheckCircle, AlertTriangle, XCircle, Shield, TrendingUp, Database, Clock, FileText, Award } from 'lucide-react';
 
 interface CertificationReportProps {
@@ -16,25 +16,6 @@ export const CertificationReport: React.FC<CertificationReportProps> = ({
   report,
   onRetest,
 }) => {
-  const getStatusColor = (status: CardStatus) => {
-    switch (status) {
-      case 'PASS':
-        return 'text-emerald-400';
-      case 'WARNING':
-        return 'text-amber-400';
-      case 'NO_DATA':
-        return 'text-slate-400';
-      case 'FAIL':
-        return 'text-rose-400';
-    }
-  };
-
-  const getHealthColor = (score: number) => {
-    if (score >= 80) return 'text-emerald-400';
-    if (score >= 60) return 'text-amber-400';
-    return 'text-rose-400';
-  };
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString('uk-UA', {
@@ -44,6 +25,13 @@ export const CertificationReport: React.FC<CertificationReportProps> = ({
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const getHealthColor = (score: number): string => {
+    if (score >= 80) return 'text-emerald-400';
+    if (score >= 60) return 'text-yellow-400';
+    if (score >= 40) return 'text-orange-400';
+    return 'text-red-400';
   };
 
   const isProductionReady = report.productionHealthIndex.isProductionReady;

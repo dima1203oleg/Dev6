@@ -1,5 +1,5 @@
 import { useToast } from './ToastProvider';
-import React, { useContext,  useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import DataOnboardingCenter from "./DataOnboardingCenter";
 import DataIngestionPipeline from "./DataIngestionPipeline";
 import FreeSourcesTab from "./FreeSourcesTab";
@@ -7,25 +7,19 @@ import {
   Database,
   Server,
   Search,
-  Play,
-  Pause,
   Activity,
   Terminal,
   Bot,
   RefreshCw,
   X,
-  CircleDot,
   Zap,
   CheckCircle2,
   HardDrive,
   Cpu,
-  Radio,
   Network,
   Globe,
   AlertTriangle,
   FileText,
-  ChevronRight,
-  Eye,
   Code,
   ArrowRight,
   Layers,
@@ -35,19 +29,13 @@ import {
   Download,
   AlertCircle,
   Sparkles,
-  Check,
-  HelpCircle,
-  TrendingUp,
   BarChart2,
-  ShieldAlert,
   CheckCircle,
   ShieldCheck,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { db, handleFirestoreError, OperationType } from "../lib/firebase";
 import {
   collection,
-  getDocs,
   doc,
   setDoc,
   deleteDoc,
@@ -1041,7 +1029,7 @@ export default function DataIngestionTab() {
   const [newSourceCat, setNewSourceCat] = useState<
     "UA_STATE" | "INT_REGISTRY" | "OSINT_CYBER"
   >("INT_REGISTRY");
-  const [newSourceZone, setNewSourceZone] = useState<ProcessingZone>("GREEN");
+  const [newSourceZone, _setNewSourceZone] = useState<ProcessingZone>("GREEN");
   const [newSourceEmoji, setNewSourceEmoji] = useState<string>("🔌");
   const [newSourceOwner, setNewSourceOwner] = useState<string>(
     "ШІ Автомат Інтеграції",
@@ -1117,6 +1105,7 @@ export default function DataIngestionTab() {
     const interval = setInterval(() => {
       const timeStr = new Date().toLocaleTimeString();
       const randomSrc = sources[Math.floor(Math.random() * sources.length)];
+      if (!randomSrc) return;
 
       const logTemplates = [
         {
@@ -1143,6 +1132,7 @@ export default function DataIngestionTab() {
 
       const randomLog =
         logTemplates[Math.floor(Math.random() * logTemplates.length)];
+      if (!randomLog) return;
       setRealtimeLogs((prev) => [
         ...prev.slice(-30),
         { time: timeStr, text: randomLog.text, type: randomLog.type },
@@ -1422,7 +1412,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
     setTimeout(() => {
       setConsoleLogs((prev) => [
         ...prev,
-        `[SANDBOX] Running: pytest tests/test_${selectedSource.id}.py`,
+        selectedSource ? `[SANDBOX] Running: pytest tests/test_${selectedSource.id}.py` : "[SANDBOX] Running tests",
       ]);
     }, 1800);
 
@@ -1430,8 +1420,8 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
       setConsoleLogs((prev) => [
         ...prev,
         `test_connection_health (passed) - Reachable: Yes`,
-        `test_auth_headers_generation (passed) - Method: ${selectedSource.authMethod}`,
-        `test_pydantic_schema_validation (passed) - Confidence matches: ${selectedSource.confidence}%`,
+        selectedSource ? `test_auth_headers_generation (passed) - Method: ${selectedSource.authMethod}` : "test_auth_headers_generation (passed)",
+        selectedSource ? `test_pydantic_schema_validation (passed) - Confidence matches: ${selectedSource.confidence}%` : "test_pydantic_schema_validation (passed)",
         `[УСПІХ] 3/3 тести пройдено. Автозгенерована клієнтська бібліотека готова до використання в продакшені!`,
       ]);
       setIsTestingCode(false);
@@ -2079,7 +2069,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                       АВТОМАТИЗОВАНИЙ ПРОФІЛЬ РОЗВІДКИ
                     </span>
                     <span className="text-xs font-mono text-amber-400">
-                      ID: {selectedSource.id}
+                      ID: {selectedSource?.id || "N/A"}
                     </span>
                   </div>
 
@@ -2087,29 +2077,29 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                     <div className="flex justify-between items-start">
                       <div>
                         <h4 className="text-xs font-black text-slate-200 flex items-center gap-1.5">
-                          <span>{selectedSource.flag}</span>
-                          <span>{selectedSource.name}</span>
+                          <span>{selectedSource?.flag || ""}</span>
+                          <span>{selectedSource?.name || "Unknown"}</span>
                         </h4>
                         <p className="text-xs text-slate-400 mt-1">
-                          Офіційний власник: {selectedSource.owner}
+                          Офіційний власник: {selectedSource?.owner || "Unknown"}
                         </p>
                       </div>
                       <div className="flex flex-col items-end gap-1">
                         <span className="text-xs bg-emerald-950/50 text-emerald-400 border border-slate-800 px-2 py-0.5 rounded font-mono uppercase font-black">
-                          {selectedSource.status}
+                          {selectedSource?.status || "UNKNOWN"}
                         </span>
                         <span
                           className={`text-[10px] px-2 py-0.5 rounded font-bold font-mono ${
-                            selectedSource.processingZone === "GREEN"
+                            selectedSource?.processingZone === "GREEN"
                               ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
-                              : selectedSource.processingZone === "YELLOW"
+                              : selectedSource?.processingZone === "YELLOW"
                                 ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
                                 : "bg-rose-500/10 text-rose-400 border border-rose-500/30 animate-pulse"
                           }`}
                         >
-                          {selectedSource.processingZone === "GREEN"
+                          {selectedSource?.processingZone === "GREEN"
                             ? "🟢 GREEN ZONE (ETL)"
-                            : selectedSource.processingZone === "YELLOW"
+                            : selectedSource?.processingZone === "YELLOW"
                               ? "🟡 YELLOW ZONE (PROXY)"
                               : "🔴 RED ZONE (TOR SANDBOX)"}
                         </span>
@@ -2122,7 +2112,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                           ENDPOINT API:
                         </span>
                         <span className="text-slate-300 break-all">
-                          {selectedSource.endpoint}
+                          {selectedSource?.endpoint || "N/A"}
                         </span>
                       </div>
                       <div>
@@ -2130,7 +2120,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                           АВТОРИЗАЦІЯ:
                         </span>
                         <span className="text-slate-300 font-bold">
-                          {selectedSource.authMethod}
+                          {selectedSource?.authMethod || "Unknown"}
                         </span>
                       </div>
                       <div>
@@ -2138,7 +2128,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                           API RATE LIMITS / EXECUTION:
                         </span>
                         <span className="text-slate-300">
-                          {selectedSource.rateLimit}
+                          {selectedSource?.rateLimit || "Unknown"}
                         </span>
                       </div>
                       <div>
@@ -2147,12 +2137,12 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                         </span>
                         <span
                           className={
-                            selectedSource.hasOpenAPI
+                            selectedSource?.hasOpenAPI
                               ? "text-emerald-400 font-bold"
                               : "text-slate-400"
                           }
                         >
-                          {selectedSource.hasOpenAPI
+                          {selectedSource?.hasOpenAPI
                             ? "✔ OpenAPI Swagger"
                             : "✘ Немає (Custom Analyzer)"}
                         </span>
@@ -2161,17 +2151,17 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
 
                     {/* Zone Security Specification Banner */}
                     <div className="p-2 rounded border bg-slate-950/60 text-[11px] font-mono leading-relaxed">
-                      {selectedSource.processingZone === "GREEN" && (
+                      {selectedSource?.processingZone === "GREEN" && (
                         <span className="text-emerald-300">
                           🟢 <strong>GREEN ZONE SECURITY:</strong> Direct HTTP/REST RESTful Pipeline. Zero Proxy Latency. High-throughput structured ingest directly into PostgreSQL + GraphRAG.
                         </span>
                       )}
-                      {selectedSource.processingZone === "YELLOW" && (
+                      {selectedSource?.processingZone === "YELLOW" && (
                         <span className="text-amber-300">
                           🟡 <strong>YELLOW ZONE SECURITY:</strong> Rotated Residential Proxy Mesh with TLS Fingerprint Mimicry & Exponential Backoff Delay Generator. Evasion Enabled.
                         </span>
                       )}
-                      {selectedSource.processingZone === "RED" && (
+                      {selectedSource?.processingZone === "RED" && (
                         <span className="text-rose-300">
                           🔴 <strong>RED ZONE SECURITY:</strong> Tor SOCKS5 Circuit Isolation + Docker Container Sandbox Extraction. Automated Malware Disarm, Anti-Stolen Credential Sanitization Pipeline.
                         </span>
@@ -2210,13 +2200,13 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                         QUALITY SCORE
                       </span>
                       <span className="text-emerald-400 font-black text-xs">
-                        {selectedSource.qualityScore}%
+                        {selectedSource?.qualityScore || 0}%
                       </span>
                     </div>
                     <div>
                       <span className="text-slate-500 block">ВІРОГІДНІСТЬ</span>
                       <span className="text-cyan-400 font-black text-xs">
-                        {selectedSource.confidence}%
+                        {selectedSource?.confidence || 0}%
                       </span>
                     </div>
                     <div>
@@ -2224,14 +2214,14 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                         LATENCY (AVG)
                       </span>
                       <span className="text-slate-300 font-black text-xs">
-                        {selectedSource.latency} ms
+                        {selectedSource?.latency || 0} ms
                       </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex justify-end gap-2 border-t border-slate-800 pt-3">
-                  {!initialSources.some((s) => s.id === selectedSource.id) && (
+                  {!initialSources.some((s) => s.id === selectedSource?.id) && selectedSource && (
                     <button
                       onClick={async () => {
                         try {
@@ -2278,7 +2268,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                         ...prev,
                         {
                           time: now,
-                          text: `Discovery Engine: Approved API ${selectedSource.name}. Sent to Codegen Engine.`,
+                          text: `Discovery Engine: Approved API ${selectedSource?.name || "Unknown"}. Sent to Codegen Engine.`,
                           type: "info",
                         },
                       ]);
@@ -2564,7 +2554,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                 </strong>{" "}
                 Для обраного джерела{" "}
                 <strong className="text-slate-200">
-                  {selectedSource.name}
+                  {selectedSource?.name || "Unknown"}
                 </strong>{" "}
                 автоматично формується повнофункціональний Python репозиторій
                 для збору, авторизації та валідації даних на базі 100% аналізу
@@ -2592,7 +2582,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
               {/* File tree */}
               <div className="flex-1 overflow-y-auto custom-scrollbar space-y-1 pr-1 font-mono text-xs">
                 <div className="text-slate-500 font-bold mb-1">
-                  📁 connectors/{selectedSource.id}/
+                  📁 connectors/{selectedSource?.id || "unknown"}/
                 </div>
                 {["client.py", "auth.py", "schemas.py"].map((file) => (
                   <div
@@ -2644,7 +2634,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                   <div className="flex items-center gap-2">
                     <Code className="w-4 h-4 text-slate-500" />
                     <span>
-                      ФАЙЛ: connectors/{selectedSource.id}/{selectedFile}
+                      ФАЙЛ: connectors/{selectedSource?.id || "unknown"}/{selectedFile}
                     </span>
                   </div>
                   <div className="flex gap-2">
@@ -2660,7 +2650,7 @@ class ${src.id.charAt(0).toUpperCase() + src.id.slice(1)}EntityModel(BaseModel):
                 <div className="flex-1 min-h-0 border border-slate-800 rounded-lg bg-slate-950/80 backdrop-blur-xl relative overflow-hidden flex flex-col">
                   <pre className="flex-1 p-2 overflow-auto custom-scrollbar font-mono text-xs text-slate-300 select-all leading-relaxed bg-slate-950/80 backdrop-blur-xl rounded-lg">
                     <code>
-                      {generatePythonCode(selectedFile, selectedSource)}
+                      {selectedSource ? generatePythonCode(selectedFile, selectedSource) : "// Select a source to generate code"}
                     </code>
                   </pre>
                 </div>

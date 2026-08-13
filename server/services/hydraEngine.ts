@@ -47,10 +47,10 @@ export class HydraEngineService {
     if (isVin) entityType = "VEHICLE";
 
     const identifiers: Record<string, string> = {};
-    if (isEdrpou) identifiers.edrpou = q;
-    if (isRnokpp) identifiers.rnokpp = q;
-    if (isVin) identifiers.vin = q;
-    if (!isEdrpou && !isRnokpp && !isVin) identifiers.query_name = q;
+    if (isEdrpou) identifiers['edrpou'] = q;
+    if (isRnokpp) identifiers['rnokpp'] = q;
+    if (isVin) identifiers['vin'] = q;
+    if (!isEdrpou && !isRnokpp && !isVin) identifiers['query_name'] = q;
 
     return {
       query: q,
@@ -233,7 +233,7 @@ export class HydraEngineService {
    */
   public resolveVerifiedFacts(
     entityId: string,
-    evidenceRecords: EvidenceRecord[],
+    _evidenceRecords: EvidenceRecord[],
     factCandidates: Array<{
       attribute: string;
       value: any;
@@ -319,6 +319,9 @@ export class HydraEngineService {
       } else {
         // Single unanimous value across sources
         const firstCand = candidates[0];
+        if (!firstCand) {
+          return;
+        }
         const sourceIds = Array.from(new Set(candidates.map(c => c.source_id)));
         const evidenceIds = candidates.map(c => c.evidence_id);
 

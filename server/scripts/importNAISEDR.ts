@@ -9,16 +9,12 @@
 import { getDatabaseClient } from '../database/DatabaseClient';
 import { NAISEDRRepository, NAISEDRImport, NAISEDRImportMetrics, NAISEDRSourceType } from '../database/repositories/NAISEDRRepository';
 import crypto from 'crypto';
-import AdmZip from 'adm-zip';
-import { XMLParser } from 'fast-xml-parser';
 import * as iconv from 'iconv-lite';
 import * as fs from 'fs';
 import * as path from 'path';
-import { tmpdir } from 'os';
-import { createReadStream, createWriteStream } from 'fs';
-import { pipeline } from 'stream/promises';
-import * as zlib from 'zlib';
 import { execSync } from 'child_process';
+// @ts-ignore - sax library doesn't have TypeScript definitions
+import * as sax from 'sax';
 
 const FOP_URL = 'https://data.gov.ua/dataset/03cc1239-3988-4451-aa0d-aadb77448714/resource/c262938f-cce7-4489-a805-2fd7c5a44e0b/download/fop.zip';
 const UO_URL = 'https://data.gov.ua/dataset/03cc1239-3988-4451-aa0d-aadb77448714/resource/d40cc921-39bb-44fd-be06-dc02589f45c6/download/uo.zip';
@@ -47,12 +43,19 @@ async function extractAndParseXML(
   onRecord: (record: any) => void,
   onProgress: (seen: number, indexed: number) => void
 ): Promise<void> {
-  console.log(`[Importer] Extracting and parsing ${sourceType} XML...`);
+  console.log(`[Importer] Extracting and parsing ${sourceType} XML (streaming mode)...`);
   
   const xmlEntryName = sourceType === 'FOP' ? 'FOP.xml' : 'UO.xml';
-  const tempDir = tmpdir();
+  // Use project directory for temp files instead of system temp directory (more space)
+  const tempDir = path.join(process.cwd(), 'temp_import');
   const tempZipPath = path.join(tempDir, `${xmlEntryName}.zip`);
   const tempXmlPath = path.join(tempDir, `${xmlEntryName}.tmp`);
+  
+  // Create temp directory if it doesn't exist
+  if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir, { recursive: true });
+    console.log(`[Importer] Created temp directory: ${tempDir}`);
+  }
   
   try {
     // Write ZIP buffer to temporary file
@@ -66,23 +69,8 @@ async function extractAndParseXML(
       execSync(`cd ${tempDir} && unzip -o ${tempZipPath} ${xmlEntryName}`, { stdio: 'inherit' });
       console.log(`[Importer] Successfully extracted ${xmlEntryName}`);
     } catch (unzipError) {
-      console.error(`[Importer] System unzip failed, trying adm-zip streaming...`);
-      // Fallback to adm-zip if system unzip not available
-      const zip = new AdmZip(zipBuffer);
-      const zipEntries = zip.getEntries();
-      const xmlEntry = zipEntries.find(entry => entry.entryName.includes(xmlEntryName));
-      if (xmlEntry) {
-        // Use streaming decompression
-        const compressedData = xmlEntry.getData();
-        const decompressStream = zlib.createInflateRaw();
-        const writeStream = fs.createWriteStream(tempXmlPath);
-        
-        await pipeline(
-          createReadStream(tempZipPath), // This won't work directly, need different approach
-          decompressStream,
-          writeStream
-        );
-      }
+      console.error(`[Importer] System unzip failed:`, unzipError);
+      throw new Error(`Failed to extract ZIP: ${unzipError}`);
     }
     
     // Check if XML file was extracted
@@ -90,47 +78,10 @@ async function extractAndParseXML(
       throw new Error(`Extracted XML file not found: ${tempXmlPath}`);
     }
     
-    // Read the extracted file in chunks
-    const xmlBuffer = fs.readFileSync(tempXmlPath);
-    console.log(`[Importer] XML buffer size: ${xmlBuffer.length} bytes`);
+    console.log(`[Importer] Starting streaming XML parse...`);
     
-    // Convert from WINDOWS-1251 to UTF-8 in chunks
-    const utf8Content = iconv.decode(xmlBuffer, 'windows-1251');
-    console.log(`[Importer] Converted to UTF-8, length: ${utf8Content.length} characters`);
-    
-    // Parse XML (still needs to be in memory for fast-xml-parser)
-    // For truly large files, we would need a streaming XML parser
-    const parser = new XMLParser({
-      ignoreAttributes: false,
-      attributeNamePrefix: '',
-    });
-    
-    const result = parser.parse(utf8Content);
-    
-    const subjects = result.DATA?.SUBJECT;
-    const recordArray = Array.isArray(subjects) ? subjects : (subjects ? [subjects] : []);
-    
-    console.log(`[Importer] Found ${recordArray.length} records in XML`);
-    
-    let seen = 0;
-    let indexed = 0;
-    
-    for (const record of recordArray) {
-      seen++;
-      try {
-        const normalized = normalizeRecord(record, sourceType);
-        onRecord(normalized);
-        indexed++;
-      } catch (error) {
-        console.error(`[Importer] Failed to normalize record ${seen}:`, error);
-      }
-      
-      if (seen % 1000 === 0) {
-        onProgress(seen, indexed);
-      }
-    }
-    
-    onProgress(seen, indexed);
+    // Use streaming SAX parser to handle large files
+    await parseXMLStreaming(tempXmlPath, sourceType, onRecord, onProgress);
     
     // Clean up temporary files
     if (fs.existsSync(tempZipPath)) {
@@ -155,6 +106,128 @@ async function extractAndParseXML(
     
     throw error;
   }
+}
+
+async function parseXMLStreaming(
+  xmlPath: string,
+  sourceType: NAISEDRSourceType,
+  onRecord: (record: any) => void,
+  onProgress: (seen: number, indexed: number) => void
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    let seen = 0;
+    let indexed = 0;
+    let currentRecord: any = {};
+    let inSubject = false;
+    let currentTag = '';
+    
+    // Create SAX parser
+    const parser = sax.parser(false, {
+      lowercase: true,
+      trim: true,
+      normalize: true,
+    });
+    
+    parser.onerror = (err: any) => {
+      console.error(`[Importer] SAX parser error:`, err);
+      reject(err);
+    };
+    
+    parser.onopentag = (node: any) => {
+      currentTag = node.name;
+      
+      if (node.name === 'subject') {
+        inSubject = true;
+        currentRecord = {};
+      }
+      
+      if (inSubject && node.name !== 'subject') {
+        currentRecord[node.name] = '';
+      }
+    };
+    
+    parser.ontext = (text: any) => {
+      if (inSubject && currentTag && currentTag !== 'subject') {
+        if (currentRecord[currentTag] !== undefined) {
+          currentRecord[currentTag] += text;
+        }
+      }
+    };
+    
+    parser.onclosetag = (tagName: any) => {
+      if (tagName === 'subject') {
+        inSubject = false;
+        seen++;
+        
+        try {
+          const normalized = normalizeRecord(currentRecord, sourceType);
+          onRecord(normalized);
+          indexed++;
+        } catch (error) {
+          console.error(`[Importer] Failed to normalize record ${seen}:`, error);
+        }
+        
+        if (seen % 1000 === 0) {
+          onProgress(seen, indexed);
+          console.log(`[Importer] Processed ${seen} records, indexed ${indexed}`);
+        }
+        
+        currentRecord = {};
+        currentTag = '';
+      } else {
+        currentTag = '';
+      }
+    };
+    
+    parser.onend = () => {
+      onProgress(seen, indexed);
+      console.log(`[Importer] Streaming parse complete: ${seen} records seen, ${indexed} indexed`);
+      resolve();
+    };
+    
+    // Stream the file in chunks and convert from WINDOWS-1251 to UTF-8
+    console.log(`[Importer] Starting streaming file read with encoding conversion...`);
+    const CHUNK_SIZE = 64 * 1024; // 64KB chunks
+    
+    const fileStream = fs.createReadStream(xmlPath);
+    let buffer: Buffer = Buffer.alloc(0);
+    
+    fileStream.on('data', (chunk: Buffer | string) => {
+      buffer = Buffer.concat([buffer, Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)]);
+      
+      // Process buffer in chunks to avoid memory issues
+      while (buffer.length >= CHUNK_SIZE) {
+        const chunkToProcess = buffer.slice(0, CHUNK_SIZE);
+        buffer = buffer.slice(CHUNK_SIZE);
+        
+        try {
+          const utf8Chunk = iconv.decode(chunkToProcess, 'windows-1251');
+          parser.write(utf8Chunk);
+        } catch (error) {
+          console.error(`[Importer] Error processing chunk:`, error);
+        }
+      }
+    });
+    
+    fileStream.on('end', () => {
+      // Process remaining buffer
+      if (buffer.length > 0) {
+        try {
+          const utf8Chunk = iconv.decode(buffer, 'windows-1251');
+          parser.write(utf8Chunk);
+        } catch (error) {
+          console.error(`[Importer] Error processing final chunk:`, error);
+        }
+      }
+      
+      parser.close();
+    });
+    
+    fileStream.on('error', (error) => {
+      console.error(`[Importer] File stream error:`, error);
+      reject(error);
+    });
+  });
 }
 
 function normalizeRecord(raw: any, sourceType: NAISEDRSourceType): any {

@@ -145,12 +145,12 @@ let dbClient: DatabaseClient | null = null;
 export function getDatabaseClient(): DatabaseClient {
   if (!dbClient) {
     const config: DatabaseConfig = {
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432'),
-      database: process.env.DB_NAME || 'predator',
-      user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'postgres',
-      ssl: process.env.DB_SSL === 'true'
+      host: process.env['DB_HOST'] || 'localhost',
+      port: parseInt(process.env['DB_PORT'] || '5432'),
+      database: process.env['DB_NAME'] || 'predator',
+      user: process.env['DB_USER'] || 'dima1203',
+      password: process.env['DB_PASSWORD'] || '',
+      ssl: process.env['DB_SSL'] === 'true'
     };
 
     dbClient = new DatabaseClient(config);

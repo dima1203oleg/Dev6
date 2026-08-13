@@ -130,16 +130,6 @@ export const DataLineageExplorer: React.FC<DataLineageExplorerProps> = ({ lineag
     );
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('uk-UA', {
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
       {/* Header */}

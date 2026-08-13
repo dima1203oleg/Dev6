@@ -7,7 +7,7 @@ import { certificationManager } from '../datasources/connectors/CertificationMan
 import { connectorFactory } from '../datasources/connectors/ConnectorFactory';
 
 export function productionGateMiddleware(req: Request, res: Response, next: NextFunction) {
-  const sourceId = req.params.sourceId || req.query.sourceId as string;
+  const sourceId = req.params['sourceId'] || req.query['sourceId'] as string;
   
   if (!sourceId) {
     // If no specific source is targeted, just proceed (e.g. multi-search)

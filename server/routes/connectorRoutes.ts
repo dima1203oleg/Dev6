@@ -5,7 +5,7 @@ import { getConnectorLogs, getConnectorMetrics } from "../connectors/connectorLo
 
 const router = Router();
 
-router.get("/", checkPermission("source.read"), (req, res) => {
+router.get("/", checkPermission("source.read"), (_req, res) => {
   const meta = connectorRegistry.listAll();
   
   // Provide standard initial connectors list if none registered yet
@@ -50,10 +50,10 @@ router.get("/", checkPermission("source.read"), (req, res) => {
     ]);
   }
 
-  res.json(meta);
+  return res.json(meta);
 });
 
-router.get("/health", checkPermission("source.read"), (req, res) => {
+router.get("/health", checkPermission("source.read"), (_req, res) => {
   const connectorMetrics = getConnectorMetrics();
   const activeCount = connectorMetrics.filter(m => m.failedRequests === 0 && m.totalRequests > 0).length;
   const degradedCount = connectorMetrics.filter(m => m.failedRequests > 0).length;
@@ -67,7 +67,7 @@ router.get("/health", checkPermission("source.read"), (req, res) => {
     ? "UNVERIFIED" 
     : (degradedCount > 0 ? "DEGRADED" : "LIVE");
 
-  res.json({
+  return res.json({
     timestamp: new Date().toISOString(),
     overallHealth: healthStatus,
     activeConnectors: activeCount,
@@ -86,12 +86,12 @@ router.get("/health", checkPermission("source.read"), (req, res) => {
  * Returns sanitized structured logs capturing API connector requests, responses, and latency metrics
  */
 router.get("/logs", checkPermission("source.read"), (req, res) => {
-  const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 100;
-  const connectorId = req.query.connectorId as string | undefined;
-  const onlyErrors = req.query.onlyErrors === "true";
+  const limit = req.query['limit'] ? parseInt(req.query['limit'] as string, 10) : 100;
+  const connectorId = req.query['connectorId'] as string | undefined;
+  const onlyErrors = req.query['onlyErrors'] === "true";
 
   const logs = getConnectorLogs(limit, connectorId, onlyErrors);
-  res.json({
+  return res.json({
     timestamp: new Date().toISOString(),
     totalRetrieved: logs.length,
     logs
@@ -102,9 +102,9 @@ router.get("/logs", checkPermission("source.read"), (req, res) => {
  * Returns aggregated latency and throughput metrics per connector
  */
 router.get("/metrics", checkPermission("source.read"), (req, res) => {
-  const connectorId = req.query.connectorId as string | undefined;
+  const connectorId = req.query['connectorId'] as string | undefined;
   const metrics = getConnectorMetrics(connectorId);
-  res.json({
+  return res.json({
     timestamp: new Date().toISOString(),
     connectors: metrics
   });

@@ -44,9 +44,7 @@ export class AutomaticDiagnostics extends BaseGoldenValidator {
     }
   }
 
-  private diagnoseMissingData(category: string, fieldName: string, result: GoldenValidationResult): GoldenDiagnostics {
-    const source = result.source;
-    
+  private diagnoseMissingData(category: string, fieldName: string, _result: GoldenValidationResult): GoldenDiagnostics {
     // Determine likely cause based on category and field
     if (category === 'identification') {
       return this.createDiagnostics(
@@ -143,7 +141,7 @@ export class AutomaticDiagnostics extends BaseGoldenValidator {
     );
   }
 
-  private diagnoseExtraData(category: string, fieldName: string, result: GoldenValidationResult): GoldenDiagnostics {
+  private diagnoseExtraData(category: string, fieldName: string, _result: GoldenValidationResult): GoldenDiagnostics {
     if (category === 'ui_interface') {
       return this.createDiagnostics(
         category,
@@ -281,7 +279,7 @@ export class AutomaticDiagnostics extends BaseGoldenValidator {
     );
   }
 
-  private diagnoseRegistryChange(category: string, fieldName: string, result: GoldenValidationResult): GoldenDiagnostics {
+  private diagnoseRegistryChange(category: string, fieldName: string, _result: GoldenValidationResult): GoldenDiagnostics {
     return this.createDiagnostics(
       category,
       'REGISTRY_STRUCTURE_CHANGE',
@@ -326,7 +324,7 @@ export class AutomaticDiagnostics extends BaseGoldenValidator {
     return false;
   }
 
-  private isRegistryChangeLikely(category: string, fieldName: string): boolean {
+  private isRegistryChangeLikely(_category: string, fieldName: string): boolean {
     // Certain fields are more likely to change due to registry updates
     const changeProneFields = [
       'court_case', 'enforcement_proceeding', 'sanction', 'pep_record',

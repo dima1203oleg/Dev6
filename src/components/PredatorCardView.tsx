@@ -3,7 +3,7 @@
  * Displays entity cards with field provenance and API integration
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Shield, CheckCircle, AlertTriangle, XCircle, Clock, ChevronRight, ExternalLink, Copy } from 'lucide-react';
 
 interface FieldProvenance {
@@ -338,7 +338,7 @@ export function PredatorCardView({ card, onFieldClick, showProvenance = true }: 
                       </p>
                     </div>
                     <button
-                      onClick={() => navigator.clipboard.writeText(fieldProvenance.source_field_name)}
+                      onClick={() => navigator.clipboard.writeText(fieldProvenance.source_field_name || '')}
                       className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
                       title="Copy"
                     >

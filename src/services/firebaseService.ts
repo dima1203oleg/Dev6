@@ -8,7 +8,7 @@ export const saveInvestigationToFirestore = async (investigation: any) => {
   console.log("Saving investigation:", investigation);
 };
 export const fetchInvestigationsFromFirestore = async () => [];
-export const subscribeInvestigationsFromFirestore = (callback: (data: any[]) => void) => {
+export const subscribeInvestigationsFromFirestore = (_callback: (data: any[]) => void) => {
   console.log("Subscribing to investigations");
   return () => console.log("Unsubscribing");
 };

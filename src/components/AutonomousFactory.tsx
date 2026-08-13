@@ -1,61 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   Cpu,
-  Play,
-  Pause,
   AlertTriangle,
-  CheckCircle,
   RefreshCw,
   Send,
   Radio,
-  ShieldAlert,
   Bot,
-  Server,
   Terminal,
   Zap,
-  Shield,
-  HelpCircle,
-  ArrowRight,
-  MessageSquare,
-  Flame,
-  Trash2,
-  Layers,
-  Check,
-  X,
   Code,
-  Wifi,
   Database,
-  Heart,
-  FileText,
-  CheckSquare,
-  Plus,
-  Download,
   Globe,
   Compass,
   Search,
   Activity,
   Sparkles,
-  Network,
-  TrendingUp,
   RotateCcw,
-  Sliders,
-  Copy,
-  Folder,
   Lock,
   Unlock,
-  Eye,
-  Settings,
-  Brain,
-  Rocket,
-  Crown
-} from "lucide-react";
+  Brain
+} from 'lucide-react';
 import { motion, AnimatePresence } from "motion/react";
-import { db, handleFirestoreError, OperationType } from "../lib/firebase";
+import { db } from "../lib/firebase";
 import {
   collection,
   onSnapshot,
-  addDoc,
-  serverTimestamp,
 } from "firebase/firestore";
 import {
   INITIAL_AGENTS,
@@ -88,12 +57,12 @@ export default function AutonomousFactory() {
   >("swarm");
 
   const [killSwitchActive, setKillSwitchActive] = useState<boolean>(false);
-  const [isFactoryRunning, setIsFactoryRunning] = useState<boolean>(true);
+  const [isFactoryRunning, _setIsFactoryRunning] = useState<boolean>(true);
   const [vramUsage, setVramUsage] = useState<number>(6.4); // GB
   const [cpuUsage, setCpuUsage] = useState<number>(34); // %
 
   // Swarm States
-  const [agents, setAgents] = useState<AgentStatus[]>(INITIAL_AGENTS);
+  const [agents, _setAgents] = useState<AgentStatus[]>(INITIAL_AGENTS);
   const [swarmCommand, setSwarmCommand] = useState<string>("");
   const [isExecutingSwarm, setIsExecutingSwarm] = useState<boolean>(false);
   const [swarmLogs, setSwarmLogs] = useState<string[]>([
@@ -111,11 +80,11 @@ export default function AutonomousFactory() {
 
   // Workbench Artifact States
   const [artifacts, setArtifacts] = useState<GeneratedConnectorArtifact[]>(INITIAL_ARTIFACTS);
-  const [selectedArtifactId, setSelectedArtifactId] = useState<string>(INITIAL_ARTIFACTS[0]?.id || "");
+  const [selectedArtifactId, setSelectedArtifactId] = useState<string>("");
   const [artifactActiveTab, setArtifactActiveTab] = useState<"connector" | "parser" | "schema" | "etl" | "tests" | "docker" | "helm">("connector");
-  const [genSourceName, setGenSourceName] = useState<string>("");
-  const [genProtocol, setGenProtocol] = useState<string>("REST API");
-  const [genSampleUrl, setGenSampleUrl] = useState<string>("");
+  const [genSourceName, _setGenSourceName] = useState<string>("");
+  const [genProtocol, _setGenProtocol] = useState<string>("REST API");
+  const [genSampleUrl, _setGenSampleUrl] = useState<string>("");
   const [isGeneratingConnector, setIsGeneratingConnector] = useState<boolean>(false);
 
   // Self Healing States
@@ -282,14 +251,14 @@ export default function AutonomousFactory() {
     if (selectedProtocolFilter !== "ALL" && s.protocol !== selectedProtocolFilter) return false;
     if (discoveryQuery) {
       const q = discoveryQuery.toLowerCase();
-      return s.name.toLowerCase().includes(q) || s.owner.toLowerCase().includes(q) || s.detectedEntities.some(e => e.toLowerCase().includes(q));
+      return (s.name?.toLowerCase().includes(q) || false) || (s['owner']?.toLowerCase().includes(q) || false) || s['detectedEntities'].some((e: string) => e.toLowerCase().includes(q));
     }
     return true;
   });
 
   const filteredEngines = engines.filter(e => {
     if (engineCategoryFilter === "ALL") return true;
-    return e.category === engineCategoryFilter;
+    return e['category'] === engineCategoryFilter;
   });
 
   return (
@@ -489,7 +458,7 @@ export default function AutonomousFactory() {
                   МУЛЬТИАГЕНТНИЙ СВАРМ (25 СПЕЦІАЛІЗОВАНИХ AI АГЕНТІВ)
                 </h3>
                 <span className="text-xs text-slate-400 font-mono">
-                  {agents.filter(a => a.status === 'ACTIVE' || a.status === 'GENERATING').length} АКТИВНІ В ПАРАЛЕЛЬНОМУ РЕЖИМІ
+                  {agents.filter(a => a.status === 'busy').length} АКТИВНІ В ПАРАЛЕЛЬНОМУ РЕЖИМІ
                 </span>
               </div>
 
@@ -511,30 +480,28 @@ export default function AutonomousFactory() {
                         </div>
                         <span
                           className={`w-2 h-2 rounded-full ${
-                            agent.status === "ACTIVE"
+                            agent.status === "busy"
                               ? "bg-emerald-400 animate-ping"
-                              : agent.status === "GENERATING"
-                              ? "bg-amber-400 animate-pulse"
                               : "bg-slate-600"
                           }`}
                         />
                       </div>
                       <span className="text-[10px] font-mono text-blue-400/80 uppercase mt-1 block">
-                        [{agent.category}]
+                        [{agent['category']}]
                       </span>
                       <p className="text-[11px] text-slate-400 mt-2 line-clamp-2 leading-relaxed">
-                        {agent.currentTask}
+                        {agent['currentTask']}
                       </p>
                     </div>
 
                     <div className="pt-2 border-t border-slate-800/60 font-mono text-[10px] space-y-1 text-slate-400">
                       <div className="flex items-center justify-between">
                         <span>CONFIDENCE:</span>
-                        <span className="text-emerald-400 font-bold">{agent.confidence}%</span>
+                        <span className="text-emerald-400 font-bold">{agent['confidence']}%</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span>COMPLETED:</span>
-                        <span className="text-slate-200">{agent.completedJobs} jobs</span>
+                        <span>COMPLETED JOBS:</span>
+                        <span className="text-blue-400 font-bold">{agent['completedJobs']}</span>
                       </div>
                     </div>
                   </div>
@@ -633,24 +600,24 @@ export default function AutonomousFactory() {
                     </div>
 
                     <div className="text-xs text-slate-400 font-mono mt-1 flex items-center gap-2">
-                      <span>{source.country}</span>
+                      <span>{source['country']}</span>
                       <span>•</span>
-                      <span>{source.owner}</span>
+                      <span>{source['owner']}</span>
                     </div>
 
                     <div className="mt-3 bg-black/40 rounded-lg p-2.5 font-mono text-[11px] space-y-1.5 border border-slate-800/80">
                       <div className="flex justify-between">
                         <span className="text-slate-400">БІЗНЕС-ЦІННІСТЬ:</span>
-                        <span className="text-emerald-400 font-bold">{source.businessValue}%</span>
+                        <span className="text-emerald-400 font-bold">{source['businessValue']}%</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-400">АНАЛІТИЧНА ЦІННІСТЬ:</span>
-                        <span className="text-blue-400 font-bold">{source.analyticalValue}%</span>
+                        <span className="text-blue-400 font-bold">{source['analyticalValue']}%</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-400">РИЗИК РЕЙТИНГ:</span>
-                        <span className={source.riskScore > 20 ? "text-amber-400 font-bold" : "text-emerald-400 font-bold"}>
-                          {source.riskScore}%
+                        <span className={source['riskScore'] > 20 ? "text-amber-400 font-bold" : "text-emerald-400 font-bold"}>
+                          {source['riskScore']}%
                         </span>
                       </div>
                     </div>
@@ -658,7 +625,7 @@ export default function AutonomousFactory() {
                     <div className="mt-3">
                       <span className="text-[10px] font-mono text-slate-400 uppercase">ВИЯВЛЕНІ СУТНОСТІ:</span>
                       <div className="flex flex-wrap gap-1 mt-1">
-                        {source.detectedEntities.map((ent, i) => (
+                        {source['detectedEntities'].map((ent: string, i: number) => (
                           <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
                             {ent}
                           </span>
@@ -669,7 +636,7 @@ export default function AutonomousFactory() {
                     <div className="mt-3">
                       <span className="text-[10px] font-mono text-slate-400 uppercase">РЕКОМЕНДОВАНЕ СХОВИЩЕ:</span>
                       <div className="flex flex-wrap gap-1 mt-1">
-                        {source.recommendedStorage.map((st, i) => (
+                        {source['recommendedStorage'].map((st: string, i: number) => (
                           <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
                             {st}
                           </span>
@@ -680,7 +647,7 @@ export default function AutonomousFactory() {
 
                   <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between">
                     <span className="text-[10px] font-mono text-slate-500">
-                      Скановано: {source.lastScanned}
+                      Скановано: {source['lastScanned']}
                     </span>
                     <button
                       onClick={() => handleGenerateConnector(source)}
@@ -713,7 +680,7 @@ export default function AutonomousFactory() {
                   ЗГЕНЕРОВАНИЙ КОНЕКТОР АРТЕФАКТ:
                 </span>
                 <h3 className="text-lg font-bold text-white mt-0.5">
-                  {selectedArtifact.sourceName} ({selectedArtifact.version})
+                  {selectedArtifact['sourceName']} ({selectedArtifact['version']})
                 </h3>
               </div>
 
@@ -725,13 +692,13 @@ export default function AutonomousFactory() {
                 >
                   {artifacts.map(a => (
                     <option key={a.id} value={a.id}>
-                      {a.sourceName} [{a.status}]
+                      {a['sourceName']} [{a['status']}]
                     </option>
                   ))}
                 </select>
 
                 <span className="px-2.5 py-1 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  {selectedArtifact.status}
+                  {selectedArtifact['status']}
                 </span>
               </div>
             </div>
@@ -799,13 +766,13 @@ export default function AutonomousFactory() {
 
               <div className="p-4 font-mono text-xs bg-black/80 text-emerald-400 overflow-x-auto min-h-[300px]">
                 <pre className="leading-relaxed whitespace-pre-wrap">
-                  {artifactActiveTab === "connector" && selectedArtifact.connectorCode}
-                  {artifactActiveTab === "parser" && selectedArtifact.parserCode}
-                  {artifactActiveTab === "schema" && selectedArtifact.jsonSchema}
-                  {artifactActiveTab === "etl" && selectedArtifact.etlPipelineYaml}
-                  {artifactActiveTab === "tests" && selectedArtifact.unitTestsCode}
-                  {artifactActiveTab === "docker" && selectedArtifact.dockerfile}
-                  {artifactActiveTab === "helm" && selectedArtifact.helmChartYaml}
+                  {artifactActiveTab === "connector" && selectedArtifact['connectorCode']}
+                  {artifactActiveTab === "parser" && selectedArtifact['parserCode']}
+                  {artifactActiveTab === "schema" && selectedArtifact['jsonSchema']}
+                  {artifactActiveTab === "etl" && selectedArtifact['etlPipelineYaml']}
+                  {artifactActiveTab === "tests" && selectedArtifact['unitTestsCode']}
+                  {artifactActiveTab === "docker" && selectedArtifact['dockerfile']}
+                  {artifactActiveTab === "helm" && selectedArtifact['helmChartYaml']}
                 </pre>
               </div>
             </div>
@@ -877,10 +844,10 @@ export default function AutonomousFactory() {
                     </span>
                   </div>
 
-                  {drift.patchCode && (
+                  {drift['patchCode'] && (
                     <div className="bg-black/70 rounded-lg p-3 border border-slate-800/80 font-mono text-xs text-emerald-400">
                       <span className="text-[10px] text-slate-500 block mb-1">// AUTO-GENERATED EVOLUTION PATCH CODE:</span>
-                      <pre className="whitespace-pre-wrap">{drift.patchCode}</pre>
+                      <pre className="whitespace-pre-wrap">{drift['patchCode']}</pre>
                     </div>
                   )}
                 </div>
@@ -903,29 +870,29 @@ export default function AutonomousFactory() {
                 <div key={i} className="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <h4 className="text-sm font-bold font-mono text-purple-300 flex items-center gap-2">
-                      <Database className="w-4 h-4" /> {node.type}
+                      <Database className="w-4 h-4" /> {node['type']}
                     </h4>
                     <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                      {node.health}
+                      {node['health']}
                     </span>
                   </div>
 
                   <p className="text-xs text-slate-400 leading-relaxed min-h-[36px]">
-                    {node.role}
+                    {node['role']}
                   </p>
 
                   <div className="bg-black/40 rounded-lg p-2.5 font-mono text-xs space-y-1 border border-slate-800/80">
                     <div className="flex justify-between">
                       <span className="text-slate-500">RECORDS:</span>
-                      <span className="text-white font-bold">{node.recordCount}</span>
+                      <span className="text-white font-bold">{node['recordCount']}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">STORAGE:</span>
-                      <span className="text-purple-300 font-bold">{node.storageUsed}</span>
+                      <span className="text-purple-300 font-bold">{node['storageUsed']}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">LATENCY:</span>
-                      <span className="text-emerald-400 font-bold">{node.latencyMs} ms</span>
+                      <span className="text-amber-300 font-bold">{node['latencyMs']}ms</span>
                     </div>
                   </div>
                 </div>
@@ -967,7 +934,7 @@ export default function AutonomousFactory() {
                       #{eng.id.toString().padStart(2, '0')}
                     </span>
                     <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
-                      {eng.category}
+                      {eng['category']}
                     </span>
                   </div>
 
@@ -976,12 +943,12 @@ export default function AutonomousFactory() {
                   </h5>
 
                   <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
-                    {eng.description}
+                    {eng['description']}
                   </p>
 
                   <div className="pt-2 border-t border-slate-800/60 font-mono text-[10px] flex justify-between text-slate-400">
-                    <span>{eng.metrics}</span>
-                    <span className="text-emerald-400 font-bold">{eng.health}% SLA</span>
+                    <span>{eng['metrics']}</span>
+                    <span className="text-emerald-400 font-bold">{eng['health']}% SLA</span>
                   </div>
                 </div>
               ))}
@@ -1007,12 +974,12 @@ export default function AutonomousFactory() {
                 {memoryLogs.map((log) => (
                   <div key={log.id} className="bg-black/50 border border-slate-800 rounded-lg p-3.5 space-y-2 font-mono text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-sky-300 font-bold">{log.summary}</span>
+                      <span className="text-sky-300 font-bold">{log['summary']}</span>
                       <span className="text-slate-500 text-[10px]">{log.timestamp}</span>
                     </div>
-                    <p className="text-slate-400 font-sans leading-relaxed">{log.details}</p>
+                    <p className="text-slate-400 font-sans leading-relaxed">{log['details']}</p>
                     <div className="flex flex-wrap gap-1 pt-1">
-                      {log.tags.map((tag, idx) => (
+                      {log['tags'].map((tag: string, idx: number) => (
                         <span key={idx} className="text-[10px] bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded border border-sky-500/30">
                           #{tag}
                         </span>

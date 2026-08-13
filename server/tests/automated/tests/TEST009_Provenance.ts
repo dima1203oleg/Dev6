@@ -44,17 +44,17 @@ export class TEST009_Provenance extends BaseTest {
         // Generate provenance records
         const provenanceRecords = this.generateProvenance(jsonData, context);
         
-        details.provenance_records_count = provenanceRecords.length;
-        details.provenance_complete = this.validateProvenance(provenanceRecords);
+        details['provenance_records_count'] = provenanceRecords.length;
+        details['provenance_complete'] = this.validateProvenance(provenanceRecords);
         
         // Check each required provenance field
         const fieldValidation = this.validateProvenanceFields(provenanceRecords);
-        details.source_id_present = fieldValidation.sourceId;
-        details.record_id_present = fieldValidation.recordId;
-        details.timestamp_present = fieldValidation.timestamp;
-        details.parser_version_present = fieldValidation.parserVersion;
-        details.confidence_present = fieldValidation.confidence;
-        details.raw_fragment_present = fieldValidation.rawFragment;
+        details['source_id_present'] = fieldValidation.sourceId;
+        details['record_id_present'] = fieldValidation.recordId;
+        details['timestamp_present'] = fieldValidation.timestamp;
+        details['parser_version_present'] = fieldValidation.parserVersion;
+        details['confidence_present'] = fieldValidation.confidence;
+        details['raw_fragment_present'] = fieldValidation.rawFragment;
         
         if (!fieldValidation.sourceId) {
           errors.push('Provenance field source_id is missing');
@@ -82,9 +82,9 @@ export class TEST009_Provenance extends BaseTest {
         
         // Check confidence scores
         const confidenceCheck = this.validateConfidenceScores(provenanceRecords);
-        details.average_confidence = confidenceCheck.average;
-        details.min_confidence = confidenceCheck.min;
-        details.max_confidence = confidenceCheck.max;
+        details['average_confidence'] = confidenceCheck.average;
+        details['min_confidence'] = confidenceCheck.min;
+        details['max_confidence'] = confidenceCheck.max;
         
         if (confidenceCheck.min < 0.5) {
           warnings.push(`Low confidence scores detected (min: ${confidenceCheck.min})`);

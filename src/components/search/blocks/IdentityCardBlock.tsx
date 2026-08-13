@@ -1,6 +1,5 @@
 import React from 'react';
 import { IdentityCardData } from '../../../types/search';
-import { VerificationStatus } from '../../../types';
 import { User, Building, ShieldCheck, CheckCircle } from 'lucide-react';
 
 interface IdentityCardBlockProps {

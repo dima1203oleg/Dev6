@@ -42,8 +42,8 @@ export class TEST011_EntityResolution extends BaseTest {
         
         // Check for duplicates
         const duplicateCheck = this.checkDuplicates(jsonData);
-        details.duplicates_found = duplicateCheck.count;
-        details.duplicate_ids = duplicateCheck.ids;
+        details['duplicates_found'] = duplicateCheck.count;
+        details['duplicate_ids'] = duplicateCheck.ids;
         
         if (duplicateCheck.count > 0) {
           warnings.push(`Found ${duplicateCheck.count} duplicate records`);
@@ -51,16 +51,16 @@ export class TEST011_EntityResolution extends BaseTest {
         
         // Check for historical records
         const historicalCheck = this.checkHistoricalRecords(jsonData);
-        details.historical_records_found = historicalCheck.count;
-        details.historical_record_ids = historicalCheck.ids;
+        details['historical_records_found'] = historicalCheck.count;
+        details['historical_record_ids'] = historicalCheck.ids;
         
         if (historicalCheck.count > 0) {
-          details.has_historical_data = true;
+          details['has_historical_data'] = true;
         }
         
         // Check for transliteration issues
         const transliterationCheck = this.checkTransliteration(jsonData);
-        details.transliteration_issues = transliterationCheck.issues;
+        details['transliteration_issues'] = transliterationCheck.issues;
         
         if (transliterationCheck.issues.length > 0) {
           warnings.push(`Transliteration issues detected: ${transliterationCheck.issues.join(', ')}`);
@@ -68,20 +68,20 @@ export class TEST011_EntityResolution extends BaseTest {
         
         // Check for name changes
         const nameChangeCheck = this.checkNameChanges(jsonData);
-        details.name_changes_detected = nameChangeCheck.detected;
-        details.name_change_records = nameChangeCheck.records;
+        details['name_changes_detected'] = nameChangeCheck.detected;
+        details['name_change_records'] = nameChangeCheck.records;
         
         if (nameChangeCheck.detected) {
-          details.has_name_variations = true;
+          details['has_name_variations'] = true;
         }
         
         // Check for entity relationships
         const relationshipCheck = this.checkEntityRelationships(jsonData);
-        details.relationships_found = relationshipCheck.count;
-        details.relationship_types = relationshipCheck.types;
+        details['relationships_found'] = relationshipCheck.count;
+        details['relationship_types'] = relationshipCheck.types;
         
         // Overall entity resolution quality
-        details.entity_resolution_quality = this.calculateQualityScore(
+        details['entity_resolution_quality'] = this.calculateQualityScore(
           duplicateCheck.count,
           historicalCheck.count,
           transliterationCheck.issues.length,
@@ -293,7 +293,7 @@ export class TEST011_EntityResolution extends BaseTest {
 
   private calculateQualityScore(
     duplicates: number,
-    historical: number,
+    _historical: number,
     transliteration: number,
     nameChanges: boolean
   ): number {

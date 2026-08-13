@@ -40,7 +40,7 @@ export interface AlertChannel {
 }
 
 export class AlertManager {
-  private alerts: Alert[] = new Map();
+  private alerts: Alert[] = [];
   private channels: Map<string, AlertChannel> = new Map();
   private alertRules: AlertRule[] = [];
   private maxAlerts = 10000;
@@ -259,7 +259,7 @@ export class AlertManager {
     this.addChannel({
       name: 'logfile',
       enabled: false,
-      send: async (alert: Alert) => {
+      send: async (_alert: Alert) => {
         // TODO: Implement log file writing
         // This would write alerts to a file for persistence
       },
@@ -270,7 +270,7 @@ export class AlertManager {
       name: 'webhook',
       enabled: false,
       send: async (alert: Alert) => {
-        const webhookUrl = process.env.ALERT_WEBHOOK_URL;
+        const webhookUrl = process.env['ALERT_WEBHOOK_URL'];
         if (!webhookUrl) return;
 
         try {

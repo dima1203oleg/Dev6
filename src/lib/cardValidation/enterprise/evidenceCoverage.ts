@@ -24,10 +24,10 @@ export class EvidenceCoverageCalculator {
       };
     }
 
-    const fieldsWithEvidence = fields.filter(f => 
-      f.status === 'VERIFIED' && 
-      f.source !== 'unknown' && 
-      f.source !== 'card_data'
+    const fieldsWithEvidence = fields.filter(f =>
+      f.status === 'VERIFIED' &&
+      f.sourceId !== 'unknown' &&
+      f.sourceId !== 'card_data'
     );
 
     const fieldsWithMultipleSources = this.calculateMultiSourceFields(fields);
@@ -64,8 +64,8 @@ export class EvidenceCoverageCalculator {
     // Find fields with multiple distinct sources
     const multiSourceFields: FieldAudit[] = [];
     
-    fieldGroups.forEach((group, fieldName) => {
-      const uniqueSources = new Set(group.map(f => f.source));
+    fieldGroups.forEach((group, _fieldName) => {
+      const uniqueSources = new Set(group.map(f => f.sourceId));
       if (uniqueSources.size >= 2) {
         // Return the field with highest confidence
         const bestField = group.reduce((prev, current) => 

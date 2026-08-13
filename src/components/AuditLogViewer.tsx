@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../services/firebaseService';
 import { Search, Filter, ShieldAlert, CheckCircle, Database, Eye } from 'lucide-react';
 
@@ -15,7 +15,7 @@ export default function AuditLogViewer() {
         collection(db, 'audit_logs'),
         orderBy('timestamp', 'desc')
       );
-      
+
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const data = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -29,8 +29,9 @@ export default function AuditLogViewer() {
       });
       return () => unsubscribe();
     } catch (error) {
-      console.error(error);
+      console.error("Firestore setup error: ", error);
       setLoading(false);
+      return () => {};
     }
   }, []);
 

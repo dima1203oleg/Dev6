@@ -1,5 +1,4 @@
-import { CkanDiscoveryEngine, discoveryEngine } from '../discovery/CkanDiscoveryEngine';
-import { ConnectorFactory } from '../../datasources/connectors/sdk'; // Assume a singleton or injection
+import { discoveryEngine } from '../discovery/CkanDiscoveryEngine';
 
 export class SelfHealingEngine {
   

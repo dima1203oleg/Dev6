@@ -8,8 +8,8 @@ import { SOLUTIONS } from '../data';
 import { OpenSourceSolution } from '../types';
 import { MASTER_REGISTRY_CATALOG, RegistrySourceItem } from '../data/masterRegistryCatalogData';
 import { 
-  Search, Info, Shield, CheckCircle2, AlertTriangle, Cpu, HelpCircle, 
-  Sliders, RefreshCw, Layers, Database, ExternalLink,
+  Search, Shield, CheckCircle2, Cpu, HelpCircle, 
+  Sliders, RefreshCw, Database, ExternalLink,
   BarChart2, Award, Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -29,7 +29,6 @@ export default function CatalogTab() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedLicenseType, setSelectedLicenseType] = useState<string>('all');
-  const [selectedSolution, setSelectedSolution] = useState<OpenSourceSolution | null>(null);
 
   // Dynamic compatibility simulator state for Open Source
   const [weights, setWeights] = useState({
@@ -104,9 +103,9 @@ export default function CatalogTab() {
   };
 
   const filteredSolutions = SOLUTIONS.filter(s => {
-    const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch = s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           s.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          s.role.toLowerCase().includes(searchQuery.toLowerCase());
+                          (s.role?.toLowerCase().includes(searchQuery.toLowerCase()) || false);
     const matchesCategory = selectedCategory === 'all' || s.category === selectedCategory;
     const matchesLicense = selectedLicenseType === 'all' || s.licenseType === selectedLicenseType;
     return matchesSearch && matchesCategory && matchesLicense;
@@ -553,7 +552,6 @@ export default function CatalogTab() {
                 return (
                   <motion.div
                     key={sol.id}
-                    onClick={() => setSelectedSolution(sol)}
                     className="group bg-slate-900/40 hover:bg-slate-900/80 border border-slate-800/80 hover:border-slate-700 rounded-2xl p-4 transition-all cursor-pointer flex flex-col justify-between space-y-4"
                     whileHover={{ y: -2 }}
                   >
@@ -565,8 +563,8 @@ export default function CatalogTab() {
                           </span>
                           <h3 className="text-sm font-bold text-slate-200 group-hover:text-white mt-1.5 flex items-center gap-1.5">
                             {sol.name}
-                            {sol.productionReady.startsWith('Tak') && (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-500" title="Готово до виробництва" />
+                            {sol.productionReady?.startsWith('Tak') && (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                             )}
                           </h3>
                         </div>
@@ -587,10 +585,10 @@ export default function CatalogTab() {
 
                     <div className="space-y-2 pt-2 border-t border-slate-800/50">
                       <div className="flex flex-wrap gap-1.5 text-xs">
-                        <span className={`border px-2 py-0.5 rounded-md ${getLicenseBadgeColor(sol.licenseType)}`}>
+                        <span className={`border px-2 py-0.5 rounded-md ${getLicenseBadgeColor(sol.licenseType || 'Unknown')}`}>
                           {sol.license}
                         </span>
-                        <span className={`border px-2 py-0.5 rounded-md ${getSecurityBadgeColor(sol.securityRating)}`}>
+                        <span className={`border px-2 py-0.5 rounded-md ${getSecurityBadgeColor(sol.securityRating || 'D')}`}>
                           Безпека: {sol.securityRating}
                         </span>
                       </div>

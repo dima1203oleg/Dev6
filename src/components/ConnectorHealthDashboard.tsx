@@ -1,45 +1,28 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   FREE_CONNECTORS_CATALOG,
-  FreeConnector,
   STAGES_CONFIG,
   StageId,
 } from "../lib/freeConnectors";
 import {
   Activity,
   CheckCircle2,
-  AlertTriangle,
-  XCircle,
   Clock,
   RefreshCw,
   Search,
   Filter,
-  Zap,
-  ShieldCheck,
   Server,
   Play,
-  RotateCcw,
   BarChart3,
-  Sliders,
   Terminal,
   Database,
-  Lock,
   Key,
   Wand2,
   Download,
   Flame,
   Radio,
   Star,
-  Eye,
-  Check,
-  Cpu,
-  Layers,
-  ArrowUpRight,
-  TrendingUp,
-  HardDrive,
-  Globe,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { useToast } from "./ToastProvider";
 
 export interface TelemetryMetrics {
@@ -148,24 +131,9 @@ export default function ConnectorHealthDashboard() {
   useEffect(() => {
     if (!isLiveTelemetryActive) return;
 
-    const fetchLiveHealth = async () => {
-      try {
-        const res = await fetch('/api/health');
-        if (res.ok) {
-          const healthData = await res.json();
-          setTelemetryData((prev) => {
-            const updated = { ...prev };
-
-            return updated;
-          });
-        }
-      } catch (e) {
-        console.warn("[Health Check Error]", e);
-      }
-    };
-
-    fetchLiveHealth();
-    const interval = setInterval(fetchLiveHealth, 10000);
+    const interval = setInterval(() => {
+      // Telemetry simulation handled by other effects
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [isLiveTelemetryActive]);
@@ -234,15 +202,28 @@ export default function ConnectorHealthDashboard() {
   // Manual Ping Execution
   const handleSinglePing = (connectorId: string, name: string) => {
     const newLatency = 12 + Math.floor(Math.random() * 30);
-    setTelemetryData((prev) => ({
-      ...prev,
-      [connectorId]: {
-        ...prev[connectorId],
-        status: "HEALTHY",
-        latencyMs: newLatency,
-        lastPingTime: new Date().toLocaleTimeString(),
-      },
-    }));
+    setTelemetryData((prev) => {
+      const existing = prev[connectorId];
+      if (!existing) return prev;
+      return {
+        ...prev,
+        [connectorId]: {
+          id: existing.id,
+          name: existing.name,
+          status: "HEALTHY" as const,
+          latencyMs: newLatency,
+          uptimePercent: existing.uptimePercent,
+          requestsTotal: existing.requestsTotal,
+          requestsRateLimit: existing.requestsRateLimit,
+          quotaUsed: existing.quotaUsed,
+          quotaMax: existing.quotaMax,
+          httpErrors: existing.httpErrors,
+          lastPingTime: new Date().toLocaleTimeString(),
+          authStatus: existing.authStatus,
+          schemaDriftStatus: existing.schemaDriftStatus,
+        },
+      };
+    });
 
     setTelemetryLogs((logs) => [
       {
@@ -272,11 +253,22 @@ export default function ConnectorHealthDashboard() {
         const next = { ...prev };
         Object.keys(next).forEach((k) => {
           const lat = Math.floor(10 + Math.random() * 45);
+          const existing = next[k];
+          if (!existing) return;
           next[k] = {
-            ...next[k],
-            status: "HEALTHY",
+            id: existing.id,
+            name: existing.name,
+            status: "HEALTHY" as const,
             latencyMs: lat,
+            uptimePercent: existing.uptimePercent,
+            requestsTotal: existing.requestsTotal,
+            requestsRateLimit: existing.requestsRateLimit,
+            quotaUsed: existing.quotaUsed,
+            quotaMax: existing.quotaMax,
+            httpErrors: existing.httpErrors,
             lastPingTime: new Date().toLocaleTimeString(),
+            authStatus: existing.authStatus,
+            schemaDriftStatus: existing.schemaDriftStatus,
           };
         });
         return next;
@@ -301,15 +293,28 @@ export default function ConnectorHealthDashboard() {
 
   // Simulate Auto-Healing
   const handleSimulateAutoHealing = (connectorId: string, name: string) => {
-    setTelemetryData((prev) => ({
-      ...prev,
-      [connectorId]: {
-        ...prev[connectorId],
-        status: "HEALTHY",
-        schemaDriftStatus: "AUTO_HEALED",
-        lastPingTime: new Date().toLocaleTimeString(),
-      },
-    }));
+    setTelemetryData((prev) => {
+      const existing = prev[connectorId];
+      if (!existing) return prev;
+      return {
+        ...prev,
+        [connectorId]: {
+          id: existing.id,
+          name: existing.name,
+          status: "HEALTHY" as const,
+          latencyMs: existing.latencyMs,
+          uptimePercent: existing.uptimePercent,
+          requestsTotal: existing.requestsTotal,
+          requestsRateLimit: existing.requestsRateLimit,
+          quotaUsed: existing.quotaUsed,
+          quotaMax: existing.quotaMax,
+          httpErrors: existing.httpErrors,
+          lastPingTime: existing.lastPingTime,
+          authStatus: existing.authStatus,
+          schemaDriftStatus: "AUTO_HEALED" as const,
+        },
+      };
+    });
 
     setTelemetryLogs((logs) => [
       {
@@ -591,7 +596,6 @@ export default function ConnectorHealthDashboard() {
 
                   const isHealthy = telemetry.status === "HEALTHY";
                   const isDegraded = telemetry.status === "DEGRADED";
-                  const isRateLimited = telemetry.status === "RATE_LIMITED";
 
                   const quotaPercent = ((telemetry.quotaUsed / telemetry.quotaMax) * 100).toFixed(1);
 
@@ -682,7 +686,7 @@ export default function ConnectorHealthDashboard() {
                       <td className="p-3">
                         <span className="px-2 py-0.5 bg-slate-950 border border-slate-800 text-amber-300 rounded text-[10px] font-bold flex items-center gap-1 w-fit">
                           <Key className="w-3 h-3 text-amber-400" />
-                          <span>{c.passport.authMethod}</span>
+                          <span>{c.passport.authProtocol || 'N/A'}</span>
                         </span>
                       </td>
 
@@ -754,7 +758,7 @@ export default function ConnectorHealthDashboard() {
                       </div>
                     </div>
                     <span className="px-2 py-0.5 bg-slate-900 text-amber-300 border border-slate-800 rounded text-[10px]">
-                      {c.passport.authMethod}
+                      {c.passport.authProtocol || 'N/A'}
                     </span>
                   </div>
 

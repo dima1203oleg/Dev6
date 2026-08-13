@@ -10,7 +10,7 @@
  */
 
 import { BaseUITest } from '../BaseUITest';
-import { ScenarioTestResult, ValidationResult, UICardStructure, SearchExecution, FieldStatus, OverallStatus } from '../types';
+import { ScenarioTestResult, ValidationResult, UICardStructure, SearchExecution, OverallStatus } from '../types';
 
 export class ScenarioD_UnavailableRegistry extends BaseUITest {
   async execute(): Promise<ScenarioTestResult> {
@@ -87,7 +87,7 @@ export class ScenarioD_UnavailableRegistry extends BaseUITest {
         {
           source_id: 'UA-001',
           success: false,
-          http_code: httpCodes[errorType],
+          http_code: httpCodes[errorType] || 500,
           response_time_ms: errorType === 'timeout' ? 30000 : 500,
           raw_response: '',
           error_message: errorMessages[errorType],
@@ -147,7 +147,7 @@ export class ScenarioD_UnavailableRegistry extends BaseUITest {
         sources_responded: 0,
         conflicts_count: 0,
         last_updated: new Date(),
-        overall_status: statusMap[errorType]
+        overall_status: statusMap[errorType] as OverallStatus
       },
       profile_fields: [
         {

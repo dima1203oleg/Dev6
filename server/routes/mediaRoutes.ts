@@ -18,9 +18,9 @@ router.post(
       }
 
       const job = mediaPipeline.createPresignedUpload(filename, mimeType, sizeBytes || 1024);
-      res.json(job);
+      return res.json(job);
     } catch (err: any) {
-      res.status(500).json({ error: { code: "MEDIA_PRESIGN_ERROR", message: err.message } });
+      return res.status(500).json({ error: { code: "MEDIA_PRESIGN_ERROR", message: err.message } });
     }
   }
 );
@@ -32,21 +32,29 @@ router.post(
   auditMiddleware("MEDIA_PROCESS_TRIGGER", "MEDIA_PIPELINE"),
   async (req, res) => {
     try {
-      const job = await mediaPipeline.processMediaAsync(req.params.jobId);
-      res.json(job);
+      const jobId = req.params['jobId'];
+      if (!jobId) {
+        return res.status(400).json({ error: { code: "BAD_REQUEST", message: "jobId required" } });
+      }
+      const job = await mediaPipeline.processMediaAsync(jobId);
+      return res.json(job);
     } catch (err: any) {
-      res.status(500).json({ error: { code: "MEDIA_PROCESS_ERROR", message: err.message } });
+      return res.status(500).json({ error: { code: "MEDIA_PROCESS_ERROR", message: err.message } });
     }
   }
 );
 
 // Job Status Polling
 router.get("/status/:jobId", checkPermission("entity.read"), (req, res) => {
-  const job = mediaPipeline.getJob(req.params.jobId);
+  const jobId = req.params['jobId'];
+  if (!jobId) {
+    return res.status(400).json({ error: { code: "BAD_REQUEST", message: "jobId required" } });
+  }
+  const job = mediaPipeline.getJob(jobId);
   if (!job) {
     return res.status(404).json({ error: { code: "NOT_FOUND", message: "Media job not found" } });
   }
-  res.json(job);
+  return res.json(job);
 });
 
 export default router;

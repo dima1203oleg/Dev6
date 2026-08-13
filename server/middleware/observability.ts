@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticatedRequest } from "./auth";
+import { getDatabaseClient } from '../database/DatabaseClient';
 
 // Simple in-memory metrics store (in production, use Prometheus/StatsD)
 interface Metrics {
@@ -70,7 +71,7 @@ export function logger(req: Request, res: Response, next: NextFunction) {
 }
 
 // Health check endpoint
-export function healthCheck(req: Request, res: Response) {
+export function healthCheck(_req: Request, res: Response) {
   const uptime = process.uptime();
   const memoryUsage = process.memoryUsage();
   
@@ -91,11 +92,15 @@ export function healthCheck(req: Request, res: Response) {
 }
 
 // Readiness check endpoint
-export function readinessCheck(req: Request, res: Response) {
+export async function readinessCheck(_req: Request, res: Response) {
   // Check critical dependencies
+  const [database, connectors] = await Promise.all([
+    checkDatabase(),
+    checkConnectors(),
+  ]);
   const checks = {
-    database: checkDatabase(),
-    connectors: checkConnectors(),
+    database,
+    connectors,
   };
 
   const allReady = Object.values(checks).every(check => check.ready);
@@ -108,7 +113,7 @@ export function readinessCheck(req: Request, res: Response) {
 }
 
 // Liveness check endpoint
-export function livenessCheck(req: Request, res: Response) {
+export function livenessCheck(_req: Request, res: Response) {
   res.json({
     status: 'alive',
     timestamp: new Date().toISOString(),
@@ -116,7 +121,7 @@ export function livenessCheck(req: Request, res: Response) {
 }
 
 // Get metrics endpoint
-export function getMetricsEndpoint(req: Request, res: Response) {
+export function getMetricsEndpoint(_req: Request, res: Response) {
   res.json(getMetrics());
 }
 
@@ -137,18 +142,24 @@ function getMetrics() {
   return result;
 }
 
-function checkDatabase() {
-  // In production, check actual database connection
-  return {
-    ready: true,
-    message: 'Database connection healthy',
-  };
+async function checkDatabase(): Promise<{ ready: boolean; message: string }> {
+  try {
+    const ready = await getDatabaseClient().healthCheck();
+    return {
+      ready,
+      message: ready ? 'Database connection healthy' : 'Database connection unavailable',
+    };
+  } catch {
+    return { ready: false, message: 'Database connection unavailable' };
+  }
 }
 
-function checkConnectors() {
-  // In production, check connector health
+async function checkConnectors(): Promise<{ ready: boolean; message: string }> {
+  // Individual source outages must not make the service unavailable: the
+  // orchestrator has a documented fallback chain.  Readiness only validates
+  // that its local dependency (the database) is reachable.
   return {
     ready: true,
-    message: 'Connectors operational',
+    message: 'Connector fallback chain available',
   };
 }

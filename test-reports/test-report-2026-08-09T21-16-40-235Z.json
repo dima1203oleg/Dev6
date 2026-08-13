@@ -1,0 +1,2731 @@
+{
+  "timestamp": "2026-08-09T21:16:40.238Z",
+  "summary": {
+    "total_sources": 6,
+    "passed": 0,
+    "passed_with_warnings": 0,
+    "partial": 0,
+    "failed": 6,
+    "blocked": 0,
+    "not_applicable": 0,
+    "needs_work": 6,
+    "using_fallback": 0,
+    "provenance_violations": 4,
+    "has_conflicts": 0,
+    "production_ready": 0,
+    "critical_sources_passed": false,
+    "hallucination_free": false,
+    "all_provenance_complete": false,
+    "conflicts_documented": true,
+    "results_reproducible": true,
+    "logging_complete": true,
+    "automated_tests_passed": false,
+    "production_ready_overall": false
+  },
+  "sources": [
+    {
+      "registry_id": "UA-001",
+      "registry_name": "Єдиний державний реєстр (ЄДР)",
+      "endpoint": "https://data.gov.ua/api/3/action/datastore_search",
+      "access_type": "FREE_AUTO",
+      "query_status": "FAIL",
+      "http_code": 409,
+      "response_time_ms": 285,
+      "data_returned": false,
+      "provenance_complete": true,
+      "freshness_acceptable": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0.6000000000000001,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-002: Client error: HTTP 409",
+        "TEST-004: Query failed with HTTP 409: Conflict",
+        "TEST-006: Schema validation failed: data, edrpou, name",
+        "TEST-007: Type validation failed: success: expected string, got boolean, error: expected string, got object; Missing required fields: name, id",
+        "TEST-008: Character loss detected: 88 characters",
+        "TEST-010: Could not determine data age - no timestamp found",
+        "TEST-012: Missing expected entity fields: name, edrpou, status, name, ipn, name, edrpou, ipn",
+        "TEST-013: Fields without provenance: help, success, error.__type",
+        "TEST-014: High response time variance: 12.82%",
+        "TEST-015: Throughput below threshold: 0 RPS; Performance degradation detected: Zero throughput - all requests failed",
+        "TEST-017: Missing security headers: Content-Security-Policy, X-Frame-Options, X-XSS-Protection"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:11:56.715Z",
+          "details": {
+            "registry_id": "UA-001",
+            "registry_name": "Єдиний державний реєстр (ЄДР)",
+            "endpoint": "https://data.gov.ua/api/3/action/datastore_search",
+            "access_type": "FREE_AUTO",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "edr_connector",
+            "connector_version": "1.0.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "NONE",
+            "supported_entities": [
+              "COMPANY",
+              "FOP",
+              "PERSON"
+            ],
+            "supported_identifiers": [
+              "edrpou",
+              "ipn",
+              "name"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 260,
+          "timestamp": "2026-08-09T21:11:56.975Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 409,
+            "response_time_ms": 259,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": [
+            "Client error: HTTP 409"
+          ]
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:11:56.975Z",
+          "details": {
+            "auth_type": "NONE",
+            "authentication_required": false,
+            "authentication_status": "NOT_REQUIRED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "FAIL",
+          "duration_ms": 286,
+          "timestamp": "2026-08-09T21:11:57.261Z",
+          "details": {
+            "start_time": "2026-08-09T21:11:56.975Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-09T21:11:57.260Z",
+            "execution_time_ms": 285,
+            "http_code": 409,
+            "http_status_text": "Conflict",
+            "response_size_bytes": 253,
+            "response_preview": "{\"help\": \"https://data.gov.ua/api/3/action/help_show?name=datastore_search\", \"success\": false, \"error\": {\"resource_id\": [\"\\u0412\\u0456\\u0434\\u0441\\u0443\\u0442\\u043d\\u0454 \\u0437\\u043d\\u0430\\u0447\\u043",
+            "error_message": "{\"help\": \"https://data.gov.ua/api/3/action/help_show?name=datastore_search\", \"success\": false, \"error\": {\"resource_id\": [\"\\u0412\\u0456\\u0434\\u0441\\u0443\\u0442\\u043d\\u0454 \\u0437\\u043d\\u0430\\u0447\\u0435\\u043d\\u043d\\u044f\"], \"__type\": \"Validation Error\"}}"
+          },
+          "errors": [
+            "Query failed with HTTP 409: Conflict"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS",
+          "duration_ms": 216,
+          "timestamp": "2026-08-09T21:11:57.477Z",
+          "details": {
+            "response_size": 253,
+            "content_type": "application/json;charset=utf-8",
+            "http_code": 409,
+            "checksum": "00005070",
+            "sha256_hash": "ed2586cf40250f5ff2043815025eaa8004122532a0d54d0bfd809a78c174ed08",
+            "headers_count": 12,
+            "content_type_valid": true
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "FAIL",
+          "duration_ms": 138,
+          "timestamp": "2026-08-09T21:11:57.615Z",
+          "details": {
+            "json_parseable": true,
+            "schema_version": "1.0",
+            "schema_valid": false,
+            "missing_fields": [
+              "data",
+              "edrpou",
+              "name"
+            ],
+            "extra_fields": [
+              "help",
+              "success",
+              "error",
+              "error.resource_id",
+              "error.__type"
+            ],
+            "type_mismatches": []
+          },
+          "errors": [
+            "Schema validation failed: data, edrpou, name"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 158,
+          "timestamp": "2026-08-09T21:11:57.773Z",
+          "details": {
+            "parser_version": "1.0.0",
+            "parse_errors_count": 0,
+            "parse_warnings_count": 1,
+            "fields_parsed": 3,
+            "type_validation": {
+              "valid": false,
+              "errors": [
+                "success: expected string, got boolean",
+                "error: expected string, got object"
+              ]
+            },
+            "utf8_valid": true,
+            "null_fields": [],
+            "null_handling_valid": true,
+            "required_fields_present": [],
+            "missing_required_fields": [
+              "name",
+              "id"
+            ],
+            "optional_fields_present": []
+          },
+          "errors": [
+            "Type validation failed: success: expected string, got boolean, error: expected string, got object",
+            "Missing required fields: name, id"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 133,
+          "timestamp": "2026-08-09T21:11:57.907Z",
+          "details": {
+            "raw_length": 253,
+            "parsed_length": 165,
+            "character_loss": 88,
+            "data_corruption": false,
+            "unicode_issues": [],
+            "truncation_detected": false,
+            "truncation_location": "none",
+            "encoding_valid": true,
+            "encoding_detected": "UTF-8",
+            "consistency_valid": true,
+            "consistency_issues": []
+          },
+          "errors": [
+            "Character loss detected: 88 characters"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "PASS",
+          "duration_ms": 138,
+          "timestamp": "2026-08-09T21:11:58.046Z",
+          "details": {
+            "provenance_records_count": 3,
+            "provenance_complete": true,
+            "source_id_present": true,
+            "record_id_present": true,
+            "timestamp_present": true,
+            "parser_version_present": true,
+            "confidence_present": true,
+            "raw_fragment_present": true,
+            "average_confidence": 0.6000000000000001,
+            "min_confidence": 0.6000000000000001,
+            "max_confidence": 0.6000000000000001
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 132,
+          "timestamp": "2026-08-09T21:11:58.178Z",
+          "details": {
+            "last_updated": null,
+            "age_seconds": null,
+            "ttl_seconds": null,
+            "cache_status": "MISS",
+            "max_age_seconds": 86400,
+            "freshness_acceptable": false,
+            "cache_control": "no-cache",
+            "etag": null,
+            "last_modified": null
+          },
+          "errors": [],
+          "warnings": [
+            "Could not determine data age - no timestamp found"
+          ]
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "PASS",
+          "duration_ms": 221,
+          "timestamp": "2026-08-09T21:11:58.399Z",
+          "details": {
+            "duplicates_found": 0,
+            "duplicate_ids": [],
+            "historical_records_found": 0,
+            "historical_record_ids": [],
+            "transliteration_issues": [],
+            "name_changes_detected": false,
+            "name_change_records": [],
+            "relationships_found": 0,
+            "relationship_types": [],
+            "entity_resolution_quality": 1
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 147,
+          "timestamp": "2026-08-09T21:11:58.546Z",
+          "details": {
+            "sources_compared": 0,
+            "matches_found": [],
+            "discrepancies_found": [],
+            "contradiction_records": [],
+            "contradiction_engine_triggered": false,
+            "internal_consistency": true,
+            "internal_inconsistencies": [],
+            "expected_fields_present": [],
+            "expected_fields_missing": [
+              "name",
+              "edrpou",
+              "status",
+              "name",
+              "ipn",
+              "name",
+              "edrpou",
+              "ipn"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Missing expected entity fields: name, edrpou, status, name, ipn, name, edrpou, ipn"
+          ]
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 133,
+          "timestamp": "2026-08-09T21:11:58.679Z",
+          "details": {
+            "fields_checked": 5,
+            "hallucinated_fields": [],
+            "not_found_fields": [],
+            "unknown_fields": [],
+            "not_applicable_fields": [],
+            "hallucination_detected": false,
+            "generic_values_found": false,
+            "generic_value_fields": [],
+            "placeholders_found": false,
+            "placeholder_fields": [],
+            "fields_with_provenance": [],
+            "fields_without_provenance": [
+              "help",
+              "success",
+              "error.__type"
+            ],
+            "ai_patterns_detected": false,
+            "ai_pattern_fields": []
+          },
+          "errors": [
+            "Fields without provenance: help, success, error.__type"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 293,
+          "timestamp": "2026-08-09T21:11:58.972Z",
+          "details": {
+            "first_run": {
+              "http_code": 409,
+              "response_time_ms": 156,
+              "response_size": 253,
+              "checksum": "00005070"
+            },
+            "second_run": {
+              "http_code": 409,
+              "response_time_ms": 136,
+              "response_size": 253,
+              "checksum": "00005070"
+            },
+            "http_code_match": true,
+            "response_identical": true,
+            "checksum_match": true,
+            "response_time_variance": 12.82051282051282,
+            "repeatable": true
+          },
+          "errors": [],
+          "warnings": [
+            "High response time variance: 12.82%"
+          ]
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 1706,
+          "timestamp": "2026-08-09T21:12:00.679Z",
+          "details": {
+            "latency_ms": 132,
+            "throughput_rps": 0,
+            "cpu_usage_percent": 25.65123094958968,
+            "memory_usage_mb": 16.398208618164062,
+            "retry_count": 0,
+            "performance_rating": "GOOD",
+            "latency_acceptable": true,
+            "throughput_acceptable": false,
+            "cpu_acceptable": true,
+            "memory_acceptable": true,
+            "degradation_detected": true,
+            "degradation_details": [
+              "Zero throughput - all requests failed"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Throughput below threshold: 0 RPS",
+            "Performance degradation detected: Zero throughput - all requests failed"
+          ]
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 55,
+          "timestamp": "2026-08-09T21:12:00.734Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 1331,
+          "timestamp": "2026-08-09T21:12:02.065Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": false,
+            "idor_vulnerable": false,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 100,
+            "vulnerabilities_found": [],
+            "security_headers": {
+              "Strict-Transport-Security": true,
+              "Content-Security-Policy": false,
+              "X-Frame-Options": false,
+              "X-Content-Type-Options": true,
+              "X-XSS-Protection": false
+            },
+            "missing_security_headers": [
+              "Content-Security-Policy",
+              "X-Frame-Options",
+              "X-XSS-Protection"
+            ],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": false,
+            "exposed_data_types": []
+          },
+          "errors": [],
+          "warnings": [
+            "Missing security headers: Content-Security-Policy, X-Frame-Options, X-XSS-Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "registry_id": "UA-002",
+      "registry_name": "Єдиний державний реєстр судових рішень",
+      "endpoint": "https://court.gov.ua/api/v1/cases",
+      "access_type": "FREE_API_KEY",
+      "query_status": "FAIL",
+      "http_code": 404,
+      "response_time_ms": 89,
+      "data_returned": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-002: Client error: HTTP 404",
+        "TEST-003: API Key not configured in environment",
+        "TEST-004: Query failed with HTTP 404: Not Found",
+        "TEST-005: Unexpected content type: text/html; charset=windows-1251",
+        "TEST-006: Response is not valid JSON",
+        "TEST-007: Cannot validate parser - raw data is not valid JSON",
+        "TEST-008: Cannot check data integrity - raw data is not valid JSON",
+        "TEST-009: Cannot check provenance - raw data is not valid JSON",
+        "TEST-010: Cannot check freshness - raw data is not valid JSON",
+        "TEST-011: Cannot check entity resolution - raw data is not valid JSON",
+        "TEST-012: Cannot perform cross validation - raw data is not valid JSON",
+        "TEST-013: Cannot check for hallucination - raw data is not valid JSON",
+        "TEST-014: High response time variance: 29.46%",
+        "TEST-015: Throughput below threshold: 0 RPS; Performance degradation detected: Zero throughput - all requests failed",
+        "TEST-017: Sensitive data exposed: Credit Card Number, Phone Number"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:02.066Z",
+          "details": {
+            "registry_id": "UA-002",
+            "registry_name": "Єдиний державний реєстр судових рішень",
+            "endpoint": "https://court.gov.ua/api/v1/cases",
+            "access_type": "FREE_API_KEY",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "court_connector",
+            "connector_version": "1.0.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "API_KEY",
+            "supported_entities": [
+              "COURT_CASE",
+              "PERSON",
+              "COMPANY"
+            ],
+            "supported_identifiers": [
+              "case_number",
+              "name",
+              "edrpou"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 80,
+          "timestamp": "2026-08-09T21:12:02.146Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 404,
+            "response_time_ms": 80,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": [
+            "Client error: HTTP 404"
+          ]
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "FAIL",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:02.146Z",
+          "details": {
+            "auth_type": "API_KEY",
+            "authentication_required": true,
+            "authentication_method": "API_KEY",
+            "authentication_status": "MISSING_CREDENTIALS"
+          },
+          "errors": [
+            "API Key not configured in environment"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "FAIL",
+          "duration_ms": 90,
+          "timestamp": "2026-08-09T21:12:02.236Z",
+          "details": {
+            "start_time": "2026-08-09T21:12:02.146Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-09T21:12:02.235Z",
+            "execution_time_ms": 89,
+            "http_code": 404,
+            "http_status_text": "Not Found",
+            "response_size_bytes": 32042,
+            "response_preview": "<!DOCTYPE html>\n<html lang=\"uk\">\n<head>\n    <meta charset=\"windows-1251\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <link rel=\"icon\" href=\"/images/favicon.png\" type=\"image/x-icon\">",
+            "error_message": "<!DOCTYPE html>\n<html lang=\"uk\">\n<head>\n    <meta charset=\"windows-1251\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <link rel=\"icon\" href=\"/images/favicon.png\" type=\"image/x-icon\">\n    <title>������� 404 &ndash; ������� �� ��������</title>\n    <meta name=\"description\" content=\"������� 404 &ndash; ������� �� ��������\">\n    <meta name=\"keywords\" content=\"\">\n\n    <meta property=\"og:url\"           content=\"\" />\n    <meta property=\"og:type\"          content=\"article\" />\n    <meta property=\"og:title\"         content=\"\" />\n    <meta property=\"og:description\"   content=\"\" />\n    <meta property=\"og:image\"         content=\"\" />\n    <meta property=\"fb:app_id\"         content=\"1630382423690791\" />\n    <meta name=\"viewport\" content=\"width=device-width\">\n\n    <link rel=\"stylesheet\" href=\"/styles/main-5bfaeedbd6.css\"/>\n\n    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->\n    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n    <!--[if lt IE 9]>\n    <script src=\"https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js\"></script>\n    <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>\n    <![endif]-->\n    <script src=\"/scripts/main-b79d782bbd.js\"></script>\n    <script src=\"/js/plugins/bootstrap/bootstrap.bundle.min.js\"></script>\n    <script>\n      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n      ga('create', 'UA-35987142-3', 'auto');\n      ga('send', 'pageview');\n    </script>\n</head>\n<body>\n<style>\n    #div_chat{\n        left: auto;\n        right: 0;\n        top: auto;\n        bottom: 0;\n        height: 400px;\n        width: 250px;\n        position: fixed;\n        z-index: 2002;\n        padding: 0;\n        border-radius: 11px;\n    }\n</style>\n<div class=\"menu-button\" id=\"tooltip2\"   data-bs-toggle=\"tooltip\"  data-bs-placement=\"left\" title=\"������-��������\">\n    <a id=\"open__pomlka\" class=\"b24-web-form-popup-btn-2\" data-bs-toggle=\"tooltip\" data-bs-placement=\"left\" title=\"��������� ��� �������/����������\"></a>\n    <a href=\"#\" id=\"popup__toggle\" onclick=\"phoneWin.open()\"  data-bs-toggle=\"tooltip\" data-bs-placement=\"left\" title=\" \"></a>\n    <a id=\"open__chat2\"  data-bs-toggle=\"tooltip\" data-bs-placement=\"left\" title=\"������-�����������\" ></a>\n</div>\n<link rel=\"stylesheet\" href=\"/styles/slider_main.css?s=24994\">\n<link rel=\"stylesheet\" href=\"/styles/slider_main_992.css?s=26711\">\n<!--<link rel=\"stylesheet\" href=\"/styles/slider_main_768.css\">-->\n<link rel=\"stylesheet\" href=\"/styles/style_new.css?s=21535\">\n<link rel=\"stylesheet\" href=\"/styles/style_new_media.css?s=6746\">\n<div style=\"margin:0; padding: 15px; font-size:20px\" class=\"bg-info text-center main__info\"><div class=\"text_header\"><p style=\"color: #ff6e6e;\">��������� ���������� ���� � ��������� ������</p><p>������ �������-����� ������ ����� ������ 044 207-35-46</p></div></div><div class=\"is_vision\"></div>\n<!-- <p style=\"margin:0;padding: 15px; background-color:#fafcb2 !important;\" class=\"bg-info text-center\"><strong>� ��'���� � ����������� �������� �������������� ���� � ����-�����, ������ �������� ��������� � ����� � ������</strong></p> -->\n<div>\n    <div class=\"container\">\n\t\t\n\t\t<div class=\"row\" style=\"margin-top: 22px;\">\n            <div class=\"col-lg-2 col-xl-2 d-none d-lg-block\"  >\n                \t<a href=\"https://court.gov.ua/\"><img style=\"width:190px;\" src=\"/images/femida.svg\" alt=\"\"></a>\n            </div>\n            <div class=\"col-lg-10 col-xl-10 col-sm-12 ustlink\">\n            \t<a href=\"/\" style=\"\">\n\t                <div class=\"header\">\n\t                    <img width=\"56px\" src=\"/images/uk.svg\" alt=\"\">\n\t                    <h1>������ ����� ������</h1>\n\t                </div>\n                </a>\n                <div class=\"row navigation mb-md-3 mb-sm-0\">\n                    <div class=\"col-lg-12 search\">\n                    \t<script>\n\t\t\t\t\t\t  (function() {\n\t\t\t\t\t\t    var cx = '011908513057418320584:-rquuo2rlxm';\n\t\t\t\t\t\t    var gcse = document.createElement('script');\n\t\t\t\t\t\t    gcse.type = 'text/javascript';\n\t\t\t\t\t\t    gcse.async = true;\n\t\t\t\t\t\t    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx+'&sitesearch=pc.ki.court.gov.ua';\n\t\t\t\t\t\t    var s = document.getElementsByTagName('script')[0];\n\t\t\t\t\t\t    s.parentNode.insertBefore(gcse, s);\n\t\t\t\t\t\t  })();\n\t\t\t\t\t\t</script>\n\t\t\t\t\t\t<div class=\"gcse-search\"></div>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n                    <div class=\"col-lg-12 menu\">\n<div class=\"\">\n<div class=\"col-12 navbar-toggler collapsed d-md-flex d-lg-none align-items-center justify-content-end text-end\" data-bs-toggle=\"collapse\" data-bs-target=\"#myNav\" aria-controls=\"myNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n      <svg xmlns=\"https://www.w3.org/2000/svg\" width=\"50\" height=\"50\" class=\"bi \" fill=\"currentColor\" viewBox=\"0 0 16 16\">\n  <path fill-rule=\"evenodd\" d=\"M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z\"></path>\n</svg>\n\n    </div>\n    </div>\n                            <div class=\" myNav  collapse  d-lg-flex\" id=\"myNav\">\n                                <div class=\"col-lg-2 d-flex  c btn-group\">\n                                <button type=\"button\" class=\"btn dropdown-toggle\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n    ������ �����\n  </button>\n\n                                        <ul class=\"dropdown-menu\">\n                                            <ol><a class=\"btn btn-block\" href=\"https://supreme.court.gov.ua\"  target=\"_blank\">��������� ���</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://hcj.gov.ua\"  target=\"_blank\">���� ���� ����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/sudova-vlada/sudy/\" >����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://rsu.gov.ua/\"  target=\"_blank\">���� ����� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://ec.court.gov.ua/\"  target=\"_blank\">������ ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://vkksu.gov.ua/\"  target=\"_blank\">���� ������������� ����� ����� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://pcie.court.gov.ua/pcie\"  target=\"_blank\">���������� ���� ���������� ��������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://expertcouncil.court.gov.ua/expertcouncil/\"  target=\"_blank\">��������� ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/dsa/\" >�������� ������ ������������ ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://www.nsj.gov.ua\"  target=\"_blank\">����������� ����� ����� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://sso.court.gov.ua/\"  target=\"_blank\">������ ������ �������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/sudova-vlada/969076/\" >���� ������ ����������� ��������������</a></ol>\n                                            </ul></div>\n                                <div class=\"col-lg-2 d-flex c btn-group\">\n                                    <button type=\"button\" class=\"btn dropdown-toggle\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n    ����-�����\n  </button>\n                                      <ul class=\"dropdown-menu\">\n                                       \n                                            <ol><a class=\"btn btn-block\" href=\"/press/general/\" >�������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/news/\" >������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/pressofficeanons/\" >������ ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/pres_releases/\" >����-�����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/publications/\" >��������� � �̲</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/interview/\" >�������, ��������, ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/fotogalereia_15/\" >�����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/video/\" >³����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/pocontacts/\" >��������</a></ol>\n                                            \n\t\t\t\t\t\t\t\t\t\t\t<hr>\n                                            <ol><a class=\"btn btn-block\" href=\"/press/point/\" >����� ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/electronreestr/\" >����������� ����� ��������� ���� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/press/\" >���'���� ��� ������������ �̲ �� ����������� �����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/oholoshennya/\" >����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/komunikatsiyna_stratehiya_na/\" >������������� �������� �� 2025�2029 ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/1/\" >������ ������� ��� ���� ������������ ����������� ����� � ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/press/chodo_polojen/\" >���� ��������� �������� ������� �1629-IX �� �1635-IX</a></ol>\n                                            </ul></div>\n                                <div class=\"col-lg-2 d-flex c btn-group\">\n                                    <button type=\"button\" class=\"btn dropdown-toggle\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n    ������\n  </button>\n                                      <ul class=\"dropdown-menu\">\n                                       \n                                            <ol><a class=\"btn btn-block\" href=\"/assignments/\" >������ ������� �����, ����������� �� ��������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/fair/\" >���������� ���� ����� �������� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/affairs/online/\" >������-���������� ������� �������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/affairs/sudytax/\" >������-������ �������� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://vkz.court.gov.ua\"  target=\"_blank\">������ � ������������</a></ol>\n                                            </ul></div>\n                                <div class=\"col-lg-2 d-flex c btn-group\">\n                                    <button type=\"button\" class=\"btn dropdown-toggle\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n    �Ū���� �� �������\n  </button>\n                                      <ul class=\"dropdown-menu\">\n                                       \n                                            <ol><a class=\"btn btn-block\" href=\"http://reyestr.court.gov.ua\"  target=\"_blank\">������ ��������� ����� ������� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://minjust.gov.ua/cat_9329\"  target=\"_blank\">г����� ������������� ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/reyestri-ta-sistemi/opr_vid/\" >������������ ��������� � ������� ��� ������������ ������, ��������� ��������� ���� �� ��������� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://supreme.court.gov.ua/supreme/pro_sud/og_pov/\"  target=\"_blank\">������������ ��������� ��� ������ ��� �����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/reyestri-ta-sistemi/asvak/\" >�������������� ������� ���������� ���������� ��������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://corruptinfo.nazk.gov.ua/\"  target=\"_blank\">³������ ��� ���, �� ������� ���������� ��������������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"http://erau.unba.org.ua\"  target=\"_blank\">������ ����� �������� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/reyestri-ta-sistemi/ecourt/\" >����������� ���</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"http://femida.court.gov.ua\"  target=\"_blank\">��������� ������ ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/reyestri-ta-sistemi/videoconference/\" >³������������������</a></ol>\n                                            </ul></div>\n                                <div class=\"col-lg-2 d-flex c btn-group\">\n                                    <button type=\"button\" class=\"btn dropdown-toggle\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n    ����������\n  </button>\n                                      <ul class=\"dropdown-menu\">\n                                       \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/jak_zvernutysja/\" >�� ���������� �� ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/jak_oznajomytysja/\" >�� ������������ �� ������� �������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/jak_oskarzhyty/\" >�� ��������� ������ ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/993344/\" >������� ������� �� ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/006424444/\" >���������-������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"http://court.gov.ua/legalaid\"  target=\"_blank\">���������� �������� ��������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://court.gov.ua/unknown/\"  target=\"_blank\">���������� ��� ������ ����� � ��� �� ����������� ��� ������ ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/pidsudnist/\" >������ ���� ���������� ���� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://reyestr.court.gov.ua/ChangedNameCourts\"  target=\"_blank\">������ ����� ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/mediation-help/\" >��Ĳ�ֲ� ��� �������� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/perelik_rozpodil/\" >������� ����� ����, �� ��������� ��������</a></ol>\n                                            \n\t\t\t\t\t\t\t\t\t\t\t<hr>\n                                            <ol><a class=\"btn btn-block\" href=\"https://hcj.gov.ua/sites/default/files/field/file/162_28.02.2023.pdf\"  target=\"_blank\">��������������� ������� ������� ����� �������������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://hcj.gov.ua/page/zrazky-dyscyplinarnoyi-skargy-ta-zayav-shchodo-nesumisnosti\"  target=\"_blank\">������ ������������ ������ �� ���� ���� ����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/yakist/\" >������� ����� ��������������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/your_info/\" >��� ������� ���� ����� (������� ��� ���������)</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/tehnichna_pidtrimka/\" >�������� ��������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/zustrochniy_sud/\" >����� \"������� ���\"</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/inisiativa_nodelni_sudi/\" >���������� \"�������� ����\"</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/gromadjanam/protidiya_nasylstvu/\" >������� ���������� �� ������������ ����������</a></ol>\n                                            </ul></div>\n                                <div class=\"col-lg-2 d-flex c btn-group\">\n                                    <button type=\"button\" class=\"btn dropdown-toggle\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n    ����\n  </button>\n                                      <ul class=\"dropdown-menu\">\n                                       \n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/sudova_statystyka/\" >������ ����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/interactiv_maps/\" >������������ ���� ���� ������ ��� ��������� ����, ����������� ��� �������� ����� � ��������, �� ������� �� ������� �� ����������� ���� �� �������� ���������� ����������� ����� </a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/inform_court_doc/\" >�������������� ������� �������������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/elbibliotsudu/\" >���������� �������� ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/stopcor/\" >��������� ������ ������ ���� ���������� ���������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/lustration/\" >�������� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/mss/\" >̳�������� ��������� �����������</a></ol>\n                                            \n\t\t\t\t\t\t\t\t\t\t\t<hr>\n                                            <ol><a class=\"btn btn-block\" href=\"/inshe/dopovid/\" >������ ������� ��� ���� ������������ ����������� ����� � ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://court.gov.ua/storage/portal/main_site/ZK_20_02_2026.pdf\"  target=\"_blank\">��������� ������������ ������������ ����� �� �������� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://dsa.court.gov.ua/dsa/inshe/service_defender_of_courts/\"  target=\"_blank\">������� �� �������� ��������� ����� � ����� ������ �������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"https://dsa.court.gov.ua/dsa/inshe/action_plan_2023/\"  target=\"_blank\">��������� ����� �� � ��������� ����������� ������㳿 � ���� ���� ������ �� 2021-2023 ����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/zsu/\"  target=\"_blank\">�'���� ����� ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/konflikt_interesiv/\" >������� �������� � ������ ������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/opendata/\" >������ �������� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/8567422222/\" >�������������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/archive/\" >����� �����</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"http://www.vkksu.gov.ua/ua/obrannya-na-posadu-suddi-bezstrokovo/povidomlennya-pro-pidgotovku-materialiv/\"  target=\"_blank\">��������� �� ������ ���� �����������</a></ol>\n                                            \n                                            <ol><a class=\"btn btn-block\" href=\"/arhiv/\" >�����</a></ol>\n                                            </ul></div></div></div>\n\n\n                        </div>\n                    </div>\n                </div>\n            </div>\n            </div>\n    </div>\n</header>\n\n<div class=\"history\">\n    <div class=\"container\">\n        <ol class=\"breadcrumb\">\n          <li><a href=\"https://court.gov.ua/\">�������</a></li>\n        </ol>\n    </div>\n</div>\n\n<div class=\"container\">\n\t\t\t\t\t\t<div class=\"page-head\">\n\t\t\t\t\t\t  <h1>������� 404 &ndash; ������� �� �������� </h1>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\n<div class=\"container content\"><p>������� �� ��������.</p>\r\n</div>\n<style>\n\n</style>\n<div class=\"modal fade bs-example-modal-sm\" tabindex=\"-1\" id=\"modalBitrix\" role=\"dialog\" aria-labelledby=\"\" >\n    <div class=\"modal-dialog modal-sm\" role=\"document\" style=\"float: right\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\" style=\"position: absolute;z-index:3000;width: 30px;height: 30px;right: 0;\"><span aria-hidden=\"true\">&times;</span></button>\n        <div class=\"modal-content\" id=\"contentsBitrix\" style=\"background: rgba(50,188,173,1) !important;\">\n\n        </div>\n    </div>\n</div>\n\n<script id=\"bx24_form_button\" data-skip-moving=\"true\">\n    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle=\"tooltip\"]'));\n    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {\n        return new bootstrap.Tooltip(tooltipTriggerEl)\n    });\n    $(function() {\n        $('#open__pomlka').on('click',function () {\n            window.open('https://court.gov.ua/CRM-form.html', '_blank', 'scrollbars=1,width=450px,height=800px');\n        })\n    });\n    var is_visio = localStorage.getItem('visio');\n    if(is_visio == '1'){\n        $('body').addClass('vision');\n        $('.is_vision').html('<i class=\"fa fa-eye\" aria-hidden=\"true\"> ���������� �����</i>');\n    } else {\n        $('.is_vision').html('<i class=\"fa fa-eye\" aria-hidden=\"true\"> ����� � ���������� ����</i>');\n    }\n\n</script>\n<div id=\"ikeyboard\" class=\"d_none\">\n  <ul id=\"eng\" class=\"d_none\">\n      <li class=\"symbol\"><span class=\"off\">`</span><span class=\"on\">~</span></li>\n      <li class=\"symbol\"><span class=\"off\">1</span><span class=\"on\">!</span></li>\n      <li class=\"symbol\"><span class=\"off\">2</span><span class=\"on\">@</span></li>\n      <li class=\"symbol\"><span class=\"off\">3</span><span class=\"on\">#</span></li>\n      <li class=\"symbol\"><span class=\"off\">4</span><span class=\"on\">$</span></li>\n      <li class=\"symbol\"><span class=\"off\">5</span><span class=\"on\">%</span></li>\n      <li class=\"symbol\"><span class=\"off\">6</span><span class=\"on\">^</span></li>\n      <li class=\"symbol\"><span class=\"off\">7</span><span class=\"on\">&</span></li>\n      <li class=\"symbol\"><span class=\"off\">8</span><span class=\"on\">*</span></li>\n      <li class=\"symbol\"><span class=\"off\">9</span><span class=\"on\">(</span></li>\n      <li class=\"symbol\"><span class=\"off\">0</span><span class=\"on\">)</span></li>\n      <li class=\"symbol\"><span class=\"off\">-</span><span class=\"on\">_</span></li>\n      <li class=\"symbol\"><span class=\"off\">=</span><span class=\"on\">+</span></li>\n      <li class=\"delete lastitem\"><img src=\"/img/backspace.png\" /></li>\n      <li class=\"tab\">tab</li>\n      <li class=\"letter\">q</li>\n      <li class=\"letter\">w</li>\n      <li class=\"letter\">e</li>\n      <li class=\"letter\">r</li>\n      <li class=\"letter\">t</li>\n      <li class=\"letter\">y</li>\n      <li class=\"letter\">u</li>\n      <li class=\"letter\">i</li>\n      <li class=\"letter\">o</li>\n      <li class=\"letter\">p</li>\n      <li class=\"letter\">[</li>\n      <li class=\"letter\">]</li>\n      <li class=\"symbol lastitem\"><span class=\"off\">\\</span><span class=\"on\">|</span></li>\n      <li class=\"capslock\">caps lock</li>\n      <li class=\"letter\">a</li>\n      <li class=\"letter\">s</li>\n      <li class=\"letter\">d</li>\n      <li class=\"letter\">f</li>\n      <li class=\"letter\">g</li>\n      <li class=\"letter\">h</li>\n      <li class=\"letter\">j</li>\n      <li class=\"letter\">k</li>\n      <li class=\"letter\">l</li>\n      <li class=\"symbol\"><span class=\"off\">;</span><span class=\"on\">:</span></li>\n      <li class=\"symbol\"><span class=\"off\">'</span><span class=\"on\">\"</span></li>\n      <li class=\"return lastitem\">Enter</li>\n      <li class=\"left-shift\">shift</li>\n      <li class=\"letter\">z</li>\n      <li class=\"letter\">x</li>\n      <li class=\"letter\">c</li>\n      <li class=\"letter\">v</li>\n      <li class=\"letter\">b</li>\n      <li class=\"letter\">n</li>\n      <li class=\"letter\">m</li>\n      <li class=\"letter\">,</li>\n      <li class=\"letter\">.</li>\n      <li class=\"symbol\"><span class=\"off\">/</span><span class=\"on\">?</span></li>\n      <li class=\"right-shift\">shift</li>\n      <li class=\"cleared\">��������</li>\n      <li class=\"language\" language=\"ukr\">���</li>\n      <li class=\"space\">&nbsp;</li>\n      <li class=\"left-arr\">&larr;</li>\n      <li class=\"right-arr\">&rarr;</li>\n      <li class=\"closed lastitem\">�������</li>\n  </ul>\n  <ul id=\"ukr\">\n      <li class=\"symbol\"><span class=\"off\">'</span><span class=\"on\">~</span></li>\n      <li class=\"symbol\"><span class=\"off\">1</span><span class=\"on\">!</span></li>\n      <li class=\"symbol\"><span class=\"off\">2</span><span class=\"on\">\"</span></li>\n      <li class=\"symbol\"><span class=\"off\">3</span><span class=\"on\">�</span></li>\n      <li class=\"symbol\"><span class=\"off\">4</span><span class=\"on\">;</span></li>\n      <li class=\"symbol\"><span class=\"off\">5</span><span class=\"on\">%</span></li>\n      <li class=\"symbol\"><span class=\"off\">6</span><span class=\"on\">:</span></li>\n      <li class=\"symbol\"><span class=\"off\">7</span><span class=\"on\">?</span></li>\n      <li class=\"symbol\"><span class=\"off\">8</span><span class=\"on\">*</span></li>\n      <li class=\"symbol\"><span class=\"off\">9</span><span class=\"on\">(</span></li>\n      <li class=\"symbol\"><span class=\"off\">0</span><span class=\"on\">)</span></li>\n      <li class=\"symbol\"><span class=\"off\">-</span><span class=\"on\">_</span></li>\n      <li class=\"symbol\"><span class=\"off\">=</span><span class=\"on\">+</span></li>\n      <li class=\"delete lastitem\"><img src=\"/img/backspace.png\" /></li>\n      <li class=\"tab\">tab</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"symbol lastitem\"><span class=\"off\">/</span><span class=\"on\">\\</span></li>\n      <li class=\"capslock\">caps lock</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"return lastitem\">Enter</li>\n      <li class=\"left-shift\">shift</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"letter\">�</li>\n      <li class=\"symbol\"><span class=\"off\">.</span><span class=\"on\">,</span></li>\n      <li class=\"right-shift\">shift</li>\n      <li class=\"cleared\">��������</li>\n      <li class=\"language\" language=\"eng\">Eng</li>\n      <li class=\"space\">&nbsp;</li>\n      <li class=\"left-arr\">&larr;</li>\n      <li class=\"right-arr\">&rarr;</li>\n      <li class=\"closed lastitem\">�������</li>\n  </ul>\n</div>\n\n<footer class=\"footer\">\n    <div class=\"container\">\n        <p class=\"text-muted\">2026 � �� ����� �������� <span class=\"pull-right\"><a href=\"https://www.facebook.com/CourtGovUa/?fref=ts\" target=\"_blank\"><i class=\"fa fa-facebook-official\" aria-hidden=\"true\"></i></a> <a href=\"https://www.youtube.com/channel/UCFDRcAmACu5ljF-YUMGctnA\" target=\"_blank\"><i class=\"fa fa-youtube-play\" aria-hidden=\"true\"></i></a>\n        </span></p>\n        <p class=\"text-links\"> <a href=\"/sudova-vlada/\">������ �����</a> <a href=\"/press/\">����-�����</a> <a href=\"/affairs/\">������</a> <a href=\"/reyestri-ta-sistemi/\">������ �� �������</a> <a href=\"/gromadjanam/\">����������</a> <a href=\"/inshe/\">����</a> \n\t\t</p>\n\t\t<p class=\"build__version\">v1.38.1</p>\n    </div>\n</footer>\n\n</body>\n</html>\n"
+          },
+          "errors": [
+            "Query failed with HTTP 404: Not Found"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 76,
+          "timestamp": "2026-08-09T21:12:02.312Z",
+          "details": {
+            "response_size": 32042,
+            "content_type": "text/html; charset=windows-1251",
+            "http_code": 404,
+            "checksum": "0b1cc283",
+            "sha256_hash": "9408a99dfac6664f51ee2903d8260be6c9c69c3971889cd7a7ae179fa28ab7c8",
+            "headers_count": 16,
+            "content_type_valid": false
+          },
+          "errors": [],
+          "warnings": [
+            "Unexpected content type: text/html; charset=windows-1251"
+          ]
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "FAIL",
+          "duration_ms": 71,
+          "timestamp": "2026-08-09T21:12:02.383Z",
+          "details": {
+            "json_parseable": false
+          },
+          "errors": [
+            "Response is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 111,
+          "timestamp": "2026-08-09T21:12:02.494Z",
+          "details": {},
+          "errors": [
+            "Cannot validate parser - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 86,
+          "timestamp": "2026-08-09T21:12:02.580Z",
+          "details": {},
+          "errors": [
+            "Cannot check data integrity - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "FAIL",
+          "duration_ms": 44,
+          "timestamp": "2026-08-09T21:12:02.624Z",
+          "details": {},
+          "errors": [
+            "Cannot check provenance - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "FAIL",
+          "duration_ms": 76,
+          "timestamp": "2026-08-09T21:12:02.700Z",
+          "details": {},
+          "errors": [
+            "Cannot check freshness - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "FAIL",
+          "duration_ms": 55,
+          "timestamp": "2026-08-09T21:12:02.755Z",
+          "details": {},
+          "errors": [
+            "Cannot check entity resolution - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "FAIL",
+          "duration_ms": 72,
+          "timestamp": "2026-08-09T21:12:02.827Z",
+          "details": {},
+          "errors": [
+            "Cannot perform cross validation - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 78,
+          "timestamp": "2026-08-09T21:12:02.905Z",
+          "details": {},
+          "errors": [
+            "Cannot check for hallucination - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 191,
+          "timestamp": "2026-08-09T21:12:03.096Z",
+          "details": {
+            "first_run": {
+              "http_code": 404,
+              "response_time_ms": 112,
+              "response_size": 32042,
+              "checksum": "0b1cc283"
+            },
+            "second_run": {
+              "http_code": 404,
+              "response_time_ms": 79,
+              "response_size": 32042,
+              "checksum": "0b1cc283"
+            },
+            "http_code_match": true,
+            "response_identical": true,
+            "checksum_match": true,
+            "response_time_variance": 29.464285714285715,
+            "repeatable": true
+          },
+          "errors": [],
+          "warnings": [
+            "High response time variance: 29.46%"
+          ]
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 969,
+          "timestamp": "2026-08-09T21:12:04.065Z",
+          "details": {
+            "latency_ms": 53,
+            "throughput_rps": 0,
+            "cpu_usage_percent": 52.34623323013416,
+            "memory_usage_mb": 17.222259521484375,
+            "retry_count": 0,
+            "performance_rating": "GOOD",
+            "latency_acceptable": true,
+            "throughput_acceptable": false,
+            "cpu_acceptable": true,
+            "memory_acceptable": true,
+            "degradation_detected": true,
+            "degradation_details": [
+              "Zero throughput - all requests failed"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Throughput below threshold: 0 RPS",
+            "Performance degradation detected: Zero throughput - all requests failed"
+          ]
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 4,
+          "timestamp": "2026-08-09T21:12:04.069Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "FAIL",
+          "duration_ms": 316,
+          "timestamp": "2026-08-09T21:12:04.385Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": false,
+            "idor_vulnerable": false,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 100,
+            "vulnerabilities_found": [],
+            "security_headers": {
+              "Strict-Transport-Security": true,
+              "Content-Security-Policy": true,
+              "X-Frame-Options": true,
+              "X-Content-Type-Options": true,
+              "X-XSS-Protection": true
+            },
+            "missing_security_headers": [],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": true,
+            "exposed_data_types": [
+              "Credit Card Number",
+              "Phone Number"
+            ]
+          },
+          "errors": [
+            "Sensitive data exposed: Credit Card Number, Phone Number"
+          ],
+          "warnings": []
+        }
+      ]
+    },
+    {
+      "registry_id": "UA-003",
+      "registry_name": "Реєстр санкцій (РНБО)",
+      "endpoint": "https://sanctions.nsdc.gov.ua/api/list",
+      "access_type": "FREE_AUTO",
+      "query_status": "FAIL",
+      "http_code": 0,
+      "response_time_ms": 2,
+      "data_returned": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-004: Query execution failed: fetch failed",
+        "TEST-005: Failed to capture raw response: fetch failed",
+        "TEST-006: Schema validation failed: fetch failed",
+        "TEST-007: Parser validation failed: fetch failed",
+        "TEST-008: Data integrity check failed: fetch failed",
+        "TEST-009: Provenance check failed: fetch failed",
+        "TEST-010: Freshness check failed: fetch failed",
+        "TEST-011: Entity resolution check failed: fetch failed",
+        "TEST-012: Cross validation failed: fetch failed",
+        "TEST-013: Hallucination check failed: fetch failed",
+        "TEST-014: Repeatability check failed: fetch failed",
+        "TEST-015: Throughput below threshold: 0 RPS; CPU usage high: 100%; Performance degradation detected: High retry count: 11, Zero throughput - all requests failed",
+        "TEST-017: Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:04.385Z",
+          "details": {
+            "registry_id": "UA-003",
+            "registry_name": "Реєстр санкцій (РНБО)",
+            "endpoint": "https://sanctions.nsdc.gov.ua/api/list",
+            "access_type": "FREE_AUTO",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "sanctions_connector",
+            "connector_version": "1.1.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "NONE",
+            "supported_entities": [
+              "SANCTION",
+              "PERSON",
+              "COMPANY"
+            ],
+            "supported_identifiers": [
+              "name",
+              "edrpou",
+              "ipn"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS",
+          "duration_ms": 50,
+          "timestamp": "2026-08-09T21:12:04.435Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 0,
+            "response_time_ms": 50,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:04.435Z",
+          "details": {
+            "auth_type": "NONE",
+            "authentication_required": false,
+            "authentication_status": "NOT_REQUIRED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "FAIL",
+          "duration_ms": 2,
+          "timestamp": "2026-08-09T21:12:04.437Z",
+          "details": {
+            "start_time": "2026-08-09T21:12:04.435Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-09T21:12:04.437Z",
+            "execution_time_ms": 2,
+            "error_message": "fetch failed"
+          },
+          "errors": [
+            "Query execution failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.438Z",
+          "details": {},
+          "errors": [
+            "Failed to capture raw response: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.439Z",
+          "details": {},
+          "errors": [
+            "Schema validation failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.440Z",
+          "details": {},
+          "errors": [
+            "Parser validation failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.441Z",
+          "details": {},
+          "errors": [
+            "Data integrity check failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.442Z",
+          "details": {},
+          "errors": [
+            "Provenance check failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.443Z",
+          "details": {},
+          "errors": [
+            "Freshness check failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.444Z",
+          "details": {},
+          "errors": [
+            "Entity resolution check failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.445Z",
+          "details": {},
+          "errors": [
+            "Cross validation failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 2,
+          "timestamp": "2026-08-09T21:12:04.447Z",
+          "details": {},
+          "errors": [
+            "Hallucination check failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "FAIL",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.448Z",
+          "details": {},
+          "errors": [
+            "Repeatability check failed: fetch failed"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 11,
+          "timestamp": "2026-08-09T21:12:04.459Z",
+          "details": {
+            "latency_ms": 0,
+            "throughput_rps": 0,
+            "cpu_usage_percent": 100,
+            "memory_usage_mb": 17.2327880859375,
+            "retry_count": 11,
+            "performance_rating": "FAIR",
+            "latency_acceptable": true,
+            "throughput_acceptable": false,
+            "cpu_acceptable": false,
+            "memory_acceptable": true,
+            "degradation_detected": true,
+            "degradation_details": [
+              "High retry count: 11",
+              "Zero throughput - all requests failed"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Throughput below threshold: 0 RPS",
+            "CPU usage high: 100%",
+            "Performance degradation detected: High retry count: 11, Zero throughput - all requests failed"
+          ]
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 1,
+          "timestamp": "2026-08-09T21:12:04.460Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 8,
+          "timestamp": "2026-08-09T21:12:04.468Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": false,
+            "idor_vulnerable": false,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 100,
+            "vulnerabilities_found": [],
+            "security_headers": {
+              "Strict-Transport-Security": false,
+              "Content-Security-Policy": false,
+              "X-Frame-Options": false,
+              "X-Content-Type-Options": false,
+              "X-XSS-Protection": false
+            },
+            "missing_security_headers": [
+              "Strict-Transport-Security",
+              "Content-Security-Policy",
+              "X-Frame-Options",
+              "X-Content-Type-Options",
+              "X-XSS-Protection"
+            ],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": false,
+            "exposed_data_types": []
+          },
+          "errors": [],
+          "warnings": [
+            "Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "registry_id": "UA-004",
+      "registry_name": "Система публічних закупівель Prozorro",
+      "endpoint": "https://public.api.openprocurement.org/api/2.5/tenders",
+      "access_type": "FREE_AUTO",
+      "query_status": "PASS",
+      "http_code": 200,
+      "response_time_ms": 43,
+      "data_returned": true,
+      "provenance_complete": true,
+      "freshness_acceptable": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0.8912621359223311,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-007: Type validation failed: 0: expected string, got object, 1: expected string, got object, 2: expected string, got object, 3: expected string, got object, 4: expected string, got object, 5: expected string, got object, 6: expected string, got object, 7: expected string, got object, 8: expected string, got object, 9: expected string, got object, 10: expected string, got object, 11: expected string, got object, 12: expected string, got object, 13: expected string, got object, 14: expected string, got object, 15: expected string, got object, 16: expected string, got object, 17: expected string, got object, 18: expected string, got object, 19: expected string, got object, 20: expected string, got object, 21: expected string, got object, 22: expected string, got object, 23: expected string, got object, 24: expected string, got object, 25: expected string, got object, 26: expected string, got object, 27: expected string, got object, 28: expected string, got object, 29: expected string, got object, 30: expected string, got object, 31: expected string, got object, 32: expected string, got object, 33: expected string, got object, 34: expected string, got object, 35: expected string, got object, 36: expected string, got object, 37: expected string, got object, 38: expected string, got object, 39: expected string, got object, 40: expected string, got object, 41: expected string, got object, 42: expected string, got object, 43: expected string, got object, 44: expected string, got object, 45: expected string, got object, 46: expected string, got object, 47: expected string, got object, 48: expected string, got object, 49: expected string, got object, 50: expected string, got object, 51: expected string, got object, 52: expected string, got object, 53: expected string, got object, 54: expected string, got object, 55: expected string, got object, 56: expected string, got object, 57: expected string, got object, 58: expected string, got object, 59: expected string, got object, 60: expected string, got object, 61: expected string, got object, 62: expected string, got object, 63: expected string, got object, 64: expected string, got object, 65: expected string, got object, 66: expected string, got object, 67: expected string, got object, 68: expected string, got object, 69: expected string, got object, 70: expected string, got object, 71: expected string, got object, 72: expected string, got object, 73: expected string, got object, 74: expected string, got object, 75: expected string, got object, 76: expected string, got object, 77: expected string, got object, 78: expected string, got object, 79: expected string, got object, 80: expected string, got object, 81: expected string, got object, 82: expected string, got object, 83: expected string, got object, 84: expected string, got object, 85: expected string, got object, 86: expected string, got object, 87: expected string, got object, 88: expected string, got object, 89: expected string, got object, 90: expected string, got object, 91: expected string, got object, 92: expected string, got object, 93: expected string, got object, 94: expected string, got object, 95: expected string, got object, 96: expected string, got object, 97: expected string, got object, 98: expected string, got object, 99: expected string, got object; Missing required fields: name, id",
+        "TEST-008: Character loss detected: 407 characters",
+        "TEST-010: Could not determine data age - no timestamp found",
+        "TEST-012: Missing expected entity fields: name, edrpou, status",
+        "TEST-013: Fields without provenance: data.dateModified, data.id, next_page.offset, next_page.path, next_page.uri",
+        "TEST-014: High response time variance: 29.17%",
+        "TEST-015: CPU usage high: 86.00232558139535%",
+        "TEST-017: Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-XSS-Protection",
+        "TEST-017: Security vulnerabilities detected: SSRF, IDOR; Sensitive data exposed: Phone Number"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:04.468Z",
+          "details": {
+            "registry_id": "UA-004",
+            "registry_name": "Система публічних закупівель Prozorro",
+            "endpoint": "https://public.api.openprocurement.org/api/2.5/tenders",
+            "access_type": "FREE_AUTO",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "prozorro_connector",
+            "connector_version": "1.2.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "NONE",
+            "supported_entities": [
+              "TENDER",
+              "COMPANY",
+              "CONTRACT"
+            ],
+            "supported_identifiers": [
+              "edrpou",
+              "name"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS",
+          "duration_ms": 163,
+          "timestamp": "2026-08-09T21:12:04.631Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 200,
+            "response_time_ms": 163,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:04.631Z",
+          "details": {
+            "auth_type": "NONE",
+            "authentication_required": false,
+            "authentication_status": "NOT_REQUIRED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "PASS",
+          "duration_ms": 43,
+          "timestamp": "2026-08-09T21:12:04.674Z",
+          "details": {
+            "start_time": "2026-08-09T21:12:04.631Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-09T21:12:04.674Z",
+            "execution_time_ms": 43,
+            "http_code": 200,
+            "http_status_text": "OK",
+            "response_size_bytes": 9904,
+            "response_preview": "{\"data\": [{\"dateModified\": \"2015-02-23T12:00:00.756010+02:00\", \"id\": \"09076ffc415e4d57ad7046aacc91b6e1\"}, {\"dateModified\": \"2015-04-14T11:06:53.627855+03:00\", \"id\": \"7dd5668189454f5994da57b6ac43631d\"}",
+            "query_status": "SUCCESS"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS",
+          "duration_ms": 84,
+          "timestamp": "2026-08-09T21:12:04.758Z",
+          "details": {
+            "response_size": 9904,
+            "content_type": "application/json",
+            "http_code": 200,
+            "checksum": "0009bbfb",
+            "sha256_hash": "a432b31025ad92c69d62c018d93b8f78012d8d03dbc11b4b3c05996cb653d23d",
+            "headers_count": 9,
+            "content_type_valid": true
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "PASS",
+          "duration_ms": 22,
+          "timestamp": "2026-08-09T21:12:04.780Z",
+          "details": {
+            "json_parseable": true,
+            "schema_version": "2.5",
+            "schema_valid": true,
+            "missing_fields": [],
+            "extra_fields": [
+              "next_page",
+              "next_page.offset",
+              "next_page.path",
+              "next_page.uri"
+            ],
+            "type_mismatches": []
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 34,
+          "timestamp": "2026-08-09T21:12:04.814Z",
+          "details": {
+            "parser_version": "1.0.0",
+            "parse_errors_count": 0,
+            "parse_warnings_count": 0,
+            "fields_parsed": 100,
+            "type_validation": {
+              "valid": false,
+              "errors": [
+                "0: expected string, got object",
+                "1: expected string, got object",
+                "2: expected string, got object",
+                "3: expected string, got object",
+                "4: expected string, got object",
+                "5: expected string, got object",
+                "6: expected string, got object",
+                "7: expected string, got object",
+                "8: expected string, got object",
+                "9: expected string, got object",
+                "10: expected string, got object",
+                "11: expected string, got object",
+                "12: expected string, got object",
+                "13: expected string, got object",
+                "14: expected string, got object",
+                "15: expected string, got object",
+                "16: expected string, got object",
+                "17: expected string, got object",
+                "18: expected string, got object",
+                "19: expected string, got object",
+                "20: expected string, got object",
+                "21: expected string, got object",
+                "22: expected string, got object",
+                "23: expected string, got object",
+                "24: expected string, got object",
+                "25: expected string, got object",
+                "26: expected string, got object",
+                "27: expected string, got object",
+                "28: expected string, got object",
+                "29: expected string, got object",
+                "30: expected string, got object",
+                "31: expected string, got object",
+                "32: expected string, got object",
+                "33: expected string, got object",
+                "34: expected string, got object",
+                "35: expected string, got object",
+                "36: expected string, got object",
+                "37: expected string, got object",
+                "38: expected string, got object",
+                "39: expected string, got object",
+                "40: expected string, got object",
+                "41: expected string, got object",
+                "42: expected string, got object",
+                "43: expected string, got object",
+                "44: expected string, got object",
+                "45: expected string, got object",
+                "46: expected string, got object",
+                "47: expected string, got object",
+                "48: expected string, got object",
+                "49: expected string, got object",
+                "50: expected string, got object",
+                "51: expected string, got object",
+                "52: expected string, got object",
+                "53: expected string, got object",
+                "54: expected string, got object",
+                "55: expected string, got object",
+                "56: expected string, got object",
+                "57: expected string, got object",
+                "58: expected string, got object",
+                "59: expected string, got object",
+                "60: expected string, got object",
+                "61: expected string, got object",
+                "62: expected string, got object",
+                "63: expected string, got object",
+                "64: expected string, got object",
+                "65: expected string, got object",
+                "66: expected string, got object",
+                "67: expected string, got object",
+                "68: expected string, got object",
+                "69: expected string, got object",
+                "70: expected string, got object",
+                "71: expected string, got object",
+                "72: expected string, got object",
+                "73: expected string, got object",
+                "74: expected string, got object",
+                "75: expected string, got object",
+                "76: expected string, got object",
+                "77: expected string, got object",
+                "78: expected string, got object",
+                "79: expected string, got object",
+                "80: expected string, got object",
+                "81: expected string, got object",
+                "82: expected string, got object",
+                "83: expected string, got object",
+                "84: expected string, got object",
+                "85: expected string, got object",
+                "86: expected string, got object",
+                "87: expected string, got object",
+                "88: expected string, got object",
+                "89: expected string, got object",
+                "90: expected string, got object",
+                "91: expected string, got object",
+                "92: expected string, got object",
+                "93: expected string, got object",
+                "94: expected string, got object",
+                "95: expected string, got object",
+                "96: expected string, got object",
+                "97: expected string, got object",
+                "98: expected string, got object",
+                "99: expected string, got object"
+              ]
+            },
+            "utf8_valid": true,
+            "null_fields": [],
+            "null_handling_valid": true,
+            "required_fields_present": [],
+            "missing_required_fields": [
+              "name",
+              "id"
+            ],
+            "optional_fields_present": []
+          },
+          "errors": [
+            "Type validation failed: 0: expected string, got object, 1: expected string, got object, 2: expected string, got object, 3: expected string, got object, 4: expected string, got object, 5: expected string, got object, 6: expected string, got object, 7: expected string, got object, 8: expected string, got object, 9: expected string, got object, 10: expected string, got object, 11: expected string, got object, 12: expected string, got object, 13: expected string, got object, 14: expected string, got object, 15: expected string, got object, 16: expected string, got object, 17: expected string, got object, 18: expected string, got object, 19: expected string, got object, 20: expected string, got object, 21: expected string, got object, 22: expected string, got object, 23: expected string, got object, 24: expected string, got object, 25: expected string, got object, 26: expected string, got object, 27: expected string, got object, 28: expected string, got object, 29: expected string, got object, 30: expected string, got object, 31: expected string, got object, 32: expected string, got object, 33: expected string, got object, 34: expected string, got object, 35: expected string, got object, 36: expected string, got object, 37: expected string, got object, 38: expected string, got object, 39: expected string, got object, 40: expected string, got object, 41: expected string, got object, 42: expected string, got object, 43: expected string, got object, 44: expected string, got object, 45: expected string, got object, 46: expected string, got object, 47: expected string, got object, 48: expected string, got object, 49: expected string, got object, 50: expected string, got object, 51: expected string, got object, 52: expected string, got object, 53: expected string, got object, 54: expected string, got object, 55: expected string, got object, 56: expected string, got object, 57: expected string, got object, 58: expected string, got object, 59: expected string, got object, 60: expected string, got object, 61: expected string, got object, 62: expected string, got object, 63: expected string, got object, 64: expected string, got object, 65: expected string, got object, 66: expected string, got object, 67: expected string, got object, 68: expected string, got object, 69: expected string, got object, 70: expected string, got object, 71: expected string, got object, 72: expected string, got object, 73: expected string, got object, 74: expected string, got object, 75: expected string, got object, 76: expected string, got object, 77: expected string, got object, 78: expected string, got object, 79: expected string, got object, 80: expected string, got object, 81: expected string, got object, 82: expected string, got object, 83: expected string, got object, 84: expected string, got object, 85: expected string, got object, 86: expected string, got object, 87: expected string, got object, 88: expected string, got object, 89: expected string, got object, 90: expected string, got object, 91: expected string, got object, 92: expected string, got object, 93: expected string, got object, 94: expected string, got object, 95: expected string, got object, 96: expected string, got object, 97: expected string, got object, 98: expected string, got object, 99: expected string, got object",
+            "Missing required fields: name, id"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 27,
+          "timestamp": "2026-08-09T21:12:04.841Z",
+          "details": {
+            "raw_length": 9904,
+            "parsed_length": 9497,
+            "character_loss": 407,
+            "data_corruption": false,
+            "unicode_issues": [],
+            "truncation_detected": false,
+            "truncation_location": "none",
+            "encoding_valid": true,
+            "encoding_detected": "UTF-8",
+            "consistency_valid": true,
+            "consistency_issues": []
+          },
+          "errors": [
+            "Character loss detected: 407 characters"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "PASS",
+          "duration_ms": 20,
+          "timestamp": "2026-08-09T21:12:04.861Z",
+          "details": {
+            "provenance_records_count": 103,
+            "provenance_complete": true,
+            "source_id_present": true,
+            "record_id_present": true,
+            "timestamp_present": true,
+            "parser_version_present": true,
+            "confidence_present": true,
+            "raw_fragment_present": true,
+            "average_confidence": 0.8912621359223311,
+            "min_confidence": 0.6000000000000001,
+            "max_confidence": 0.9
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 18,
+          "timestamp": "2026-08-09T21:12:04.879Z",
+          "details": {
+            "last_updated": null,
+            "age_seconds": null,
+            "ttl_seconds": null,
+            "cache_status": "UNKNOWN",
+            "max_age_seconds": 60,
+            "freshness_acceptable": false,
+            "cache_control": null,
+            "etag": null,
+            "last_modified": null
+          },
+          "errors": [],
+          "warnings": [
+            "Could not determine data age - no timestamp found"
+          ]
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "PASS",
+          "duration_ms": 21,
+          "timestamp": "2026-08-09T21:12:04.900Z",
+          "details": {
+            "duplicates_found": 0,
+            "duplicate_ids": [],
+            "historical_records_found": 0,
+            "historical_record_ids": [],
+            "transliteration_issues": [],
+            "name_changes_detected": false,
+            "name_change_records": [],
+            "relationships_found": 0,
+            "relationship_types": [],
+            "entity_resolution_quality": 1
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 22,
+          "timestamp": "2026-08-09T21:12:04.922Z",
+          "details": {
+            "sources_compared": 1,
+            "matches_found": [],
+            "discrepancies_found": [],
+            "contradiction_records": [],
+            "contradiction_engine_triggered": false,
+            "internal_consistency": true,
+            "internal_inconsistencies": [],
+            "expected_fields_present": [],
+            "expected_fields_missing": [
+              "name",
+              "edrpou",
+              "status"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Missing expected entity fields: name, edrpou, status"
+          ]
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 21,
+          "timestamp": "2026-08-09T21:12:04.943Z",
+          "details": {
+            "fields_checked": 205,
+            "hallucinated_fields": [],
+            "not_found_fields": [],
+            "unknown_fields": [],
+            "not_applicable_fields": [],
+            "hallucination_detected": false,
+            "generic_values_found": false,
+            "generic_value_fields": [],
+            "placeholders_found": false,
+            "placeholder_fields": [],
+            "fields_with_provenance": [],
+            "fields_without_provenance": [
+              "data.dateModified",
+              "data.id",
+              "next_page.offset",
+              "next_page.path",
+              "next_page.uri"
+            ],
+            "ai_patterns_detected": false,
+            "ai_pattern_fields": []
+          },
+          "errors": [
+            "Fields without provenance: data.dateModified, data.id, next_page.offset, next_page.path, next_page.uri"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 56,
+          "timestamp": "2026-08-09T21:12:04.999Z",
+          "details": {
+            "first_run": {
+              "http_code": 200,
+              "response_time_ms": 24,
+              "response_size": 9904,
+              "checksum": "0009bbfb"
+            },
+            "second_run": {
+              "http_code": 200,
+              "response_time_ms": 31,
+              "response_size": 9904,
+              "checksum": "0009bbfb"
+            },
+            "http_code_match": true,
+            "response_identical": true,
+            "checksum_match": true,
+            "response_time_variance": 29.166666666666668,
+            "repeatable": true
+          },
+          "errors": [],
+          "warnings": [
+            "High response time variance: 29.17%"
+          ]
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 688,
+          "timestamp": "2026-08-09T21:12:05.687Z",
+          "details": {
+            "latency_ms": 21,
+            "throughput_rps": 14.992503748125936,
+            "cpu_usage_percent": 86.00232558139535,
+            "memory_usage_mb": 14.058555603027344,
+            "retry_count": 0,
+            "performance_rating": "GOOD",
+            "latency_acceptable": true,
+            "throughput_acceptable": true,
+            "cpu_acceptable": false,
+            "memory_acceptable": true,
+            "degradation_detected": false,
+            "degradation_details": []
+          },
+          "errors": [],
+          "warnings": [
+            "CPU usage high: 86.00232558139535%"
+          ]
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 3,
+          "timestamp": "2026-08-09T21:12:05.690Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "FAIL",
+          "duration_ms": 217,
+          "timestamp": "2026-08-09T21:12:05.907Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": true,
+            "idor_vulnerable": true,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 70,
+            "vulnerabilities_found": [
+              "SSRF",
+              "IDOR"
+            ],
+            "security_headers": {
+              "Strict-Transport-Security": false,
+              "Content-Security-Policy": false,
+              "X-Frame-Options": false,
+              "X-Content-Type-Options": true,
+              "X-XSS-Protection": false
+            },
+            "missing_security_headers": [
+              "Strict-Transport-Security",
+              "Content-Security-Policy",
+              "X-Frame-Options",
+              "X-XSS-Protection"
+            ],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": true,
+            "exposed_data_types": [
+              "Phone Number"
+            ]
+          },
+          "errors": [
+            "Security vulnerabilities detected: SSRF, IDOR",
+            "Sensitive data exposed: Phone Number"
+          ],
+          "warnings": [
+            "Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-XSS-Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "registry_id": "INT-001",
+      "registry_name": "HaveIBeenPwned (HIBP)",
+      "endpoint": "https://haveibeenpwned.com/api/v3/breachedaccount",
+      "access_type": "FREE_API_KEY",
+      "query_status": "FAIL",
+      "http_code": 404,
+      "response_time_ms": 264,
+      "data_returned": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-002: Client error: HTTP 404",
+        "TEST-003: API Key not configured in environment",
+        "TEST-004: Query failed with HTTP 404: Not Found",
+        "TEST-005: Unexpected content type: text/html; charset=utf-8",
+        "TEST-006: Response is not valid JSON",
+        "TEST-007: Cannot validate parser - raw data is not valid JSON",
+        "TEST-008: Cannot check data integrity - raw data is not valid JSON",
+        "TEST-009: Cannot check provenance - raw data is not valid JSON",
+        "TEST-010: Cannot check freshness - raw data is not valid JSON",
+        "TEST-011: Cannot check entity resolution - raw data is not valid JSON",
+        "TEST-012: Cannot perform cross validation - raw data is not valid JSON",
+        "TEST-013: Cannot check for hallucination - raw data is not valid JSON",
+        "TEST-014: Responses differ between runs; Checksums differ between runs; High response time variance: 17.43%",
+        "TEST-014: Results are not repeatable",
+        "TEST-015: Throughput below threshold: 0 RPS; Performance degradation detected: Zero throughput - all requests failed",
+        "TEST-017: Missing security headers: X-XSS-Protection",
+        "TEST-017: Sensitive data exposed: Phone Number"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:05.907Z",
+          "details": {
+            "registry_id": "INT-001",
+            "registry_name": "HaveIBeenPwned (HIBP)",
+            "endpoint": "https://haveibeenpwned.com/api/v3/breachedaccount",
+            "access_type": "FREE_API_KEY",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "hibp_connector",
+            "connector_version": "1.0.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "API_KEY",
+            "supported_entities": [
+              "EMAIL",
+              "PHONE"
+            ],
+            "supported_identifiers": [
+              "email",
+              "phone"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 308,
+          "timestamp": "2026-08-09T21:12:06.215Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 404,
+            "response_time_ms": 308,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": [
+            "Client error: HTTP 404"
+          ]
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "FAIL",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:06.215Z",
+          "details": {
+            "auth_type": "API_KEY",
+            "authentication_required": true,
+            "authentication_method": "API_KEY",
+            "authentication_status": "MISSING_CREDENTIALS"
+          },
+          "errors": [
+            "API Key not configured in environment"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "FAIL",
+          "duration_ms": 265,
+          "timestamp": "2026-08-09T21:12:06.480Z",
+          "details": {
+            "start_time": "2026-08-09T21:12:06.215Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-09T21:12:06.479Z",
+            "execution_time_ms": 264,
+            "http_code": 404,
+            "http_status_text": "Not Found",
+            "response_size_bytes": 13549,
+            "response_preview": "<!DOCTYPE html>\n<html lang=\"en\" data-bs-theme=\"dark\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Have I Been Pwned: 404 Error &#x2014; What are you doing here mate?</title>\n  <meta name=\"viewport\" conte",
+            "error_message": "<!DOCTYPE html>\n<html lang=\"en\" data-bs-theme=\"dark\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Have I Been Pwned: 404 Error &#x2014; What are you doing here mate?</title>\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <!-- Preload -->\n  <link rel=\"preload\" href=\"/Images/HibpLogo.svg?v=w1UPiLz7TzzzyTflCj6n2lzgzKj-UhDA7827u2P4wb8\" as=\"image\" fetchpriority=\"high\" />\n  <link rel=\"preload\" href=\"/js/bundle/bundle.js?v=QYHN44Dln0I7MF6xLP2nERm_Q7DfycrBQkhyT7ejq-A\" as=\"script\" fetchpriority=\"high\" />\n\n  <!-- Social cards -->\n  <meta name=\"description\" content=\"Looks like you&#x27;ve hopped into a page that doesn&#x27;t exist! There&#x27;s nothing out here, and you&#x27;re now totally lost, best turn around and go back to where you came from.\">\n  <meta property=\"og:site_name\" content=\"Have I Been Pwned\">\n  <meta property=\"og:title\" content=\"Have I Been Pwned: 404 Error &#x2014; What are you doing here mate?\">\n  <meta property=\"og:description\" content=\"Looks like you&#x27;ve hopped into a page that doesn&#x27;t exist! There&#x27;s nothing out here, and you&#x27;re now totally lost, best turn around and go back to where you came from.\">\n  <meta property=\"og:url\" content=\"https://haveibeenpwned.com/Error/PageNotFound\">\n  <meta property=\"og:image\" content=\"https://haveibeenpwned.com/Images/OpenGraphPreview.jpg\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:image:width\" content=\"1200\">\n  <meta property=\"og:image:height\" content=\"630\">\n  <meta property=\"fb:app_id\" content=\"553845121487108\">\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"twitter:site\" content=\"@haveibeenpwned\">\n  <meta name=\"twitter:title\" content=\"Have I Been Pwned: 404 Error &#x2014; What are you doing here mate?\">\n  <meta name=\"twitter:description\" content=\"Looks like you&#x27;ve hopped into a page that doesn&#x27;t exist! There&#x27;s nothing out here, and you&#x27;re now totally lost, best turn around and go back to where you came from.\">\n  <meta name=\"twitter:url\" content=\"https://haveibeenpwned.com/Error/PageNotFound\">\n  <meta name=\"twitter:image\" content=\"https://haveibeenpwned.com/Images/OpenGraphPreview.jpg\">\n  <link rel=\"canonical\" href=\"https://haveibeenpwned.com/Error/PageNotFound\">\n  <!-- Apple tags -->\n  <meta name=\"apple-mobile-web-app-title\" content=\"Have I Been Pwned\">\n  <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-touch-icon.png\">\n  <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-touch-icon-180x180.png\">\n  <link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/apple-touch-icon-152x152.png\">\n  <link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/apple-touch-icon-120x120.png\">\n  <link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/apple-touch-icon-76x76.png\">\n  <link rel=\"apple-touch-icon\" sizes=\"57x57\" href=\"/apple-touch-icon-57x57.png\">\n  <!-- Icons -->\n  <link rel=\"manifest\" href=\"/site.webmanifest?v=luhS2CarNDfOuu_d3qBkSvyT9iLLvojAlMx9SdCErWg\">\n  <link rel=\"icon\" type=\"image/png\" href=\"/Images/Icons/favicon-96x96.png?v=apCm6ljnsII-SykSCOQfdWddorqioqqM1yZUTxmEvt0\" sizes=\"96x96\">\n  <link rel=\"icon\" type=\"image/svg+xml\" href=\"/Images/Icons/favicon.svg?v=mzTSTsC6_m5N9uSsecVq_mPaB8A4RngVgvtKWAsEaf0\">\n  <link rel=\"shortcut icon\" href=\"/Images/Icons/favicon.ico?v=_wnMzFLrZ7c2GgHxz6JXJyGBXMo7jVg8jjKKCultiCk\">\n  <!-- Styles (bundled) -->\n  <link rel=\"stylesheet\" href=\"https://api.fontshare.com/v2/css?f[]=switzer@400,500,700&display=swap\">\n  <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.5.0/css/flag-icons.min.css\" integrity=\"sha512-+WVTaUIzUw5LFzqIqXOT3JVAc5SrMuvHm230I9QAZa6s+QRk8NDPswbHo2miIZj3yiFyV9lAgzO1wVrjdoO4tw==\" crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\" />\n  <!-- Everything else -->\n  <link rel=\"alternate\" type=\"application/rss+xml\" title=\"Have I Been Pwned latest breaches\" href=\"https://haveibeenpwned.com/feed/breaches/\">\n  \n  <link href=\"/css/main.css?v=r84I2g5KjWIoBm1LDgMJr4p-ZhSAlygoabWeTPugnLk\" rel=\"stylesheet\" />\n</head>\n<body>\n  <!-- Navigation Component -->\n  <nav class=\"navbar navbar-expand-lg\">\n    <div class=\"container-fluid\">\n      <a href=\"/\" class=\"navbar-brand\">\n        <img src=\"/Images/HibpLogo.svg?v=w1UPiLz7TzzzyTflCj6n2lzgzKj-UhDA7827u2P4wb8\" alt=\"Have I Been Pwned\" height=\"30\" fetchpriority=\"high\" />\n      </a>\n      <div class=\"d-flex align-items-center justify-content-end gap-2\">\n        <a href=\"/Dashboard\" class=\"btn btn-secondary btn-sm d-lg-none\" role=\"button\">Dashboard</a>\n        <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarNav\">\n          <span class=\"navbar-toggler-icon\"></span>\n        </button>\n      </div>\n      <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\n        <ul class=\"navbar-nav mx-auto\">\n    <li class=\"nav-item\"><a class=\"nav-link\" href=\"/PwnedWebsites\">Who&#x27;s Been Pwned</a></li>\n    <li class=\"nav-item\"><a class=\"nav-link\" href=\"/Passwords\">Passwords</a></li>\n    <li class=\"nav-item\"><a class=\"nav-link\" href=\"/NotifyMe\">Notify Me</a></li>\n    <li class=\"nav-item\"><a class=\"nav-link\" href=\"/API/v3\">API</a></li>\n    <li class=\"nav-item\"><a class=\"nav-link\" href=\"/Demos\">Demos</a></li>\n    <li class=\"nav-item\"><a class=\"nav-link\" href=\"/Subscription\">Pricing</a></li>\n          <li class=\"nav-item dropdown\">\n            <a class=\"nav-link dropdown-toggle\" href=\"#\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">About</a>\n            <ul class=\"dropdown-menu\">\n    <li><a class=\"dropdown-item\" href=\"/About\">Who, What &amp; Why</a></li>\n    <li><a class=\"dropdown-item\" href=\"/FAQs\">FAQs</a></li>\n    <li><a class=\"dropdown-item\" href=\"/TermsOfUse\">Terms of Use</a></li>\n    <li><a class=\"dropdown-item\" href=\"/Privacy\">Privacy Policy</a></li>\n    <li><a class=\"dropdown-item\" href=\"/OptOut\">Opt Out</a></li>\n            </ul>\n          </li>\n        </ul>\n      </div>\n      <a href=\"/Dashboard\" class=\"btn btn-secondary d-none d-lg-inline-flex\" role=\"button\">Dashboard</a>\n    </div>\n  </nav>\n  \n<main>\n  <section class=\"py-5\">\n    <div class=\"container\">\n      <div class=\"row justify-content-center\">\n        <div class=\"col-lg-8 text-center\">\n          <div class=\"card card-glow mb-4\">\n            <div class=\"card-body\">\n              \n  <img src=\"/Images/404.jpeg\" alt=\"Confused Kangaroo\" class=\"img-fluid rounded-4 mw-100 mb-4 page-not-found-image\">\n\n              <h3 class=\"fw-bold mb-3\">404 Error &#x2014; What are you doing here mate?</h3>\n              \n\n<p class=\"mb-4\">Looks like you&#x27;ve hopped into a page that doesn&#x27;t exist! There&#x27;s nothing out here, and you&#x27;re now totally lost, best turn around and go back to where you came from.</p>\n<div class=\"mt-4\">\n  <a href=\"/\" class=\"btn btn-primary me-2\"> <i class=\"bi bi-house-door me-2\"></i>Leave the Outback </a>\n</div>\n\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n</main>\n\n\n  <!-- Footer -->\n  <footer class=\"py-5 bg-dark-subtle-custom\">\n    <div class=\"container\">\n      <div class=\"footer-wrapper rounded-3 border border-primary-custom bg-dark-subtle-custom\">\n        <div class=\"row g-0\">\n          <!-- Logo and Tagline -->\n          <div class=\"col-lg-4 p-4 border-end border-primary-custom\">\n            <div class=\"footer-logo mb-3\">\n              <a href=\"/\" class=\"text-white text-decoration-none fw-bold fs-4\">Have I Been Pwned</a>\n            </div>\n            <p class=\"text-muted mb-4\">Check if your email has been compromised in a data breach</p>\n            <a href=\"/\" class=\"btn btn-outline-primary\"><i class=\"bi bi-search me-2\"></i>Check my email</a>\n          </div>\n\n          <!-- Sitemap -->\n          <div class=\"col-lg-5 p-4 border-end border-primary-custom\">\n            <div class=\"row g-4\">\n              <div class=\"col-6\">\n                <h5 class=\"fw-bold mb-3\">Services</h5>\n                <ul class=\"list-unstyled mb-0\">\n                  <li class=\"mb-2\"><a href=\"/\" class=\"text-decoration-none text-muted hover-white\">Email Search</a></li>\n                  <li class=\"mb-2\"><a href=\"/Dashboard#Domains\" class=\"text-decoration-none text-muted hover-white\">Domain Search</a></li>\n                  <li class=\"mb-2\"><a href=\"/PwnedWebsites\" class=\"text-decoration-none text-muted hover-white\">Who's Been Pwned</a></li>\n                  <li class=\"mb-2\"><a href=\"/Passwords\" class=\"text-decoration-none text-muted hover-white\">Passwords</a></li>\n                  <li class=\"mb-2\"><a href=\"/NotifyMe\" class=\"text-decoration-none text-muted hover-white\">Notify Me</a></li>\n                  <li class=\"mb-2\"><a href=\"/API/v3\" class=\"text-decoration-none text-muted hover-white\">API</a></li>\n                  <li class=\"mb-2\"><a href=\"/Docs/MCP\" class=\"text-decoration-none text-muted hover-white\">MCP Server</a></li>\n                  <li class=\"mb-2\"><a href=\"/Subscription\" class=\"text-decoration-none text-muted hover-white\">Pricing</a></li>\n                  <li class=\"mb-2\"><a href=\"/OptOut\" class=\"text-decoration-none text-muted hover-white\">Opt Out</a></li>\n                  <li class=\"mb-2\"><a href=\"/Dashboard\" class=\"text-decoration-none text-muted hover-white\">Dashboard</a></li>\n                  <li><a href=\"/Partners\" class=\"text-decoration-none text-muted hover-white\">Partners</a></li>\n                </ul>\n              </div>\n              <div class=\"col-6\">\n                <h5 class=\"fw-bold mb-3\">Information</h5>\n                <ul class=\"list-unstyled mb-0\">\n                  <li class=\"mb-2\"><a href=\"/Demos\" class=\"text-decoration-none text-muted hover-white\">Demos</a></li>\n                  <li class=\"mb-2\"><a href=\"/About\" class=\"text-decoration-none text-muted hover-white\">Who, What & Why</a></li>\n                  <li class=\"mb-2\"><a href=\"/FAQs\" class=\"text-decoration-none text-muted hover-white\">FAQ</a></li>\n                  <li class=\"mb-2\"><a href=\"/Privacy\" class=\"text-decoration-none text-muted hover-white\">Privacy Policy</a></li>\n                  <li class=\"mb-2\"><a href=\"/TermsOfUse\" class=\"text-decoration-none text-muted hover-white\">Terms of Use</a></li>\n                  <li class=\"mb-2\"><a href=\"/DPA\" class=\"text-decoration-none text-muted hover-white\">DPA</a></li>\n                  <li class=\"mb-2\"><a href=\"https://haveibeenpwned.uservoice.com/\" class=\"text-decoration-none text-muted hover-white\">Suggest a Feature</a></li>\n                  <li class=\"mb-2\"><a href=\"/Donate\" class=\"text-decoration-none text-muted hover-white\">Donate</a></li>\n                  <li><a href=\"https://merch.haveibeenpwned.com/\" class=\"text-decoration-none text-muted hover-white\">Merch</a></li>\n                </ul>\n              </div>\n            </div>\n          </div>\n\n          <!-- Social Media Links -->\n          <div class=\"col-lg-3 p-4\">\n            <h5 class=\"fw-bold mb-3\">Connect With Us</h5>\n            <div class=\"d-flex gap-3\">\n              <a href=\"https://x.com/haveibeenpwned\" target=\"_blank\" class=\"text-muted hover-white fs-5\"><i class=\"bi bi-twitter-x\"></i></a>\n              <a href=\"https://facebook.com/haveibeenpwned\" target=\"_blank\" class=\"text-muted hover-white fs-5\"><i class=\"bi bi-facebook\"></i></a>\n              <a href=\"https://www.linkedin.com/company/haveibeenpwned/\" target=\"_blank\" class=\"text-muted hover-white fs-5\"><i class=\"bi bi-linkedin\"></i></a>\n              <a href=\"https://github.com/HaveIBeenPwned\" target=\"_blank\" class=\"text-muted hover-white fs-5\"><i class=\"bi bi-github\"></i></a>\n              <a href=\"https://bsky.app/profile/haveibeenpwned.com\" target=\"_blank\" class=\"text-muted hover-white fs-5\"><i class=\"bi bi-bluesky\"></i></a>\n              <a href=\"https://infosec.exchange/@haveibeenpwned\" target=\"_blank\" class=\"text-muted hover-white fs-5\"><i class=\"bi bi-mastodon\"></i></a>\n              <a href=\"/feed/breaches/\" target=\"_blank\" class=\"text-muted hover-white fs-5\"><i class=\"bi bi-rss\"></i></a>\n            </div>\n          </div>\n        </div>\n\n        <!-- Copyright -->\n        <div class=\"border-top border-primary-custom\">\n          <div class=\"p-3 text-center\">\n            <p class=\"text-muted mb-0\">\n              &copy; 2026 Have I Been Pwned<sup>&reg;</sup>. All rights reserved.\n            </p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </footer>\n\n  <script src=\"/js/bundle/bundle.js?v=QYHN44Dln0I7MF6xLP2nERm_Q7DfycrBQkhyT7ejq-A\" defer nonce=\"fUn3YgL9vdAVevb/M24b3Dm/iKWzfxpDI0/fLH1qsDw=\"></script>\n<script nonce=\"fUn3YgL9vdAVevb/M24b3Dm/iKWzfxpDI0/fLH1qsDw=\">(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.nonce='fUn3YgL9vdAVevb/M24b3Dm/iKWzfxpDI0/fLH1qsDw=';d.innerHTML=\"window.__CF$cv$params={r:'a289c1cf5e0a5a84',t:'MTc4NjMwOTkyNg=='};var a=document.createElement('script');a.nonce='fUn3YgL9vdAVevb/M24b3Dm/iKWzfxpDI0/fLH1qsDw=';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>\n</html>\n"
+          },
+          "errors": [
+            "Query failed with HTTP 404: Not Found"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 253,
+          "timestamp": "2026-08-09T21:12:06.733Z",
+          "details": {
+            "response_size": 13554,
+            "content_type": "text/html; charset=utf-8",
+            "http_code": 404,
+            "checksum": "0010c3ee",
+            "sha256_hash": "ceb42e3dcece631cf11f6fd6e37f91b0d0f176e589a65ece1adb1136ff9728cf",
+            "headers_count": 23,
+            "content_type_valid": false
+          },
+          "errors": [],
+          "warnings": [
+            "Unexpected content type: text/html; charset=utf-8"
+          ]
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "FAIL",
+          "duration_ms": 202,
+          "timestamp": "2026-08-09T21:12:06.935Z",
+          "details": {
+            "json_parseable": false
+          },
+          "errors": [
+            "Response is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 277,
+          "timestamp": "2026-08-09T21:12:07.212Z",
+          "details": {},
+          "errors": [
+            "Cannot validate parser - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 280,
+          "timestamp": "2026-08-09T21:12:07.492Z",
+          "details": {},
+          "errors": [
+            "Cannot check data integrity - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "FAIL",
+          "duration_ms": 244,
+          "timestamp": "2026-08-09T21:12:07.736Z",
+          "details": {},
+          "errors": [
+            "Cannot check provenance - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "FAIL",
+          "duration_ms": 215,
+          "timestamp": "2026-08-09T21:12:07.951Z",
+          "details": {},
+          "errors": [
+            "Cannot check freshness - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "FAIL",
+          "duration_ms": 204,
+          "timestamp": "2026-08-09T21:12:08.155Z",
+          "details": {},
+          "errors": [
+            "Cannot check entity resolution - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "FAIL",
+          "duration_ms": 193,
+          "timestamp": "2026-08-09T21:12:08.348Z",
+          "details": {},
+          "errors": [
+            "Cannot perform cross validation - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 195,
+          "timestamp": "2026-08-09T21:12:08.543Z",
+          "details": {},
+          "errors": [
+            "Cannot check for hallucination - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "FAIL",
+          "duration_ms": 440,
+          "timestamp": "2026-08-09T21:12:08.983Z",
+          "details": {
+            "first_run": {
+              "http_code": 404,
+              "response_time_ms": 241,
+              "response_size": 13549,
+              "checksum": "0010befc"
+            },
+            "second_run": {
+              "http_code": 404,
+              "response_time_ms": 199,
+              "response_size": 13549,
+              "checksum": "0010c2a9"
+            },
+            "http_code_match": true,
+            "response_identical": false,
+            "checksum_match": false,
+            "response_time_variance": 17.42738589211618,
+            "differences": [
+              "Response bodies differ",
+              "Could not parse JSON for detailed comparison"
+            ],
+            "repeatable": false
+          },
+          "errors": [
+            "Results are not repeatable"
+          ],
+          "warnings": [
+            "Responses differ between runs",
+            "Checksums differ between runs",
+            "High response time variance: 17.43%"
+          ]
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 2421,
+          "timestamp": "2026-08-09T21:12:11.405Z",
+          "details": {
+            "latency_ms": 200,
+            "throughput_rps": 0,
+            "cpu_usage_percent": 26.957868649318463,
+            "memory_usage_mb": 18.11998748779297,
+            "retry_count": 0,
+            "performance_rating": "GOOD",
+            "latency_acceptable": true,
+            "throughput_acceptable": false,
+            "cpu_acceptable": true,
+            "memory_acceptable": true,
+            "degradation_detected": true,
+            "degradation_details": [
+              "Zero throughput - all requests failed"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Throughput below threshold: 0 RPS",
+            "Performance degradation detected: Zero throughput - all requests failed"
+          ]
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 3,
+          "timestamp": "2026-08-09T21:12:11.408Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "FAIL",
+          "duration_ms": 1772,
+          "timestamp": "2026-08-09T21:12:13.180Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": false,
+            "idor_vulnerable": false,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 100,
+            "vulnerabilities_found": [],
+            "security_headers": {
+              "Strict-Transport-Security": true,
+              "Content-Security-Policy": true,
+              "X-Frame-Options": true,
+              "X-Content-Type-Options": true,
+              "X-XSS-Protection": false
+            },
+            "missing_security_headers": [
+              "X-XSS-Protection"
+            ],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": true,
+            "exposed_data_types": [
+              "Phone Number"
+            ]
+          },
+          "errors": [
+            "Sensitive data exposed: Phone Number"
+          ],
+          "warnings": [
+            "Missing security headers: X-XSS-Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "registry_id": "INT-002",
+      "registry_name": "Certificate Transparency Logs (crt.sh)",
+      "endpoint": "https://crt.sh/?q=",
+      "access_type": "FREE_AUTO",
+      "query_status": "FAIL",
+      "http_code": 404,
+      "response_time_ms": 13131,
+      "data_returned": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-004: Query failed with HTTP 404: Not Found",
+        "TEST-005: Unexpected content type: text/html; charset=UTF-8",
+        "TEST-006: Response is not valid JSON",
+        "TEST-007: Cannot validate parser - raw data is not valid JSON",
+        "TEST-008: Cannot check data integrity - raw data is not valid JSON",
+        "TEST-009: Cannot check provenance - raw data is not valid JSON",
+        "TEST-010: Cannot check freshness - raw data is not valid JSON",
+        "TEST-011: Cannot check entity resolution - raw data is not valid JSON",
+        "TEST-012: Cannot perform cross validation - raw data is not valid JSON",
+        "TEST-013: Cannot check for hallucination - raw data is not valid JSON",
+        "TEST-014: High response time variance: 876.47%",
+        "TEST-015: Throughput below threshold: 0.04214146045445351 RPS",
+        "TEST-017: Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:13.180Z",
+          "details": {
+            "registry_id": "INT-002",
+            "registry_name": "Certificate Transparency Logs (crt.sh)",
+            "endpoint": "https://crt.sh/?q=",
+            "access_type": "FREE_AUTO",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "crtsh_connector",
+            "connector_version": "1.0.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "NONE",
+            "supported_entities": [
+              "DOMAIN",
+              "COMPANY"
+            ],
+            "supported_identifiers": [
+              "domain"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS",
+          "duration_ms": 25225,
+          "timestamp": "2026-08-09T21:12:38.405Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 200,
+            "response_time_ms": 25225,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-09T21:12:38.405Z",
+          "details": {
+            "auth_type": "NONE",
+            "authentication_required": false,
+            "authentication_status": "NOT_REQUIRED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "FAIL",
+          "duration_ms": 13131,
+          "timestamp": "2026-08-09T21:12:51.536Z",
+          "details": {
+            "start_time": "2026-08-09T21:12:38.405Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-09T21:12:51.536Z",
+            "execution_time_ms": 13131,
+            "http_code": 404,
+            "http_status_text": "Not Found",
+            "response_size_bytes": 253,
+            "response_preview": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n<hr>\n<address>Apach",
+            "error_message": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html><head>\n<title>404 Not Found</title>\n</head><body>\n<h1>Not Found</h1>\n<p>The requested URL was not found on this server.</p>\n<hr>\n<address>Apache Server at crt.sh Port 443</address>\n</body></html>\n"
+          },
+          "errors": [
+            "Query failed with HTTP 404: Not Found"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 292,
+          "timestamp": "2026-08-09T21:12:51.828Z",
+          "details": {
+            "response_size": 5897,
+            "content_type": "text/html; charset=UTF-8",
+            "http_code": 200,
+            "checksum": "0006ae4f",
+            "sha256_hash": "2c79073ddea0de4c314e8870bd1fa208c3c3755985174d68e2cd87e62cd2af54",
+            "headers_count": 9,
+            "content_type_valid": false
+          },
+          "errors": [],
+          "warnings": [
+            "Unexpected content type: text/html; charset=UTF-8"
+          ]
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "FAIL",
+          "duration_ms": 499,
+          "timestamp": "2026-08-09T21:12:52.327Z",
+          "details": {
+            "json_parseable": false
+          },
+          "errors": [
+            "Response is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 501,
+          "timestamp": "2026-08-09T21:12:52.828Z",
+          "details": {},
+          "errors": [
+            "Cannot validate parser - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 520,
+          "timestamp": "2026-08-09T21:12:53.348Z",
+          "details": {},
+          "errors": [
+            "Cannot check data integrity - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "FAIL",
+          "duration_ms": 524,
+          "timestamp": "2026-08-09T21:12:53.872Z",
+          "details": {},
+          "errors": [
+            "Cannot check provenance - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "FAIL",
+          "duration_ms": 524,
+          "timestamp": "2026-08-09T21:12:54.396Z",
+          "details": {},
+          "errors": [
+            "Cannot check freshness - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "FAIL",
+          "duration_ms": 9510,
+          "timestamp": "2026-08-09T21:13:03.906Z",
+          "details": {},
+          "errors": [
+            "Cannot check entity resolution - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "FAIL",
+          "duration_ms": 12050,
+          "timestamp": "2026-08-09T21:13:15.956Z",
+          "details": {},
+          "errors": [
+            "Cannot perform cross validation - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 49061,
+          "timestamp": "2026-08-09T21:14:05.017Z",
+          "details": {},
+          "errors": [
+            "Cannot check for hallucination - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 550,
+          "timestamp": "2026-08-09T21:14:05.567Z",
+          "details": {
+            "first_run": {
+              "http_code": 200,
+              "response_time_ms": 51,
+              "response_size": 5897,
+              "checksum": "0006ae4f"
+            },
+            "second_run": {
+              "http_code": 200,
+              "response_time_ms": 498,
+              "response_size": 5897,
+              "checksum": "0006ae4f"
+            },
+            "http_code_match": true,
+            "response_identical": true,
+            "checksum_match": true,
+            "response_time_variance": 876.4705882352941,
+            "repeatable": true
+          },
+          "errors": [],
+          "warnings": [
+            "High response time variance: 876.47%"
+          ]
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 119148,
+          "timestamp": "2026-08-09T21:16:04.716Z",
+          "details": {
+            "latency_ms": 500,
+            "throughput_rps": 0.04214146045445351,
+            "cpu_usage_percent": 0.8086640145029711,
+            "memory_usage_mb": 13.760040283203125,
+            "retry_count": 2,
+            "performance_rating": "GOOD",
+            "latency_acceptable": true,
+            "throughput_acceptable": false,
+            "cpu_acceptable": true,
+            "memory_acceptable": true,
+            "degradation_detected": false,
+            "degradation_details": []
+          },
+          "errors": [],
+          "warnings": [
+            "Throughput below threshold: 0.04214146045445351 RPS"
+          ]
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 4,
+          "timestamp": "2026-08-09T21:16:04.721Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 35510,
+          "timestamp": "2026-08-09T21:16:40.231Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": false,
+            "idor_vulnerable": false,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 100,
+            "vulnerabilities_found": [],
+            "security_headers": {
+              "Strict-Transport-Security": false,
+              "Content-Security-Policy": false,
+              "X-Frame-Options": false,
+              "X-Content-Type-Options": false,
+              "X-XSS-Protection": false
+            },
+            "missing_security_headers": [
+              "Strict-Transport-Security",
+              "Content-Security-Policy",
+              "X-Frame-Options",
+              "X-Content-Type-Options",
+              "X-XSS-Protection"
+            ],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": false,
+            "exposed_data_types": []
+          },
+          "errors": [],
+          "warnings": [
+            "Missing security headers: Strict-Transport-Security, Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection"
+          ]
+        }
+      ]
+    }
+  ]
+}

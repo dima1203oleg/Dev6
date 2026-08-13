@@ -1,7 +1,6 @@
-import React from "react";
 import { 
   FileText, ExternalLink, Clock, Database, Shield, 
-  Hash, Code, ChevronRight, X, Activity
+  Hash, X, Activity
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Evidence } from "../types";

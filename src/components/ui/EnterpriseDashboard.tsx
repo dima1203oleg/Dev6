@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Shield, Activity, TrendingUp, AlertTriangle, CheckCircle, 
-  Clock, Database, FileText, Settings, Play, Pause, RefreshCw
+  Database, FileText, Play, Pause, RefreshCw
 } from 'lucide-react';
 import { LiveCardAudit } from '../../lib/cardValidation/enterprise/types';
 import { LivePreviewAuditEngine } from '../../lib/cardValidation/enterprise/livePreviewAudit';

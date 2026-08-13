@@ -73,7 +73,7 @@ export function convertEntityToStix21(entity: OsintEntity): StixBundle {
         created: timestamp,
         modified: timestamp,
         relationship_type: rel.relationType.toLowerCase().includes('бенефіціар') ? 'owned-by' : 'related-to',
-        source_ref: mainStixObject.id,
+        source_ref: mainStixObject['id'],
         target_ref: relTargetId,
         description: `${rel.relationType} (${rel.sharePercent ? rel.sharePercent + '%' : '100%'})`
       };

@@ -28,11 +28,11 @@ export class TestOrchestrator {
   private tests: BaseTest[];
   private testIPN: string;
 
-  constructor(testIPN: string = '3111724753') {
+  constructor(testIPN: string = '3111724753', skipTests?: string[]) {
     this.testIPN = testIPN;
     
     // Initialize all tests
-    this.tests = [
+    const allTests = [
       new TEST001_RegistryDiscovery(),
       new TEST002_Connectivity(),
       new TEST003_Authentication(),
@@ -51,6 +51,13 @@ export class TestOrchestrator {
       new TEST016_FaultInjection(),
       new TEST017_Security()
     ];
+
+    // Filter out skipped tests
+    if (skipTests && skipTests.length > 0) {
+      this.tests = allTests.filter(test => !skipTests.includes((test as any).testId));
+    } else {
+      this.tests = allTests;
+    }
   }
 
   async runTestsForSource(
@@ -86,25 +93,25 @@ export class TestOrchestrator {
 
         // Extract key metrics from test results
         if (result.test_id === 'TEST-004') {
-          httpCode = result.details.http_code || 0;
-          responseTimeMs = result.details.execution_time_ms || 0;
-          dataReturned = result.details.query_status === 'SUCCESS';
+          httpCode = result.details['http_code'] || 0;
+          responseTimeMs = result.details['execution_time_ms'] || 0;
+          dataReturned = result.details['query_status'] === 'SUCCESS';
         }
 
         if (result.test_id === 'TEST-009') {
-          provenanceComplete = result.details.provenance_complete;
+          provenanceComplete = result.details['provenance_complete'];
         }
 
         if (result.test_id === 'TEST-010') {
-          freshnessAcceptable = result.details.freshness_acceptable;
+          freshnessAcceptable = result.details['freshness_acceptable'];
         }
 
         if (result.test_id === 'TEST-012') {
-          conflictsDetected = result.details.conflicts_found || 0;
+          conflictsDetected = result.details['conflicts_found'] || 0;
         }
 
         if (result.test_id === 'TEST-009') {
-          confidenceScore = result.details.average_confidence || 0;
+          confidenceScore = result.details['average_confidence'] || 0;
         }
 
         // Collect QA notes from warnings and errors
@@ -165,7 +172,7 @@ export class TestOrchestrator {
     return { sourceReports, summary };
   }
 
-  private determineFinalStatus(testResults: any[], qaNotes: string[]): FinalStatus {
+  private determineFinalStatus(testResults: any[], _qaNotes: string[]): FinalStatus {
     const failedTests = testResults.filter(r => r.status === 'FAIL');
     const warningTests = testResults.filter(r => r.status === 'PASS_WITH_WARNINGS');
     const blockedTests = testResults.filter(r => r.status === 'BLOCKED');

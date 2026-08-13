@@ -4,7 +4,6 @@
  * NOTE: Requires RED or BLACK access level.
  */
 import { DarkintResult } from '../../src/types/mlip';
-import { comintService } from './ComintService'; // Reusing breach logic
 
 export class DarkintService {
 
@@ -15,7 +14,7 @@ export class DarkintService {
     // DeHashed or similar premium service would be used here.
     // For free tier, we use the public X-posed-or-not API for pastes if available,
     // or HaveIBeenPwned API for pastes.
-    const hibpKey = process.env.HIBP_API_KEY;
+    const hibpKey = process.env['HIBP_API_KEY'];
     if (hibpKey && keyword.includes('@')) {
       try {
         const res = await fetch(`https://haveibeenpwned.com/api/v3/pasteaccount/${encodeURIComponent(keyword)}`, {

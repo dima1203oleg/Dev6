@@ -17,7 +17,7 @@
  */
 
 import crypto from 'crypto';
-import { ProductionConnector, RawResponse, ParsedRecord, CanonicalRecord, Evidence } from '../datasources/connectors/sdk';
+import { ProductionConnector, RawResponse, CanonicalRecord } from '../datasources/connectors/sdk';
 
 export interface RegistryEvidence {
   // Source identification
@@ -115,6 +115,36 @@ export class RegistryCertifier {
       apiUrl: metadata.officialUrl,
       requestId: crypto.randomUUID(),
       requestTimestamp: new Date().toISOString(),
+      requestUrl: '',
+      requestMethod: 'POST',
+      requestHeaders: {},
+      requestBody: undefined,
+      responseTimestamp: new Date().toISOString(),
+      httpStatus: 0,
+      responseHeaders: {},
+      responseHash: '',
+      rawResponse: '',
+      schemaValid: false,
+      schemaErrors: [],
+      schemaVersion: '',
+      parserVersion: '',
+      normalizerVersion: '',
+      normalizedFields: {},
+      fieldMapping: {},
+      identifierType: '',
+      identifierValue: '',
+      identifierMatch: false,
+      matchConfidence: 0,
+      entityType: '',
+      entityResolved: false,
+      evidenceId: '',
+      evidenceChain: [],
+      evidenceHash: '',
+      latencyMs: 0,
+      externalLatencyMs: 0,
+      connectorLatencyMs: 0,
+      processingLatencyMs: 0,
+      retryable: false,
       status: 'NOT_IMPLEMENTED',
       lastVerifiedAt: new Date().toISOString(),
     };
@@ -172,6 +202,13 @@ export class RegistryCertifier {
       
       // Step 4: Identifier Match
       const record = normalized[0];
+      if (!record) {
+        evidence.status = 'UNAVAILABLE';
+        evidence.error = 'No records returned from normalization';
+        evidence.errorType = 'NO_DATA';
+        return this.finalizeCertification(evidence, certificationId);
+      }
+      
       evidence.identifierType = identifierType;
       evidence.identifierValue = testIdentifier;
       evidence.identifierMatch = this.checkIdentifierMatch(record, testIdentifier, identifierType);
@@ -279,7 +316,7 @@ export class RegistryCertifier {
    */
   private generateEntityId(record: CanonicalRecord): string {
     const fields = record.canonicalFields;
-    const identifier = fields.edrpou || fields.ipn || fields.rnokpp || fields.name;
+    const identifier = fields['edrpou'] || fields['ipn'] || fields['rnokpp'] || fields['name'];
     return crypto.createHash('sha256').update(String(identifier)).digest('hex').substring(0, 16);
   }
   

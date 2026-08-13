@@ -4,6 +4,28 @@
 # Used by Documentation, QA, DevOps, and PREDATOR Core.
 
 sources:
+  - source_id: "TEST-001"
+    source_name: "Test Mock Endpoint"
+    owner: "Test Framework"
+    country: "TEST"
+    category: "Test"
+    access_level: "FREE_AUTO"
+    official_url: "http://localhost:3000"
+    endpoint_or_resource: "https://jsonplaceholder.typicode.com/users/1"
+    connector_id: "test_connector"
+    connector_version: "1.0.0"
+    protocol: "REST API"
+    format: "JSON"
+    encoding: "UTF-8"
+    auth_type: "NONE"
+    supported_entities: 
+      - "TEST"
+    supported_identifiers: 
+      - "id"
+    update_frequency: "REALTIME"
+    rate_limit: 1000
+    schema_version: "1.0"
+    production_ready: true
   - source_id: "UA-001"
     source_name: "Єдиний державний реєстр (ЄДР)"
     owner: "Міністерство юстиції України"
@@ -11,7 +33,7 @@ sources:
     category: "Державний реєстр"
     access_level: "FREE_AUTO"
     official_url: "https://usr.minjust.gov.ua/"
-    endpoint_or_resource: "https://data.gov.ua/api/3/action/datastore_search"
+    endpoint_or_resource: "https://usr.minjust.gov.ua/open_data"
     connector_id: "edr_connector"
     connector_version: "1.0.0"
     protocol: "REST API"
@@ -29,7 +51,7 @@ sources:
     update_frequency: "DAILY"
     rate_limit: 60
     schema_version: "1.0"
-    production_ready: true
+    production_ready: false
 
   - source_id: "UA-002"
     source_name: "Єдиний державний реєстр судових рішень"
@@ -38,7 +60,7 @@ sources:
     category: "Судові рішення"
     access_level: "FREE_API_KEY"
     official_url: "https://reyestr.court.gov.ua/"
-    endpoint_or_resource: "https://court.gov.ua/api/v1/cases"
+    endpoint_or_resource: "https://reyestr.court.gov.ua/api/v1/cases"
     connector_id: "court_connector"
     connector_version: "1.0.0"
     protocol: "REST API"
@@ -56,7 +78,7 @@ sources:
     update_frequency: "DAILY"
     rate_limit: 300
     schema_version: "1.0"
-    production_ready: true
+    production_ready: false
 
   - source_id: "UA-003"
     source_name: "Реєстр санкцій (РНБО)"
@@ -83,7 +105,7 @@ sources:
     update_frequency: "DAILY"
     rate_limit: 100
     schema_version: "2.0"
-    production_ready: true
+    production_ready: false
 
   - source_id: "UA-004"
     source_name: "Система публічних закупівель Prozorro"
@@ -109,7 +131,7 @@ sources:
     update_frequency: "REALTIME"
     rate_limit: 1000
     schema_version: "2.5"
-    production_ready: true
+    production_ready: false
 
   - source_id: "INT-001"
     source_name: "HaveIBeenPwned (HIBP)"
@@ -134,7 +156,7 @@ sources:
     update_frequency: "DAILY"
     rate_limit: 10
     schema_version: "3.0"
-    production_ready: true
+    production_ready: false
 
   - source_id: "INT-002"
     source_name: "Certificate Transparency Logs (crt.sh)"
@@ -158,4 +180,4 @@ sources:
     update_frequency: "REALTIME"
     rate_limit: 30
     schema_version: "1.0"
-    production_ready: true
+    production_ready: false

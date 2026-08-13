@@ -71,22 +71,23 @@ class RelevanceEngineVerification {
       console.log('\n--- Testing Dataset Scoring ---');
       for (let i = 0; i < Math.min(20, searchResult.results.length); i++) {
         const pkg = searchResult.results[i];
+        if (!pkg) continue;
         summary.totalTested++;
 
-        console.log(`\nTest ${i + 1}: ${pkg.title.substring(0, 50)}...`);
+        console.log(`\nTest ${i + 1}: ${pkg.title?.substring(0, 50)}...`);
 
         try {
-          const relevanceScore = this.relevanceEngine.scoreDataset(pkg);
+          const relevanceScore = this.relevanceEngine.scoreDataset(pkg as any);
           const score = relevanceScore.score;
-          
+
           console.log(`   Score: ${score.toFixed(2)}`);
           console.log(`   Priority: ${relevanceScore.priority}`);
           console.log(`   Reasons: ${relevanceScore.reasons.join(', ')}`);
-          
+
           results.push({
             test: i + 1,
-            datasetId: pkg.id,
-            datasetTitle: pkg.title,
+            datasetId: pkg.id || 'unknown',
+            datasetTitle: pkg.title || 'unknown',
             score,
             priority: relevanceScore.priority,
             reasons: relevanceScore.reasons,
@@ -99,11 +100,11 @@ class RelevanceEngineVerification {
         } catch (error) {
           summary.scoringErrors++;
           console.error(`   Scoring failed: ${error}`);
-          
+
           results.push({
             test: i + 1,
-            datasetId: pkg.id,
-            datasetTitle: pkg.title,
+            datasetId: pkg?.id || 'unknown',
+            datasetTitle: pkg?.title || 'unknown',
             score: null,
             error: String(error),
             status: 'ERROR',
@@ -114,7 +115,7 @@ class RelevanceEngineVerification {
       // Test priority queue creation
       console.log('\n--- Testing Priority Queue Creation ---');
       try {
-        const datasets = searchResult.results;
+        const datasets = searchResult.results as any[];
         const priorityQueue = this.relevanceEngine.createPriorityQueue(datasets);
         
         console.log(`Priority queue created with ${datasets.length} datasets`);

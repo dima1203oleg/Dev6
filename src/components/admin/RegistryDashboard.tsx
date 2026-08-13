@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Database, CheckCircle, XCircle, AlertTriangle, Clock,
-  RefreshCw, Search, Filter, ChevronDown, Shield,
-  Activity, Zap, Lock, Globe, FileText
+  Database, CheckCircle, XCircle, AlertTriangle,
+  RefreshCw, Search, Filter, Shield,
+  Activity, Zap, Globe, FileText
 } from 'lucide-react';
 
 interface RegistrySource {

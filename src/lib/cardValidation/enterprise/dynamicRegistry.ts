@@ -3,8 +3,8 @@
  * Dynamic Card Registry with auto-discovery
  */
 
-import { CardDefinition, CardCategory as BaseCardCategory } from '../cardRegistry';
-import { DynamicCardRegistry, DiscoveredCard, CardCategory } from './types';
+import { CardDefinition } from '../cardRegistry';
+import { DynamicCardRegistry, DiscoveredCard, CardCategoryHierarchy } from './types';
 
 export class DynamicCardRegistryManager {
   private static instance: DynamicCardRegistryManager;
@@ -46,8 +46,8 @@ export class DynamicCardRegistryManager {
   /**
    * Build hierarchical category structure
    */
-  private buildHierarchicalCategories(cards: CardDefinition[]): CardCategory[] {
-    const categoryMap = new Map<string, CardCategory>();
+  private buildHierarchicalCategories(cards: CardDefinition[]): CardCategoryHierarchy[] {
+    const categoryMap = new Map<string, CardCategoryHierarchy>();
 
     // Define category hierarchy
     const hierarchy = [
@@ -147,7 +147,7 @@ export class DynamicCardRegistryManager {
     });
 
     // Build parent-child relationships
-    categoryMap.forEach((cat, id) => {
+    categoryMap.forEach((cat, _id) => {
       if (cat.parent) {
         const parent = categoryMap.get(cat.parent);
         if (parent) {
@@ -270,7 +270,7 @@ export class DynamicCardRegistryManager {
   /**
    * Determine category for discovered card
    */
-  private determineCategory(card: DiscoveredCard): CardCategory | undefined {
+  private determineCategory(card: DiscoveredCard): CardCategoryHierarchy | undefined {
     // Simple heuristic based on card name
     const name = card.name.toLowerCase();
     

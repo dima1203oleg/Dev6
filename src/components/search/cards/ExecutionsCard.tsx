@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scale, Gavel, AlertCircle, CheckCircle, FileText, Clock } from 'lucide-react';
+import { Scale, Gavel, AlertCircle, CheckCircle, Clock } from 'lucide-react';
 
 interface EnforcementItem {
   vpNumber: string;
@@ -27,7 +27,7 @@ const STATUS_STYLE: Record<string, string> = {
   ЗУПИНЕНО: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
 };
 
-export const ExecutionsCard: React.FC<ExecutionsCardProps> = ({ entity, legalData }) => {
+export const ExecutionsCard: React.FC<ExecutionsCardProps> = ({ entity: _entity, legalData }) => {
   const enforcements = legalData?.enforcementProceedings || [];
   const activeCount = legalData?.activeEnforcementsCount ?? 0;
   const isBankrupt = legalData?.isBankrupt ?? false;

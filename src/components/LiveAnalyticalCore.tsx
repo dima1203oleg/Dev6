@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 interface LiveAnalyticalCoreProps {
   state: 'idle' | 'learning' | 'optimization' | 'inference' | 'validation' | 'Inference' | 'Validation' | 'Optimization';
@@ -13,7 +13,7 @@ export default function LiveAnalyticalCore({ state, mouseOffset = { x: 0, y: 0 }
   const requestRef = useRef<number | null>(null);
 
   // Parse state case-insensitively
-  const normalizedState = state.toLowerCase() as 'idle' | 'learning' | 'optimization' | 'inference' | 'validation';
+  const normalizedState = (state.toLowerCase() as any) as 'idle' | 'learning' | 'optimization' | 'inference' | 'validation';
 
   useEffect(() => {
     const container = containerRef.current;
@@ -299,14 +299,14 @@ export default function LiveAnalyticalCore({ state, mouseOffset = { x: 0, y: 0 }
       mainGroup.rotation.x += 0.003 + mouseOffset.y * 0.001;
 
       // Update sphere wireframe wave effects (deform vertices slightly)
-      if (sphereGeometry && sphereGeometry.attributes.position) {
-        const posArr = sphereGeometry.attributes.position.array as Float32Array;
-        const initPosArr = sphereGeometry.attributes.position.clone().array as Float32Array;
+      if (sphereGeometry && sphereGeometry.attributes['position']) {
+        const posArr = sphereGeometry.attributes['position'].array as Float32Array;
+        const initPosArr = sphereGeometry.attributes['position'].clone().array as Float32Array;
         
         for (let i = 0; i < posArr.length; i += 3) {
-          const vx = initPosArr[i];
-          const vy = initPosArr[i + 1];
-          const vz = initPosArr[i + 2];
+          const vx = initPosArr[i] || 0;
+          const vy = initPosArr[i + 1] || 0;
+          const vz = initPosArr[i + 2] || 0;
           const dist = Math.sqrt(vx * vx + vy * vy + vz * vz) || 1;
 
           // Compute deformation
@@ -330,93 +330,102 @@ export default function LiveAnalyticalCore({ state, mouseOffset = { x: 0, y: 0 }
           posArr[i + 1] = vy * (1 + wave / dist);
           posArr[i + 2] = vz * (1 + wave / dist);
         }
-        sphereGeometry.attributes.position.needsUpdate = true;
+        sphereGeometry.attributes['position'].needsUpdate = true;
       }
 
       // Update Flowing Particles Position
-      const pPositions = particleGeom.attributes.position.array as Float32Array;
-      for (let i = 0; i < maxParticles; i++) {
-        const dx = particleDirections[i * 3];
-        const dy = particleDirections[i * 3 + 1];
-        const dz = particleDirections[i * 3 + 2];
-        const speed = particleSpeeds[i];
+      if (particleGeom.attributes['position']) {
+        const pPositions = particleGeom.attributes['position'].array as Float32Array;
+        for (let i = 0; i < maxParticles; i++) {
+          const dx = particleDirections[i * 3] || 0;
+          const dy = particleDirections[i * 3 + 1] || 0;
+          const dz = particleDirections[i * 3 + 2] || 0;
+          const speed = particleSpeeds[i] || 0.01;
 
-        if (normalizedState === 'inference') {
-          // Inference: particles EXPLODE/FLOW OUTWARD rapidly
-          let px = pPositions[i * 3] + dx * speed * 2.5;
-          let py = pPositions[i * 3 + 1] + dy * speed * 2.5;
-          let pz = pPositions[i * 3 + 2] + dz * speed * 2.5;
+          if (normalizedState === 'inference') {
+            // Inference: particles EXPLODE/FLOW OUTWARD rapidly
+            let px = (pPositions[i * 3] || 0) + dx * speed * 2.5;
+            let py = (pPositions[i * 3 + 1] || 0) + dy * speed * 2.5;
+            let pz = (pPositions[i * 3 + 2] || 0) + dz * speed * 2.5;
 
-          const dist = Math.sqrt(px * px + py * py + pz * pz);
-          // If particle goes beyond boundary, reset it back to center
-          if (dist > 7.0) {
-            px = dx * (0.1 + Math.random() * 0.8);
-            py = dy * (0.1 + Math.random() * 0.8);
-            pz = dz * (0.1 + Math.random() * 0.8);
+            const dist = Math.sqrt(px * px + py * py + pz * pz);
+            // If particle goes beyond boundary, reset it back to center
+            if (dist > 7.0) {
+              px = dx * (0.1 + Math.random() * 0.8);
+              py = dy * (0.1 + Math.random() * 0.8);
+              pz = dz * (0.1 + Math.random() * 0.8);
+            }
+
+            pPositions[i * 3] = px;
+            pPositions[i * 3 + 1] = py;
+            pPositions[i * 3 + 2] = pz;
+          } else if (normalizedState === 'optimization') {
+            // Optimization: particles CONTRACT/FLOW INWARD tightly
+            let px = (pPositions[i * 3] || 0) - dx * speed * 1.8;
+            let py = (pPositions[i * 3 + 1] || 0) - dy * speed * 1.8;
+            let pz = (pPositions[i * 3 + 2] || 0) - dz * speed * 1.8;
+
+            const dist = Math.sqrt(px * px + py * py + pz * pz);
+            // Once they contract into center, reset back to outer boundary
+            if (dist < 0.2) {
+              const startDist = 5.0 + Math.random() * 3.0;
+              px = dx * startDist;
+              py = dy * startDist;
+              pz = dz * startDist;
+            }
+
+            pPositions[i * 3] = px;
+            pPositions[i * 3 + 1] = py;
+            pPositions[i * 3 + 2] = pz;
+          } else {
+            // Idle / Validation / Learning: float/orbit around sphere boundary
+            let px = (pPositions[i * 3] || 0) + dx * speed * 0.5;
+            let py = (pPositions[i * 3 + 1] || 0) + dy * speed * 0.5;
+            let pz = (pPositions[i * 3 + 2] || 0) + dz * speed * 0.5;
+
+            const dist = Math.sqrt(px * px + py * py + pz * pz);
+            if (dist > 5.0) {
+              px = dx * (1.5 + Math.random() * 1.5);
+              py = dy * (1.5 + Math.random() * 1.5);
+              pz = dz * (1.5 + Math.random() * 1.5);
+            }
+
+            pPositions[i * 3] = px;
+            pPositions[i * 3 + 1] = py;
+            pPositions[i * 3 + 2] = pz;
           }
-
-          pPositions[i * 3] = px;
-          pPositions[i * 3 + 1] = py;
-          pPositions[i * 3 + 2] = pz;
-
-        } else if (normalizedState === 'optimization') {
-          // Optimization: particles CONTRACT/FLOW INWARD tightly
-          let px = pPositions[i * 3] - dx * speed * 1.8;
-          let py = pPositions[i * 3 + 1] - dy * speed * 1.8;
-          let pz = pPositions[i * 3 + 2] - dz * speed * 1.8;
-
-          const dist = Math.sqrt(px * px + py * py + pz * pz);
-          // Once they contract into center, reset back to outer boundary
-          if (dist < 0.2) {
-            const startDist = 5.0 + Math.random() * 3.0;
-            px = dx * startDist;
-            py = dy * startDist;
-            pz = dz * startDist;
-          }
-
-          pPositions[i * 3] = px;
-          pPositions[i * 3 + 1] = py;
-          pPositions[i * 3 + 2] = pz;
-
-        } else {
-          // Idle / Validation / Learning: float/orbit around sphere boundary
-          let px = pPositions[i * 3] + dx * speed * 0.5;
-          let py = pPositions[i * 3 + 1] + dy * speed * 0.5;
-          let pz = pPositions[i * 3 + 2] + dz * speed * 0.5;
-
-          const dist = Math.sqrt(px * px + py * py + pz * pz);
-          if (dist > 5.0) {
-            px = dx * (1.5 + Math.random() * 1.5);
-            py = dy * (1.5 + Math.random() * 1.5);
-            pz = dz * (1.5 + Math.random() * 1.5);
-          }
-
-          pPositions[i * 3] = px;
-          pPositions[i * 3 + 1] = py;
-          pPositions[i * 3 + 2] = pz;
         }
+        particleGeom.attributes['position'].needsUpdate = true;
       }
-      particleGeom.attributes.position.needsUpdate = true;
 
       // Dynamic light beams pulsing length
-      const rayPosArr = rayGeometry.attributes.position.array as Float32Array;
-      for (let i = 0; i < rayCount; i++) {
-        const dir = rayDirections[i];
-        let beamLength = 3.5;
-        if (normalizedState === 'inference') {
-          // Extended bright rays
-          beamLength = 3.0 + 4.5 * Math.max(0, Math.sin(time * 6.0 + i * 1.5));
-        } else if (normalizedState === 'optimization') {
-          beamLength = 1.5 + Math.sin(time * 10.0 + i) * 0.4;
-        } else if (normalizedState === 'validation') {
-          beamLength = 4.0 + Math.sin(time * 2.0 + i) * 0.6;
+      if (rayGeometry.attributes['position']) {
+        const rayPosArr = rayGeometry.attributes['position'].array as Float32Array;
+        for (let i = 0; i < rayCount; i++) {
+          const dir = rayDirections[i];
+          if (!dir) continue;
+          let beamLength = 3.5;
+          if (normalizedState === 'inference') {
+            // Extended bright rays
+            beamLength = 3.0 + 4.5 * Math.max(0, Math.sin(time * 6.0 + i * 1.5));
+          } else if (normalizedState === 'optimization') {
+            beamLength = 1.5 + Math.sin(time * 10.0 + i) * 0.4;
+          } else if (normalizedState === 'validation') {
+            beamLength = 4.0 + Math.sin(time * 2.0 + i) * 0.6;
+          }
+          rayPosArr[i * 6 + 3] = dir.x * beamLength;
+          rayPosArr[i * 6 + 4] = dir.y * beamLength;
+          rayPosArr[i * 6 + 5] = dir.z * beamLength;
         }
-        rayPosArr[i * 6 + 3] = dir.x * beamLength;
-        rayPosArr[i * 6 + 4] = dir.y * beamLength;
-        rayPosArr[i * 6 + 5] = dir.z * beamLength;
+        rayGeometry.attributes['position'].needsUpdate = true;
+        if (normalizedState === 'inference') {
+          rayMat.opacity = 0.95;
+        } else if (normalizedState === 'optimization') {
+          rayMat.opacity = 0.15;
+        } else {
+          rayMat.opacity = 0.45;
+        }
       }
-      rayGeometry.attributes.position.needsUpdate = true;
-      rayMat.opacity = normalizedState === 'inference' ? 0.95 : normalizedState === 'optimization' ? 0.15 : 0.45;
 
       renderer.render(scene, camera);
       requestRef.current = requestAnimationFrame(animate);
@@ -428,8 +437,8 @@ export default function LiveAnalyticalCore({ state, mouseOffset = { x: 0, y: 0 }
     const resizeObserver = new ResizeObserver((entries) => {
       if (!entries || entries.length === 0) return;
       const entry = entries[0];
-      const newWidth = entry.contentRect.width || width;
-      const newHeight = entry.contentRect.height || height;
+      const newWidth = entry?.contentRect.width ?? width;
+      const newHeight = entry?.contentRect.height ?? height;
       
       width = newWidth;
       height = newHeight;
@@ -460,7 +469,7 @@ export default function LiveAnalyticalCore({ state, mouseOffset = { x: 0, y: 0 }
       rayMat.dispose();
       renderer.dispose();
     };
-  }, [normalizedState, mouseOffset]);
+  }, []);
 
   // Framer Motion background shadow/glow color selection
   const getGlowColor = () => {

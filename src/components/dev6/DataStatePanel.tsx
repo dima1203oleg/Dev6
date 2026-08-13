@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, Key, ServerOff, Clock, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { Key, ServerOff, Clock } from 'lucide-react';
 import { DataSourceError } from '../../types/dataSources';
 
 interface DataStatePanelProps {

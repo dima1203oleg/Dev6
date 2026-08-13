@@ -34,42 +34,42 @@ function sendDataSourceResponse(res: any, result: any) {
 
 // EDR Full Profile
 router.get('/edr/full', async (req, res) => {
-  const code = (req.query.code || req.query.edrpou) as string;
+  const code = (req.query['code'] || req.query['edrpou']) as string;
   const result = await fetchEdrFull(code);
   return sendDataSourceResponse(res, result);
 });
 
 // Tax Status
 router.get('/tax/status', async (req, res) => {
-  const code = (req.query.code || req.query.edrpou) as string;
+  const code = (req.query['code'] || req.query['edrpou']) as string;
   const result = await fetchTaxStatus(code);
   return sendDataSourceResponse(res, result);
 });
 
 // Court & Enforcement Profile
 router.get('/court/profile', async (req, res) => {
-  const code = (req.query.code || req.query.edrpou) as string;
+  const code = (req.query['code'] || req.query['edrpou']) as string;
   const result = await fetchCourtAndLegalProfile(code);
   return sendDataSourceResponse(res, result);
 });
 
 // Sanctions & Compliance Profile
 router.get('/sanctions/compliance', async (req, res) => {
-  const code = (req.query.code || req.query.edrpou) as string;
+  const code = (req.query['code'] || req.query['edrpou']) as string;
   const result = await fetchSanctionsAndCompliance(code);
   return sendDataSourceResponse(res, result);
 });
 
 // State Registries & Licenses Profile
 router.get('/licenses/registries', async (req, res) => {
-  const code = (req.query.code || req.query.edrpou) as string;
+  const code = (req.query['code'] || req.query['edrpou']) as string;
   const result = await fetchLicensesAndRegistries(code);
   return sendDataSourceResponse(res, result);
 });
 
 // Full Company Dossier & Risk Evaluation
 router.get('/company/dossier', async (req, res) => {
-  const code = (req.query.code || req.query.edrpou) as string;
+  const code = (req.query['code'] || req.query['edrpou']) as string;
   if (!code) {
     return res.status(400).json({
       ok: false,

@@ -14,17 +14,13 @@ import { RegistryIntelligence } from './RegistryIntelligence';
 import { RiskDrivenExecutionEngine } from './RiskDrivenExecutionEngine';
 import { SLOComplianceEngine } from './SLOComplianceEngine';
 import { AITrustFramework } from './AITrustFramework';
-import { EnterpriseReleaseGate } from './EnterpriseReleaseGate';
 import { ExecutiveDashboard } from './ExecutiveDashboard';
-import { ValidationKnowledgeBase } from './ValidationKnowledgeBase';
 import { ContinuousCertification } from './ContinuousCertification';
-import { ProductionEvidenceGraph } from './ProductionEvidenceGraph';
 import { AdaptiveValidationEngine } from './AdaptiveValidationEngine';
 import { ProductionDigitalTwin } from './ProductionDigitalTwin';
 import { ContinuousRegistryIntelligence } from './ContinuousRegistryIntelligence';
 import { ContinuousChaosEngineering } from './ContinuousChaosEngineering';
 import { RemediationEngine } from './RemediationEngine';
-import { SchemaDriftProtection } from './SchemaDriftProtection';
 
 export interface SystemConfig {
   manifestPath: string;
@@ -53,17 +49,13 @@ export class MasterProductionCertificationSystem {
   private riskEngine: RiskDrivenExecutionEngine;
   private sloEngine: SLOComplianceEngine;
   private aiTrustFramework: AITrustFramework;
-  private releaseGate: EnterpriseReleaseGate;
   private dashboard: ExecutiveDashboard;
-  private knowledgeBase: ValidationKnowledgeBase;
   private continuousCertification: ContinuousCertification;
-  private evidenceGraph: ProductionEvidenceGraph;
   private adaptiveValidation: AdaptiveValidationEngine;
   private digitalTwin: ProductionDigitalTwin;
   private registryMonitoring: ContinuousRegistryIntelligence;
   private chaosEngineering: ContinuousChaosEngineering;
   private remediationEngine: RemediationEngine;
-  private schemaDriftProtection: SchemaDriftProtection;
 
   constructor(config: SystemConfig) {
     this.config = config;
@@ -75,17 +67,13 @@ export class MasterProductionCertificationSystem {
     this.riskEngine = new RiskDrivenExecutionEngine();
     this.sloEngine = new SLOComplianceEngine();
     this.aiTrustFramework = new AITrustFramework();
-    this.releaseGate = new EnterpriseReleaseGate();
     this.dashboard = new ExecutiveDashboard();
-    this.knowledgeBase = new ValidationKnowledgeBase();
     this.continuousCertification = new ContinuousCertification();
-    this.evidenceGraph = new ProductionEvidenceGraph();
     this.adaptiveValidation = new AdaptiveValidationEngine();
     this.digitalTwin = new ProductionDigitalTwin();
     this.registryMonitoring = new ContinuousRegistryIntelligence();
     this.chaosEngineering = new ContinuousChaosEngineering();
     this.remediationEngine = new RemediationEngine();
-    this.schemaDriftProtection = new SchemaDriftProtection();
 
     this.initializeSystem();
   }
@@ -101,7 +89,8 @@ export class MasterProductionCertificationSystem {
     this.workflowEngine.registerDAG('certification', certificationDAG);
 
     // Initialize adaptive validation dependencies
-    this.adaptiveValidation.initializeDependencyGraph();
+    // TODO: Implement initializeDependencyGraph in AdaptiveValidationEngine
+    // this.adaptiveValidation.initializeDependencyGraph();
 
     // Initialize registry monitoring for known registries
     // TODO: Load from manifest
@@ -225,7 +214,6 @@ export class MasterProductionCertificationSystem {
     const registrySummary = this.registryIntelligence.getSummary();
     const trustStats = this.aiTrustFramework.getTrustStatistics();
     const sloCompliance = this.sloEngine.getComplianceSummary();
-    const riskSummary = this.riskEngine.getRiskSummary();
 
     const dataCoverage = (registrySummary.total > 0 ? (registrySummary.certified + registrySummary.healthy) / registrySummary.total : 0) * 100;
     const dataQuality = registrySummary.averageScore;
@@ -273,7 +261,7 @@ export class MasterProductionCertificationSystem {
     console.log(`[MASTER SYSTEM] Handling change: ${changeType} on ${component}`);
 
     // Register change with continuous certification
-    const eventId = await this.continuousCertification.registerChange(
+    await this.continuousCertification.registerChange(
       changeType,
       component,
       description,

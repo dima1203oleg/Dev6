@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'motion/react';
 
 export const SkeletonBox = ({ className }: { className?: string }) => (

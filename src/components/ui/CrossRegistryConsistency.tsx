@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Database, AlertTriangle, CheckCircle, XCircle, ChevronDown, ChevronRight, Scale } from 'lucide-react';
+import { Database, AlertTriangle, CheckCircle, ChevronDown, ChevronRight, Scale } from 'lucide-react';
 import { ConflictDetection, ConflictResolution } from '../../lib/cardValidation/enterprise/types';
 
 interface CrossRegistryConsistencyProps {
@@ -55,7 +55,7 @@ export const CrossRegistryConsistency: React.FC<CrossRegistryConsistencyProps> =
       'MISSING_FIELD': 'bg-slate-500/10 text-slate-400 border-slate-500/30',
     };
     return (
-      <span className={`px-2 py-1 rounded text-[10px] font-bold border uppercase ${colors[type] || colors.VALUE_MISMATCH}`}>
+      <span className={`px-2 py-1 rounded text-[10px] font-bold border uppercase ${colors[type] || colors['VALUE_MISMATCH']}`}>
         {type.replace('_', ' ')}
       </span>
     );
@@ -73,7 +73,7 @@ export const CrossRegistryConsistency: React.FC<CrossRegistryConsistencyProps> =
       'OSINT': 'text-indigo-400',
       'UNKNOWN': 'text-slate-400',
     };
-    return colors[registry] || colors.UNKNOWN;
+    return colors[registry] || colors['UNKNOWN'];
   };
 
   return (

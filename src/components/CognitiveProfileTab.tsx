@@ -1,10 +1,10 @@
 import BehavioralDashboard from "./BehavioralDashboard";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Brain, ShieldAlert, Activity, Target, Network, Fingerprint, 
-  BarChart2, ShieldCheck, Zap, HelpCircle, FileText, CheckCircle2,
-  AlertTriangle, Clock, Map, Users, LineChart, FileDigit, Sparkles, ChevronRight, Check
+  Brain, ShieldAlert, Target, Fingerprint, 
+  ShieldCheck, HelpCircle,
+  AlertTriangle, Clock, Users, FileDigit, Sparkles
 } from 'lucide-react';
 
 interface CognitiveProfileTabProps {

@@ -9,7 +9,7 @@
  */
 
 import { BaseUITest } from '../BaseUITest';
-import { ScenarioTestResult, ValidationResult, UICardStructure, SearchExecution, FieldStatus } from '../types';
+import { ScenarioTestResult, ValidationResult, UICardStructure, SearchExecution } from '../types';
 
 export class ScenarioB_PartialMatch extends BaseUITest {
   async execute(): Promise<ScenarioTestResult> {

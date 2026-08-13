@@ -50,8 +50,12 @@ export class TemporalValidator {
 
     const gaps: number[] = [];
     for (let i = 1; i < history.length; i++) {
-      const prev = new Date(history[i - 1].timestamp);
-      const curr = new Date(history[i].timestamp);
+      const prevRecord = history[i - 1];
+      const currRecord = history[i];
+      if (!prevRecord || !currRecord) continue;
+      
+      const prev = new Date(prevRecord.timestamp);
+      const curr = new Date(currRecord.timestamp);
       const diffDays = (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24);
       
       // Gap if more than 30 days between records
@@ -101,7 +105,11 @@ export class TemporalValidator {
 
     const changes: number[] = [];
     for (let i = 1; i < numericValues.length; i++) {
-      changes.push(numericValues[i] - numericValues[i - 1]);
+      const prev = numericValues[i - 1];
+      const curr = numericValues[i];
+      if (prev !== undefined && curr !== undefined) {
+        changes.push(curr - prev);
+      }
     }
 
     const positiveChanges = changes.filter(c => c > 0).length;
@@ -118,13 +126,13 @@ export class TemporalValidator {
    * Build temporal history from field audits
    */
   static buildTemporalHistory(
-    fieldName: string,
+    _fieldName: string,
     fieldAudits: FieldAudit[]
   ): TemporalRecord[] {
     return fieldAudits.map(audit => ({
       timestamp: audit.retrievedAt,
       value: audit.value,
-      source: audit.source,
+      source: audit.sourceId,
       valid: audit.status === 'VERIFIED',
     }));
   }

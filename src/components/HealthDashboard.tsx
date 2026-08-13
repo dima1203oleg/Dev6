@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   HeartPulse, Activity, Zap, ShieldCheck, 
-  Server, AlertCircle, RefreshCw, Clock
+  Server, RefreshCw, Clock
 } from "lucide-react";
 import { motion } from "motion/react";
 

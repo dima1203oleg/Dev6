@@ -256,7 +256,7 @@ export class EnterpriseReleaseGate {
   private async checkCondition(
     condition: ReleaseGateCondition,
     healthIndex: number,
-    releaseCandidate: ReleaseCandidate
+    _releaseCandidate: ReleaseCandidate
   ): Promise<{ passed: boolean; message: string }> {
     switch (condition.conditionId) {
       case 'test-unit':

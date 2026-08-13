@@ -6,7 +6,7 @@ import ConnectorHealthDashboard from './ConnectorHealthDashboard';
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useContext,  useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Users,
   Landmark,
@@ -17,34 +17,14 @@ import {
   Cpu,
   Shield,
   Zap,
-  RefreshCw,
-  Key,
   Server,
   Settings,
-  CheckCircle,
-  XCircle,
   AlertTriangle,
-  Play,
-  Pause,
-  ChevronRight,
-  BarChart4,
-  Check,
   Radio,
-  HardDrive,
-  BookOpen,
   Clock,
-  Code,
-  DollarSign,
-  Bell,
   ShieldCheck,
-  Plus,
   Trash2,
-  Lock,
-  Unlock,
-  Eye,
   Sliders,
-  Filter,
-  FileText,
   CheckSquare,
   Square,
   ToggleLeft,
@@ -191,7 +171,7 @@ export default function AdminBackOffice() {
     },
   ]);
 
-  const [orgs, setOrgs] = useState<OrganizationRecord[]>([
+  const [orgs, _setOrgs] = useState<OrganizationRecord[]>([
     {
       id: "org1",
       name: "Нацбанк",
@@ -504,7 +484,7 @@ export default function AdminBackOffice() {
   ]);
 
   // ETL Pipelines
-  const [etlPipelines, setEtlPipelines] = useState<ETLPipeline[]>([
+  const [etlPipelines, _setEtlPipelines] = useState<ETLPipeline[]>([
     {
       id: "p1",
       name: "YouControl Delta Ingestion",
@@ -578,14 +558,6 @@ export default function AdminBackOffice() {
       status: "PAUSED",
     },
   ]);
-
-  // Queues status
-  const queueStats = {
-    kafkaLag: 2,
-    celeryTasksRunning: 14,
-    redisQueueSize: 28,
-    deadLetterQueueCount: 1, // Keep active for testing
-  };
 
   // Systems logs live feed
   const [logs, setLogs] = useState<LogMessage[]>([]);
@@ -765,19 +737,19 @@ export default function AdminBackOffice() {
         ],
       };
 
-      const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+      const randomLevel = levels[Math.floor(Math.random() * levels.length)] || "INFO";
       const randomService =
-        services[Math.floor(Math.random() * services.length)];
+        services[Math.floor(Math.random() * services.length)] || "system";
       const phraseList = phrases[randomLevel];
       const randomMsg =
-        phraseList[Math.floor(Math.random() * phraseList.length)];
+        phraseList[Math.floor(Math.random() * phraseList.length)] || "System message";
       const now = new Date();
       const timeStr = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`;
 
       setLogs((prev) => [
         {
           timestamp: timeStr,
-          level: randomLevel,
+          level: randomLevel as "ERROR" | "WARNING" | "INFO" | "SECURITY" | "AUDIT" | "AI",
           service: randomService,
           message: randomMsg,
         },
@@ -834,8 +806,8 @@ export default function AdminBackOffice() {
     setRbacMatrix((prev) => ({
       ...prev,
       [role]: {
-        ...prev[role],
-        [permKey]: !prev[role][permKey],
+        ...(prev[role] || {}),
+        [permKey]: !prev[role]?.[permKey],
       },
     }));
   };
@@ -1530,7 +1502,7 @@ export default function AdminBackOffice() {
                             {role}
                           </td>
                           {permissionsList.map((perm) => {
-                            const isAllowed = rbacMatrix[role][perm.key];
+                            const isAllowed = rbacMatrix[role]?.[perm.key];
                             return (
                               <td key={perm.key} className="p-2 text-center">
                                 <button

@@ -183,16 +183,19 @@ export class ValidationKnowledgeBase {
   /**
    * Get suggested fix for an incident
    */
-  getSuggestedFix(incidentId: string): FixReference | null {
+  getSuggestedFix(_incidentId: string): FixReference | null {
     const matches = this.searchSimilarIncidents('', '', []);
     
-    if (matches.length > 0 && matches[0].similarity > 70) {
+    const match = matches[0];
+    if (match && match.similarity > 70) {
       // Increment usage count
-      const entry = matches[0].entry;
+      const entry = match.entry;
+      if (!entry) return null;
+      
       entry.usageCount++;
       entry.lastUsed = new Date().toISOString();
       
-      console.log(`[KNOWLEDGE BASE] Suggested fix from entry: ${entry.entryId} (similarity: ${matches[0].similarity}%)`);
+      console.log(`[KNOWLEDGE BASE] Suggested fix from entry: ${entry.entryId} (similarity: ${match.similarity}%)`);
       
       return entry.fix;
     }

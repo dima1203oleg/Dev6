@@ -5,26 +5,8 @@
  * Automatically analyzes dataset structure and determines optimal access method
  */
 
-import { Dataset, DatasetFormat, CKANResource, Schema, SchemaField } from './types';
+import { Dataset, Schema, SchemaField, ScanResult } from './types';
 import { CKANAdapter } from './adapters/CKANAdapter';
-
-export interface ScanResult {
-  dataset: Dataset;
-  hasDataStore: boolean;
-  hasCSV: boolean;
-  hasJSON: boolean;
-  hasXML: boolean;
-  hasZIP: boolean;
-  hasXLSX: boolean;
-  hasAPI: boolean;
-  hasDump: boolean;
-  hasStreaming: boolean;
-  recommendedMethod: 'DATASTORE' | 'DOWNLOAD' | 'API' | 'DUMP';
-  estimatedSize: number;
-  estimatedRecords: number;
-  schema?: Schema;
-  qualityScore: number;
-}
 
 export class DatasetScanner {
   private ckanAdapters: Map<string, CKANAdapter> = new Map();
@@ -185,7 +167,6 @@ export class DatasetScanner {
    */
   private calculateQualityScore(result: ScanResult): number {
     let score = 0;
-    const maxScore = 100;
 
     // DataStore availability (30 points)
     if (result.hasDataStore) score += 30;

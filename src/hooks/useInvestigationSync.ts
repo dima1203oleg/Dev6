@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 
-export function useInvestigationSync(id?: string, initialNodes?: any[], initialLinks?: any[]) {
+export function useInvestigationSync(_id?: string, initialNodes?: any[], initialLinks?: any[]) {
   const [nodes, setNodes] = useState(initialNodes || []);
   const [links, setLinks] = useState(initialLinks || []);
 

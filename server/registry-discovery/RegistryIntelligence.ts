@@ -22,7 +22,7 @@ export class RegistryIntelligence {
     const passport: RegistryPassport = {
       registryId: dataset.id,
       name: dataset.title,
-      ownerOrg: dataset.organization || 'Unknown',
+      ownerOrg: typeof dataset.organization === 'string' ? dataset.organization : (dataset.organization?.name || 'Unknown'),
       url: dataset.url,
       api: this.determineAPI(dataset, scanResult),
       type: this.determineType(dataset),
@@ -55,7 +55,7 @@ export class RegistryIntelligence {
   /**
    * Determine API endpoint
    */
-  private determineAPI(dataset: Dataset, scanResult?: ScanResult): string {
+  private determineAPI(dataset: Dataset, _scanResult?: ScanResult): string {
     if (dataset.datastoreActive) {
       return `${dataset.url}/api/3/action/datastore_search`;
     }
@@ -74,7 +74,7 @@ export class RegistryIntelligence {
   /**
    * Determine update frequency
    */
-  private determineUpdateFrequency(dataset: Dataset): string {
+  private determineUpdateFrequency(_dataset: Dataset): string {
     // Default to daily for most registries
     return 'DAILY';
   }
@@ -137,7 +137,7 @@ export class RegistryIntelligence {
   /**
    * Calculate availability
    */
-  private calculateAvailability(dataset: Dataset, downloadResult?: DownloadResult): number {
+  private calculateAvailability(_dataset: Dataset, downloadResult?: DownloadResult): number {
     if (downloadResult?.success) return 100;
     return 0;
   }
@@ -145,7 +145,7 @@ export class RegistryIntelligence {
   /**
    * Calculate completeness
    */
-  private calculateCompleteness(dataset: Dataset, scanResult?: ScanResult): number {
+  private calculateCompleteness(dataset: Dataset, _scanResult?: ScanResult): number {
     let score = 50;
 
     if (dataset.description) score += 20;
@@ -173,15 +173,15 @@ export class RegistryIntelligence {
   /**
    * Calculate integrity
    */
-  private calculateIntegrity(dataset: Dataset, downloadResult?: DownloadResult): number {
-    if (downloadResult?.hash) return 100;
+  private calculateIntegrity(dataset: Dataset, _downloadResult?: DownloadResult): number {
+    if (dataset.hash) return 100;
     return 50;
   }
 
   /**
    * Calculate consistency
    */
-  private calculateConsistency(dataset: Dataset, scanResult?: ScanResult): number {
+  private calculateConsistency(_dataset: Dataset, scanResult?: ScanResult): number {
     if (scanResult?.schema) return 100;
     return 50;
   }
@@ -211,7 +211,7 @@ export class RegistryIntelligence {
   /**
    * Calculate field coverage
    */
-  private calculateFieldCoverage(dataset: Dataset, scanResult?: ScanResult): number {
+  private calculateFieldCoverage(_dataset: Dataset, scanResult?: ScanResult): number {
     if (scanResult?.schema && scanResult.schema.fields.length > 0) {
       return Math.min(scanResult.schema.fields.length * 5, 100);
     }

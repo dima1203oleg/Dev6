@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Bell, ShieldAlert, CheckCircle2, Info, X, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 

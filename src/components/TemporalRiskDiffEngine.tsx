@@ -4,12 +4,10 @@
  * Temporal Risk Dynamics Engine (Snapshot Diff Engine)
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
-  History, ArrowRight, ShieldAlert, TrendingUp, TrendingDown, 
-  Calendar, Layers, CheckCircle2, AlertTriangle, Activity, Filter, RefreshCw
+  History, TrendingUp, TrendingDown, Activity
 } from 'lucide-react';
-import { motion } from 'motion/react';
 import { OsintEntity } from '../osintData';
 
 interface TemporalRiskDiffEngineProps {

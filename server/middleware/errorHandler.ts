@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthenticatedRequest } from "./auth";
 
 export interface ApiError {
   code: string;
@@ -110,9 +109,9 @@ export function errorHandler(
   err: Error | AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) {
-  const productionMode = process.env.NODE_ENV === 'production';
+  const productionMode = process.env['NODE_ENV'] === 'production';
   
   // Log error
   console.error(`[ERROR] ${err.name}: ${err.message}`, {

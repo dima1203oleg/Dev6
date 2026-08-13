@@ -5,8 +5,6 @@
  */
 
 import { EnterpriseAcceptanceCriteria, CardValidationResult, EvidenceCoverage } from './types';
-import { EvidenceCoverageCalculator } from './evidenceCoverage';
-import { CrossRegistryConsistencyValidator } from './crossRegistryConsistency';
 
 export class EnterpriseAcceptanceCriteriaValidator {
   /**
@@ -99,8 +97,6 @@ export class EnterpriseAcceptanceCriteriaValidator {
   ): EnterpriseAcceptanceCriteria['data'] {
     const criticalCards = cardResults.filter(r => r.cardId.includes('critical') || r.status === 'FAIL');
     const criticalCardsPass = criticalCards.length === 0 || criticalCards.every(r => r.status === 'PASS');
-
-    const evidenceCoverageResult = EvidenceCoverageCalculator.meetsEnterpriseCriteria(evidenceCoverage);
 
     // Check for cross-registry conflicts
     const conflicts = cardResults.filter(r => r.errors.some(e => e.includes('conflict')));

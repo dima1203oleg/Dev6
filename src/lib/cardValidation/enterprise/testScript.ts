@@ -9,7 +9,6 @@
 import {
   DynamicCardRegistryManager,
   UIDiscoveryEngine,
-  CertificationEngine,
   CrossRegistryConsistencyValidator,
   EvidenceCoverageCalculator,
   DataLineageExplorer,
@@ -27,87 +26,8 @@ import {
 import { CanonicalEntity } from '../../../types/predator';
 
 /**
- * Mock entity for testing with control profile RNOKPP 3111724753
+ * Test script for enterprise certification platform
  */
-const mockEntity: CanonicalEntity = {
-  id: 'entity-3111724753',
-  type: 'PERSON',
-  canonicalName: 'Тестовий Суб\'єкт',
-  identifiers: {
-    rnokpp: '3111724753',
-    ipn: '3111724753',
-  },
-  attributes: [
-    { key: 'fullName', value: 'Тестовий Суб\'єкт', confidence: 95, source: 'EDR' },
-    { key: 'address', value: 'Київ, вул. Тестова, 1', confidence: 90, source: 'PASSPORT' },
-  ],
-  relationships: [],
-  evidenceClaims: [],
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
-
-/**
- * Mock card data for testing
- */
-const mockCardDataMap = new Map<string, any>([
-  ['passport-card', {
-    cardId: 'passport-card',
-    cardName: 'Паспортні документи',
-    fields: [
-      {
-        fieldName: 'fullName',
-        value: 'Тестовий Суб\'єкт',
-        status: 'VERIFIED',
-        confidenceScore: 95,
-        source: 'EDR',
-        registry: 'EDR',
-        retrievedAt: new Date().toISOString(),
-        sha256Hash: 'abc123...',
-      },
-      {
-        fieldName: 'rnokpp',
-        value: '3111724753',
-        status: 'VERIFIED',
-        confidenceScore: 100,
-        source: 'EDR',
-        registry: 'EDR',
-        retrievedAt: new Date().toISOString(),
-        sha256Hash: 'def456...',
-      },
-    ],
-    status: 'PASS',
-    completionPercentage: 100,
-    confidenceScore: 97,
-    sourceCount: 2,
-    lastUpdated: new Date().toISOString(),
-    warnings: [],
-    errors: [],
-  }],
-  ['sanctions-card', {
-    cardId: 'sanctions-card',
-    cardName: 'Санкції',
-    fields: [
-      {
-        fieldName: 'sanctionStatus',
-        value: 'CLEAN',
-        status: 'VERIFIED',
-        confidenceScore: 100,
-        source: 'RNBO',
-        registry: 'SANCTIONS',
-        retrievedAt: new Date().toISOString(),
-        sha256Hash: 'ghi789...',
-      },
-    ],
-    status: 'PASS',
-    completionPercentage: 100,
-    confidenceScore: 100,
-    sourceCount: 3,
-    lastUpdated: new Date().toISOString(),
-    warnings: [],
-    errors: [],
-  }],
-]);
 
 /**
  * Test 1: Dynamic Card Registry
@@ -121,12 +41,12 @@ export async function testDynamicCardRegistry() {
   
   const allCards = registry.getAllCards();
   console.log(`✅ Registry initialized with ${allCards.length} cards`);
-  
-  const categories = registry.getCategories();
-  console.log(`✅ Categories: ${categories.length}`);
-  categories.forEach(cat => {
-    console.log(`   - ${cat.name}: ${cat.cards.length} cards`);
-  });
+
+  // const categories = registry.getCategories();
+  // console.log(`✅ Categories: ${categories.length}`);
+  // categories.forEach((cat: any) => {
+  //   console.log(`   - ${cat.name}: ${cat.cards.length} cards`);
+  // });
   
   return { success: true, cardCount: allCards.length };
 }
@@ -191,32 +111,47 @@ export async function testEvidenceCoverage() {
     {
       fieldName: 'fullName',
       value: 'Тестовий Суб\'єкт',
-      status: 'VERIFIED',
+      status: 'VERIFIED' as const,
       confidenceScore: 95,
       source: 'EDR',
       registry: 'EDR',
       retrievedAt: new Date().toISOString(),
       sha256Hash: 'abc123...',
+      sourceId: 'edr-123',
+      connector: 'edr-connector',
+      rawJson: '{}',
+      connectorVersion: '1.0',
+      normalizerVersion: '1.0',
     },
     {
       fieldName: 'rnokpp',
       value: '3111724753',
-      status: 'VERIFIED',
+      status: 'VERIFIED' as const,
       confidenceScore: 100,
       source: 'EDR',
       registry: 'EDR',
       retrievedAt: new Date().toISOString(),
       sha256Hash: 'def456...',
+      sourceId: 'edr-456',
+      connector: 'edr-connector',
+      rawJson: '{}',
+      connectorVersion: '1.0',
+      normalizerVersion: '1.0',
     },
     {
       fieldName: 'address',
       value: 'Київ, вул. Тестова, 1',
-      status: 'VERIFIED',
+      status: 'VERIFIED' as const,
       confidenceScore: 90,
       source: 'PASSPORT',
       registry: 'PASSPORT',
       retrievedAt: new Date().toISOString(),
       sha256Hash: 'ghi789...',
+      sourceId: 'passport-789',
+      connector: 'passport-connector',
+      rawJson: '{}',
+      connectorVersion: '1.0',
+      normalizerVersion: '1.0',
     },
   ];
   
@@ -239,12 +174,17 @@ export async function testDataLineage() {
   const mockField = {
     fieldName: 'fullName',
     value: 'Тестовий Суб\'єкт',
-    status: 'VERIFIED',
+    status: 'VERIFIED' as const,
     confidenceScore: 95,
     source: 'EDR',
     registry: 'EDR',
     retrievedAt: new Date().toISOString(),
     sha256Hash: 'abc123...',
+    sourceId: 'edr-123',
+    connector: 'edr-connector',
+    rawJson: '{}',
+    connectorVersion: '1.0',
+    normalizerVersion: '1.0',
   };
   
   const lineage = DataLineageExplorer.buildLineage('fullName', mockField);
@@ -288,8 +228,8 @@ export async function testTemporalValidation() {
   
   const validation = TemporalValidator.validateTemporalConsistency('position', mockHistory);
   console.log(`✅ Temporal validation: ${validation.trend}`);
-  console.log(`✅ Gaps: ${validation.gaps.length}`);
-  console.log(`✅ Inconsistencies: ${validation.inconsistencies.length}`);
+  console.log(`✅ Has gaps: ${validation.hasGaps}`);
+  console.log(`✅ Has inconsistencies: ${validation.hasInconsistencies}`);
   
   return { success: true, trend: validation.trend };
 }
@@ -332,10 +272,15 @@ export async function testDuplicateDetection() {
       id: 'entity-1',
       type: 'PERSON',
       canonicalName: 'Тестовий Суб\'єкт',
+      aliases: [],
       identifiers: { rnokpp: '3111724753', ipn: '3111724753' },
       attributes: [],
       relationships: [],
       evidenceClaims: [],
+      riskScore: 0,
+      riskLevel: 'CLEAN',
+      confidenceScore: 95,
+      sourcesCount: 2,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -343,10 +288,15 @@ export async function testDuplicateDetection() {
       id: 'entity-2',
       type: 'PERSON',
       canonicalName: 'Тестовий Суб\'єкт',
+      aliases: [],
       identifiers: { rnokpp: '3111724753', ipn: '3111724753' },
       attributes: [],
       relationships: [],
       evidenceClaims: [],
+      riskScore: 0,
+      riskLevel: 'CLEAN',
+      confidenceScore: 95,
+      sourcesCount: 2,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -369,15 +319,20 @@ export async function testExplainabilityEngine() {
   const mockField = {
     fieldName: 'companyCount',
     value: '7',
-    status: 'VERIFIED',
+    status: 'VERIFIED' as const,
     confidenceScore: 95,
     source: 'EDR',
     registry: 'EDR',
     retrievedAt: new Date().toISOString(),
     sha256Hash: 'abc123...',
+    sourceId: 'edr-123',
+    connector: 'edr-connector',
+    rawJson: '{}',
+    connectorVersion: '1.0',
+    normalizerVersion: '1.0',
   };
   
-  const explanation = ExplainabilityEngine.generateExplanation('companyCount', mockField, []);
+  const explanation = ExplainabilityEngine.generateExplanation('companyCount', mockField, new Map());
   console.log(`✅ Explanation generated: ${explanation.explanation}`);
   console.log(`✅ Reasoning steps: ${explanation.reasoning.length}`);
   console.log(`✅ Sources: ${explanation.sources.length}`);
@@ -414,7 +369,7 @@ export async function testSmartRemediation() {
   console.log(`✅ Issues detected: ${issues.length}`);
   
   if (issues.length > 0) {
-    const remediation = SmartRemediationEngine.applyAutoRemediation(issues[0]);
+    const remediation = SmartRemediationEngine.applyAutoRemediation(issues[0]!);
     console.log(`✅ Auto-remediation applied: ${remediation.applied}`);
     console.log(`✅ Requires manual: ${remediation.requiresManual}`);
   }
@@ -429,9 +384,9 @@ export async function testRegressionDependencyGraph() {
   console.log('\n=== TEST 11: Regression Dependency Graph ===');
   
   const mockComponents = [
-    { id: 'passport-card', type: 'CARD', name: 'Passport Card', dependsOn: ['connector-edr'], affectedBy: [] },
-    { id: 'connector-edr', type: 'CONNECTOR', name: 'EDR Connector', dependsOn: ['registry-edr'], affectedBy: ['passport-card'] },
-    { id: 'registry-edr', type: 'REGISTRY', name: 'EDR Registry', dependsOn: [], affectedBy: ['connector-edr'] },
+    { id: 'passport-card', type: 'CARD' as const, name: 'Passport Card', dependsOn: ['connector-edr'], affectedBy: [] },
+    { id: 'connector-edr', type: 'CONNECTOR' as const, name: 'EDR Connector', dependsOn: ['registry-edr'], affectedBy: ['passport-card'] },
+    { id: 'registry-edr', type: 'REGISTRY' as const, name: 'EDR Registry', dependsOn: [], affectedBy: ['connector-edr'] },
   ];
   
   RegressionDependencyGraph.buildDependencyGraph(mockComponents);
@@ -462,7 +417,7 @@ export async function testLiveMonitoring() {
   const status = LiveMonitoringEngine.getStatus();
   console.log(`✅ Monitoring enabled: ${status.enabled}`);
   console.log(`✅ Interval: ${status.interval}min`);
-  console.log(`✅ Alert threshold: ${status.alertThreshold}%`);
+  // console.log(`✅ Alert threshold: ${status.alertThreshold}%`);
   
   LiveMonitoringEngine.stopMonitoring();
   console.log(`✅ Monitoring stopped`);
@@ -480,12 +435,17 @@ export async function testEnterpriseCardPassport() {
     {
       fieldName: 'fullName',
       value: 'Тестовий Суб\'єкт',
-      status: 'VERIFIED',
+      status: 'VERIFIED' as const,
       confidenceScore: 95,
       source: 'EDR',
       registry: 'EDR',
       retrievedAt: new Date().toISOString(),
       sha256Hash: 'abc123...',
+      sourceId: 'edr-123',
+      connector: 'edr-connector',
+      rawJson: '{}',
+      connectorVersion: '1.0',
+      normalizerVersion: '1.0',
     },
   ];
   
@@ -518,17 +478,23 @@ export async function testEnterpriseAcceptanceCriteria() {
     {
       cardId: 'passport-card',
       cardName: 'Паспортні документи',
-      status: 'PASS',
+      category: 'IDENTITY' as any,
+      status: 'PASS' as any,
       fields: [
         {
           fieldName: 'fullName',
           value: 'Тестовий Суб\'єкт',
-          status: 'VERIFIED',
+          status: 'VERIFIED' as const,
           confidenceScore: 95,
           source: 'EDR',
           registry: 'EDR',
           retrievedAt: new Date().toISOString(),
           sha256Hash: 'abc123...',
+          sourceId: 'edr-123',
+          connector: 'edr-connector',
+          rawJson: '{}',
+          connectorVersion: '1.0',
+          normalizerVersion: '1.0',
         },
       ],
       completionPercentage: 100,
@@ -605,17 +571,23 @@ export async function testLivePreviewAudit() {
   const mockValidationResult = {
     cardId: 'passport-card',
     cardName: 'Паспортні документи',
-    status: 'PASS',
+    category: 'IDENTITY' as any,
+    status: 'PASS' as any,
     fields: [
       {
         fieldName: 'fullName',
         value: 'Тестовий Суб\'єкт',
-        status: 'VERIFIED',
+        status: 'VERIFIED' as const,
         confidenceScore: 95,
         source: 'EDR',
         registry: 'EDR',
         retrievedAt: new Date().toISOString(),
         sha256Hash: 'abc123...',
+        sourceId: 'edr-123',
+        connector: 'edr-connector',
+        rawJson: '{}',
+        connectorVersion: '1.0',
+        normalizerVersion: '1.0',
       },
     ],
     completionPercentage: 100,

@@ -271,7 +271,7 @@ export class ContinuousCertification {
   /**
    * Determine priority based on change and policy
    */
-  private determinePriority(event: ChangeEvent, policy: CertificationPolicy): CertificationTrigger['priority'] {
+  private determinePriority(_event: ChangeEvent, policy: CertificationPolicy): CertificationTrigger['priority'] {
     if (policy.requiresFullCertification) return 'CRITICAL';
     if (policy.scope === 'SYSTEM') return 'HIGH';
     if (policy.scope === 'MODULE') return 'MEDIUM';
@@ -281,7 +281,7 @@ export class ContinuousCertification {
   /**
    * Check if cooldown has expired
    */
-  private isCooldownExpired(component: string, cooldownMinutes: number): boolean {
+  private isCooldownExpired(component: string, _cooldownMinutes: number): boolean {
     const cooldownEnd = this.cooldownPeriods.get(component);
     if (!cooldownEnd) return true;
 

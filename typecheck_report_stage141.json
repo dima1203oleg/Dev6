@@ -1,0 +1,30 @@
+{
+  "stage": "STAGE_141_EVIDENCEPROVENANCEMODAL_AND_FREESOURCESTAB_FIXES",
+  "timestamp": "2026-08-11T12:30:00Z",
+  "previous_errors": 789,
+  "current_errors": 787,
+  "delta": -2,
+  "top_categories_fixed": [
+    "TS6133 - Unused imports (EvidenceProvenanceModal, FreeSourcesTab)",
+    "TS2345 - Type errors (EvidenceProvenanceModal fallback chain)",
+    "TS2339 - Property access errors (FreeSourcesTab passport properties)",
+    "TS18048 - Possibly undefined checks (FreeSourcesTab selectedConnector)"
+  ],
+  "files_changed": [
+    "src/components/EvidenceProvenanceModal.tsx",
+    "src/components/FreeSourcesTab.tsx"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining errors - progress: 1091 errors fixed (1878 -> 787)"
+}

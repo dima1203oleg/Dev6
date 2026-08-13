@@ -30,7 +30,7 @@ export class GlobalHealthService {
 
   private async checkGemini(): Promise<ServiceHealth> {
     const start = Date.now();
-    const hasKey = Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== "MY_GEMINI_API_KEY");
+    const hasKey = Boolean(process.env['GEMINI_API_KEY'] && process.env['GEMINI_API_KEY'] !== "MY_GEMINI_API_KEY");
     return {
       name: "Gemini AI Core Engine",
       status: hasKey ? "LIVE" : "OFFLINE",

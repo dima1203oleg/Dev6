@@ -1,9 +1,7 @@
-import React, { useMemo, useState } from 'react';
-import { scaleLinear } from 'd3-scale';
+import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Activity, ShieldAlert, Award, TrendingUp, HelpCircle, 
-  ChevronRight, Users, Eye, Zap, AlertTriangle
+  Activity, ShieldAlert, ChevronRight
 } from 'lucide-react';
 import { OsintEntity } from '../osintData';
 
@@ -38,19 +36,6 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
   // Y-axis: Risk Score (0 to 100)
   const gridRows = 5; // Risk levels: 0-20, 20-40, 40-60, 60-80, 80-100
   const gridCols = 5; // Connectivity groups: 0, 1, 2, 3, 4+
-
-  // D3 Scales for positioning/mapping
-  const xScale = useMemo(() => {
-    return scaleLinear()
-      .domain([0, gridCols])
-      .range([0, 100]); // percentage width
-  }, [gridCols]);
-
-  const yScale = useMemo(() => {
-    return scaleLinear()
-      .domain([0, gridRows])
-      .range([100, 0]); // percentage height (inverted)
-  }, [gridRows]);
 
   // Calculate grid cell values
   const cells = useMemo(() => {
@@ -148,7 +133,7 @@ export default function D3RiskHeatmapWidget({ entities, onSelectEntity, onSelect
             {/* Grid Map Area */}
             <div className="flex-1 grid grid-cols-5 gap-1.5 relative p-1">
               {/* Plot grid cells */}
-              {cells.map((cell, idx) => {
+              {cells.map((cell, _idx) => {
                 const isHovered = hoveredCell?.xIndex === cell.cIndex && hoveredCell?.yIndex === cell.rIndex;
                 const densityPercent = cell.density / maxDensity;
                 

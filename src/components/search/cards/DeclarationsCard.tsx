@@ -1,12 +1,12 @@
 import React from 'react';
-import { FileBadge, Calendar, DollarSign, Building2, User } from 'lucide-react';
+import { FileBadge, DollarSign, Building2, User } from 'lucide-react';
 
 interface DeclarationsCardProps {
   entity: any;
   declarationData?: any;
 }
 
-export const DeclarationsCard: React.FC<DeclarationsCardProps> = ({ entity, declarationData }) => {
+export const DeclarationsCard: React.FC<DeclarationsCardProps> = ({ entity: _entity, declarationData }) => {
   const declarations = declarationData?.declarations || [];
 
   return (

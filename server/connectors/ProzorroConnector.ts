@@ -81,9 +81,9 @@ export class ProzorroConnector extends AbstractConnector {
     try {
       // Test health by querying a known valid EDRPOU
       const testResult = await fetchProzorroProfile('00000000');
-      return testResult.ok ? 'HEALTHY' : 'UNHEALTHY';
+      return testResult.ok ? 'CONNECTED' : 'UNREACHABLE';
     } catch {
-      return 'UNHEALTHY';
+      return 'UNREACHABLE';
     }
   }
 

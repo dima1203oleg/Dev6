@@ -40,7 +40,18 @@ export const SOLUTIONS: OpenSourceSolution[] = [
   }
 ];
 
-export const GAP_ITEMS = [];
+export interface GapItem {
+  id: string;
+  category: string;
+  categoryLabel?: string;
+  difficulty?: string;
+  title?: string;
+  description?: string;
+  timeEstimate?: string;
+  actionItems?: string[];
+}
+
+export const GAP_ITEMS: GapItem[] = [];
 export const ROADMAP_PHASES = [
   {
     id: 'phase1',
@@ -119,8 +130,8 @@ export const ROADMAP_PHASES = [
   }
 ];
 
-export const LICENSE_MATRIX = [];
-export const VOLUMES = [];
+export const LICENSE_MATRIX: any[] = [];
+export const VOLUMES: any[] = [];
 
-export const ARCHITECTURE_NODES = [];
-export const ARCHITECTURE_EDGES = [];
+export const ARCHITECTURE_NODES: any[] = [];
+export const ARCHITECTURE_EDGES: any[] = [];

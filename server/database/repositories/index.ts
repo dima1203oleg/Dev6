@@ -8,3 +8,12 @@ export { EntityRepository } from './EntityRepository';
 export { EvidenceRepository } from './EvidenceRepository';
 export { CardRepository } from './CardRepository';
 export { IngestionRunRepository } from './IngestionRunRepository';
+export { NAISEDRRepository } from './NAISEDRRepository';
+export type {
+  NAISEDRImport,
+  NAISEDRImportMetrics,
+  NAISEDRImportStatus,
+  NAISEDRIndexedRecord,
+  NAISEDRSourceType,
+  NAISEDRStoredRecord,
+} from './NAISEDRRepository';

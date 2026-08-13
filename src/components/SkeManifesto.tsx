@@ -4,12 +4,11 @@
  * NEXUS - Synthetic Knowledge Environment (SKE) & Genesis Canvas Simulator
  */
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { 
-  Sparkles, Cpu, Database, Activity, Search, Mic, Network, 
-  Eye, Zap, Layers, HelpCircle, ArrowRight, Compass, ShieldAlert,
-  Flame, Globe, FileText, Play, RotateCcw
+  Cpu, Activity, Search, Mic, 
+  Compass, Play, Layers, HelpCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -222,39 +221,6 @@ export default function SkeManifesto() {
     // Animation Loop
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
-      const posAttr = geometry.getAttribute('position') as THREE.BufferAttribute;
-
-      // 60Hz Breathing pulse
-      const breathe = Math.sin(elapsedTime * Math.PI * 2) * 0.06 + 1.0;
-
-      for (let i = 0; i < particleCount; i++) {
-        const x = originalPositions[i * 3];
-        const y = originalPositions[i * 3 + 1];
-        const z = originalPositions[i * 3 + 2];
-
-        // Custom noise movement
-        const offset = randomOffsets[i];
-        const localTime = elapsedTime * 1.5 + offset;
-        const noiseX = Math.sin(localTime * 0.5) * 0.08;
-        const noiseY = Math.cos(localTime * 0.3) * 0.08;
-        const noiseZ = Math.sin(localTime * 0.4) * 0.08;
-
-        if (isVortexActive) {
-          // Vortex effect: spin rapidly and pull towards the center
-          const angle = elapsedTime * 8 + offset;
-          const currentRadius = Math.max(0.1, 2.0 - ((elapsedTime * 2) % 2.0));
-          posAttr.setX(i, currentRadius * Math.cos(angle));
-          posAttr.setY(i, currentRadius * Math.sin(angle));
-          posAttr.setZ(i, (Math.random() - 0.5) * 0.5);
-        } else {
-          // Regular breathing & orbiting
-          posAttr.setX(i, (x * breathe) + noiseX);
-          posAttr.setY(i, (y * breathe) + noiseY);
-          posAttr.setZ(i, (z * breathe) + noiseZ);
-        }
-      }
-
-      posAttr.needsUpdate = true;
 
       // Rotate group gently
       points.rotation.y = elapsedTime * 0.15;

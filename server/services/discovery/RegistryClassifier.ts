@@ -1,5 +1,4 @@
 import { RegistryPassport, AccessMethod } from '../../models/discovery';
-import crypto from 'crypto';
 
 export class RegistryClassifier {
   

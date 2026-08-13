@@ -1,0 +1,29 @@
+{
+  "stage": "STAGE_123_DATAINGESTIONTAB_AND_ONBOARDING_FIXES",
+  "timestamp": "2026-08-11T08:00:00Z",
+  "previous_errors": 860,
+  "current_errors": 854,
+  "delta": -6,
+  "top_categories_fixed": [
+    "TS18048 - Possibly undefined (DataIngestionTab)",
+    "TS2345 - Argument type not assignable (DataIngestionTab)",
+    "TS6133 - Unused imports (DataOnboardingCenter)"
+  ],
+  "files_changed": [
+    "src/components/DataIngestionTab.tsx",
+    "src/components/DataOnboardingCenter.tsx"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining errors - progress: 1024 errors fixed (1878 -> 854)"
+}

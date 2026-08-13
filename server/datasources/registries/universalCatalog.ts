@@ -443,7 +443,7 @@ export async function queryAllRegistries(
   searchField: 'edrpou' | 'ipn' | 'name' | 'plate' = 'edrpou',
   options: { concurrency?: number; timeoutMs?: number; categoriesFilter?: string[] } = {}
 ): Promise<RegistryQueryResult[]> {
-  const { concurrency = 10, timeoutMs = 15000, categoriesFilter } = options;
+  const { concurrency = 10, categoriesFilter } = options;
   
   // Filter registries that support the given search field
   let registries = FULL_REGISTRY_CATALOG.filter(r => 

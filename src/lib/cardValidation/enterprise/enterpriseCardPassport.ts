@@ -19,8 +19,6 @@ export class EnterpriseCardPassportGenerator {
     fields: FieldAudit[],
     lineage?: DataLineage
   ): EnterpriseCardPassport {
-    const now = new Date().toISOString();
-    
     return {
       card: {
         id: cardId,
@@ -211,8 +209,8 @@ export class EnterpriseCardPassportGenerator {
   private static extractSources(fields: FieldAudit[]): string[] {
     const sources = new Set<string>();
     fields.forEach(f => {
-      if (f.source && f.source !== 'unknown') {
-        sources.add(f.source);
+      if (f.sourceId && f.sourceId !== 'unknown') {
+        sources.add(f.sourceId);
       }
       if (f.registry && f.registry !== 'UNKNOWN') {
         sources.add(f.registry);
@@ -257,7 +255,24 @@ export class EnterpriseCardPassportGenerator {
     }
 
     // Use first field as representative
-    return DataLineageExplorer.buildLineage(fields[0].fieldName, fields[0]);
+    if (fields.length > 0) {
+      return DataLineageExplorer.buildLineage(fields[0]!.fieldName, fields[0]!);
+    }
+    return {
+      fieldName: 'unknown',
+      root: {
+        id: 'unknown',
+        type: 'FIELD',
+        name: 'unknown',
+        data: null,
+        timestamp: new Date().toISOString(),
+        confidence: 0,
+        status: 'INVALID',
+      },
+      totalNodes: 0,
+      depth: 0,
+      hasConflict: false,
+    };
   }
 
   /**

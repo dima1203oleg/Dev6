@@ -62,26 +62,9 @@ export interface ConsistencySummary {
 }
 
 export class DataConsistencyValidator {
-  private REQUIRED_CATEGORIES = [
-    'addresses',
-    'phones',
-    'emails',
-    'companies',
-    'roles',
-    'family',
-    'vehicles',
-    'realEstate',
-    'courtCases',
-    'executions',
-    'licenses',
-    'customs',
-    'declarations',
-    'sanctions',
-    'pep'
-  ];
 
   /**
-   * Перевірити consistency даних для всіх категорій
+   * Завдання 9: Провести Data Consistency Validation для всіх категорій
    */
   async validateConsistency(code: string, identifierType: 'ipn' | 'edrpou'): Promise<{
     checks: ConsistencyCheck[];

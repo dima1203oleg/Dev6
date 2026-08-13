@@ -4,7 +4,7 @@
  */
 
 import { BaseUITest } from '../BaseUITest';
-import { ValidationResult, UICardStructure, OverallStatus } from '../types';
+import { ValidationResult, UICardStructure } from '../types';
 
 export class UICardStructureValidator extends BaseUITest {
   async validateHeaderStructure(header: any): Promise<ValidationResult> {

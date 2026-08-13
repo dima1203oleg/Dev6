@@ -1,5 +1,4 @@
 import { CrossSourceResult } from './CrossSourceComparer';
-import { Evidence } from '../models/Evidence';
 
 export interface ResolvedEntity {
   mergedData: Record<string, any>;
@@ -34,10 +33,10 @@ export class ConflictResolver {
     const sortedEvidences = [...comparisonResult.evidences].sort((a, b) => {
       const priorityA = SOURCE_PRIORITY[a.sourceId] ?? SOURCE_PRIORITY['DEFAULT'];
       const priorityB = SOURCE_PRIORITY[b.sourceId] ?? SOURCE_PRIORITY['DEFAULT'];
-      return priorityB - priorityA;
+      return (priorityB || 0) - (priorityA || 0);
     });
 
-    const primarySource = sortedEvidences[0].sourceId;
+    const primarySource = sortedEvidences[0]?.sourceId || null;
     const allKeys = new Set<string>();
     
     sortedEvidences.forEach(evidence => {
@@ -57,11 +56,11 @@ export class ConflictResolver {
         
         if (uniqueValues.size > 1) {
           // Conflict detected, pick the value from the highest priority source
-          mergedData[key] = values[0].value; 
+          mergedData[key] = values[0]?.value; 
           conflicts.push({ field: key, values });
         } else {
           // No conflict
-          mergedData[key] = values[0].value;
+          mergedData[key] = values[0]?.value;
         }
       }
     });

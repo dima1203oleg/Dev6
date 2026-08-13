@@ -23,19 +23,19 @@ export class TEST017_Security extends BaseTest {
         // Perform security tests
         const securityResult = await this.performSecurityTests(endpoint, context);
         
-        details.sql_injection_vulnerable = securityResult.sql_injection;
-        details.xss_vulnerable = securityResult.xss;
-        details.ssrf_vulnerable = securityResult.ssrf;
-        details.idor_vulnerable = securityResult.idor;
-        details.secret_leakage = securityResult.secret_leakage;
-        details.path_traversal_vulnerable = securityResult.path_traversal;
-        details.command_injection_vulnerable = securityResult.command_injection;
+        details['sql_injection_vulnerable'] = securityResult.sql_injection;
+        details['xss_vulnerable'] = securityResult.xss;
+        details['ssrf_vulnerable'] = securityResult.ssrf;
+        details['idor_vulnerable'] = securityResult.idor;
+        details['secret_leakage'] = securityResult.secret_leakage;
+        details['path_traversal_vulnerable'] = securityResult.path_traversal;
+        details['command_injection_vulnerable'] = securityResult.command_injection;
         
-        details.security_score = this.calculateSecurityScore(securityResult);
+        details['security_score'] = this.calculateSecurityScore(securityResult);
         
         // Check for vulnerabilities
         const vulnerabilities = this.identifyVulnerabilities(securityResult);
-        details.vulnerabilities_found = vulnerabilities;
+        details['vulnerabilities_found'] = vulnerabilities;
         
         if (vulnerabilities.length > 0) {
           errors.push(`Security vulnerabilities detected: ${vulnerabilities.join(', ')}`);
@@ -43,8 +43,8 @@ export class TEST017_Security extends BaseTest {
         
         // Check for security headers
         const headersCheck = await this.checkSecurityHeaders(endpoint);
-        details.security_headers = headersCheck.headers;
-        details.missing_security_headers = headersCheck.missing;
+        details['security_headers'] = headersCheck.headers;
+        details['missing_security_headers'] = headersCheck.missing;
         
         if (headersCheck.missing.length > 0) {
           warnings.push(`Missing security headers: ${headersCheck.missing.join(', ')}`);
@@ -52,8 +52,8 @@ export class TEST017_Security extends BaseTest {
         
         // Check for HTTPS
         const httpsCheck = this.checkHTTPS(endpoint);
-        details.https_enabled = httpsCheck.enabled;
-        details.https_valid = httpsCheck.valid;
+        details['https_enabled'] = httpsCheck.enabled;
+        details['https_valid'] = httpsCheck.valid;
         
         if (!httpsCheck.enabled) {
           errors.push('Endpoint does not use HTTPS');
@@ -61,8 +61,8 @@ export class TEST017_Security extends BaseTest {
         
         // Check for data exposure
         const exposureCheck = await this.checkDataExposure(endpoint, context);
-        details.sensitive_data_exposed = exposureCheck.exposed;
-        details.exposed_data_types = exposureCheck.types;
+        details['sensitive_data_exposed'] = exposureCheck.exposed;
+        details['exposed_data_types'] = exposureCheck.types;
         
         if (exposureCheck.exposed) {
           errors.push(`Sensitive data exposed: ${exposureCheck.types.join(', ')}`);
@@ -114,7 +114,7 @@ export class TEST017_Security extends BaseTest {
     return result;
   }
 
-  private async testSQLInjection(endpoint: string, context: TestContext): Promise<boolean> {
+  private async testSQLInjection(endpoint: string, _context: TestContext): Promise<boolean> {
     try {
       const sqlPayload = "1' OR '1'='1";
       const testUrl = `${endpoint}?id=${encodeURIComponent(sqlPayload)}`;
@@ -144,7 +144,7 @@ export class TEST017_Security extends BaseTest {
     }
   }
 
-  private async testXSS(endpoint: string, context: TestContext): Promise<boolean> {
+  private async testXSS(endpoint: string, _context: TestContext): Promise<boolean> {
     try {
       const xssPayload = '<script>alert("XSS")</script>';
       const testUrl = `${endpoint}?q=${encodeURIComponent(xssPayload)}`;
@@ -167,7 +167,7 @@ export class TEST017_Security extends BaseTest {
     }
   }
 
-  private async testSSRF(endpoint: string, context: TestContext): Promise<boolean> {
+  private async testSSRF(endpoint: string, _context: TestContext): Promise<boolean> {
     try {
       // Test with localhost URL
       const ssrfPayload = 'http://127.0.0.1:8080/admin';
@@ -189,7 +189,7 @@ export class TEST017_Security extends BaseTest {
     }
   }
 
-  private async testIDOR(endpoint: string, context: TestContext): Promise<boolean> {
+  private async testIDOR(endpoint: string, _context: TestContext): Promise<boolean> {
     try {
       // Test with sequential IDs
       const testUrl = `${endpoint}?id=1`;
@@ -210,7 +210,7 @@ export class TEST017_Security extends BaseTest {
     }
   }
 
-  private async testSecretLeakage(endpoint: string, context: TestContext): Promise<boolean> {
+  private async testSecretLeakage(endpoint: string, _context: TestContext): Promise<boolean> {
     try {
       const response = await fetch(endpoint, {
         method: 'GET',
@@ -237,7 +237,7 @@ export class TEST017_Security extends BaseTest {
     }
   }
 
-  private async testPathTraversal(endpoint: string, context: TestContext): Promise<boolean> {
+  private async testPathTraversal(endpoint: string, _context: TestContext): Promise<boolean> {
     try {
       const pathPayload = '../../../etc/passwd';
       const testUrl = `${endpoint}?file=${encodeURIComponent(pathPayload)}`;
@@ -259,7 +259,7 @@ export class TEST017_Security extends BaseTest {
     }
   }
 
-  private async testCommandInjection(endpoint: string, context: TestContext): Promise<boolean> {
+  private async testCommandInjection(endpoint: string, _context: TestContext): Promise<boolean> {
     try {
       const commandPayload = '; cat /etc/passwd';
       const testUrl = `${endpoint}?cmd=${encodeURIComponent(commandPayload)}`;
@@ -355,7 +355,7 @@ export class TEST017_Security extends BaseTest {
     return { enabled, valid };
   }
 
-  private async checkDataExposure(endpoint: string, context: TestContext): Promise<{
+  private async checkDataExposure(endpoint: string, _context: TestContext): Promise<{
     exposed: boolean;
     types: string[];
   }> {

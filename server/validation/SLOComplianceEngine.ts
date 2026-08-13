@@ -296,7 +296,7 @@ export class SLOComplianceEngine {
         if (measurements.length === 0) return false;
         
         const latest = measurements[measurements.length - 1];
-        if (!latest.compliant) return false;
+        if (!latest || !latest.compliant) return false;
       }
     }
     
@@ -325,6 +325,18 @@ export class SLOComplianceEngine {
     }
 
     const latest = measurements[measurements.length - 1];
+    if (!latest) {
+      return {
+        sloId,
+        name: slo.name,
+        current: 0,
+        target: slo.target,
+        compliant: false,
+        trend: 'STABLE',
+        window: slo.window,
+        lastMeasurement: new Date().toISOString()
+      };
+    }
     const trend = this.calculateTrend(measurements);
 
     return {
@@ -360,7 +372,7 @@ export class SLOComplianceEngine {
     if (Math.abs(slope) < 0.01) return 'STABLE';
     
     // For latency/MTTR/freshness, lower is better
-    const slo = this.sloDefinitions.get(measurements[0].sloId);
+    const slo = this.sloDefinitions.get(measurements[0]?.sloId || '');
     if (!slo) return 'STABLE';
     
     const isLowerBetter = ['LATENCY', 'MTTR', 'FRESHNESS', 'DATA_DELAY'].includes(slo.measurement);

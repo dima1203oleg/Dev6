@@ -7,9 +7,9 @@
  * No manual "ready" claims allowed - only automated test results.
  */
 
-import { registryCertifier, CertificationResult } from './RegistryCertifier';
-import { fakeDataScanner, ScanResult as FakeScanResult } from './FakeDataScanner';
-import { hardcodedIdentifierScanner, IdentifierScanResult } from './HardcodedIdentifierScanner';
+import { registryCertifier } from './RegistryCertifier';
+import { fakeDataScanner } from './FakeDataScanner';
+import { hardcodedIdentifierScanner } from './HardcodedIdentifierScanner';
 import { evidenceChainBuilder } from './EvidenceChain';
 import { connectorFactory } from '../datasources/connectors/ConnectorFactory';
 import path from 'path';

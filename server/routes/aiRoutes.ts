@@ -28,7 +28,7 @@ router.post(
 
       const result = await aiRouter.executeTask(task, prompt, systemInstruction);
 
-      res.json({
+      return res.json({
         status: "SUCCESS",
         task: result.task,
         modelUsed: result.modelUsed,
@@ -37,7 +37,7 @@ router.post(
         text: result.text
       });
     } catch (err: any) {
-      res.status(500).json({ error: { code: "AI_ROUTER_ERROR", message: err.message, retryable: true } });
+      return res.status(500).json({ error: { code: "AI_ROUTER_ERROR", message: err.message, retryable: true } });
     }
   }
 );
@@ -55,9 +55,9 @@ router.post(
         return res.status(400).json({ error: { code: "BAD_REQUEST", message: "Query string is required" } });
       }
       const classification = await aiRouter.classifyInput(query);
-      res.json({ status: "SUCCESS", ...classification });
+      return res.json({ status: "SUCCESS", ...classification });
     } catch (err: any) {
-      res.status(500).json({ error: { code: "CLASSIFY_ERROR", message: err.message } });
+      return res.status(500).json({ error: { code: "CLASSIFY_ERROR", message: err.message } });
     }
   }
 );
@@ -75,9 +75,9 @@ router.post(
         return res.status(400).json({ error: { code: "BAD_REQUEST", message: "Query is required" } });
       }
       const orchestration = await aiRouter.orchestrateAgent(query, availableTools);
-      res.json({ status: "SUCCESS", ...orchestration });
+      return res.json({ status: "SUCCESS", ...orchestration });
     } catch (err: any) {
-      res.status(500).json({ error: { code: "ORCHESTRATION_ERROR", message: err.message } });
+      return res.status(500).json({ error: { code: "ORCHESTRATION_ERROR", message: err.message } });
     }
   }
 );
@@ -95,9 +95,9 @@ router.post(
         return res.status(400).json({ error: { code: "BAD_REQUEST", message: "entityData is required" } });
       }
       const synthesis = await aiRouter.synthesizeRiskReport(entityData);
-      res.json({ status: "SUCCESS", ...synthesis });
+      return res.json({ status: "SUCCESS", ...synthesis });
     } catch (err: any) {
-      res.status(500).json({ error: { code: "SYNTHESIS_ERROR", message: err.message } });
+      return res.status(500).json({ error: { code: "SYNTHESIS_ERROR", message: err.message } });
     }
   }
 );
@@ -115,9 +115,9 @@ router.post(
         return res.status(400).json({ error: { code: "BAD_REQUEST", message: "base64Data is required" } });
       }
       const extraction = await aiRouter.extractDocumentEntities(base64Data, mimeType);
-      res.json({ status: "SUCCESS", ...extraction });
+      return res.json({ status: "SUCCESS", ...extraction });
     } catch (err: any) {
-      res.status(500).json({ error: { code: "DOCUMENT_EXTRACTION_ERROR", message: err.message } });
+      return res.status(500).json({ error: { code: "DOCUMENT_EXTRACTION_ERROR", message: err.message } });
     }
   }
 );
@@ -128,10 +128,10 @@ router.post(
 router.get(
   "/voice-profile",
   checkPermission("ai.use"),
-  async (req: AuthenticatedRequest, res) => {
+  async (_req: AuthenticatedRequest, res) => {
     try {
       const { SERVER_PREDATOR_VOICE_PROFILE, buildSystemVoiceInstruction } = await import("../services/predatorVoiceProfile");
-      res.json({
+      return res.json({
         status: "SUCCESS",
         profile: SERVER_PREDATOR_VOICE_PROFILE,
         systemInstruction: buildSystemVoiceInstruction(),
@@ -143,7 +143,7 @@ router.get(
         ]
       });
     } catch (err: any) {
-      res.status(500).json({ error: { code: "VOICE_PROFILE_ERROR", message: err.message } });
+      return res.status(500).json({ error: { code: "VOICE_PROFILE_ERROR", message: err.message } });
     }
   }
 );

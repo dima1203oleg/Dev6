@@ -9,14 +9,12 @@
 import {
   DynamicCardRegistryManager,
   UIDiscoveryEngine,
-  CertificationEngine,
   CrossRegistryConsistencyValidator,
   EvidenceCoverageCalculator,
   DataLineageExplorer,
   TemporalValidator,
   RelationshipValidator,
   DuplicateDetector,
-  ExplainabilityEngine,
   SmartRemediationEngine,
   RegressionDependencyGraph,
   LiveMonitoringEngine,
@@ -24,7 +22,9 @@ import {
   EnterpriseAcceptanceCriteriaValidator,
   LivePreviewAuditEngine,
 } from './index';
+import { CertificationEngine } from '../index';
 import { CanonicalEntity } from '../../../types/predator';
+import { DependencyNode } from './types';
 
 /**
  * Complete Enterprise Certification Workflow
@@ -64,8 +64,8 @@ export async function runEnterpriseCertification(
   console.log('\n[4/10] Checking Cross Registry Consistency...');
   const fieldDataMap = new Map<string, any>();
   // Build field data map from card results
-  certificationReport.cardResults.forEach(result => {
-    result.fields.forEach(field => {
+  certificationReport.cardResults.forEach((result: any) => {
+    result.fields.forEach((field: any) => {
       if (!fieldDataMap.has(field.fieldName)) {
         fieldDataMap.set(field.fieldName, []);
       }
@@ -85,7 +85,7 @@ export async function runEnterpriseCertification(
 
   // STEP 5: Evidence Coverage Calculation
   console.log('\n[5/10] Calculating Evidence Coverage...');
-  const evidenceCoverages = certificationReport.cardResults.map(result =>
+  const evidenceCoverages = certificationReport.cardResults.map((result: any) =>
     EvidenceCoverageCalculator.calculateCoverage(result.fields)
   );
   const aggregateCoverage = EvidenceCoverageCalculator.calculateAggregateCoverage(evidenceCoverages);
@@ -96,17 +96,17 @@ export async function runEnterpriseCertification(
 
   // STEP 6: Data Lineage Analysis
   console.log('\n[6/10] Building Data Lineage...');
-  const lineages = certificationReport.cardResults.map(result => {
+  const lineages = certificationReport.cardResults.map((result: any) => {
     if (result.fields.length > 0) {
       return DataLineageExplorer.buildLineage(result.fields[0].fieldName, result.fields[0]);
     }
     return null;
-  }).filter(l => l !== null);
+  }).filter((l: any) => l !== null);
   console.log(`Built ${lineages.length} lineage trees`);
 
   // STEP 7: Temporal Validation
   console.log('\n[7/10] Running Temporal Validation...');
-  const temporalValidations = certificationReport.cardResults.map(result => {
+  const temporalValidations = certificationReport.cardResults.map((result: any) => {
     const history = TemporalValidator.buildTemporalHistory(result.cardId, result.fields);
     return TemporalValidator.validateTemporalConsistency(result.cardId, history);
   });
@@ -137,7 +137,7 @@ export async function runEnterpriseCertification(
 
   // STEP 10: Generate Live Audits
   console.log('\n[10/10] Generating Live Audits...');
-  certificationReport.cardResults.forEach(result => {
+  certificationReport.cardResults.forEach((result: any) => {
     LivePreviewAuditEngine.generateLiveAudit(result);
   });
   const systemHealth = LivePreviewAuditEngine.getSystemHealth();
@@ -193,7 +193,7 @@ export async function runEnterpriseCertification(
   // STEP 12: Generate Enterprise Card Passports
   console.log('\nGenerating Enterprise Card Passports...');
   const passports = EnterpriseCardPassportGenerator.generatePassports(
-    certificationReport.cardResults.map(result => ({
+    certificationReport.cardResults.map((result: any) => ({
       id: result.cardId,
       name: result.cardName,
       componentPath: '',

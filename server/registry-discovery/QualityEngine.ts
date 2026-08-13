@@ -5,9 +5,7 @@
  * Calculates and tracks quality metrics for all registries
  */
 
-import { QualityMetrics, Dataset, RegistryPassport } from './types';
-import { ScanResult } from './DatasetScanner';
-import { DownloadResult } from './ResourceDownloader';
+import { QualityMetrics, Dataset, ScanResult, DownloadResult } from './types';
 
 export interface QualityCheck {
   registryId: string;
@@ -75,7 +73,7 @@ export class QualityEngine {
       integrity: this.measureIntegrity(dataset, downloadResult),
       consistency: this.measureConsistency(dataset, scanResult),
       apiStability: this.measureAPIStability(dataset),
-      avgResponseTime: this.measureResponseTime(downloadResult),
+      avgResponseTime: this.measureResponseTime(dataset, downloadResult),
       errorRate: this.measureErrorRate(downloadResult),
       metadataQuality: this.measureMetadataQuality(dataset),
       fieldCoverage: this.measureFieldCoverage(dataset, scanResult),
@@ -113,7 +111,6 @@ export class QualityEngine {
    */
   private measureCompleteness(dataset: Dataset, scanResult?: ScanResult): number {
     let score = 0;
-    const maxScore = 100;
 
     // Title (20 points)
     if (dataset.title) score += 20;
@@ -159,7 +156,7 @@ export class QualityEngine {
    * Measure integrity
    */
   private measureIntegrity(dataset: Dataset, downloadResult?: DownloadResult): number {
-    let score = 50; // Base score
+    let score = 50; // Base score;
 
     // Hash verification (30 points)
     if (dataset.hash) score += 30;
@@ -202,7 +199,7 @@ export class QualityEngine {
   /**
    * Measure response time
    */
-  private measureResponseTime(downloadResult?: DownloadResult): number {
+  private measureResponseTime(_dataset: Dataset, downloadResult?: DownloadResult): number {
     if (downloadResult) {
       return downloadResult.downloadTime;
     }
@@ -210,7 +207,7 @@ export class QualityEngine {
     // Measure current response time
     try {
       const start = Date.now();
-      fetch(dataset.url, { method: 'HEAD' });
+      fetch(_dataset.url, { method: 'HEAD' });
       return Date.now() - start;
     } catch (error) {
       return 9999; // High value for failed requests
@@ -231,7 +228,6 @@ export class QualityEngine {
    */
   private measureMetadataQuality(dataset: Dataset): number {
     let score = 0;
-    const maxScore = 100;
 
     // Title (25 points)
     if (dataset.title && dataset.title.length > 5) score += 25;
@@ -252,7 +248,7 @@ export class QualityEngine {
   /**
    * Measure field coverage
    */
-  private measureFieldCoverage(dataset: Dataset, scanResult?: ScanResult): number {
+  private measureFieldCoverage(_dataset: Dataset, scanResult?: ScanResult): number {
     if (scanResult?.schema) {
       const fieldCount = scanResult.schema.fields.length;
       // More fields = better coverage (max 100 at 20 fields)

@@ -13,31 +13,37 @@ export { DiscoveryEngine, discoveryEngine } from './DiscoveryEngine';
 export { CKANAdapter } from './adapters/CKANAdapter';
 
 // Scanners
-export { DatasetScanner, datasetScanner, ScanResult } from './DatasetScanner';
+export { DatasetScanner, datasetScanner } from './DatasetScanner';
 
 // Downloaders
-export { ResourceDownloader, resourceDownloader, DownloadResult } from './ResourceDownloader';
+export { ResourceDownloader, resourceDownloader } from './ResourceDownloader';
 
 // Connector Generator
-export { ConnectorGenerator, connectorGenerator, GeneratedConnector } from './ConnectorGenerator';
+export { ConnectorGenerator, connectorGenerator } from './ConnectorGenerator';
+export type { GeneratedConnector } from './ConnectorGenerator';
 
 // Schema Analyzer
-export { SchemaAnalyzer, schemaAnalyzer, SchemaComparison, SchemaDrift } from './SchemaAnalyzer';
+export { SchemaAnalyzer, schemaAnalyzer } from './SchemaAnalyzer';
+export type { SchemaComparison } from './SchemaAnalyzer';
 
 // Registry Intelligence
 export { RegistryIntelligence, registryIntelligence } from './RegistryIntelligence';
 
 // Quality Engine
-export { QualityEngine, qualityEngine, QualityCheck } from './QualityEngine';
+export { QualityEngine, qualityEngine } from './QualityEngine';
+export type { QualityCheck } from './QualityEngine';
 
 // Scheduler
-export { AutonomousScheduler, autonomousScheduler, ScheduleConfig, ScheduledTask } from './Scheduler';
+export { AutonomousScheduler, autonomousScheduler } from './Scheduler';
+export type { ScheduleConfig, ScheduledTask } from './Scheduler';
 
 // Storage Manager
 export { StorageManager, storageManager } from './StorageManager';
 
 // Production Artifacts
-export { ProductionArtifactsGenerator, productionArtifactsGenerator, ProductionArtifacts } from './ProductionArtifacts';
+export { ProductionArtifactsGenerator, productionArtifactsGenerator } from './ProductionArtifacts';
+export type { ProductionArtifacts } from './types';
 
 // Orchestrator
-export { RDPOrchestrator, createOrchestrator, defaultConfig, OrchestratorConfig, PipelineResult } from './Orchestrator';
+export { RDPOrchestrator, createOrchestrator, defaultConfig } from './Orchestrator';
+export type { OrchestratorConfig, PipelineResult } from './Orchestrator';

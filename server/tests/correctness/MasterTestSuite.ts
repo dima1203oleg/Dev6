@@ -380,8 +380,6 @@ export class MasterTestSuite {
         if (!primaryResponse || !repeatResponse) {
           return { passed: false, details: 'One or both requests failed' };
         }
-        const firstHash = primaryResponse.evidence?.provenance?.responseHash || '';
-        const secondHash = repeatResponse.evidence?.provenance?.responseHash || '';
         // Both should be SUCCESS or both should fail
         const statusMatch = primaryResponse.status === repeatResponse.status;
         // Hash may differ slightly due to timestamps in raw payload, but normalized data should match
@@ -494,18 +492,18 @@ export class MasterTestSuite {
       registryName: src.sourceName,
       endpoint: src.endpoint,
       accessType: src.accessType,
-      queryStatus: primaryResponse?.status || 'NO_RESPONSE',
-      httpCode: primaryResponse?.status === 'SUCCESS' ? 200 : primaryResponse?.status === 'UNAVAILABLE' ? 401 : primaryResponse?.status === 'FAILED' ? 500 : null,
+      queryStatus: (primaryResponse as ConnectorResponse | null)?.status || 'NO_RESPONSE',
+      httpCode: (primaryResponse as ConnectorResponse | null)?.status === 'SUCCESS' ? 200 : (primaryResponse as ConnectorResponse | null)?.status === 'UNAVAILABLE' ? 401 : (primaryResponse as ConnectorResponse | null)?.status === 'FAILED' ? 500 : null,
       responseTimeMs: primaryDurationMs,
-      dataReturned: !!(primaryResponse?.normalizedData && Object.keys(primaryResponse.normalizedData).length > 0),
-      provenance: !!(primaryResponse?.evidence?.provenance),
-      freshness: primaryResponse?.evidence?.provenance?.retrievedAt || 'N/A',
+      dataReturned: !!((primaryResponse as ConnectorResponse | null)?.normalizedData && Object.keys((primaryResponse as ConnectorResponse | null)?.normalizedData || {}).length > 0),
+      provenance: !!(primaryResponse as ConnectorResponse | null)?.evidence?.provenance,
+      freshness: (primaryResponse as ConnectorResponse | null)?.evidence?.provenance?.retrievedAt || 'N/A',
       conflicts: 'NONE',
-      confidence: primaryResponse?.status === 'SUCCESS' ? 0.95 : 0.0,
+      confidence: (primaryResponse as ConnectorResponse | null)?.status === 'SUCCESS' ? 0.95 : 0.0,
       finalStatus,
       qaNotes: criticalFails.map(t => `${t.testId}: ${t.details}`).join('; ') || 'All critical tests passed',
       tests,
-      rawEvidence: primaryResponse?.evidence,
+      rawEvidence: (primaryResponse as ConnectorResponse | null)?.evidence,
     };
   }
 

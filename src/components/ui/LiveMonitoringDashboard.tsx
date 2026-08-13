@@ -20,6 +20,7 @@ export const LiveMonitoringDashboard: React.FC = () => {
       const interval = setInterval(loadMonitoringData, 10000); // Refresh every 10s
       return () => clearInterval(interval);
     }
+    return undefined;
   }, [autoRefresh]);
 
   const loadMonitoringData = () => {
@@ -35,6 +36,7 @@ export const LiveMonitoringDashboard: React.FC = () => {
   const toggleMonitoring = () => {
     if (status?.enabled) {
       LiveMonitoringEngine.stopMonitoring();
+      return;
     } else {
       LiveMonitoringEngine.startMonitoring({
         enabled: true,
@@ -43,8 +45,8 @@ export const LiveMonitoringDashboard: React.FC = () => {
         autoRemediate: false,
         notifyChannels: [],
       });
+      return;
     }
-    loadMonitoringData();
   };
 
   const acknowledgeAlert = (alertId: string) => {

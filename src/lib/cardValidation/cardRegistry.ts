@@ -3,7 +3,7 @@
  * Registry of all information cards that need validation
  */
 
-export { CardCategory } from './types';
+import { CardCategory } from './types';
 
 export interface CardDefinition {
   id: string;

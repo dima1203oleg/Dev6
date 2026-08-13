@@ -1,0 +1,438 @@
+{
+  "timestamp": "2026-08-13T12:22:02.471Z",
+  "summary": {
+    "total_sources": 1,
+    "passed": 0,
+    "passed_with_warnings": 0,
+    "partial": 0,
+    "failed": 1,
+    "blocked": 0,
+    "not_applicable": 0,
+    "needs_work": 1,
+    "using_fallback": 0,
+    "provenance_violations": 1,
+    "has_conflicts": 0,
+    "production_ready": 0,
+    "critical_sources_passed": false,
+    "hallucination_free": false,
+    "all_provenance_complete": false,
+    "conflicts_documented": true,
+    "results_reproducible": true,
+    "logging_complete": true,
+    "automated_tests_passed": false,
+    "production_ready_overall": false
+  },
+  "sources": [
+    {
+      "registry_id": "UA-001",
+      "registry_name": "Єдиний державний реєстр (ЄДР)",
+      "endpoint": "https://data.gov.ua/api/3/action/datastore_search",
+      "access_type": "FREE_AUTO",
+      "query_status": "FAIL",
+      "http_code": 429,
+      "response_time_ms": 248,
+      "data_returned": false,
+      "conflicts_detected": 0,
+      "confidence_score": 0,
+      "final_status": "FAIL",
+      "qa_notes": [
+        "TEST-002: Client error: HTTP 404",
+        "TEST-004: Query failed with HTTP 429: Too Many Requests",
+        "TEST-005: Unexpected content type: text/html; charset=UTF-8",
+        "TEST-006: Response is not valid JSON",
+        "TEST-007: Cannot validate parser - raw data is not valid JSON",
+        "TEST-008: Cannot check data integrity - raw data is not valid JSON",
+        "TEST-009: Cannot check provenance - raw data is not valid JSON",
+        "TEST-010: Cannot check freshness - raw data is not valid JSON",
+        "TEST-011: Cannot check entity resolution - raw data is not valid JSON",
+        "TEST-012: Cannot perform cross validation - raw data is not valid JSON",
+        "TEST-013: Cannot check for hallucination - raw data is not valid JSON",
+        "TEST-014: Responses differ between runs; Checksums differ between runs; High response time variance: 41.52%",
+        "TEST-014: Results are not repeatable",
+        "TEST-015: Throughput below threshold: 0 RPS; Performance degradation detected: Zero throughput - all requests failed",
+        "TEST-017: Missing security headers: Content-Security-Policy, X-Frame-Options, X-XSS-Protection"
+      ],
+      "test_results": [
+        {
+          "test_id": "TEST-001",
+          "test_name": "Registry Discovery",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-13T12:21:55.830Z",
+          "details": {
+            "registry_id": "UA-001",
+            "registry_name": "Єдиний державний реєстр (ЄДР)",
+            "endpoint": "https://data.gov.ua/api/3/action/datastore_search",
+            "access_type": "FREE_AUTO",
+            "config_status": "COMPLETE",
+            "production_ready": true,
+            "connector_id": "edr_connector",
+            "connector_version": "1.0.0",
+            "protocol": "REST API",
+            "format": "JSON",
+            "encoding": "UTF-8",
+            "auth_type": "NONE",
+            "supported_entities": [
+              "COMPANY",
+              "FOP",
+              "PERSON"
+            ],
+            "supported_identifiers": [
+              "edrpou",
+              "ipn",
+              "name"
+            ]
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-002",
+          "test_name": "Connectivity",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 327,
+          "timestamp": "2026-08-13T12:21:56.157Z",
+          "details": {
+            "dns_resolution": true,
+            "https_enabled": true,
+            "tls_valid": true,
+            "http_status": 404,
+            "response_time_ms": 327,
+            "timeout_ms": 30000,
+            "timeout_exceeded": false,
+            "retry_supported": true,
+            "circuit_breaker_status": "CLOSED"
+          },
+          "errors": [],
+          "warnings": [
+            "Client error: HTTP 404"
+          ]
+        },
+        {
+          "test_id": "TEST-003",
+          "test_name": "Authentication",
+          "status": "PASS",
+          "duration_ms": 0,
+          "timestamp": "2026-08-13T12:21:56.158Z",
+          "details": {
+            "auth_type": "NONE",
+            "authentication_required": false,
+            "authentication_status": "NOT_REQUIRED"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-004",
+          "test_name": "Query Execution",
+          "status": "FAIL",
+          "duration_ms": 251,
+          "timestamp": "2026-08-13T12:21:56.409Z",
+          "details": {
+            "start_time": "2026-08-13T12:21:56.158Z",
+            "test_ipn": "3111724753",
+            "end_time": "2026-08-13T12:21:56.406Z",
+            "execution_time_ms": 248,
+            "http_code": 429,
+            "http_status_text": "Too Many Requests",
+            "response_size_bytes": 8109,
+            "response_preview": "<!doctype html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-",
+            "error_message": "<!doctype html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!-->\n<html class=\"no-js\" lang=\"en-US\">\n    <!--<![endif]-->\n    <head>\n        <title>Access denied | data.gov.ua used Cloudflare to restrict access | data.gov.ua | Cloudflare</title>\n        <meta charset=\"UTF-8\" />\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />\n<meta name=\"robots\" content=\"noindex, nofollow\" />\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\" />\n<link rel=\"stylesheet\" id=\"cf_styles-css\" href=\"/cdn-cgi/styles/main.css\" /> <script>\n  (function(){if(document.addEventListener&&window.XMLHttpRequest&&JSON&&JSON.stringify){var e=function(a){var c=document.getElementById(\"error-feedback-survey\"),d=document.getElementById(\"error-feedback-success\"),b=new XMLHttpRequest;a={event:\"feedback clicked\",properties:{errorCode: 1015 },helpful:a,version: 1 };b.open(\"POST\",\"https://sparrow.cloudflare.com/api/v1/event\");b.setRequestHeader(\"Content-Type\",\"application/json\");b.setRequestHeader(\"Sparrow-Source-Key\",\"c771f0e4b54944bebf4261d44bd79a1e\");\nb.send(JSON.stringify(a));c.classList.add(\"feedback-hidden\");d.classList.remove(\"feedback-hidden\")};document.addEventListener(\"DOMContentLoaded\",function(){var a=document.getElementById(\"error-feedback\"),c=document.getElementById(\"feedback-button-yes\"),d=document.getElementById(\"feedback-button-no\");\"classList\"in a&&(a.classList.remove(\"feedback-hidden\"),c.addEventListener(\"click\",function(){e(!0)}),d.addEventListener(\"click\",function(){e(!1)}))})}})();\n</script>\n        <script\n            defer\n            src=\"https://performance.radar.cloudflare.com/beacon.js\"\n        ></script>\n    </head>\n    <body>\n        <div id=\"cf-wrapper\">\n            <div\n                class=\"cf-alert cf-alert-error cf-cookie-error hidden\"\n                id=\"cookie-alert\"\n                data-translate=\"enable_cookies\"\n            >\n                Please enable cookies.\n            </div>\n            <div id=\"cf-error-details\" class=\"p-0\">\n                <header\n                    class=\"mx-auto pt-10 lg:pt-6 lg:px-8 w-240 lg:w-full mb-15 antialiased\"\n                >\n                    <h1\n                        class=\"inline-block md:block mr-2 md:mb-2 font-light text-60 md:text-3xl text-black-dark leading-tight\"\n                    >\n                        <span data-translate=\"error\">Error</span>\n                        <span>1015</span>\n                    </h1>\n                    <span\n                        class=\"inline-block md:block heading-ray-id font-mono text-15 lg:text-sm lg:leading-relaxed\"\n                        >Ray ID: a2a7aeb2fe58e688 &bull;</span\n                    >\n                    <span\n                        class=\"inline-block md:block heading-ray-id font-mono text-15 lg:text-sm lg:leading-relaxed\"\n                        >2026-08-13 12:21:56 UTC</span\n                    >\n                    <h2\n                        class=\"text-gray-600 leading-1.3 text-3xl lg:text-2xl font-light\"\n                    >\n                        You are being rate limited\n                    </h2>\n                </header>\n                \n                \n                <section class=\"w-240 lg:w-full mx-auto mb-8 lg:px-8\">\n                    <div id=\"what-happened-section\" class=\"w-1/2 md:w-full\">\n                        <h2\n                            class=\"text-3xl leading-tight font-normal mb-4 text-black-dark antialiased\"\n                            data-translate=\"what_happened\"\n                        >\n                            What happened?\n                        </h2>\n                        \n                            <p>The owner of this website (data.gov.ua) has banned you temporarily from accessing this website.</p>\n                        \n                        \n                        <p>\n                            Please see\n                            <a\n                                rel=\"noopener noreferrer\"\n                                href=\"https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1015/\"\n                                target=\"_blank\"\n                                >https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1015/</a\n                            >\n                            for more details.\n                        </p>\n                        \n                    </div>\n\n                    \n                </section>\n                \n\n                <div class=\"feedback-hidden py-8 text-center\" id=\"error-feedback\">\n    <div id=\"error-feedback-survey\" class=\"footer-line-wrapper\">\n        Was this page helpful?\n        <button\n            class=\"border border-solid bg-white cf-button cursor-pointer ml-4 px-4 py-2 rounded\"\n            id=\"feedback-button-yes\"\n            type=\"button\"\n        >\n            Yes\n        </button>\n        <button\n            class=\"border border-solid bg-white cf-button cursor-pointer ml-4 px-4 py-2 rounded\"\n            id=\"feedback-button-no\"\n            type=\"button\"\n        >\n            No\n        </button>\n    </div>\n    <div class=\"feedback-success feedback-hidden\" id=\"error-feedback-success\">\n        Thank you for your feedback!\n    </div>\n</div> <div class=\"cf-error-footer cf-wrapper w-240 lg:w-full py-10 sm:py-4 sm:px-8 mx-auto text-center sm:text-left border-solid border-0 border-t border-gray-300\">\n    <p class=\"text-13\">\n      <span class=\"cf-footer-item sm:block sm:mb-1\">Cloudflare Ray ID: <strong class=\"font-semibold\">a2a7aeb2fe58e688</strong></span>\n      <span class=\"cf-footer-separator sm:hidden\">&bull;</span>\n      <span id=\"cf-footer-item-ip\" class=\"cf-footer-item hidden sm:block sm:mb-1\">\n        Your IP:\n        <button type=\"button\" id=\"cf-footer-ip-reveal\" class=\"cf-footer-ip-reveal-btn\">Click to reveal</button>\n        <span class=\"hidden\" id=\"cf-footer-ip\">89.238.176.68</span>\n        <span class=\"cf-footer-separator sm:hidden\">&bull;</span>\n      </span>\n      <span class=\"cf-footer-item sm:block sm:mb-1\"><span>Performance &amp; security by</span> <a rel=\"noopener noreferrer\" href=\"https://www.cloudflare.com/5xx-error-landing\" id=\"brand_link\" target=\"_blank\">Cloudflare</a></span>\n      \n    </p>\n    <script>(function(){function d(){var b=a.getElementById(\"cf-footer-item-ip\"),c=a.getElementById(\"cf-footer-ip-reveal\");b&&\"classList\"in b&&(b.classList.remove(\"hidden\"),c.addEventListener(\"click\",function(){c.classList.add(\"hidden\");a.getElementById(\"cf-footer-ip\").classList.remove(\"hidden\")}))}var a=document;document.addEventListener&&a.addEventListener(\"DOMContentLoaded\",d)})();</script>\n  </div><!-- /.error-footer -->\n            </div>\n            <!-- /#cf-error-details -->\n        </div>\n        <!-- /#cf-wrapper -->\n\n         <script>\n    window._cf_translation = {};\n    \n    \n  </script> \n        \n    <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML=\"window.__CF$cv$params={r:'a2a7aeb2fe58e688',t:'MTc4NjYyMzcxNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>\n</html>"
+          },
+          "errors": [
+            "Query failed with HTTP 429: Too Many Requests"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-005",
+          "test_name": "Raw Response",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 181,
+          "timestamp": "2026-08-13T12:21:56.590Z",
+          "details": {
+            "response_size": 8109,
+            "content_type": "text/html; charset=UTF-8",
+            "http_code": 429,
+            "checksum": "00096709",
+            "sha256_hash": "16195d6168b3eb508ed99d9011170bc3f172707ee01ef74b63c805470c5b5972",
+            "headers_count": 14,
+            "content_type_valid": false
+          },
+          "errors": [],
+          "warnings": [
+            "Unexpected content type: text/html; charset=UTF-8"
+          ]
+        },
+        {
+          "test_id": "TEST-006",
+          "test_name": "Schema Validation",
+          "status": "FAIL",
+          "duration_ms": 172,
+          "timestamp": "2026-08-13T12:21:56.762Z",
+          "details": {
+            "json_parseable": false
+          },
+          "errors": [
+            "Response is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-007",
+          "test_name": "Parser Validation",
+          "status": "FAIL",
+          "duration_ms": 230,
+          "timestamp": "2026-08-13T12:21:56.993Z",
+          "details": {},
+          "errors": [
+            "Cannot validate parser - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-008",
+          "test_name": "Data Integrity",
+          "status": "FAIL",
+          "duration_ms": 169,
+          "timestamp": "2026-08-13T12:21:57.163Z",
+          "details": {},
+          "errors": [
+            "Cannot check data integrity - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-009",
+          "test_name": "Provenance",
+          "status": "FAIL",
+          "duration_ms": 176,
+          "timestamp": "2026-08-13T12:21:57.340Z",
+          "details": {},
+          "errors": [
+            "Cannot check provenance - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-010",
+          "test_name": "Freshness",
+          "status": "FAIL",
+          "duration_ms": 228,
+          "timestamp": "2026-08-13T12:21:57.568Z",
+          "details": {},
+          "errors": [
+            "Cannot check freshness - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-011",
+          "test_name": "Entity Resolution",
+          "status": "FAIL",
+          "duration_ms": 167,
+          "timestamp": "2026-08-13T12:21:57.735Z",
+          "details": {},
+          "errors": [
+            "Cannot check entity resolution - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-012",
+          "test_name": "Cross Validation",
+          "status": "FAIL",
+          "duration_ms": 242,
+          "timestamp": "2026-08-13T12:21:57.979Z",
+          "details": {},
+          "errors": [
+            "Cannot perform cross validation - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-013",
+          "test_name": "No Hallucination",
+          "status": "FAIL",
+          "duration_ms": 171,
+          "timestamp": "2026-08-13T12:21:58.150Z",
+          "details": {},
+          "errors": [
+            "Cannot check for hallucination - raw data is not valid JSON"
+          ],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-014",
+          "test_name": "Repeatability",
+          "status": "FAIL",
+          "duration_ms": 416,
+          "timestamp": "2026-08-13T12:21:58.566Z",
+          "details": {
+            "first_run": {
+              "http_code": 429,
+              "response_time_ms": 171,
+              "response_size": 8109,
+              "checksum": "000966e9"
+            },
+            "second_run": {
+              "http_code": 429,
+              "response_time_ms": 242,
+              "response_size": 8109,
+              "checksum": "00096650"
+            },
+            "http_code_match": true,
+            "response_identical": false,
+            "checksum_match": false,
+            "response_time_variance": 41.52046783625731,
+            "differences": [
+              "Response bodies differ",
+              "Could not parse JSON for detailed comparison"
+            ],
+            "repeatable": false
+          },
+          "errors": [
+            "Results are not repeatable"
+          ],
+          "warnings": [
+            "Responses differ between runs",
+            "Checksums differ between runs",
+            "High response time variance: 41.52%"
+          ]
+        },
+        {
+          "test_id": "TEST-015",
+          "test_name": "Performance",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 2092,
+          "timestamp": "2026-08-13T12:22:00.658Z",
+          "details": {
+            "latency_ms": 173,
+            "throughput_rps": 0,
+            "cpu_usage_percent": 29.526637972262073,
+            "memory_usage_mb": 16.75719451904297,
+            "retry_count": 0,
+            "performance_rating": "GOOD",
+            "latency_acceptable": true,
+            "throughput_acceptable": false,
+            "cpu_acceptable": true,
+            "memory_acceptable": true,
+            "degradation_detected": true,
+            "degradation_details": [
+              "Zero throughput - all requests failed"
+            ]
+          },
+          "errors": [],
+          "warnings": [
+            "Throughput below threshold: 0 RPS",
+            "Performance degradation detected: Zero throughput - all requests failed"
+          ]
+        },
+        {
+          "test_id": "TEST-016",
+          "test_name": "Fault Injection",
+          "status": "PASS",
+          "duration_ms": 6,
+          "timestamp": "2026-08-13T12:22:00.664Z",
+          "details": {
+            "scenarios_tested": 7,
+            "scenarios_passed": 7,
+            "scenarios_failed": 0,
+            "scenario_results": [
+              {
+                "name": "Timeout",
+                "type": "timeout",
+                "expected_behavior": "System should handle timeout gracefully and return error",
+                "actual_behavior": "Timeout occurred and was caught",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 500",
+                "type": "http_500",
+                "expected_behavior": "System should handle HTTP 500 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "HTTP 429",
+                "type": "http_429",
+                "expected_behavior": "System should handle HTTP 429 gracefully",
+                "actual_behavior": "Error handling logic verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "TLS Error",
+                "type": "tls_error",
+                "expected_behavior": "System should handle TLS errors gracefully",
+                "actual_behavior": "TLS error handling verified (simulated)",
+                "handled_gracefully": true
+              },
+              {
+                "name": "DNS Error",
+                "type": "dns_error",
+                "expected_behavior": "System should handle DNS errors gracefully",
+                "actual_behavior": "DNS error occurred and was caught: fetch failed",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Broken JSON",
+                "type": "broken_json",
+                "expected_behavior": "System should handle malformed JSON gracefully",
+                "actual_behavior": "Invalid JSON was caught and handled",
+                "handled_gracefully": true
+              },
+              {
+                "name": "Empty Response",
+                "type": "empty_response",
+                "expected_behavior": "System should handle empty responses gracefully",
+                "actual_behavior": "Empty response detected and handled",
+                "handled_gracefully": true
+              }
+            ],
+            "fault_tolerance": "EXCELLENT"
+          },
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "test_id": "TEST-017",
+          "test_name": "Security",
+          "status": "PASS_WITH_WARNINGS",
+          "duration_ms": 1806,
+          "timestamp": "2026-08-13T12:22:02.471Z",
+          "details": {
+            "sql_injection_vulnerable": false,
+            "xss_vulnerable": false,
+            "ssrf_vulnerable": false,
+            "idor_vulnerable": false,
+            "secret_leakage": false,
+            "path_traversal_vulnerable": false,
+            "command_injection_vulnerable": false,
+            "security_score": 100,
+            "vulnerabilities_found": [],
+            "security_headers": {
+              "Strict-Transport-Security": true,
+              "Content-Security-Policy": false,
+              "X-Frame-Options": false,
+              "X-Content-Type-Options": true,
+              "X-XSS-Protection": false
+            },
+            "missing_security_headers": [
+              "Content-Security-Policy",
+              "X-Frame-Options",
+              "X-XSS-Protection"
+            ],
+            "https_enabled": true,
+            "https_valid": true,
+            "sensitive_data_exposed": false,
+            "exposed_data_types": []
+          },
+          "errors": [],
+          "warnings": [
+            "Missing security headers: Content-Security-Policy, X-Frame-Options, X-XSS-Protection"
+          ]
+        }
+      ]
+    }
+  ]
+}

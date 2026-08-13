@@ -251,7 +251,7 @@ export class ZeroHallucinationProtocol {
    * Validate AI response before returning to user
    */
   async validateAIResponse(
-    response: any,
+    _response: any,
     claims: Array<{ claim: string; source: string }>
   ): Promise<{ valid: boolean; invalidClaims: string[] }> {
     const invalidClaims: string[] = [];

@@ -1,12 +1,9 @@
 import { 
   CanonicalEntity, 
-  EvidenceClaim, 
   DataProvenanceChain, 
-  RiskLevel, 
   InvestigationWorkspace,
   IntelligenceDossier,
-  EntityType,
-  VerificationStatus
+  EntityType
 } from "../../src/types/predator";
 
 import { intelligenceOrchestrator } from "./IntelligenceOrchestrator";
@@ -18,7 +15,6 @@ import crypto from "crypto";
  * DEV6 works over PREDATOR as a Data & Intelligence Control Plane.
  */
 export class PredatorAnalyticsClient {
-  private predatorEndpoint = process.env.PREDATOR_CORE_URL || "https://predator-core.internal.net/api/v1";
 
   /**
    * Universal Search API - Performs LEVEL 1: IDENTIFICATION (Entity Resolution)
@@ -31,7 +27,6 @@ export class PredatorAnalyticsClient {
     const q = (query || "").trim().toLowerCase();
     if (!q) return { entities: [], total: 0, provenanceSummary: "No query provided" };
 
-    const isEdrpou = /^\d{8}$/.test(q);
     const isIpn = /^\d{10}$/.test(q);
     const identifierType = isIpn ? 'ipn' : 'edrpou';
 

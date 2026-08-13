@@ -8,18 +8,10 @@
 
 import { CatalogConfig } from './types.js';
 import { CKANAdapter } from './adapters/CKANAdapter.js';
-import * as fs from 'fs';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 class PositiveControlFinder {
   private catalogConfig: CatalogConfig;
   private adapter: CKANAdapter;
-  private executionDir: string;
 
   constructor() {
     this.catalogConfig = {
@@ -31,7 +23,6 @@ class PositiveControlFinder {
     };
 
     this.adapter = new CKANAdapter(this.catalogConfig);
-    this.executionDir = path.join(__dirname, '../../../execution');
   }
 
   async findPositiveControl(): Promise<{
@@ -59,6 +50,8 @@ class PositiveControlFinder {
       // Test each dataset to find one with actual data
       for (let i = 0; i < Math.min(20, searchResult.results.length); i++) {
         const pkg = searchResult.results[i];
+        if (!pkg) continue;
+        
         console.log(`\n--- Testing dataset ${i + 1}: ${pkg.title.substring(0, 50)}... ---`);
 
         try {
@@ -78,6 +71,8 @@ class PositiveControlFinder {
 
           // Test first CSV resource
           const resource = csvResources[0];
+          if (!resource) continue;
+          
           console.log(`   Testing resource: ${resource.name}`);
 
           // Check DataStore availability
@@ -127,8 +122,8 @@ class PositiveControlFinder {
                       console.log(`\n✅ FOUND POSITIVE CONTROL:`);
                       console.log(`   IPN/EDRPOU: ${numericValue}`);
                       console.log(`   Field: ${field}`);
-                      console.log(`   Dataset: ${pkg.title}`);
-                      console.log(`   Resource: ${resource.name}`);
+                      console.log(`   Dataset: ${pkg?.title}`);
+                      console.log(`   Resource: ${resource?.name}`);
                       console.log(`   Record: ${JSON.stringify(record).substring(0, 200)}...`);
 
                       return {
@@ -150,7 +145,7 @@ class PositiveControlFinder {
             console.log(`   DataStore not available, trying direct download...`);
             
             // Try direct download
-            const response = await fetch(resource.url);
+            const response = await fetch(resource?.url);
             if (!response.ok) {
               console.log(`   Download failed: ${response.status}`);
               continue;
@@ -167,7 +162,13 @@ class PositiveControlFinder {
             console.log(`   Downloaded ${lines.length} lines`);
 
             // Parse CSV headers
-            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const firstLine = lines[0];
+            if (!firstLine) {
+              console.log('   Empty first line');
+              continue;
+            }
+            
+            const headers = firstLine.split(',').map(h => h.trim().replace(/"/g, ''));
             console.log(`   Headers: ${headers.join(', ')}`);
 
             // Check for IPN-related headers (exclude postal codes)
@@ -185,17 +186,28 @@ class PositiveControlFinder {
               console.log(`   Found IPN header: ${ipnHeader}`);
               
               // Extract IPN from first data row
-              const firstRow = lines[1].split(',').map(v => v.trim().replace(/"/g, ''));
+              const secondLine = lines[1];
+              if (!secondLine) {
+                console.log('   No data row found');
+                continue;
+              }
+              
+              const firstRow = secondLine.split(',').map(v => v.trim().replace(/"/g, ''));
               const ipnIndex = headers.indexOf(ipnHeader);
               const ipnValue = firstRow[ipnIndex];
+              if (!ipnValue) {
+                console.log('   No IPN value found');
+                continue;
+              }
+              
               const numericIPN = ipnValue.replace(/\D/g, '');
 
               if ((numericIPN.length === 10 || numericIPN.length === 8) && numericIPN.length > 6) {
                 console.log(`\n✅ FOUND POSITIVE CONTROL:`);
                 console.log(`   IPN/EDRPOU: ${numericIPN}`);
                 console.log(`   Field: ${ipnHeader}`);
-                console.log(`   Dataset: ${pkg.title}`);
-                console.log(`   Resource: ${resource.name}`);
+                console.log(`   Dataset: ${pkg?.title}`);
+                console.log(`   Resource: ${resource?.name}`);
 
                 return {
                   success: true,

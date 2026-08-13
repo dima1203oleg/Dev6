@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { ARCHITECTURE_NODES, ARCHITECTURE_EDGES } from '../data';
 import { ArchitectureNode } from '../types';
 import MasterSpecificationViewer from './MasterSpecificationViewer';
-import { 
-  Shield, Cpu, Activity, HelpCircle, Network, Info, CheckCircle2, 
-  Sliders, Play, Settings, Search, Lock, Globe, Terminal, BookOpen, 
-  AlertTriangle, Layers, ChevronDown, ChevronUp, Eye, Database, FileText
+import {
+  Shield, Cpu, Activity, HelpCircle, Network, Info,
+  Search, Lock, Globe, Terminal, BookOpen,
+  AlertTriangle, Layers, ChevronDown, ChevronUp, Database
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 

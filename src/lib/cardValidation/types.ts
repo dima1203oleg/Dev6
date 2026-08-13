@@ -31,7 +31,7 @@ export type CardCategory =
 export interface FieldAudit {
   fieldName: string;
   value: any;
-  source: string;
+  sourceId: string;
   registry: string;
   connector: string;
   retrievedAt: string;

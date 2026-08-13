@@ -10,7 +10,7 @@ export class HibpConnector extends AbstractConnector {
 
   public async fetch(emailOrPhone: string): Promise<ConnectorResponse> {
     try {
-      const apiKey = process.env.HIBP_API_KEY;
+      const apiKey = process.env['HIBP_API_KEY'];
       if (!apiKey) {
         return { 
           status: 'UNAVAILABLE', 
@@ -74,7 +74,7 @@ export class HibpConnector extends AbstractConnector {
   }
 
   async health_check(): Promise<ConnectorStatus> {
-    const apiKey = process.env.HIBP_API_KEY;
+    const apiKey = process.env['HIBP_API_KEY'];
     if (!apiKey) {
       return 'CONFIGURED'; // Has configuration but API key missing
     }

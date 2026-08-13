@@ -1,0 +1,28 @@
+{
+  "stage": "STAGE_67_GOLDEN_REPORT_UNUSED_IMPORT_REMOVAL",
+  "timestamp": "2026-08-10T18:00:00Z",
+  "previous_errors": 1146,
+  "current_errors": 1144,
+  "delta": -2,
+  "top_categories_fixed": [
+    "TS6133 - Unused parameters (AutomaticDiagnostics)",
+    "TS6133 - Unused import (GoldenQAReportGenerator)"
+  ],
+  "files_changed": [
+    "server/tests/golden/diagnostics/AutomaticDiagnostics.ts",
+    "server/tests/golden/GoldenQAReportGenerator.ts"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining errors - progress: 734 errors fixed (1878 -> 1144)"
+}

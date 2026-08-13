@@ -1,0 +1,28 @@
+{
+  "stage": "STAGE_11_FRONTEND_APP_TSX_CLEANUP",
+  "timestamp": "2026-08-10T04:00:00Z",
+  "previous_errors": 1694,
+  "current_errors": 1662,
+  "delta": -32,
+  "top_categories_fixed": [
+    "TS6133 - Unused variables (App.tsx imports and variables)",
+    "TS2345 - Type assignment errors (App.tsx)",
+    "TS2339 - Property does not exist (App.tsx)"
+  ],
+  "files_changed": [
+    "src/App.tsx"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining frontend components"
+}

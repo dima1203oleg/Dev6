@@ -29,8 +29,8 @@ const ROLE_MULTIPLIERS: Record<UserRole, number> = {
 };
 
 export function createRateLimiter(
-  maxRequests = 100, 
-  windowMs = 60000,
+  _maxRequests = 100, 
+  _windowMs = 60000,
   endpointType: 'default' | 'search' | 'probe' | 'admin' | 'ai' = 'default'
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -79,7 +79,7 @@ export function createRateLimiter(
       });
     }
 
-    next();
+    return next();
   };
 }
 

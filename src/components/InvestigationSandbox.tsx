@@ -1,12 +1,12 @@
 import { useToast } from './ToastProvider';
 import { useInvestigationSync } from '../hooks/useInvestigationSync';
 import { 
-  Network, Plus, Trash2, ArrowRight, ShieldAlert, Sparkles, HelpCircle,
-  TrendingUp, Download, Eye, FileText, Share2, ZoomIn, ZoomOut, Maximize2, 
-  RotateCcw, AlertTriangle, CheckCircle, ChevronRight, Check, X, Sliders,
-  User, Briefcase, Landmark, Info, Zap, RefreshCw, Layers, Cloud, Loader2
+  Network, Plus, Trash2, Sparkles, HelpCircle,
+  ZoomIn, ZoomOut, 
+  RotateCcw, AlertTriangle, CheckCircle, X, Sliders,
+  User, Briefcase, Landmark, Zap, RefreshCw, Layers, Cloud, Loader2
 } from 'lucide-react';
-import React, { useContext, useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { OSINT_ENTITIES, OsintEntity } from '../osintData';
 
@@ -121,8 +121,8 @@ export default function InvestigationSandbox() {
     setNodes,
     setLinks,
     syncStatus,
-    lastSyncedAt,
-    cloudSynced,
+    lastSyncedAt: _lastSyncedAt,
+    cloudSynced: _cloudSynced,
     saveNow
   } = useInvestigationSync('inv-sandbox-main', DEFAULT_INITIAL_NODES, DEFAULT_INITIAL_LINKS);
 
@@ -157,10 +157,10 @@ export default function InvestigationSandbox() {
 
   // Intelligent Risk propagation simulation algorithm (Dynamic cascade calculation)
   const calculateCascadedRisks = () => {
-    setNodes(prevNodes => {
+    setNodes((prevNodes: SandboxNode[]) => {
       // Create a map of nodes
       const nodeMap = new Map<string, SandboxNode>(
-        prevNodes.map(n => [n.id, { ...n, cascadedRisk: n.baseRisk }])
+        prevNodes.map((n: SandboxNode) => [n.id, { ...n, cascadedRisk: n.baseRisk }])
       );
 
       // Perform iterations to spread the risk (Risk Propagation Cascade)
@@ -216,9 +216,9 @@ export default function InvestigationSandbox() {
       const entity = customEvent.detail;
       if (!entity) return;
 
-      setNodes(prevNodes => {
+      setNodes((prevNodes: SandboxNode[]) => {
         // Check if the central node already exists
-        const exists = prevNodes.some(n => n.id === entity.id || n.code === entity.code);
+        const exists = prevNodes.some((n: SandboxNode) => n.id === entity.id || n.code === entity.code);
         let updatedNodes = [...prevNodes];
         
         // 1. Add central node if it doesn't exist
@@ -277,7 +277,7 @@ export default function InvestigationSandbox() {
 
       // 3. Add connections
       if (entity.relationships && entity.relationships.length > 0) {
-        setLinks(prevLinks => {
+        setLinks((prevLinks: SandboxLink[]) => {
           let updatedLinks = [...prevLinks];
           entity.relationships.forEach(rel => {
             const linkExists = updatedLinks.some(l => 
@@ -334,7 +334,7 @@ export default function InvestigationSandbox() {
       const scaledX = Math.round((rawX - panOffset.x) / zoomScale);
       const scaledY = Math.round((rawY - panOffset.y) / zoomScale);
 
-      setNodes(prev => prev.map(n => n.id === draggingNodeId ? { ...n, x: Math.max(20, Math.min(1100, scaledX)), y: Math.max(20, Math.min(750, scaledY)) } : n));
+      setNodes((prev: SandboxNode[]) => prev.map((n: SandboxNode) => n.id === draggingNodeId ? { ...n, x: Math.max(20, Math.min(1100, scaledX)), y: Math.max(20, Math.min(750, scaledY)) } : n));
     }
   };
 
@@ -388,8 +388,8 @@ export default function InvestigationSandbox() {
             flowDirection: 'forward'
           };
 
-          setNodes(prev => [...prev, newNode]);
-          setLinks(prev => [...prev, newLink]);
+          setNodes((prev: SandboxNode[]) => [...prev, newNode]);
+          setLinks((prev: SandboxLink[]) => [...prev, newLink]);
           addedAny = true;
         }
       });
@@ -407,7 +407,7 @@ export default function InvestigationSandbox() {
     const centerY = 280;
     const radius = 200;
 
-    setNodes(prev => prev.map((node, idx) => {
+    setNodes((prev: SandboxNode[]) => prev.map((node: SandboxNode, idx: number) => {
       const angle = (idx / prev.length) * 2 * Math.PI;
       return {
         ...node,
@@ -520,7 +520,7 @@ export default function InvestigationSandbox() {
       y: 200 + Math.round(Math.random() * 100)
     };
 
-    setNodes(prev => [...prev, addedNode]);
+    setNodes((prev: SandboxNode[]) => [...prev, addedNode]);
     setNewNodeName('');
     setNewNodeCode('');
     setNewNodeRisk(50);
@@ -544,7 +544,7 @@ export default function InvestigationSandbox() {
       flowDirection: newLinkFlow
     };
 
-    setLinks(prev => [...prev, addedLink]);
+    setLinks((prev: SandboxLink[]) => [...prev, addedLink]);
     setNewLinkLabel('');
     setNewLinkMultiplier(0.5);
     setShowAddLinkModal(false);
@@ -552,14 +552,14 @@ export default function InvestigationSandbox() {
 
   // Delete node and its corresponding connections
   const handleDeleteNode = (nodeId: string) => {
-    setNodes(prev => prev.filter(n => n.id !== nodeId));
-    setLinks(prev => prev.filter(l => l.source !== nodeId && l.target !== nodeId));
+    setNodes((prev: SandboxNode[]) => prev.filter((n: SandboxNode) => n.id !== nodeId));
+    setLinks((prev: SandboxLink[]) => prev.filter((l: SandboxLink) => l.source !== nodeId && l.target !== nodeId));
     if (selectedNodeId === nodeId) setSelectedNodeId(null);
   };
 
   // Delete single selected link
   const handleDeleteLink = (linkId: string) => {
-    setLinks(prev => prev.filter(l => l.id !== linkId));
+    setLinks((prev: SandboxLink[]) => prev.filter((l: SandboxLink) => l.id !== linkId));
     if (selectedLinkId === linkId) setSelectedLinkId(null);
   };
 
@@ -1017,7 +1017,7 @@ export default function InvestigationSandbox() {
                     value={selectedNode.baseRisk}
                     onChange={(e) => {
                       const val = Number(e.target.value);
-                      setNodes(prev => prev.map(n => n.id === selectedNodeId ? { ...n, baseRisk: val, cascadedRisk: val } : n));
+                      setNodes((prev: SandboxNode[]) => prev.map((n: SandboxNode) => n.id === selectedNodeId ? { ...n, baseRisk: val, cascadedRisk: val } : n));
                     }}
                     className="w-full accent-blue-500"
                   />
@@ -1089,7 +1089,7 @@ export default function InvestigationSandbox() {
                     value={selectedLink.multiplier}
                     onChange={(e) => {
                       const val = Number(e.target.value);
-                      setLinks(prev => prev.map(l => l.id === selectedLinkId ? { ...l, multiplier: val } : l));
+                      setLinks((prev: SandboxLink[]) => prev.map((l: SandboxLink) => l.id === selectedLinkId ? { ...l, multiplier: val } : l));
                     }}
                     className="w-full accent-indigo-500"
                   />
@@ -1110,7 +1110,7 @@ export default function InvestigationSandbox() {
                       <button
                         key={f.id}
                         onClick={() => {
-                          setLinks(prev => prev.map(l => l.id === selectedLinkId ? { ...l, flowDirection: f.id as any } : l));
+                          setLinks((prev: SandboxLink[]) => prev.map((l: SandboxLink) => l.id === selectedLinkId ? { ...l, flowDirection: f.id as any } : l));
                         }}
                         className={`py-1 text-xs font-bold font-mono tracking-wider uppercase border rounded-lg transition-colors cursor-pointer ${selectedLink.flowDirection === f.id ? 'bg-indigo-600/10 text-indigo-400 border-slate-800' : 'bg-slate-900/40 backdrop-blur-md border-transparent text-slate-400 hover:text-slate-200'}`}
                       >

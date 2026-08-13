@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Database, FileText, Table, AlertCircle, Loader, HardDrive, RefreshCw, Activity, CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Database, FileText, Table, AlertCircle, Loader, HardDrive, Activity } from 'lucide-react';
 import { useToast } from './ToastProvider';
 import { ckanConnector, ConnectorHealthStatus } from '../services/ConnectorSDK';
 
@@ -65,7 +65,7 @@ export default function CKANExplorerTab() {
           throw new Error(dataRes.error);
         }
       } else {
-        showToast('Цей ресурс не підтримує DataStore (лише завантаження файлу)', 'warning');
+        showToast('Цей ресурс не підтримує DataStore (лише завантаження файлу)', 'info');
       }
     } catch (err: any) {
       showToast(err.message, 'error');

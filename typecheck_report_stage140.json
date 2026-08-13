@@ -1,0 +1,32 @@
+{
+  "stage": "STAGE_140_BEHAVIORALDASHBOARD_AND_CATALOGTAB_UNUSED_IMPORTS",
+  "timestamp": "2026-08-11T12:15:00Z",
+  "previous_errors": 792,
+  "current_errors": 789,
+  "delta": -3,
+  "top_categories_fixed": [
+    "TS6133 - Unused imports (EnhancedEntityWorkspace, EntityWorkspace, EvidenceProvenanceModal)",
+    "TS6133 - Unused imports (BehavioralDashboard)",
+    "TS6133 - Unused imports and variables (CatalogTab)"
+  ],
+  "files_changed": [
+    "src/components/EnhancedEntityWorkspace.tsx",
+    "src/components/EntityWorkspace.tsx",
+    "src/components/EvidenceProvenanceModal.tsx",
+    "src/components/BehavioralDashboard.tsx",
+    "src/components/CatalogTab.tsx"
+  ],
+  "new_regressions": [],
+  "test_outcome": "NOT_RUN",
+  "remaining_top_error_categories": {
+    "TS6133": 824,
+    "TS4111": 325,
+    "TS18048": 268,
+    "TS2532": 111,
+    "TS2339": 107,
+    "TS2345": 68,
+    "TS7006": 56,
+    "TS2322": 41
+  },
+  "next_priority": "Continue fixing remaining errors - progress: 1089 errors fixed (1878 -> 789)"
+}

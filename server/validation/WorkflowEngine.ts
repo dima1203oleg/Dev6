@@ -279,27 +279,27 @@ export class WorkflowEngine {
     }
   }
 
-  private async executeValidation(node: WorkflowNode): Promise<any> {
+  private async executeValidation(_node: WorkflowNode): Promise<any> {
     // TODO: Implement actual validation logic
     return { passed: true, checks: 10 };
   }
 
-  private async executeTest(node: WorkflowNode): Promise<any> {
+  private async executeTest(_node: WorkflowNode): Promise<any> {
     // TODO: Implement actual test logic
     return { passed: true, tests: 5 };
   }
 
-  private async executeRemediation(node: WorkflowNode): Promise<any> {
+  private async executeRemediation(_node: WorkflowNode): Promise<any> {
     // TODO: Implement actual remediation logic
     return { fixed: 0, skipped: 0 };
   }
 
-  private async executeRegression(node: WorkflowNode): Promise<any> {
+  private async executeRegression(_node: WorkflowNode): Promise<any> {
     // TODO: Implement actual regression logic
     return { passed: true, regressions: 0 };
   }
 
-  private async executeCertification(node: WorkflowNode): Promise<any> {
+  private async executeCertification(_node: WorkflowNode): Promise<any> {
     // TODO: Implement actual certification logic
     return { certified: true, score: 95 };
   }
@@ -336,7 +336,7 @@ export class WorkflowEngine {
    * Build dependency graph for a specific component
    * Used by Autonomous Regression Planner
    */
-  buildDependencyGraph(componentId: string): string[] {
+  buildDependencyGraph(_componentId: string): string[] {
     // TODO: Implement actual dependency analysis
     // This should return all components that depend on the given component
     return [];
