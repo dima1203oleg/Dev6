@@ -16,11 +16,12 @@ import dataRoutes from "./server/routes/dataRoutes";
 import registryMasterCatalogRoutes from "./server/routes/registryMasterCatalogRoutes";
 import adminRoutes from "./server/routes/adminRoutes";
 import mlipRoutes from "./server/routes/mlipRoutes";
+import observabilityRoutes from "./server/routes/observabilityRoutes";
 import predatorAPI from "./server/api/PredatorAPI";
 import { createRateLimiter, searchRateLimiter, probeRateLimiter, adminRateLimiter, aiRateLimiter } from "./server/middleware/rateLimiter";
 import { connectorFactory } from "./server/datasources/connectors/ConnectorFactory";
 import { FULL_REGISTRY_CATALOG, getRegistryStats } from "./server/datasources/registries/universalCatalog";
-import { requireAuth, checkPermission } from "./server/middleware/auth";
+import { authenticateApiRequest, requireAuth, checkPermission } from "./server/middleware/auth";
 import { validateBody, validateQuery, validators } from "./server/middleware/validation";
 import { errorHandler, correlationId, asyncHandler, AppError, ValidationError, NotFoundError } from "./server/middleware/errorHandler";
 import { logger, healthCheck, readinessCheck, livenessCheck, getMetricsEndpoint } from "./server/middleware/observability";
@@ -29,20 +30,53 @@ import { productionAcceptanceContract } from "./server/certification/ProductionA
 
 import { GoogleGenAI, Type, ThinkingLevel, GenerateVideosOperation } from "@google/genai";
 import dotenv from "dotenv";
+import { assertProductionConfiguration } from './server/config/production';
 
 dotenv.config();
+assertProductionConfiguration();
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const productionMode = process.env.NODE_ENV === 'production';
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+if (process.env.TRUST_PROXY === 'true') app.set('trust proxy', 1);
 
 // Apply global middleware
 app.use(correlationId);
+app.disable('x-powered-by');
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  if (productionMode) res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (!origin || !productionMode || allowedOrigins.includes(origin)) {
+    if (origin && allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Vary', 'Origin');
+      res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type, X-Correlation-ID');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    }
+    if (req.method === 'OPTIONS') return res.sendStatus(204);
+    return next();
+  }
+  return res.status(403).json({ error: { code: 'CORS_ORIGIN_DENIED', message: 'Origin is not allowed' } });
+});
+app.use(express.json({ limit: productionMode ? '1mb' : '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: productionMode ? '1mb' : '10mb' }));
+app.use(authenticateApiRequest);
 app.use(logger);
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Apply Rate Limiter Middleware for API endpoints
-app.use("/api/", createRateLimiter(200, 60000));
+app.use("/api/", requireAuth, createRateLimiter(200, 60000));
 
 // Health check endpoints
 app.get('/health', healthCheck);
@@ -85,6 +119,7 @@ app.use("/api/v1/system", registryMasterCatalogRoutes);
 app.use("/api/v1/master-catalog", registryMasterCatalogRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/mlip", mlipRoutes);
+app.use("/api/v1/observability", observabilityRoutes);
 
 // Mount PREDATOR API (v7.0 Production Integration)
 app.use("/api/v2/predator", predatorAPI);
@@ -1515,6 +1550,7 @@ async function generateIntelligenceDossier(query: string, type: string) {
 }
 
 // Vite middleware for development
+app.use(errorHandler);
 const server = createServer(app);
 setupWss(server);
 
