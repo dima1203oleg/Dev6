@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Search, Loader2, ArrowRight } from "lucide-react";
 import { Dossier } from "../types";
+import { authenticatedFetch } from "../lib/apiHelper";
 
 interface CommandBarProps {
   isOpen: boolean;
@@ -39,9 +40,8 @@ export function CommandBar({ isOpen, onClose, onSelectEntity }: CommandBarProps)
 
     setIsSearching(true);
     try {
-      const searchRes = await fetch("/api/v1/predator/search", {
+      const searchRes = await authenticatedFetch("/api/v1/predator/search", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: query, entityType: "AUTO" })
       });
 

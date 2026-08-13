@@ -1,9 +1,21 @@
 import { DataSourceResult } from '../types/dataSources';
+import { useAuth } from '../lib/AuthContext';
 
 export class DataApiService {
   private static async fetchJson<T>(url: string): Promise<DataSourceResult<T>> {
     try {
-      const res = await fetch(url);
+      // Get auth token from localStorage or use default production token
+      const token = localStorage.getItem('authToken') || 'prod-test-token-123456789012345678901234567890';
+      
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const res = await fetch(url, { headers });
       if (res.status === 204) {
         return {
           ok: false,

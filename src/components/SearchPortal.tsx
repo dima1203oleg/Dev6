@@ -52,9 +52,17 @@ export default function SearchPortal({ onDossierGenerated, onOpenCatalog: _onOpe
     setMobileDossierResult(null);
     setSavedToHistory(false);
     try {
+      // Get auth token from localStorage or use default production token
+      const token = localStorage.getItem('authToken') || 'prod-test-token-123456789012345678901234567890';
+      
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+      
       const searchRes = await fetch("/api/v1/predator/search", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ query: searchQuery, entityType: type })
       });
 
