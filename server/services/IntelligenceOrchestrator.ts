@@ -15,6 +15,7 @@ import { fetchTaxStatus } from '../datasources/registries/tax';
 import { fetchLicensesAndRegistries } from '../datasources/registries/licenses';
 import { fetchNAISEDR } from '../datasources/registries/nais-edr';
 import { fetchDPSTaxCabinet, DPSTaxConfig } from '../datasources/registries/dps-tax-cabinet';
+import { fetchRNBOsanctions } from '../datasources/registries/rnbo-sanctions';
 import crypto from "crypto";
 
 export class IntelligenceOrchestrator {
@@ -184,7 +185,7 @@ export class IntelligenceOrchestrator {
     }
 
     // Try DPS Tax Cabinet as tertiary source (if configured)
-    const dpsApiToken = process.env.DPS_TAX_CABINET_API_TOKEN;
+    const dpsApiToken = process.env['DPS_TAX_CABINET_API_TOKEN'];
     if (!clarityResult?.ok && (!naisResult || !naisResult.ok) && dpsApiToken) {
       try {
         const dpsConfig: DPSTaxConfig = {
@@ -211,11 +212,12 @@ export class IntelligenceOrchestrator {
       console.log(`[Orchestrator] EDR fallback result:`, edrResult.ok ? 'OK' : 'FAILED');
     }
 
-    const [court, sanctions, tax, licenses] = await Promise.allSettled([
+    const [court, sanctions, tax, licenses, rnboSanctions] = await Promise.allSettled([
       fetchCourtAndLegalProfile(code),
       fetchSanctionsAndCompliance(code),
       fetchTaxStatus(code),
-      fetchLicensesAndRegistries(code)
+      fetchLicensesAndRegistries(code),
+      fetchRNBOsanctions(code)
     ]);
 
     const edr = clarityResult?.ok ? { status: 'fulfilled', value: clarityResult } : 
@@ -251,6 +253,8 @@ export class IntelligenceOrchestrator {
       push('has_court_data', 'ЄДРСР (court.gov.ua)', court.value.data);
     if (sanctions.status === 'fulfilled' && sanctions.value?.ok && sanctions.value?.data)
       push('has_sanctions_data', 'РНБО (sanctions-t.rnbo.gov.ua)', sanctions.value.data);
+    if (rnboSanctions.status === 'fulfilled' && rnboSanctions.value)
+      push('has_rnbo_sanctions_data', 'RNBO Sanctions (OpenSanctions API)', rnboSanctions.value);
     if (tax.status === 'fulfilled' && tax.value?.ok && tax.value?.data)
       push('has_tax_data', 'ДПС (tax.gov.ua)', tax.value.data);
     if (licenses.status === 'fulfilled' && licenses.value?.ok && licenses.value?.data)
