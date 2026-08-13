@@ -4,7 +4,9 @@ dist/
 coverage/
 .DS_Store
 *.log
-.env*
+.env
+.env.local
+.env.production
 !.env.example
 
 # Cache and local IDE folders
@@ -17,3 +19,11 @@ coverage/
 *.njsproj
 *.sln
 *.sw?
+
+# Test reports
+test-reports/
+typecheck_report_*.json
+
+# Temporary files
+temp_import/
+*.tmp
