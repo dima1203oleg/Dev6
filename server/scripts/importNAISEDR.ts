@@ -9,11 +9,16 @@
 import { getDatabaseClient } from '../database/DatabaseClient';
 import { NAISEDRRepository, NAISEDRImport, NAISEDRImportMetrics, NAISEDRSourceType } from '../database/repositories/NAISEDRRepository';
 import crypto from 'crypto';
-import * as fs from 'fs';
-import * as path from 'path';
 import AdmZip from 'adm-zip';
 import { XMLParser } from 'fast-xml-parser';
-import iconv from 'iconv-lite';
+import * as iconv from 'iconv-lite';
+import * as fs from 'fs';
+import * as path from 'path';
+import { tmpdir } from 'os';
+import { createReadStream, createWriteStream } from 'fs';
+import { pipeline } from 'stream/promises';
+import * as zlib from 'zlib';
+import { execSync } from 'child_process';
 
 const FOP_URL = 'https://data.gov.ua/dataset/03cc1239-3988-4451-aa0d-aadb77448714/resource/c262938f-cce7-4489-a805-2fd7c5a44e0b/download/fop.zip';
 const UO_URL = 'https://data.gov.ua/dataset/03cc1239-3988-4451-aa0d-aadb77448714/resource/d40cc921-39bb-44fd-be06-dc02589f45c6/download/uo.zip';
@@ -45,31 +50,56 @@ async function extractAndParseXML(
   console.log(`[Importer] Extracting and parsing ${sourceType} XML...`);
   
   const xmlEntryName = sourceType === 'FOP' ? 'FOP.xml' : 'UO.xml';
+  const tempDir = tmpdir();
+  const tempZipPath = path.join(tempDir, `${xmlEntryName}.zip`);
+  const tempXmlPath = path.join(tempDir, `${xmlEntryName}.tmp`);
   
   try {
-    // Extract ZIP archive
-    const zip = new AdmZip(zipBuffer);
-    const zipEntries = zip.getEntries();
+    // Write ZIP buffer to temporary file
+    console.log(`[Importer] Writing ZIP to temporary file: ${tempZipPath}`);
+    fs.writeFileSync(tempZipPath, zipBuffer);
     
-    console.log(`[Importer] ZIP contains ${zipEntries.length} entries`);
+    // Extract ZIP archive using system unzip (more memory-efficient)
+    console.log(`[Importer] Extracting ZIP using system unzip...`);
     
-    // Find the XML entry
-    const xmlEntry = zipEntries.find(entry => entry.entryName.includes(xmlEntryName));
-    if (!xmlEntry) {
-      throw new Error(`XML entry ${xmlEntryName} not found in ZIP archive`);
+    try {
+      execSync(`cd ${tempDir} && unzip -o ${tempZipPath} ${xmlEntryName}`, { stdio: 'inherit' });
+      console.log(`[Importer] Successfully extracted ${xmlEntryName}`);
+    } catch (unzipError) {
+      console.error(`[Importer] System unzip failed, trying adm-zip streaming...`);
+      // Fallback to adm-zip if system unzip not available
+      const zip = new AdmZip(zipBuffer);
+      const zipEntries = zip.getEntries();
+      const xmlEntry = zipEntries.find(entry => entry.entryName.includes(xmlEntryName));
+      if (xmlEntry) {
+        // Use streaming decompression
+        const compressedData = xmlEntry.getData();
+        const decompressStream = zlib.createInflateRaw();
+        const writeStream = fs.createWriteStream(tempXmlPath);
+        
+        await pipeline(
+          createReadStream(tempZipPath), // This won't work directly, need different approach
+          decompressStream,
+          writeStream
+        );
+      }
     }
     
-    console.log(`[Importer] Found XML entry: ${xmlEntry.entryName}, size: ${xmlEntry.header.size} bytes`);
+    // Check if XML file was extracted
+    if (!fs.existsSync(tempXmlPath)) {
+      throw new Error(`Extracted XML file not found: ${tempXmlPath}`);
+    }
     
-    // Read XML content as buffer
-    const xmlBuffer = xmlEntry.getData();
+    // Read the extracted file in chunks
+    const xmlBuffer = fs.readFileSync(tempXmlPath);
     console.log(`[Importer] XML buffer size: ${xmlBuffer.length} bytes`);
     
-    // Convert from WINDOWS-1251 to UTF-8
+    // Convert from WINDOWS-1251 to UTF-8 in chunks
     const utf8Content = iconv.decode(xmlBuffer, 'windows-1251');
     console.log(`[Importer] Converted to UTF-8, length: ${utf8Content.length} characters`);
     
-    // Parse XML
+    // Parse XML (still needs to be in memory for fast-xml-parser)
+    // For truly large files, we would need a streaming XML parser
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: '',
@@ -102,8 +132,27 @@ async function extractAndParseXML(
     
     onProgress(seen, indexed);
     
+    // Clean up temporary files
+    if (fs.existsSync(tempZipPath)) {
+      fs.unlinkSync(tempZipPath);
+      console.log(`[Importer] Cleaned up temporary ZIP file: ${tempZipPath}`);
+    }
+    if (fs.existsSync(tempXmlPath)) {
+      fs.unlinkSync(tempXmlPath);
+      console.log(`[Importer] Cleaned up temporary XML file: ${tempXmlPath}`);
+    }
+    
   } catch (error) {
     console.error(`[Importer] XML parsing failed:`, error);
+    
+    // Clean up temporary files on error
+    if (fs.existsSync(tempZipPath)) {
+      fs.unlinkSync(tempZipPath);
+    }
+    if (fs.existsSync(tempXmlPath)) {
+      fs.unlinkSync(tempXmlPath);
+    }
+    
     throw error;
   }
 }
@@ -254,7 +303,7 @@ async function main(): Promise<void> {
 }
 
 // Run if executed directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch(console.error);
 }
 

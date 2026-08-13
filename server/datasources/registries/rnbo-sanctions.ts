@@ -137,6 +137,9 @@ export async function searchSanctions(
     });
 
     if (!response.ok) {
+      if (response.status === 404) {
+        return []; // Entity not found - return empty array
+      }
       if (response.status === 429) {
         throw new Error('OpenSanctions API: Rate limit exceeded');
       }
