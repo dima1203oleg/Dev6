@@ -13,6 +13,7 @@ import { fetchCourtAndLegalProfile } from '../datasources/registries/court';
 import { fetchSanctionsAndCompliance } from '../datasources/registries/sanctions';
 import { fetchTaxStatus } from '../datasources/registries/tax';
 import { fetchLicensesAndRegistries } from '../datasources/registries/licenses';
+import { fetchNAISEDR } from '../datasources/registries/nais-edr';
 import crypto from "crypto";
 
 export class IntelligenceOrchestrator {
@@ -156,8 +157,8 @@ export class IntelligenceOrchestrator {
     console.log(`[Orchestrator] Starting data fetch for ${code}`);
     
     // ─── PHASE 1: Core typed registry connectors (guaranteed schema) ─────────
-    // PRIMARY: Clarity Project API, FALLBACK: data.gov.ua EDR
-    let clarityResult, edrResult;
+    // PRIMARY: Clarity Project API, SECONDARY: NAIS EDR XML, TERTIARY: data.gov.ua EDR
+    let clarityResult, naisResult, edrResult;
     try {
       clarityResult = await fetchClarityEdr(code);
       console.log(`[Orchestrator] Clarity result:`, clarityResult.ok ? 'OK' : 'FAILED');
@@ -165,11 +166,24 @@ export class IntelligenceOrchestrator {
         console.log(`[Orchestrator] Clarity data:`, clarityResult.data);
       }
     } catch (e) {
-      console.log(`[Orchestrator] Clarity failed, trying fallback EDR:`, e);
+      console.log(`[Orchestrator] Clarity failed, trying NAIS EDR:`, e);
     }
 
-    // Use fallback if Clarity fails
+    // Try NAIS EDR XML as secondary source
     if (!clarityResult || !clarityResult.ok) {
+      try {
+        naisResult = await fetchNAISEDR(code);
+        console.log(`[Orchestrator] NAIS EDR result:`, naisResult.ok ? 'OK' : 'FAILED');
+        if (naisResult.ok) {
+          console.log(`[Orchestrator] NAIS EDR data:`, naisResult.data);
+        }
+      } catch (e) {
+        console.log(`[Orchestrator] NAIS EDR failed, trying fallback EDR:`, e);
+      }
+    }
+
+    // Use fallback if both Clarity and NAIS fail
+    if (!clarityResult?.ok && (!naisResult || !naisResult.ok)) {
       edrResult = await fetchEdrFull(code);
       console.log(`[Orchestrator] EDR fallback result:`, edrResult.ok ? 'OK' : 'FAILED');
     }
@@ -182,7 +196,8 @@ export class IntelligenceOrchestrator {
     ]);
 
     const edr = clarityResult?.ok ? { status: 'fulfilled', value: clarityResult } : 
-                (edrResult?.ok ? { status: 'fulfilled', value: edrResult } : { status: 'rejected' });
+                (naisResult?.ok ? { status: 'fulfilled', value: naisResult } : 
+                (edrResult?.ok ? { status: 'fulfilled', value: edrResult } : { status: 'rejected' }));
 
     const push = (predicate: string, src: string, data: any) => results.push({
       source: src,
@@ -203,7 +218,8 @@ export class IntelligenceOrchestrator {
     });
 
     if (edr.status === 'fulfilled' && edr.value?.ok && edr.value?.data) {
-      const sourceName = clarityResult?.ok ? 'Clarity Project API' : 'ЄДР (data.gov.ua)';
+      const sourceName = clarityResult?.ok ? 'Clarity Project API' : 
+                        (naisResult?.ok ? 'NAIS EDR XML (Мін\'юст)' : 'ЄДР (data.gov.ua)');
       push('has_edr_data', sourceName, edr.value.data);
     }
     if (court.status === 'fulfilled' && court.value?.ok && court.value?.data)
