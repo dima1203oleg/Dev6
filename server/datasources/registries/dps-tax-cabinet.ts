@@ -51,12 +51,13 @@ export async function fetchVATPayerStatus(
   
   try {
     const response = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${config.apiToken}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ tin }),
       signal: AbortSignal.timeout(config.timeout || DEFAULT_TIMEOUT),
     });
 
@@ -70,6 +71,8 @@ export async function fetchVATPayerStatus(
       if (response.status === 429) {
         throw new Error('DPS Tax Cabinet: Rate limit exceeded');
       }
+      const errorText = await response.text();
+      console.error('DPS Tax Cabinet API error:', response.status, errorText);
       throw new Error(`DPS Tax Cabinet: ${response.status} ${response.statusText}`);
     }
 
@@ -142,6 +145,8 @@ export async function fetchTaxRegistration(
       if (response.status === 429) {
         throw new Error('DPS Tax Cabinet: Rate limit exceeded');
       }
+      const errorText = await response.text();
+      console.error('DPS Tax Cabinet API error:', response.status, errorText);
       throw new Error(`DPS Tax Cabinet: ${response.status} ${response.statusText}`);
     }
 
@@ -190,12 +195,13 @@ export async function fetchNonProfitStatus(
   
   try {
     const response = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${config.apiToken}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ tin }),
       signal: AbortSignal.timeout(config.timeout || DEFAULT_TIMEOUT),
     });
 
@@ -209,6 +215,8 @@ export async function fetchNonProfitStatus(
       if (response.status === 429) {
         throw new Error('DPS Tax Cabinet: Rate limit exceeded');
       }
+      const errorText = await response.text();
+      console.error('DPS Tax Cabinet API error:', response.status, errorText);
       throw new Error(`DPS Tax Cabinet: ${response.status} ${response.statusText}`);
     }
 
