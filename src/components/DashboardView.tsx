@@ -28,7 +28,6 @@ import D3RiskHeatmapWidget from "./D3RiskHeatmapWidget";
 import D3HistoricalRiskTrendsWidget from "./D3HistoricalRiskTrendsWidget";
 import RiskAlertTicker from "./RiskAlertTicker";
 import RealtimeAssetPriceWidget from "./RealtimeAssetPriceWidget";
-import { OSINT_ENTITIES } from "../osintData";
 import {
   AreaChart,
   Area,
@@ -538,22 +537,19 @@ export default function DashboardView({
     },
   ];
 
-  // Filter and process OSINT_ENTITIES for the 2D Risk Heatmap
-  const filteredEntities = OSINT_ENTITIES.filter((ent) => {
-    if (heatmapFilter === "all") return true;
-    return ent.type === heatmapFilter;
-  });
+  // Filter and process entities for the 2D Risk Heatmap - using empty array until real data loaded
+  const filteredEntities: any[] = [];
 
-  const getEntityCoords = (ent: (typeof OSINT_ENTITIES)[0]) => {
+  const getEntityCoords = (ent: any) => {
     // Y: Risk Score (inverted, scaled to 12% to 88% to stay inside the plot area safely)
     const y = 88 - (ent.riskScore / 100) * 76;
     let x = 50;
     const relCount = ent.relationships?.length || 0;
 
     if (relCount >= 3) {
-      x = ent.id === "comp-1" ? 82 : 72;
+      x = 82;
     } else if (relCount === 2) {
-      x = ent.id === "wallet-1" ? 56 : 42;
+      x = 56;
     } else {
       x = 22;
     }
@@ -574,7 +570,7 @@ export default function DashboardView({
     <div className="flex-1 p-2 sm:p-3 md:p-4 flex flex-col gap-3 sm:gap-4 bg-slate-950 h-full w-full" id="dashboard-view-root">
       {/* Real-time Risk Alert Ticker */}
       <RiskAlertTicker
-        entities={OSINT_ENTITIES}
+        entities={[]}
         onSelectEntity={onSelectEntity}
         onSelectTab={onSelectTab}
       />
@@ -1209,14 +1205,14 @@ export default function DashboardView({
 
           {/* D3.js based risk heatmap widget representing real-time threat clusters */}
           <D3RiskHeatmapWidget
-            entities={OSINT_ENTITIES}
+            entities={[]}
             onSelectEntity={onSelectEntity}
             onSelectTab={onSelectTab}
           />
 
           {/* D3.js line chart showing 'Historical Risk Trends' for the active entities over the past 30 days to complement the heatmap */}
           <D3HistoricalRiskTrendsWidget
-            entities={OSINT_ENTITIES}
+            entities={[]}
             onSelectEntity={onSelectEntity}
             onSelectTab={onSelectTab}
           />
@@ -1690,47 +1686,9 @@ export default function DashboardView({
                 scrollbarColor: "#334155 transparent",
               }}
             >
-              {OSINT_ENTITIES.filter((e) => e.riskScore >= 75).map((entity) => (
-                <div
-                  key={entity.id}
-                  onClick={() => {
-                    onSelectEntity(entity.id);
-                    onSelectTab("volumes");
-                  }}
-                  className="bg-slate-950/70 border border-slate-800 rounded-lg p-2 flex flex-col gap-2 transition-all duration-300 ease-out cursor-pointer group hover:bg-slate-900/80 hover:border-rose-400/50 hover:-translate-y-[1px] relative overflow-hidden"
-                >
-                  <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-rose-500/50 group-hover:bg-rose-400 transition-colors"></div>
-                  <div className="flex justify-between items-start pl-1">
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 group-hover:bg-rose-500/20 transition-colors border border-slate-800">
-                        {entity.type === "company" ? (
-                          <Briefcase className="w-3.5 h-3.5" />
-                        ) : entity.type === "person" ? (
-                          <User className="w-3.5 h-3.5" />
-                        ) : (
-                          <Terminal className="w-3.5 h-3.5" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-slate-200 group-hover:text-rose-400 transition-colors line-clamp-1">
-                          {entity.name}
-                        </p>
-                        <span className="text-xs text-slate-500 font-mono">
-                          {entity.type.toUpperCase()} • {entity.code}
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-xs font-mono font-bold px-2 py-1 rounded bg-rose-500/10 text-rose-400 border border-slate-800 shrink-0">
-                      {entity.riskScore}% RISK
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-400 font-sans leading-relaxed line-clamp-2 pl-1 italic">
-                    {entity.aiRecommendations ||
-                      entity.description ||
-                      "Detected anomalous behavior patterns requiring immediate operational review."}
-                  </p>
-                </div>
-              ))}
+              <div className="text-center py-8 text-slate-500 text-xs font-mono">
+                Критичні сповіщення вимагають реальних даних з джерел
+              </div>
             </div>
           </div>
 
@@ -1746,15 +1704,8 @@ export default function DashboardView({
                 <div
                   key={i}
                   onClick={() => {
-                    const found = OSINT_ENTITIES.find((e) =>
-                      e.name
-                        .toLowerCase()
-                        .includes(search.text.toLowerCase().slice(0, 10)),
-                    );
-                    if (found) {
-                      onSelectEntity(found.id);
-                      onSelectTab("volumes"); // Navigate to workbench
-                    }
+                    // Static data removed - requires real data service integration
+                    console.log('Search click requires real data integration');
                   }}
                   className="bg-slate-950/70 border border-slate-800 rounded-lg p-2 flex items-center justify-between transition-all duration-300 ease-out cursor-pointer group hover:bg-slate-900/60 hover:border-blue-400/40 hover:-translate-y-[1px] hover:shadow-[0_4px_15px_rgba(99,102,241,0.1)]"
                 >

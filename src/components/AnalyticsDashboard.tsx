@@ -5,7 +5,6 @@ import {
   ArrowRight, FileText, RefreshCw, Eye
 } from "lucide-react";
 import { motion } from "motion/react";
-import { OSINT_ENTITIES } from "../osintData";
 
 interface AnalyticsDashboardProps {
   onOpenCommandBar: () => void;
@@ -19,13 +18,7 @@ const RISK_ALERTS = [
   { id: 4, level: "INFO", text: "ua.opendatabot поновлено: +18 245 записів ЄДР", time: "6 год тому", entity: null, color: "text-blue-400 border-blue-500/20 bg-blue-500/5" },
 ];
 
-const RECENT_SEARCHES = OSINT_ENTITIES.slice(0, 5).map(e => ({
-  id: e.id,
-  name: e.name,
-  type: e.type,
-  riskScore: Math.floor(Math.random() * 50) + 40,
-  time: `${Math.floor(Math.random() * 30) + 1} хв тому`
-}));
+const RECENT_SEARCHES: any[] = [];
 
 const ACTIVE_CASES = [
   { id: "case-1", name: "Тендерні махінації — МО", entities: 7, progress: 78, risk: "HIGH" },

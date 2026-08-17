@@ -341,6 +341,9 @@ export function MediaForensicsTab() {
   };
 
   const removeFile = (id: string) => {
+    if (filesRef.current[id]) {
+      delete filesRef.current[id];
+    }
     setFileQueue(prev => prev.filter(f => f.id !== id));
   };
 
@@ -575,8 +578,28 @@ export function MediaForensicsTab() {
                     <option>Глибокий роздум (Високий Thinking)</option>
                   </select>
                 </div>
+                {fileQueue.length > 0 && (
+                  <div className="mt-2 space-y-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-slate-500">Черга ({fileQueue.length})</span>
+                      {selectedLogIds.size > 0 && (
+                        <button onClick={handleBatchDelete} className="text-xs text-red-400 hover:text-red-300">
+                          Видалити вибрані ({selectedLogIds.size})
+                        </button>
+                      )}
+                    </div>
+                    {fileQueue.map(f => (
+                      <div key={f.id} className="flex items-center gap-2 text-xs text-slate-400 bg-slate-900/50 rounded px-2 py-1">
+                        <span className="flex-1 truncate">{f.fileName}</span>
+                        <span className={`shrink-0 ${f.status === 'done' ? 'text-green-400' : f.status === 'error' ? 'text-red-400' : 'text-slate-500'}`}>{f.status}</span>
+                        <button onClick={() => removeFile(f.id)} className="shrink-0 text-slate-600 hover:text-red-400">×</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
+
             {activeMode === 'generation' && (
               <div className="space-y-4">
                 <div>

@@ -105,7 +105,7 @@ export default function AutonomousFactory() {
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "agent_tasks"),
-      (snapshot) => {
+      (_snapshot) => {
         // Can sync tasks or agent logs if present
       },
       (error) => {
@@ -119,8 +119,8 @@ export default function AutonomousFactory() {
   useEffect(() => {
     if (!isFactoryRunning || killSwitchActive) return;
     const interval = setInterval(() => {
-      setVramUsage(prev => Number((5.8 + Math.random() * 2.1).toFixed(1)));
-      setCpuUsage(prev => Math.floor(25 + Math.random() * 35));
+      setVramUsage(Number((5.8 + Math.random() * 2.1).toFixed(1)));
+      setCpuUsage(Math.floor(25 + Math.random() * 35));
     }, 4000);
     return () => clearInterval(interval);
   }, [isFactoryRunning, killSwitchActive]);

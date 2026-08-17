@@ -27,3 +27,8 @@ typecheck_report_*.json
 # Temporary files
 temp_import/
 *.tmp
+
+# Backups
+backups/
+*.backup
+*.gz

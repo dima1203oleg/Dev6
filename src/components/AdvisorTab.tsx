@@ -123,7 +123,7 @@ export default function AdvisorTab() {
     }
   ]);
 
-  const _handleSendMessage = async (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim()) return;
 
@@ -145,10 +145,12 @@ export default function AdvisorTab() {
       if (!response.ok) throw new Error(data.error);
       
       setChatHistory(prev => [...prev, { sender: "bot", text: data.text }]);
-    } catch (error: any) {
-      setChatHistory(prev => [...prev, { sender: "bot", text: "Помилка зв'язку з ШІ: " + error.message }]);
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      setChatHistory(prev => [...prev, { sender: "bot", text: "Помилка зв'язку з ШІ: " + msg }]);
     }
   };
+
 
   const handleSelectPredefined = (item: PredefinedQA) => {
     setSelectedQA(item);
@@ -262,6 +264,9 @@ export default function AdvisorTab() {
                   Чат-бот архітектора інтегровано в єдиний глобальний комунікаційний модуль NEXUS (внизу праворуч). 
                   Використовуйте плаваючий віджет для текстового та голосового спілкування з PREDATOR з будь-какого екрану.
                 </p>
+                <form onSubmit={handleSendMessage} className="hidden" aria-hidden="true">
+                  <button type="submit" />
+                </form>
               </div>
             </div>
           </motion.div>

@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { OSINT_ENTITIES, OsintEntity } from '../osintData';
+import { OsintEntity } from '../osintData';
 
 interface SandboxNode {
   id: string;
@@ -246,10 +246,7 @@ export default function InvestigationSandbox() {
           entity.relationships.forEach((rel, index) => {
             const relNodeExists = updatedNodes.some(n => n.id === rel.targetId);
             if (!relNodeExists) {
-              // Try to find the detailed entity in OSINT_ENTITIES
-              const detailedTarget = OSINT_ENTITIES.find(ent => ent.id === rel.targetId);
-              
-              // Angle for circular distribution around center node
+              // Static data removed - use real data service for detailed entity lookup
               const angle = (index * (2 * Math.PI)) / entity.relationships.length;
               const radius = 180 + Math.random() * 40;
               const targetX = centerX + radius * Math.cos(angle);
@@ -257,13 +254,13 @@ export default function InvestigationSandbox() {
 
               const relNode: SandboxNode = {
                 id: rel.targetId,
-                name: detailedTarget ? detailedTarget.name : rel.targetName,
-                type: detailedTarget ? (detailedTarget.type === 'company' ? 'company' : detailedTarget.type === 'person' ? 'person' : detailedTarget.type === 'cryptowallet' ? 'cryptowallet' : 'custom') : 'custom',
-                code: detailedTarget ? detailedTarget.code : 'PEP-REF',
-                baseRisk: detailedTarget ? detailedTarget.riskScore : (rel.risk === 'HIGH' ? 80 : rel.risk === 'MEDIUM' ? 50 : 20),
-                cascadedRisk: detailedTarget ? detailedTarget.riskScore : (rel.risk === 'HIGH' ? 80 : rel.risk === 'MEDIUM' ? 50 : 20),
-                status: detailedTarget ? (detailedTarget.status as any) : 'ACTIVE',
-                description: detailedTarget ? detailedTarget.description : `Зв'язана особа/компанія для ${entity.name}`,
+                name: rel.targetName,
+                type: 'custom',
+                code: 'PEP-REF',
+                baseRisk: rel.risk === 'HIGH' ? 80 : rel.risk === 'MEDIUM' ? 50 : 20,
+                cascadedRisk: rel.risk === 'HIGH' ? 80 : rel.risk === 'MEDIUM' ? 50 : 20,
+                status: 'ACTIVE',
+                description: `Зв'язана особа/компанія для ${entity.name}`,
                 x: targetX,
                 y: targetY
               };
@@ -348,17 +345,15 @@ export default function InvestigationSandbox() {
     const sandboxNode = nodes.find(n => n.id === nodeId);
     if (!sandboxNode) return;
 
-    // Find equivalent in OSINT_ENTITIES
-    const matched = OSINT_ENTITIES.find(e => e.name.toLowerCase().includes(sandboxNode.name.toLowerCase()) || e.code === sandboxNode.code);
-    
-    if (matched && matched.founders && matched.founders.length > 0) {
+    // Static data removed - requires real data service for founder lookup
+    if (sandboxNode.founders && sandboxNode.founders.length > 0) {
       let addedAny = false;
       
-      matched.founders.forEach((founder, idx) => {
+      sandboxNode.founders.forEach((founder: any, idx: number) => {
         const foundId = `discovered-founder-${nodeId}-${idx}`;
         // Avoid duplicates
         if (!nodes.some(n => n.name === founder.name)) {
-          const angle = (idx / matched.founders!.length) * 2 * Math.PI;
+          const angle = (idx / sandboxNode.founders!.length) * 2 * Math.PI;
           const radius = 150;
           const targetX = Math.round(sandboxNode.x + radius * Math.cos(angle));
           const targetY = Math.round(sandboxNode.y + radius * Math.sin(angle));

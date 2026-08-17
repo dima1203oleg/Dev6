@@ -33,7 +33,8 @@ import {
   Database,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { OSINT_ENTITIES, OsintEntity, generateDynamicEntity } from "../osintData";
+import { OsintEntity } from "../osintData";
+import { realDataService } from "../services/RealDataService";
 import LiveAnalyticalCore from "./LiveAnalyticalCore";
 
 interface LiveAnalyticalCenterProps {
@@ -97,7 +98,7 @@ export default function LiveAnalyticalCenter({
   const [searchQuery, setSearchQuery] = useState("");
   const [_isThinking, _setIsThinking] = useState(false);
   const [activeEntity, setActiveEntity] = useState<OsintEntity | null>(
-    selectedEntity || OSINT_ENTITIES[0] || null,
+    selectedEntity || null,
   );
 
   useEffect(() => {
@@ -326,18 +327,20 @@ export default function LiveAnalyticalCenter({
     }
   }, [selectedEntity]);
 
-  // Handle auto-complete recommendations
+  // Handle auto-complete recommendations - using real data service
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSearchSuggestions([]);
       return;
     }
-    const matched = OSINT_ENTITIES.filter(
-      (e) =>
-        e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        e.code.includes(searchQuery),
-    );
-    setSearchSuggestions(matched);
+    // Use real data service for search suggestions
+    realDataService.searchEntity(searchQuery).then(result => {
+      if (result.status === 'SUCCESS' && result.entity) {
+        setSearchSuggestions([result.entity]);
+      } else {
+        setSearchSuggestions([]);
+      }
+    });
   }, [searchQuery]);
 
   // Autonomous walkthrough cycle for Command Center (Point 9)
@@ -346,41 +349,8 @@ export default function LiveAnalyticalCenter({
       speakVoice(
         "Активовано автономний режим командного центру. Переходжу на автопілот.",
       );
-      let idx = 0;
-      autopilotIntervalRef.current = setInterval(() => {
-        const nextEntity = OSINT_ENTITIES[idx % OSINT_ENTITIES.length];
-        idx++;
-        if (nextEntity) {
-          setActiveEntity(nextEntity);
-          buildGraphForEntity(nextEntity);
-          onSelectEntityGlobal(nextEntity);
-        }
-
-        // Cycle core modes randomly
-        const modes: Array<
-          "learning" | "optimization" | "inference" | "validation"
-        > = ["learning", "optimization", "inference", "validation"];
-        const randomMode = modes[Math.floor(Math.random() * modes.length)] || "idle";
-        setCoreState(randomMode);
-
-        if (nextEntity) {
-          const voicePhrases = [
-            `Аналізую суб'єкт ${nextEntity.name}. Рівень загрози: ${nextEntity.riskScore} відсотків.`,
-            `Проводжу семантичний аналіз зв'язків. Виявлено ${(nextEntity.relationships || []).length} залежностей.`,
-            `Співвідношу компанію з базою Qdrant. Запускаю моделювання ризиків.`,
-            `ШІ-перевірка завершена. Оновлено статус здоров'я системи.`,
-          ];
-          speakVoice(
-            voicePhrases[Math.floor(Math.random() * voicePhrases.length)] || "Аналіз завершено.",
-          );
-
-          setTimeout(() => setCoreState("idle"), 3000);
-        }
-      }, 7000);
-    } else {
-      if (autopilotIntervalRef.current) {
-        clearInterval(autopilotIntervalRef.current);
-      }
+      // Disabled autopilot with static data - requires real data integration
+      return;
     }
     return () => {
       if (autopilotIntervalRef.current)
@@ -552,30 +522,22 @@ export default function LiveAnalyticalCenter({
       setIsGalaxySwirling(false);
       setCoreState("inference");
 
-      const matched = OSINT_ENTITIES.find(
-        (e) =>
-          e.name.toLowerCase().includes(queryText.toLowerCase()) ||
-          e.code.includes(queryText),
-      );
-
-      if (matched) {
-        setActiveEntity(matched);
-        buildGraphForEntity(matched);
-        onSelectEntityGlobal(matched);
-        speakVoice(
-          `Знайдено об'єкт ${matched.name}. Сформовано інтерактивний граф.`,
-        );
-      } else {
-        const dynamicEntity = generateDynamicEntity(queryText);
-        setActiveEntity(dynamicEntity);
-        buildGraphForEntity(dynamicEntity);
-        onSelectEntityGlobal(dynamicEntity);
-        speakVoice(
-          `Знайдено об'єкт ${dynamicEntity.name}. Проведено комплесну перевірку.`,
-        );
-      }
-
-      setTimeout(() => setCoreState("idle"), 3000);
+      // Use real data service instead of static data
+      realDataService.searchEntity(queryText).then(result => {
+        if (result.status === 'SUCCESS' && result.entity) {
+          setActiveEntity(result.entity);
+          buildGraphForEntity(result.entity);
+          onSelectEntityGlobal(result.entity);
+          speakVoice(
+            `Знайдено об'єкт ${result.entity.name}. Сформовано інтерактивний граф.`,
+          );
+        } else {
+          speakVoice(
+            `Дані не знайдено або джерело недоступне для запиту: ${queryText}`,
+          );
+        }
+        setTimeout(() => setCoreState("idle"), 3000);
+      });
     }, 2000);
   };
 

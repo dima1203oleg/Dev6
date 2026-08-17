@@ -17,7 +17,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { QRCodeSVG } from 'qrcode.react';
-import { OSINT_ENTITIES, OsintEntity, generateDynamicEntity } from '../osintData';
+import { OsintEntity } from '../osintData';
+import { realDataService } from '../services/RealDataService';
 import PersonProfiler from './PersonProfiler';
 import StixExporterModal from './StixExporterModal';
 import TemporalRiskDiffEngine from './TemporalRiskDiffEngine';
@@ -227,12 +228,12 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
     qrCode: true
   });
 
-  const [entities, setEntities] = useState<OsintEntity[]>(OSINT_ENTITIES);
+  const [entities, setEntities] = useState<OsintEntity[]>([]);
   const [isSearchingLive, setIsSearchingLive] = useState(false);
   const [liveSearchError, setLiveSearchError] = useState<string | null>(null);
 
   // Checklist Multi-Selection and Simulation States
-  const [selectedEntityIds, setSelectedEntityIds] = useState<string[]>(OSINT_ENTITIES.map(e => e.id));
+  const [selectedEntityIds, setSelectedEntityIds] = useState<string[]>([]);
   const [simulateLargeDataset, setSimulateLargeDataset] = useState(false);
   const [showLargeExportConfirmation, setShowLargeExportConfirmation] = useState(false);
   const [pendingExportType, setPendingExportType] = useState<'csv' | 'pdf' | null>(null);
@@ -580,14 +581,20 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
         throw new Error("Некоректний формат відповіді від сервера");
       }
     } catch (error: any) {
-      console.warn("Live OSINT search fallback to client generator:", error);
-      const fallbackData = generateDynamicEntity(queryText);
-      setEntities(prev => [fallbackData, ...prev]);
-      setSelectedEntityIds(prev => [fallbackData.id, ...prev]);
-      onSelectEntityForInspector(fallbackData);
-      setSearchQuery(queryText);
-      setShowSuggestions(false);
-      showToast(`Згенеровано профіль об'єкта на основі реєстрів: ${fallbackData.name}`, 'success');
+      console.warn("Live OSINT search error:", error);
+      // Use real data service instead of fallback generator
+      realDataService.searchEntity(queryText).then(result => {
+        if (result.status === 'SUCCESS' && result.entity) {
+          setEntities(prev => [result.entity!, ...prev]);
+          setSelectedEntityIds(prev => [result.entity!.id, ...prev]);
+          onSelectEntityForInspector(result.entity);
+          setSearchQuery(queryText);
+          setShowSuggestions(false);
+          showToast(`Знайдено: ${result.entity.name}`, 'success');
+        } else {
+          showToast(`Помилка пошуку: ${result.message || 'Джерело недоступне'}`, 'error');
+        }
+      });
     } finally {
       setIsSearchingLive(false);
     }
@@ -1420,14 +1427,15 @@ export default function OsintWorkbench({ onSelectEntityForInspector, selectedEnt
                   <p className="text-slate-400 text-xs">Попередньо знайдені картки та пошуковий вміст повністю видалено з екрана.</p>
                   <button
                     onClick={() => {
-                      setEntities(OSINT_ENTITIES);
-                      setSelectedEntityIds(OSINT_ENTITIES.map(e => e.id));
-                      showToast("Стандартний демо-список об'єктів відновлено", "info");
+                      // Clear entities instead of restoring demo data
+                      setEntities([]);
+                      setSelectedEntityIds([]);
+                      showToast("Список об'єктів очищено", "info");
                     }}
-                    className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer inline-flex items-center gap-1.5"
+                    className="px-3 py-1.5 bg-slate-600/20 hover:bg-slate-600/30 text-slate-400 border border-slate-500/30 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer inline-flex items-center gap-1.5"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
-                    <span>Відновити стандартний список</span>
+                    <span>Пошук нових об'єктів</span>
                   </button>
                 </div>
               ) : (

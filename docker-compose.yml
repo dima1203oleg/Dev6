@@ -1,0 +1,129 @@
+# PREDATOR Analytics - Docker Compose Configuration
+# MASTER PRODUCTION IMPLEMENTATION & ACCEPTANCE SPECIFICATION v7.0
+
+version: '3.8'
+
+services:
+  # ============================================
+  # Predator Analytics Application
+  # ============================================
+  predator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: predator-analytics
+    ports:
+      - "3000:3000"
+    environment:
+      # Application
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      
+      # Database
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: predator
+      DB_USER: predator
+      DB_PASSWORD: ${DB_PASSWORD:-predator_secure_password}
+      DB_SSL: "false"
+      
+      # AI Engine
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      
+      # Business Registries
+      CLARITY_API_KEY: ${CLARITY_API_KEY}
+      CLARITY_API_BASE_URL: https://clarity-project.info/api
+      OPENDATABOT_API_KEY: ${OPENDATABOT_API_KEY}
+      YOUCONTROL_API_KEY: ${YOUCONTROL_API_KEY}
+      
+      # Maps
+      VITE_GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY}
+      
+      # State Registries
+      NAIS_API_KEY: ${NAIS_API_KEY}
+      TAX_CABINET_TOKENS: ${TAX_CABINET_TOKENS}
+      
+      # Authentication
+      AUTH_TOKENS: ${AUTH_TOKENS}
+      ALLOW_DEV_ROLE_OVERRIDE: "false"
+      
+      # Backup Configuration
+      BACKUP_DIR: /app/backups
+      BACKUP_RETENTION_DAYS: 30
+      
+    volumes:
+      - predator-backups:/app/backups
+      - predator-logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - predator-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================
+  # PostgreSQL Database
+  # ============================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: predator-postgres
+    environment:
+      POSTGRES_DB: predator
+      POSTGRES_USER: predator
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-predator_secure_password}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./server/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./server/database/migrations:/docker-entrypoint-initdb.d/migrations
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - predator-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U predator -d predator"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # Redis Cache (optional)
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: predator-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-predator_redis_password}
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - predator-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  predator-backups:
+    driver: local
+  predator-logs:
+    driver: local
+
+networks:
+  predator-network:
+    driver: bridge

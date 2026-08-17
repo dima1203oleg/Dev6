@@ -1,5 +1,4 @@
 import { DataSourceResult } from '../types/dataSources';
-import { useAuth } from '../lib/AuthContext';
 
 export class DataApiService {
   private static async fetchJson<T>(url: string): Promise<DataSourceResult<T>> {

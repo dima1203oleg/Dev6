@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { APIProvider, Map as GoogleMap, AdvancedMarker, Pin, InfoWindow, useAdvancedMarkerRef, useMapsLibrary, useMap } from '@vis.gl/react-google-maps';
-import { OSINT_ENTITIES, OsintEntity } from '../osintData';
+import { OsintEntity } from '../osintData';
 
 const API_KEY =
   (import.meta as any).env.VITE_GOOGLE_MAPS_API_KEY ||
@@ -22,7 +22,7 @@ const API_KEY =
 const hasValidKey = Boolean(API_KEY) && API_KEY !== 'YOUR_API_KEY';
 
 interface MapsTabProps {
-  onSelectEntityGlobal?: (entity: OsintEntity) => void;
+  _onSelectEntityGlobal?: (entity: OsintEntity) => void;
 }
 
 interface MapLocation {
@@ -104,14 +104,12 @@ const MAP_LOCATIONS: Record<string, MapLocation> = {
 function LocationMarker({ 
   loc, 
   isSelected, 
-  onSelect,
-  onSelectEntityGlobal 
+  onSelect
 }: { 
   key?: string;
   loc: MapLocation; 
   isSelected: boolean; 
   onSelect: (id: string) => void;
-  onSelectEntityGlobal?: (entity: OsintEntity) => void;
 }) {
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infoOpen, setInfoOpen] = useState(false);
@@ -123,7 +121,7 @@ function LocationMarker({
   }, [isSelected]);
 
   const pinColor = loc.riskScore >= 75 ? '#f43f5e' : loc.riskScore >= 50 ? '#f59e0b' : '#10b981';
-  const entity = OSINT_ENTITIES.find(e => e.id === loc.id);
+  // Static data removed - requires real data service for entity lookup
 
   return (
     <>
@@ -161,15 +159,7 @@ function LocationMarker({
             </div>
             <h4 className="font-bold text-sm leading-tight text-slate-950 mb-1">{loc.name}</h4>
             <p className="text-xs text-slate-600 mb-2 font-mono">{loc.address}</p>
-            {entity && onSelectEntityGlobal && (
-              <button
-                onClick={() => onSelectEntityGlobal(entity)}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-1 px-2 rounded transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <Activity className="w-3 h-3" />
-                <span>Досьє в ШІ-Ядрі</span>
-              </button>
-            )}
+            {/* Entity lookup requires real data service integration */}
           </div>
         </InfoWindow>
       )}
@@ -262,7 +252,7 @@ function MapVectorOverlay({ showRoutes, showFlows }: { showRoutes: boolean; show
   return null;
 }
 
-export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
+export default function MapsTab({ _onSelectEntityGlobal: _ }: MapsTabProps) {
   // View mode state
   const [activeViewMode, setActiveViewMode] = useState<'google' | 'tactical'>(hasValidKey ? 'google' : 'tactical');
 
@@ -287,9 +277,9 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
   const [scanMessage, setScanMessage] = useState<string | null>(null);
   const [activeLayersCount, setActiveLayersCount] = useState(3);
 
-  // Memoized entity based on selection
-  const selectedEntity = useMemo(() => {
-    return OSINT_ENTITIES.find(e => e.id === selectedEntityId) || OSINT_ENTITIES[0];
+  // Memoized entity based on selection - requires real data service
+  const selectedEntity = useMemo<OsintEntity | null>(() => {
+    return null; // Static data removed
   }, [selectedEntityId]);
 
   const selectedLoc = MAP_LOCATIONS[selectedEntityId];
@@ -609,7 +599,6 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
                       loc={loc}
                       isSelected={selectedEntityId === loc.id}
                       onSelect={(id) => setSelectedEntityId(id)}
-                      onSelectEntityGlobal={onSelectEntityGlobal}
                     />
                   ))}
                 </GoogleMap>
@@ -1040,15 +1029,15 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
                 ДОСЬЄ ВУЗЛА В РЕАЛЬНОМУ ЧАСІ
               </span>
               <span className="text-[10px] bg-slate-950 text-slate-300 border border-slate-800 px-2 py-0.5 rounded font-mono uppercase font-black">
-                {selectedEntity?.status}
+                {selectedEntity?.status || 'UNKNOWN'}
               </span>
             </div>
 
             <div className="space-y-2.5">
               <div>
-                <h4 className="text-xs font-bold text-slate-200">{selectedEntity?.name}</h4>
+                <h4 className="text-xs font-bold text-slate-200">{selectedEntity?.name || 'Не вибрано'}</h4>
                 <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest mt-0.5">
-                  {selectedEntity?.type === 'company' ? 'Юридична особа' : selectedEntity?.type === 'person' ? 'Фізична особа' : 'Криптовалютна адреса'} • Код {selectedEntity?.code}
+                  {selectedEntity?.type === 'company' ? 'Юридична особа' : selectedEntity?.type === 'person' ? 'Фізична особа' : 'Криптовалютна адреса'} • Код {selectedEntity?.code || 'N/A'}
                 </p>
               </div>
 
@@ -1057,7 +1046,7 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
                   <MapPin className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-[10px] text-slate-400 block uppercase font-bold">Географічна адреса</span>
-                    <span className="text-slate-200 font-sans leading-relaxed text-xs">{selectedEntity?.address}</span>
+                    <span className="text-slate-200 font-sans leading-relaxed text-xs">{selectedEntity?.address || 'Невідомо'}</span>
                   </div>
                 </div>
 
@@ -1070,18 +1059,10 @@ export default function MapsTab({ onSelectEntityGlobal }: MapsTabProps) {
               </div>
 
               <div className="text-xs leading-relaxed text-slate-300 font-sans italic">
-                "{selectedEntity?.description}"
+                "{selectedEntity?.description || 'Опис недоступний'}"
               </div>
 
-              {onSelectEntityGlobal && selectedEntity && (
-                <button
-                  onClick={() => onSelectEntityGlobal(selectedEntity)}
-                  className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-mono font-bold uppercase tracking-widest py-2 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Activity className="w-3.5 h-3.5 animate-pulse" />
-                  <span>Аналізувати в ШІ-Ядрі</span>
-                </button>
-              )}
+              {/* Entity analysis requires real data service integration */}
             </div>
           </div>
 

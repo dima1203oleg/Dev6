@@ -9,7 +9,7 @@ import {
   Network, Download
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { OsintEntity, OSINT_ENTITIES } from '../osintData';
+import { OsintEntity } from '../osintData';
 import { OpenSourceSolution } from '../types';
 
 interface InspectorPanelProps {
@@ -29,20 +29,26 @@ export default function InspectorPanel({ selectedEntity, selectedTool, selectedN
     if (!selectedEntity) return [];
     const related = new Map();
 
-     (selectedEntity.relationships || []).forEach(rel => {
-      const target = OSINT_ENTITIES.find(e => e.id === rel.targetId);
-      if (target) {
-        related.set(target.id, { entity: target, type: rel.type, risk: rel.risk, direction: 'outgoing' });
-      }
-    });
-
-    OSINT_ENTITIES.forEach(entity => {
-       (entity.relationships || []).forEach(rel => {
-        if (rel.targetId === selectedEntity.id) {
-          if (!related.has(entity.id)) {
-             related.set(entity.id, { entity, type: rel.type, risk: rel.risk, direction: 'incoming' });
-          }
-        }
+    // Static data removed - requires real data service for relationship lookup
+    // Only use relationships from the selected entity itself
+    (selectedEntity.relationships || []).forEach(rel => {
+      related.set(rel.targetId, { 
+        entity: { 
+          id: rel.targetId, 
+          name: rel.targetName, 
+          type: 'person' as const, 
+          code: 'UNKNOWN', 
+          status: 'ACTIVE' as const, 
+          riskScore: rel.risk === 'HIGH' ? 80 : rel.risk === 'MEDIUM' ? 50 : 20, 
+          address: '', 
+          description: '', 
+          relationships: [], 
+          aiRecommendations: '', 
+          lastActivityDate: '' 
+        }, 
+        type: rel.type, 
+        risk: rel.risk, 
+        direction: 'outgoing' 
       });
     });
 

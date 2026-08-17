@@ -27,6 +27,8 @@ import { PropertyCard } from "./search/cards/PropertyCard";
 import { SanctionsCard } from "./search/cards/SanctionsCard";
 import { LicensesCard } from "./search/cards/LicensesCard";
 import { ExecutionsCard } from "./search/cards/ExecutionsCard";
+import { CourtCasesCard } from "./search/cards/CourtCasesCard";
+import { DeclarationsCard } from "./search/cards/DeclarationsCard";
 
 interface DossierViewProps {
   dossier: Dossier;
@@ -382,6 +384,7 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
               </div>
             )}
             <LicensesCard licenses={licensesData || []} onViewEvidence={() => {}} />
+            <DeclarationsCard entity={entity as any} declarationData={(dossier.modules as any)?.declarations?.[0]} />
           </div>
         );
       }
@@ -389,69 +392,9 @@ export default function DossierView({ dossier, onBack, onSelectEntity }: Dossier
       case "legal": {
         const courtModule = (dossier.modules as any)?.courts?.[0];
         const courtData = courtModule || (dossier as any).claims?.find((c: any) => c.predicate === 'has_court_data')?.object;
-        const hasCourtCases = courtData?.courtCasesCount > 0 || (courtData?.courtCases?.length > 0);
-        const isBankrupt = courtData?.isBankrupt;
-        const activeEnforcements = courtData?.activeEnforcementsCount || 0;
-        
-        const courtEvidence = dossier.evidence?.find((e: any) => e.sourceName?.includes('ЄДРСР'));
-        const courtSource = courtEvidence?.sourceName || 'ЄДРСР (court.gov.ua)';
-        const courtConfidence = courtEvidence?.confidence ? Math.round(courtEvidence.confidence * 100) : 100;
-        const courtRetrievedAt = courtEvidence?.retrievedAt ? new Date(courtEvidence.retrievedAt).toLocaleDateString('uk-UA') : '-';
-
         return (
           <div className="space-y-6">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden p-6 space-y-6">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-800 pb-4">
-                <Landmark size={16} className="text-cyan-400" />
-                Єдиний державний реєстр судових рішень (ЄДРСР)
-              </h3>
-              <div className="flex items-center gap-4 text-[10px] text-slate-500 font-mono">
-                <span>Джерело: {courtSource}</span>
-                <span>•</span>
-                <span>Надійність: {courtConfidence}%</span>
-                <span>•</span>
-                <span>Оновлено: {courtRetrievedAt}</span>
-              </div>
-              
-              {hasCourtCases || isBankrupt || activeEnforcements > 0 ? (
-                <div className="flex items-center gap-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-                  <div className="p-2 bg-red-500/20 text-red-400 rounded-lg">
-                    <AlertTriangle size={20} />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Виявлено судові провадження</h4>
-                    <p className="text-xs text-slate-400">Перевірка виявила {courtData?.courtCasesCount || 0} судових справ та {activeEnforcements} виконавчих проваджень.</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-4 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
-                  <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg">
-                    <Shield size={20} />
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-sm">Судових проваджень не виявлено</h4>
-                    <p className="text-xs text-slate-400">Перевірка за ПІБ, ІПН та назвами компаній дала повністю негативний результат.</p>
-                  </div>
-                </div>
-              )}
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                <div className="bg-slate-800/30 border border-slate-800 p-4 rounded-lg">
-                  <div className="text-xs text-slate-500 uppercase font-mono">Судових справ</div>
-                  <div className="text-2xl font-bold text-white mt-1">{courtData?.courtCasesCount || 0}</div>
-                </div>
-                <div className="bg-slate-800/30 border border-slate-800 p-4 rounded-lg">
-                  <div className="text-xs text-slate-500 uppercase font-mono">Виконавчих проваджень</div>
-                  <div className="text-2xl font-bold text-white mt-1">{activeEnforcements}</div>
-                </div>
-                <div className="bg-slate-800/30 border border-slate-800 p-4 rounded-lg">
-                  <div className="text-xs text-slate-500 uppercase font-mono">Стан банкрутства</div>
-                  <div className={`text-2xl font-bold mt-1 ${isBankrupt ? 'text-red-400' : 'text-emerald-400'}`}>
-                    {isBankrupt ? 'ТАК' : 'НІ'}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CourtCasesCard entity={entity as any} courtData={courtData} />
             <ExecutionsCard entity={entity} legalData={courtData} />
           </div>
         );
