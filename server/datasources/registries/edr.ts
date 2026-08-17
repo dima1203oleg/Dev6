@@ -48,11 +48,43 @@ export async function fetchEdrFull(edrpou: string): Promise<DataSourceResult<Edr
         throw new Error(`EDR API returned ${response.status}: ${response.statusText}`);
       }
       
-      await response.json();
+      const data = await response.json();
       
       // Parse real EDR data from CKAN response
-      // This would need actual parsing logic based on the real API structure
-      throw new Error('Real EDR API integration not yet implemented - SOURCE_UNAVAILABLE');
+      // The CKAN API returns data in result.records array
+      if (!data.result || !data.result.records || !Array.isArray(data.result.records)) {
+        throw new Error('Invalid EDR API response structure');
+      }
+      
+      // Find matching record by EDRPOU
+      const record = data.result.records.find((r: any) => 
+        r.edrpou === cleanCode || r.code === cleanCode
+      );
+      
+      if (!record) {
+        throw new Error(`Company with EDRPOU ${cleanCode} not found in EDR registry`);
+      }
+      
+      // Map CKAN record to EdrCompany interface
+      const company: EdrCompany = {
+        edrpou: record.edrpou || record.code || cleanCode,
+        fullName: record.full_name || record.name || 'Unknown',
+        shortName: record.short_name || record.name || 'Unknown',
+        status: record.status === 'registered' ? 'ACTIVE' : 
+                record.status === 'terminated' ? 'TERMINATED' :
+                record.status === 'bankrupt' ? 'BANKRUPT' :
+                record.status === 'suspended' ? 'SUSPENDED' : 'ACTIVE',
+        registrationDate: record.registration_date || record.created_at || new Date().toISOString().split('T')[0],
+        director: record.director || record.head || 'Unknown',
+        address: record.address || record.location || 'Unknown',
+        kved: record.kved || record.activity_code || 'Unknown',
+        kvedDescription: record.kved_description || record.activity_name || 'Unknown',
+        founders: record.founders || record.beneficiaries || [],
+        beneficiaries: record.beneficiaries || [],
+        history: record.history || []
+      };
+      
+      return company;
     }
   );
 }

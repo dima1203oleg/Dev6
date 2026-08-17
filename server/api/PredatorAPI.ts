@@ -439,6 +439,144 @@ router.post('/search', async (req: Request, res: Response) => {
 });
 
 // ============================================
+// REGISTRY MATRIX / CONNECTOR STATUS
+// ============================================
+
+router.get('/connectors', async (_req: Request, res: Response) => {
+  try {
+    const connectors = [
+      {
+        id: 'dps-tax-cabinet',
+        name: 'ДПС (tax.gov.ua)',
+        category: 'TAX',
+        status: 'UPSTREAM_MAINTENANCE',
+        authority: 'OFFICIAL_GOVERNMENT',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'VAT payers, tax registration',
+        availability: false,
+        message: 'На період дії воєнного стану обмежено доступ до публічних електронних реєстрів'
+      },
+      {
+        id: 'nais-edr-xml',
+        name: 'NAIS EDR XML (Мін\'юст)',
+        category: 'REGISTRY',
+        status: 'NOT_IMPLEMENTED',
+        authority: 'OFFICIAL_GOVERNMENT',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'FOP, UO entities',
+        availability: false,
+        message: 'Requires PostgreSQL database for index storage'
+      },
+      {
+        id: 'edr-full',
+        name: 'Єдиний державний реєстр (data.gov.ua)',
+        category: 'REGISTRY',
+        status: 'SOURCE_UNAVAILABLE',
+        authority: 'OFFICIAL_GOVERNMENT',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'Company registry',
+        availability: false,
+        message: 'Resource edr_full_registry not found on data.gov.ua'
+      },
+      {
+        id: 'clarity-edr',
+        name: 'Clarity Project API',
+        category: 'REGISTRY',
+        status: 'NOT_IMPLEMENTED',
+        authority: 'COMMERCIAL_API',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'Company registry',
+        availability: false,
+        message: 'API integration not yet implemented'
+      },
+      {
+        id: 'court-registry',
+        name: 'Судовий реєстр',
+        category: 'LEGAL',
+        status: 'NOT_IMPLEMENTED',
+        authority: 'OFFICIAL_GOVERNMENT',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'Court cases',
+        availability: false,
+        message: 'Connector not yet implemented'
+      },
+      {
+        id: 'rnbo-sanctions',
+        name: 'РНБО (sanctions-t.rnbo.gov.ua)',
+        category: 'SANCTIONS',
+        status: 'NOT_IMPLEMENTED',
+        authority: 'OFFICIAL_GOVERNMENT',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'Sanctions list',
+        availability: false,
+        message: 'Connector not yet implemented'
+      },
+      {
+        id: 'ofac-sanctions',
+        name: 'OFAC Sanctions',
+        category: 'SANCTIONS',
+        status: 'NOT_IMPLEMENTED',
+        authority: 'OFFICIAL_GOVERNMENT',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'US sanctions list',
+        availability: false,
+        message: 'Connector not yet implemented'
+      },
+      {
+        id: 'eu-sanctions',
+        name: 'EU Sanctions',
+        category: 'SANCTIONS',
+        status: 'NOT_IMPLEMENTED',
+        authority: 'OFFICIAL_GOVERNMENT',
+        lastCheck: new Date().toISOString(),
+        latency: null,
+        records: 0,
+        coverage: 'EU sanctions list',
+        availability: false,
+        message: 'Connector not yet implemented'
+      }
+    ];
+
+    return res.json({
+      status: 'SUCCESS',
+      count: connectors.length,
+      connectors
+    });
+  } catch (error) {
+    return res.status(500).json({ 
+      status: 'ERROR',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+router.get('/registries', async (_req: Request, res: Response) => {
+  try {
+    // Alias for /connectors endpoint
+    return res.redirect(307, '/connectors');
+  } catch (error) {
+    return res.status(500).json({ 
+      status: 'ERROR',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// ============================================
 // INGESTION RUN ENDPOINTS
 // ============================================
 

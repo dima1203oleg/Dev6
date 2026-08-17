@@ -15,7 +15,12 @@
     "test:automated": "tsx server/tests/automated/runTests.ts",
     "test:ui": "tsx server/tests/ui/runUITests.ts",
     "test:golden-qa": "tsx server/tests/golden/runGoldenQATests.ts",
-    "test:audit": "tsx server/tests/audit/runAuditTests.ts"
+    "test:audit": "tsx server/tests/audit/runAuditTests.ts",
+    "test:unit": "tsx server/tests/automated/runTests.ts --environment QA",
+    "test:integration": "tsx server/tests/automated/runTests.ts --environment INTEGRATION",
+    "test:security": "tsx server/tests/automated/runTests.ts --sources security",
+    "test:production": "tsx server/tests/automated/runTests.ts --environment PRODUCTION",
+    "test": "npm run test:automated"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

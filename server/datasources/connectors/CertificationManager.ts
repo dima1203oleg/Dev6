@@ -17,7 +17,8 @@ export class CertificationManager {
     // Strict rule: no certification for commercial brokers or paid APIs
     if (meta.accessLevel === 'PAID' || meta.accessLevel === 'COMMERCIAL_API' || meta.accessLevel === 'TRIAL_ONLY') {
       this.updateStatus(sourceId, 'NOT_SUPPORTED');
-      return 'NOT_CERTIFIED';
+      this.certificationCache.set(sourceId, 'FAILED');
+      return 'FAILED';
     }
 
     // Must pass all core tests
@@ -32,10 +33,21 @@ export class CertificationManager {
 
     if (requiredTests.some(r => r === 'FAIL')) {
       // Degrade status based on failure type
-      if (testResults.test_connectivity === 'FAIL') this.updateStatus(sourceId, 'OFFLINE');
-      else if (testResults.test_schema === 'FAIL') this.updateStatus(sourceId, 'SCHEMA_DRIFT');
-      else this.updateStatus(sourceId, 'DEGRADED');
+      if (testResults.test_connectivity === 'FAIL') {
+        this.updateStatus(sourceId, 'OFFLINE');
+      } else if (testResults.test_schema === 'FAIL') {
+        this.updateStatus(sourceId, 'SCHEMA_DRIFT');
+      } else {
+        this.updateStatus(sourceId, 'DEGRADED');
+      }
 
+      this.certificationCache.set(sourceId, 'FAILED');
+      return 'FAILED';
+    }
+
+    // Check if source is on upstream maintenance
+    if (testResults.test_connectivity === 'PASS' && testResults.test_failure_mode === 'PASS' && sourceId === 'ua.tax') {
+      this.updateStatus(sourceId, 'DEGRADED'); // Blocked due to maintenance
       this.certificationCache.set(sourceId, 'FAILED');
       return 'FAILED';
     }
@@ -47,7 +59,7 @@ export class CertificationManager {
   }
 
   getCertificationStatus(sourceId: string): CertificationStatus {
-    return this.certificationCache.get(sourceId) || 'NOT_CERTIFIED';
+    return this.certificationCache.get(sourceId) || 'FAILED';
   }
 
   getSourceStatus(sourceId: string): SourceStatus {

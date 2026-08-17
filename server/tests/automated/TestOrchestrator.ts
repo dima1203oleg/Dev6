@@ -20,6 +20,7 @@ import { TEST014_Repeatability } from './tests/TEST014_Repeatability';
 import { TEST015_Performance } from './tests/TEST015_Performance';
 import { TEST016_FaultInjection } from './tests/TEST016_FaultInjection';
 import { TEST017_Security } from './tests/TEST017_Security';
+import { TEST018_ProductionDataIntegrity } from './tests/TEST018_ProductionDataIntegrity';
 
 import { SourceConfig, TestContext, SourceTestReport, SummaryReport, FinalStatus } from './types';
 import { BaseTest } from './BaseTest';
@@ -49,7 +50,8 @@ export class TestOrchestrator {
       new TEST014_Repeatability(),
       new TEST015_Performance(),
       new TEST016_FaultInjection(),
-      new TEST017_Security()
+      new TEST017_Security(),
+      new TEST018_ProductionDataIntegrity()
     ];
 
     // Filter out skipped tests
