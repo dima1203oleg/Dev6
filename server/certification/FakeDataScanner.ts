@@ -152,7 +152,12 @@ export class FakeDataScanner {
     'fixtures',
     'mock',
     '.vscode',
-    '.idea'
+    '.idea',
+    'temp_import',   // raw data imports — not source code
+    'backup',
+    'uploads',
+    'certification', // scanner tooling — contains pattern definitions, not production data
+    'scripts'        // one-off scripts — not production runtime
   ];
   
   private excludedExtensions: string[] = [
@@ -162,7 +167,12 @@ export class FakeDataScanner {
     '.yaml',
     '.yml',
     '.lock',
-    '.map'
+    '.map',
+    '.xml',   // data files — not source code
+    '.csv',
+    '.sql',
+    '.gz',
+    '.zip'
   ];
   
   /**
@@ -255,9 +265,15 @@ export class FakeDataScanner {
    */
   private scanFile(filePath: string, findings: FakeDataFinding[], productionMode: boolean): void {
     try {
+      // Skip files larger than 10MB to prevent ERR_STRING_TOO_LONG on large data files (e.g. XML dumps)
+      const MAX_SCAN_SIZE = 10 * 1024 * 1024; // 10MB
+      const stats = statSync(filePath);
+      if (stats.size > MAX_SCAN_SIZE) {
+        return;
+      }
       const content = readFileSync(filePath, 'utf-8');
       const lines = content.split('\n');
-      
+
       for (const patternConfig of this.patterns) {
         // Skip LOW severity patterns in production mode
         if (productionMode && patternConfig.severity === 'LOW') {

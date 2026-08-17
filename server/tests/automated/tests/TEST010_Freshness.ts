@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus, FreshnessInfo } from '../types';
+import { TestContext, TestResult, FreshnessInfo } from '../types';
 
 export class TEST010_Freshness extends BaseTest {
   constructor() {
@@ -174,9 +174,4 @@ export class TEST010_Freshness extends BaseTest {
     return match ? parseInt(match[1] || '0', 10) : null;
   }
 
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
-  }
 }

@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus, SecurityTestResult } from '../types';
+import { TestContext, TestResult, SecurityTestResult } from '../types';
 
 export class TEST017_Security extends BaseTest {
   constructor() {
@@ -395,9 +395,4 @@ export class TEST017_Security extends BaseTest {
     };
   }
 
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
-  }
 }

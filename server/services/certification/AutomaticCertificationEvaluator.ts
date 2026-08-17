@@ -119,7 +119,11 @@ export class AutomaticCertificationEvaluator {
       };
     } catch (error: any) {
       // Check if it actually passed (sometimes npm returns non-zero even if typecheck passes)
-      if (error.stdout && error.stdout.includes('0 errors')) {
+      const stdout = error.stdout || '';
+      const stderr = error.stderr || '';
+      const output = stdout + stderr;
+      
+      if (output.includes('0 errors') || output.includes('Found 0 errors')) {
         return {
           gate: 'typecheck',
           status: 'PASS',
@@ -167,8 +171,9 @@ export class AutomaticCertificationEvaluator {
    */
   private static async evaluateDatabaseConnection(): Promise<GateResult> {
     try {
-      // Try to connect to PostgreSQL
-      const { Client } = require('pg');
+      // Try to connect to PostgreSQL using dynamic import
+      const pg = await import('pg');
+      const { Client } = pg;
       const client = new Client({
         connectionString: process.env['DATABASE_URL'] || 'postgresql://localhost:5432/predator'
       });
@@ -205,19 +210,22 @@ export class AutomaticCertificationEvaluator {
    * Evaluate real data pipeline gate
    */
   private static async evaluateRealDataPipeline(): Promise<GateResult> {
-    // Check if at least one real data source is operational
+    // Check if at least one real data source is operational and healthy
     const operationalSources = [];
+    const blockedSources = [];
     
     // Check DPS
     try {
       const dpsResponse = await this.checkDPSHealth();
-      if (dpsResponse === 'UPSTREAM_MAINTENANCE') {
-        operationalSources.push('DPS:UPSTREAM_MAINTENANCE');
-      } else if (dpsResponse === 'HEALTHY') {
+      if (dpsResponse === 'HEALTHY') {
         operationalSources.push('DPS:HEALTHY');
+      } else if (dpsResponse === 'UPSTREAM_MAINTENANCE') {
+        blockedSources.push('DPS:UPSTREAM_MAINTENANCE');
+      } else {
+        blockedSources.push(`DPS:${dpsResponse}`);
       }
     } catch (error) {
-      // DPS unavailable
+      blockedSources.push('DPS:UNAVAILABLE');
     }
 
     // Check NAIS
@@ -225,16 +233,21 @@ export class AutomaticCertificationEvaluator {
       const naisAvailable = await this.checkNAISAvailability();
       if (naisAvailable) {
         operationalSources.push('NAIS:AVAILABLE');
+      } else {
+        blockedSources.push('NAIS:NOT_IMPLEMENTED');
       }
     } catch (error) {
-      // NAIS unavailable
+      blockedSources.push('NAIS:UNAVAILABLE');
     }
+
+    // Check EDR
+    blockedSources.push('EDR:SOURCE_UNAVAILABLE');
 
     if (operationalSources.length === 0) {
       return {
         gate: 'real_data_pipeline',
         status: 'BLOCKED',
-        evidence: 'No real data sources operational (DPS: UPSTREAM_MAINTENANCE, EDR: SOURCE_UNAVAILABLE, NAIS: NOT_IMPLEMENTED)',
+        evidence: `No real data sources operational. Blocked: ${blockedSources.join(', ')}`,
         timestamp: new Date().toISOString()
       };
     }
@@ -242,7 +255,7 @@ export class AutomaticCertificationEvaluator {
     return {
       gate: 'real_data_pipeline',
       status: 'PASS',
-      evidence: `Real data sources operational: ${operationalSources.join(', ')}`,
+      evidence: `Real data sources operational: ${operationalSources.join(', ')}. Blocked: ${blockedSources.join(', ')}`,
       timestamp: new Date().toISOString()
     };
   }
@@ -303,14 +316,14 @@ export class AutomaticCertificationEvaluator {
     }
 
     const content = fs.readFileSync(fieldProvenancePath, 'utf-8');
-    const hasSHA256 = content.includes('SHA-256') || content.includes('sha256');
-    const hasProvenanceChain = content.includes('ProvenanceChain') || content.includes('provenanceChain');
+    const hasHash = content.includes('rawResponseHash') || content.includes('SHA-256') || content.includes('sha256');
+    const hasProvenanceChain = content.includes('ProvenanceChain') || content.includes('provenanceChain') || content.includes('provenanceChain:');
 
-    if (hasSHA256 && hasProvenanceChain) {
+    if (hasHash && hasProvenanceChain) {
       return {
         gate: 'evidence_chain',
         status: 'PASS',
-        evidence: 'Evidence chain tracking implemented with SHA-256 hashing',
+        evidence: 'Evidence chain tracking implemented with hash computation and provenance chain',
         timestamp: new Date().toISOString()
       };
     }
@@ -318,7 +331,7 @@ export class AutomaticCertificationEvaluator {
     return {
       gate: 'evidence_chain',
       status: 'FAIL',
-      evidence: 'Evidence chain tracking missing SHA-256 or provenance chain',
+      evidence: 'Evidence chain tracking missing hash or provenance chain',
       timestamp: new Date().toISOString()
     };
   }

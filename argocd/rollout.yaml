@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: predator-analytics
+  namespace: predator-analytics
+spec:
+  replicas: 2
+  strategy:
+    canary:
+      canaryService: predator-analytics-canary
+      stableService: predator-analytics-stable
+      steps:
+        - setWeight: 10
+        - pause: {duration: 2m}
+        - analysis:
+            templates:
+              - templateName: predator-success-rate
+        - setWeight: 30
+        - pause: {duration: 2m}
+        - analysis:
+            templates:
+              - templateName: predator-success-rate
+        - setWeight: 60
+        - pause: {duration: 2m}
+        - setWeight: 100
+      autoPromotionEnabled: false
+  selector:
+    matchLabels:
+      app: predator-analytics
+  template:
+    metadata:
+      labels:
+        app: predator-analytics
+    spec:
+      containers:
+        - name: predator-analytics
+          image: ghcr.io/dima1203oleg/dev6:latest
+          ports:
+            - containerPort: 3000
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: predator-success-rate
+  namespace: predator-analytics
+spec:
+  metrics:
+    - name: success-rate
+      interval: 30s
+      successCondition: result[0] >= 0.95
+      failureLimit: 3
+      provider:
+        prometheus:
+          address: http://prometheus.monitoring.svc.cluster.local:9090
+          query: |
+            sum(rate(http_requests_total{namespace="predator-analytics",status!~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total{namespace="predator-analytics"}[5m]))
+    - name: error-rate
+      interval: 30s
+      successCondition: result[0] <= 0.05
+      failureLimit: 3
+      provider:
+        prometheus:
+          address: http://prometheus.monitoring.svc.cluster.local:9090
+          query: |
+            sum(rate(http_requests_total{namespace="predator-analytics",status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total{namespace="predator-analytics"}[5m]))

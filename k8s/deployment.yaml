@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: predator-analytics
+  namespace: predator-analytics
+  labels:
+    app: predator-analytics
+    version: "1.0.0"
+    app.kubernetes.io/name: predator-analytics
+    app.kubernetes.io/component: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: predator-analytics
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: predator-analytics
+        version: "1.0.0"
+    spec:
+      # Run as non-root for security
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+      serviceAccountName: predator-analytics
+      containers:
+        - name: predator-analytics
+          image: ghcr.io/dima1203oleg/dev6:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+            - name: HOST
+              value: "0.0.0.0"
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: predator-db-secret
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: predator-db-secret
+                  key: port
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: predator-db-secret
+                  key: name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: predator-db-secret
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: predator-db-secret
+                  key: password
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: predator-api-keys
+                  key: gemini-api-key
+            - name: AUTH_TOKENS
+              valueFrom:
+                secretKeyRef:
+                  name: predator-api-keys
+                  key: auth-tokens
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 12
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL

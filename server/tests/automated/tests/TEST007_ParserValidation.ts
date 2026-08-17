@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus, ParsedData } from '../types';
+import { TestContext, TestResult, ParsedData } from '../types';
 
 export class TEST007_ParserValidation extends BaseTest {
   constructor() {
@@ -258,9 +258,4 @@ export class TEST007_ParserValidation extends BaseTest {
     return { present };
   }
 
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
-  }
 }

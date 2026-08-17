@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus, RawResponse } from '../types';
+import { TestContext, TestResult, RawResponse } from '../types';
 import { createHash } from 'crypto';
 
 export class TEST005_RawResponse extends BaseTest {
@@ -115,9 +115,4 @@ export class TEST005_RawResponse extends BaseTest {
     return this.previousResponse;
   }
 
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
-  }
 }

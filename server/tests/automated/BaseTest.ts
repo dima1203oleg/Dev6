@@ -57,4 +57,14 @@ export abstract class BaseTest {
     if (!endpoint) return false;
     return this.isValidUrl(endpoint);
   }
+
+  protected determineStatus(errors: string[], warnings: string[]): TestStatus {
+    if (errors.length > 0) {
+      return 'FAIL';
+    }
+    if (warnings.length > 0) {
+      return 'PASS_WITH_WARNINGS';
+    }
+    return 'PASS';
+  }
 }

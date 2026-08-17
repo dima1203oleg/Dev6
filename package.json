@@ -11,16 +11,21 @@
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "import:nais": "tsx server/scripts/importNAISEDR.ts",
+    "certification": "tsx server/scripts/runCertificationEvaluation.ts",
+    "security:scan": "tsx server/tests/security/SecretsScanner.ts",
     "test:e2e": "tsx server/tests/e2e/ControlTestRunner.ts",
     "test:automated": "tsx server/tests/automated/runTests.ts",
     "test:ui": "tsx server/tests/ui/runUITests.ts",
     "test:golden-qa": "tsx server/tests/golden/runGoldenQATests.ts",
     "test:audit": "tsx server/tests/audit/runAuditTests.ts",
+    "test:production-integrity": "tsx server/tests/production/ProductionDataIntegrityTest.ts",
     "test:unit": "tsx server/tests/automated/runTests.ts --environment QA",
     "test:integration": "tsx server/tests/automated/runTests.ts --environment INTEGRATION",
     "test:security": "tsx server/tests/automated/runTests.ts --sources security",
     "test:production": "tsx server/tests/automated/runTests.ts --environment PRODUCTION",
-    "test": "npm run test:automated"
+    "test:all": "npm run security:scan && npm run test:production-integrity && npm run test:automated",
+    "test:ci": "npm run typecheck && npm run security:scan && npm run test:production-integrity && npm run test:automated",
+    "test": "npm run test:all"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

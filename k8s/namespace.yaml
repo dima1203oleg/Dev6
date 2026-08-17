@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: predator-analytics
+  labels:
+    app.kubernetes.io/name: predator-analytics
+    app.kubernetes.io/managed-by: helm

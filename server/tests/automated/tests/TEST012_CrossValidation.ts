@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus } from '../types';
+import { TestContext, TestResult } from '../types';
 
 export class TEST012_CrossValidation extends BaseTest {
   private static comparisonData: Map<string, any> = new Map();
@@ -324,9 +324,4 @@ export class TEST012_CrossValidation extends BaseTest {
     TEST012_CrossValidation.comparisonData.clear();
   }
 
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
-  }
 }

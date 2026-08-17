@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus } from '../types';
+import { TestContext, TestResult } from '../types';
 
 export class TEST001_RegistryDiscovery extends BaseTest {
   constructor() {
@@ -98,11 +98,5 @@ export class TEST001_RegistryDiscovery extends BaseTest {
     }
 
     return missingFields.length === 0 ? 'COMPLETE' : 'PARTIAL';
-  }
-
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
   }
 }

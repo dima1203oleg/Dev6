@@ -51,44 +51,46 @@ export class HardcodedIdentifierScanner {
     type: 'EDRPOU' | 'IPN' | 'RNOkPP' | 'PASSPORT' | 'PHONE' | 'EMAIL' | 'OTHER';
     description: string;
   }> = [
-    // EDRPOU patterns (8 digits)
+    // EDRPOU patterns (8 digits) — must be in string literal or after keyword to avoid ms/constant false positives
     {
-      regex: /(?:testCode|defaultEDRPOU|edrpou|code)\s*[:=]\s*["']?(\d{8})["']?/gi,
+      regex: /(?:testCode|defaultEDRPOU|edrpou|code|EDRPOU)\s*[:=]\s*["']?(\d{8})["']?/gi,
       type: 'EDRPOU',
-      description: 'EDRPOU identifier'
+      description: 'EDRPOU identifier in assignment'
     },
     {
-      regex: /\b\d{8}\b/g,
+      // Only 8-digit numbers inside string quotes — avoids numeric constants like 86400000
+      regex: /["'`](\d{8})["'`]/g,
       type: 'EDRPOU',
-      description: '8-digit number (possible EDRPOU)'
+      description: '8-digit number in string literal (possible EDRPOU)'
     },
-    
-    // IPN patterns (10 digits)
+
+    // IPN patterns (10 digits) — must be in string literal or after keyword
     {
-      regex: /(?:testIPN|ipn|taxId)\s*[:=]\s*["']?(\d{10})["']?/gi,
+      regex: /(?:testIPN|ipn|taxId|IPN|rnokpp)\s*[:=]\s*["']?(\d{10})["']?/gi,
       type: 'IPN',
-      description: 'IPN identifier'
+      description: 'IPN identifier in assignment'
     },
     {
-      regex: /\b\d{10}\b/g,
+      // Only 10-digit numbers inside string quotes
+      regex: /["'`](\d{10})["'`]/g,
       type: 'IPN',
-      description: '10-digit number (possible IPN)'
+      description: '10-digit number in string literal (possible IPN/RNOKPP)'
     },
-    
+
     // RNOkPP patterns (13 digits)
     {
       regex: /(?:rnokpp|taxNumber)\s*[:=]\s*["']?(\d{13})["']?/gi,
       type: 'RNOkPP',
       description: 'RNOkPP identifier'
     },
-    
+
     // Phone patterns
     {
       regex: /(?:phone|mobile|tel)\s*[:=]\s*["']?(\+?\d{10,15})["']?/gi,
       type: 'PHONE',
       description: 'Phone number'
     },
-    
+
     // Email patterns
     {
       regex: /(?:email|mail)\s*[:=]\s*["']?([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})["']?/gi,
@@ -96,6 +98,7 @@ export class HardcodedIdentifierScanner {
       description: 'Email address'
     }
   ];
+
   
   private excludedPaths: string[] = [
     'node_modules',
@@ -109,7 +112,12 @@ export class HardcodedIdentifierScanner {
     'mock',
     '.vscode',
     '.idea',
-    'config'
+    'config',
+    'temp_import',   // raw data imports — not source code
+    'backup',
+    'uploads',
+    'certification', // scanner tooling — contains test identifier constants, not production data
+    'scripts'        // one-off scripts — not production runtime
   ];
   
   private excludedExtensions: string[] = [
@@ -120,7 +128,12 @@ export class HardcodedIdentifierScanner {
     '.yml',
     '.lock',
     '.map',
-    '.env.example'
+    '.env.example',
+    '.xml',   // data files — not source code
+    '.csv',
+    '.sql',
+    '.gz',
+    '.zip'
   ];
   
   /**
@@ -212,6 +225,12 @@ export class HardcodedIdentifierScanner {
    */
   private scanFile(filePath: string, findings: HardcodedIdentifierFinding[]): void {
     try {
+      // Skip files larger than 10MB to prevent ERR_STRING_TOO_LONG on large data files
+      const MAX_SCAN_SIZE = 10 * 1024 * 1024; // 10MB
+      const fileStats = statSync(filePath);
+      if (fileStats.size > MAX_SCAN_SIZE) {
+        return;
+      }
       const content = readFileSync(filePath, 'utf-8');
       const lines = content.split('\n');
       

@@ -1,0 +1,16 @@
+apiVersion: v2
+name: predator-analytics
+description: PREDATOR Analytics — Ukrainian Entities Intelligence Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - predator
+  - analytics
+  - intelligence
+  - ukraine
+home: https://github.com/dima1203oleg/Dev6
+maintainers:
+  - name: dima1203oleg
+    url: https://github.com/dima1203oleg
+dependencies: []

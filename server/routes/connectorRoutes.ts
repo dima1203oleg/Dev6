@@ -213,29 +213,37 @@ router.get("/registry/health", (_req, res) => {
 });
 
 /**
- * Verification endpoint for IPN 3111724753
- * This is the production verification test case
+ * Connector verification endpoint — accepts any RNOKPP/EDRPOU identifier
+ * Use this for live connectivity checks against real DPS data
  */
-router.post("/registry/verify/ipn-3111724753", checkPermission("entity.search"), async (_req, res) => {
-  const testIPN = "3111724753";
+router.post("/registry/verify/:identifier", checkPermission("entity.search"), async (req, res) => {
+  const { identifier } = req.params;
   const retrievedAt = new Date().toISOString();
-  
+
+  if (!identifier || !/^\d{8,10}$/.test(identifier)) {
+    return res.status(400).json({
+      error: 'Invalid identifier: must be 8–10 digits (EDRPOU or RNOKPP)',
+      identifier,
+      retrievedAt
+    });
+  }
+
   try {
     const dpsConnector = new DPSConnector();
-    const result = await dpsConnector.fetch(testIPN, 'registration');
-    
+    const result = await dpsConnector.fetch(identifier, 'registration');
+
     const verificationResult = {
-      testIPN,
+      identifier,
       retrievedAt,
       connectorStatus: result.status,
       hasData: !!result.normalizedData,
       hasEvidence: !!result.evidence,
       error: result.error || null,
       entity: result.normalizedData ? {
-        id: `dps-${testIPN}`,
+        id: `dps-${identifier}`,
         name: result.normalizedData.name || 'Unknown',
         type: result.normalizedData.entityType === 'LEGAL' ? 'company' : 'person',
-        code: testIPN,
+        code: identifier,
         status: 'ACTIVE',
         riskScore: 50,
         address: result.normalizedData.address || '',
@@ -245,11 +253,11 @@ router.post("/registry/verify/ipn-3111724753", checkPermission("entity.search"),
         lastActivityDate: retrievedAt
       } : null
     };
-    
+
     return res.json(verificationResult);
   } catch (error: any) {
     return res.status(500).json({
-      testIPN,
+      identifier,
       retrievedAt,
       connectorStatus: 'ERROR',
       hasData: false,
@@ -261,4 +269,3 @@ router.post("/registry/verify/ipn-3111724753", checkPermission("entity.search"),
 });
 
 export default router;
-

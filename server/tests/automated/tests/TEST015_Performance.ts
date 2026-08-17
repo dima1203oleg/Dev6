@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus, PerformanceMetrics } from '../types';
+import { TestContext, TestResult, PerformanceMetrics } from '../types';
 
 export class TEST015_Performance extends BaseTest {
   constructor() {
@@ -220,9 +220,4 @@ export class TEST015_Performance extends BaseTest {
     return { detected, details };
   }
 
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
-  }
 }

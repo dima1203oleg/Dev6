@@ -14,7 +14,7 @@ export class TEST018_ProductionDataIntegrity extends BaseTest {
     super('TEST-018', 'Production Data Integrity');
   }
 
-  async execute(context: TestContext): Promise<TestResult> {
+  async execute(_context: TestContext): Promise<TestResult> {
     const { result, durationMs } = await this.measureExecution(async () => {
       const details: Record<string, any> = {};
       const errors: string[] = [];

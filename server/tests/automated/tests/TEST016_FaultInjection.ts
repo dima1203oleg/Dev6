@@ -4,7 +4,7 @@
  */
 
 import { BaseTest } from '../BaseTest';
-import { TestContext, TestResult, TestStatus, FaultInjectionScenario } from '../types';
+import { TestContext, TestResult, FaultInjectionScenario } from '../types';
 
 export class TEST016_FaultInjection extends BaseTest {
   constructor() {
@@ -264,9 +264,4 @@ export class TEST016_FaultInjection extends BaseTest {
     return scenario;
   }
 
-  private determineStatus(errors: string[], warnings: string[]): TestStatus {
-    if (errors.length > 0) return 'FAIL';
-    if (warnings.length > 0) return 'PASS_WITH_WARNINGS';
-    return 'PASS';
-  }
 }
