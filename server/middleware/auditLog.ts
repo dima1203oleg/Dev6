@@ -44,10 +44,10 @@ export function auditMiddleware(action: string, resource: string) {
 
     res.json = function (body: any) {
       const user = req.user || {
-        id: "usr-analyst-001",
-        email: "analyst@predator.gov.ua",
-        role: "SENIOR_ANALYST",
-        tenantId: "tenant-predator-core"
+        id: "system",
+        email: "system",
+        role: "SYSTEM",
+        tenantId: "system"
       };
 
       const isError = res.statusCode >= 400 || (body && body.error);

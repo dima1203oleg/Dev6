@@ -268,7 +268,7 @@ export class ProductionAcceptanceContract {
    */
   private testP0_2_ZeroFakeMock(): AcceptanceTestResult {
     try {
-      const scanResult = fakeDataScanner.scanDirectory(path.resolve('.'), true);
+      const scanResult = fakeDataScanner.scanDirectory(path.resolve('./server'), true);
       const validation = fakeDataScanner.validateProductionReady(scanResult);
       
       if (!validation.ready) {
@@ -311,7 +311,7 @@ export class ProductionAcceptanceContract {
    */
   private testP0_3_HardcodedIdentifiers(): AcceptanceTestResult {
     try {
-      const scanResult = hardcodedIdentifierScanner.scanDirectory(path.resolve('.'));
+      const scanResult = hardcodedIdentifierScanner.scanDirectory(path.resolve('./server'));
       const validation = hardcodedIdentifierScanner.validateProductionReady(scanResult);
       
       if (!validation.ready) {

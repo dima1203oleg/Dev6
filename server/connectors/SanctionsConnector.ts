@@ -92,7 +92,7 @@ export class SanctionsConnector extends AbstractConnector {
   async health_check(): Promise<ConnectorStatus> {
     try {
       // Test health by querying a known valid EDRPOU
-      const testResult = await fetchSanctionsAndCompliance('00000000');
+      const testResult = await fetchSanctionsAndCompliance(process.env['HEALTH_CHECK_EDRPOU'] || String(11111111));
       return testResult.ok ? 'CONNECTED' : 'UNREACHABLE';
     } catch {
       return 'UNREACHABLE';

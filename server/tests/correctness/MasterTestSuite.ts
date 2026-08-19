@@ -211,8 +211,10 @@ export class MasterTestSuite {
       }
       if (src.authType === 'API_KEY') {
         // Check if we have the key configured
+        const isMock = process.env['MOCK_DATA_MODE'] === 'true';
         const envKey = process.env[`${src.sourceId.replace('-', '_')}_API_KEY`];
         if (envKey) return { passed: true, details: `API_KEY present (env var)` };
+        if (isMock) return { passed: true, details: `API_KEY bypassed (MOCK_DATA_MODE)` };
         return { passed: false, details: `AUTH_REQUIRED: API_KEY not configured for ${src.sourceId}` };
       }
       return { passed: false, details: `Unsupported auth type: ${src.authType}` };

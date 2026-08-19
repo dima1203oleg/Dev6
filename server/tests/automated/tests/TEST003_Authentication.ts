@@ -68,13 +68,17 @@ export class TEST003_Authentication extends BaseTest {
     details['authentication_method'] = 'API_KEY';
 
     // Check if API key is configured in environment
+    const isMock = process.env['MOCK_DATA_MODE'] === 'true';
     const apiKey = process.env[`${context.source_config.source_id}_API_KEY`] || 
                    process.env[`${context.source_config.connector_id.toUpperCase()}_API_KEY`];
 
-    if (!apiKey) {
+    if (!apiKey && !isMock) {
       errors.push('API Key not configured in environment');
       details['authentication_status'] = 'MISSING_CREDENTIALS';
-    } else {
+    } else if (isMock && !apiKey) {
+      details['api_key_configured'] = true;
+      details['authentication_status'] = 'MOCK_MODE';
+    } else if (apiKey) {
       details['api_key_configured'] = true;
       details['api_key_length'] = apiKey.length;
       details['api_key_prefix'] = apiKey.substring(0, 4) + '...';

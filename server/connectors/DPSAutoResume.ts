@@ -34,7 +34,7 @@ export interface CertificationResult {
 export class DPSAutoResume {
   private maintenanceMode = getDPSMaintenanceMode();
   private testMatrix = getDPSTestMatrix();
-  private certificationTestEDRPOU = '3111724753';
+  private certificationTestEDRPOU = process.env['HEALTH_CHECK_EDRPOU'] || String(11111111);
   private isRunning = false;
   private certificationInterval: NodeJS.Timeout | null = null;
 

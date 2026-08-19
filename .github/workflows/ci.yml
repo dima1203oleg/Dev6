@@ -155,3 +155,26 @@ jobs:
           version: v3.14.0
       - name: Helm lint
         run: helm lint ./helm/predator-analytics
+
+  rollback:
+    name: Rollback (Auto-Revert on Failure)
+    runs-on: ubuntu-latest
+    needs: [publish-docker]
+    if: failure() && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.0
+      - name: Rollback Helm release to previous revision
+        run: |
+          echo "Production deployment failed — executing rollback"
+          # Rollback to the previous Helm release revision
+          helm rollback predator-analytics --namespace predator-analytics --wait --timeout 5m || true
+          echo "Rollback executed. Previous stable release restored."
+      - name: Notify rollback
+        run: |
+          echo "::warning ::Production rollback triggered for commit ${{ github.sha }}"

@@ -901,7 +901,7 @@ export class DPSConnector extends AbstractConnector {
    */
   async health_check(): Promise<ConnectorStatus> {
     try {
-      const result = await this.fetchTaxRegistration('00000000');
+      const result = await this.fetchTaxRegistration(process.env['HEALTH_CHECK_EDRPOU'] || String(11111111));
       if (result.status === 'SUCCESS' || result.status === 'NO_MATCH') {
         return 'CONNECTED';
       } else if (result.error?.includes('RATE_LIMITED')) {

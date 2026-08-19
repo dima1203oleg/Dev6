@@ -432,9 +432,7 @@ export class AiRouterService {
     if (!this.ai) {
       return {
         status: "OFFLINE_FALLBACK",
-        extractedEntities: [
-          { type: "EDRPOU", value: "12345678", confidence: 0.90 }
-        ],
+        extractedEntities: [],
         documentType: "Тендерна документація / Договір",
         extractedTextPreview: "Текстовий фрагмент згенеровано в офлайн режимі."
       };

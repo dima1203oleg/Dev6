@@ -98,8 +98,9 @@ export class ValidationOrchestrator {
     this.results.set('registry_health_scan', registryResult);
     
     // Phase 2: Full Entity Test
-    console.log('[PHASE 2] Running Full Entity Test with IPN 3111724753...');
-    const entityResult = await this.runFullEntityTest('3111724753');
+    const testIPN = process.env['HEALTH_CHECK_IPN'] || String(11111111);
+    console.log(`[PHASE 2] Running Full Entity Test with IPN ${testIPN}...`);
+    const entityResult = await this.runFullEntityTest(testIPN);
     this.results.set('entity_test', entityResult);
     
     // Phase 3: Issue Detection

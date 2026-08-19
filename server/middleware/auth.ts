@@ -130,10 +130,10 @@ export function checkPermission(requiredPermission: string) {
         ? req.headers['x-user-role'] as UserRole
         : undefined;
       req.user = {
-        id: "usr-analyst-001",
-        email: "analyst@predator.gov.ua",
+        id: "usr-dev-001",
+        email: "dev-user@localhost",
         role: configuredRole && ROLE_PERMISSIONS[configuredRole] ? configuredRole : "SENIOR_ANALYST",
-        tenantId: "tenant-predator-core"
+        tenantId: "tenant-dev-core"
       };
     }
 
